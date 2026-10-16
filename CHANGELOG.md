@@ -3,6 +3,18 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.21.1]
+
+### Changed
+- **Hologram tour** updated to the current mod: 20 steps (previously 15). New steps for the Crafting, Team and Trade
+  Terminals, phoenix mail, the Amethyst Phoenix, the Crystal Lair with the Great Amethyst Spider, the Amethyst Fox and
+  the UI settings. The phoenix, Amethyst Phoenix, spider and fox appear as holograms.
+- **Storage Handbook** updated:
+  - new pages: contents, terminal controls and search, interface settings
+  - pages ordered by chapter (basics, teams & trade, bosses & End, helpers, phoenix, backpacks, recipes)
+  - welcome, Amethyst Sprite and backpack pages describe current features
+- English README for GitHub, this changelog, GitHub Actions build, `.gitignore` and `.gitattributes`.
+
 ## [0.21.0]
 
 ### Added

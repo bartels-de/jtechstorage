@@ -30,6 +30,7 @@ import net.minecraft.world.phys.Vec3;
 
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.ModGuide;
+import dev.bartels.jtechstorage.end.EndContent;
 
 /**
  * Hologramm von Jbartels, dem Erfinder der Mod. Erscheint beim ersten Betreten einer Welt (oder per
@@ -48,22 +49,28 @@ public class JbartelsHologram extends PathfinderMob {
 				new Step(160, new ItemStack(ModContent.GUIDE_BOOK), null),
 				new Step(220, new ItemStack(ModContent.STORAGE_TERMINAL_ITEM), null),
 				new Step(220, new ItemStack(ModContent.STORAGE_KEY), null),
+				new Step(260, new ItemStack(ModContent.CRAFTING_TERMINAL_ITEM), null),
 				new Step(260, new ItemStack(ModContent.AMETHYST_DRAUGHT), ModContent.AMETHYST_ROBOT),
 				new Step(200, new ItemStack(ModContent.WIRELESS_TERMINAL), null),
-				new Step(200, null, ModContent.AMETHYST_SPRITE),
+				new Step(220, null, ModContent.AMETHYST_SPRITE),
 				new Step(200, null, ModContent.COLLECTOR_MOTH),
 				new Step(180, null, ModContent.STORAGE_GRIFFIN),
 				new Step(240, null, ModContent.SPARK_BEETLE),
 				new Step(220, null, ModContent.CHEL),
 				new Step(200, null, ModContent.PETER_CHEL_PARKER),
 				new Step(180, null, ModContent.ASHLEY),
-				new Step(180, new ItemStack(ModContent.LEATHER_BACKPACK), null),
-				new Step(180, new ItemStack(Items.CARVED_PUMPKIN), null),
+				new Step(220, new ItemStack(ModContent.PHOENIX_NEST_ITEM), ModContent.PHOENIX),
+				new Step(260, new ItemStack(ModContent.ROUTE_FEATHER), ModContent.AMETHYST_PHOENIX),
+				new Step(280, new ItemStack(EndContent.LAIR_COMPASS), EndContent.AMETHYST_SPIDER),
+				new Step(240, new ItemStack(Items.ENCHANTED_BOOK), ModContent.AMETHYST_FOX),
+				new Step(200, new ItemStack(ModContent.LEATHER_BACKPACK), null),
+				new Step(220, new ItemStack(Items.CARVED_PUMPKIN), null),
 				new Step(160, new ItemStack(ModContent.GUIDE_BOOK), null),
 		};
 	}
 
-	public static final int STEP_COUNT = 15;
+	/** Anzahl der Schritte (muss zu {@link #steps()} und den Sprachdateien passen). */
+	public static final int STEP_COUNT = 20;
 
 	private @Nullable UUID viewer;
 	private int stepTicks;
@@ -151,15 +158,19 @@ public class JbartelsHologram extends PathfinderMob {
 
 			if (entity != null) {
 				Vec3 side = Vec3.directionFromRotation(0, getYRot() - 90.0f);
-				boolean big = current.show() == ModContent.AMETHYST_ROBOT || current.show() == ModContent.STORAGE_GRIFFIN;
-				Vec3 pos = position().add(side.scale(big ? 3.5 : 2.2));
+				EntityType<?> type = current.show();
+				double distance = type == EndContent.AMETHYST_SPIDER ? 4.2
+						: type == ModContent.AMETHYST_ROBOT || type == ModContent.STORAGE_GRIFFIN || type == ModContent.AMETHYST_PHOENIX ? 3.5 : 2.2;
+				Vec3 pos = position().add(side.scale(distance));
 				entity.snapTo(pos.x, getY() + (current.show() == ModContent.AMETHYST_SPRITE || current.show() == ModContent.COLLECTOR_MOTH ? 0.8 : 0.0),
 						pos.z, getYRot(), 0.0f);
 
 				if (entity instanceof NetworkHelperMob helper) {
 					helper.makeHologram();
-				} else if (entity instanceof AmethystRobot dino) {
-					dino.makeHologram();
+				} else if (entity instanceof AmethystRobot robot) {
+					robot.makeHologram();
+				} else if (entity instanceof AmethystSpider spider) {
+					spider.makeHologram();
 				}
 
 				level.addFreshEntity(entity);

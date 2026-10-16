@@ -8,4 +8,5 @@ public class AmethystSpiderRenderState extends LivingEntityRenderState {
 	public float progress;
 	public boolean enraged;
 	public boolean leaping;
+	public boolean hologram;
 }
