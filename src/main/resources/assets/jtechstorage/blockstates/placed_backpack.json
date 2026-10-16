@@ -1,0 +1,79 @@
+{
+  "variants": {
+    "facing=south,tier=leather": {
+      "model": "jtechstorage:block/placed_backpack_leather"
+    },
+    "facing=west,tier=leather": {
+      "model": "jtechstorage:block/placed_backpack_leather",
+      "y": 90
+    },
+    "facing=north,tier=leather": {
+      "model": "jtechstorage:block/placed_backpack_leather",
+      "y": 180
+    },
+    "facing=east,tier=leather": {
+      "model": "jtechstorage:block/placed_backpack_leather",
+      "y": 270
+    },
+    "facing=south,tier=iron": {
+      "model": "jtechstorage:block/placed_backpack_iron"
+    },
+    "facing=west,tier=iron": {
+      "model": "jtechstorage:block/placed_backpack_iron",
+      "y": 90
+    },
+    "facing=north,tier=iron": {
+      "model": "jtechstorage:block/placed_backpack_iron",
+      "y": 180
+    },
+    "facing=east,tier=iron": {
+      "model": "jtechstorage:block/placed_backpack_iron",
+      "y": 270
+    },
+    "facing=south,tier=gold": {
+      "model": "jtechstorage:block/placed_backpack_gold"
+    },
+    "facing=west,tier=gold": {
+      "model": "jtechstorage:block/placed_backpack_gold",
+      "y": 90
+    },
+    "facing=north,tier=gold": {
+      "model": "jtechstorage:block/placed_backpack_gold",
+      "y": 180
+    },
+    "facing=east,tier=gold": {
+      "model": "jtechstorage:block/placed_backpack_gold",
+      "y": 270
+    },
+    "facing=south,tier=diamond": {
+      "model": "jtechstorage:block/placed_backpack_diamond"
+    },
+    "facing=west,tier=diamond": {
+      "model": "jtechstorage:block/placed_backpack_diamond",
+      "y": 90
+    },
+    "facing=north,tier=diamond": {
+      "model": "jtechstorage:block/placed_backpack_diamond",
+      "y": 180
+    },
+    "facing=east,tier=diamond": {
+      "model": "jtechstorage:block/placed_backpack_diamond",
+      "y": 270
+    },
+    "facing=south,tier=netherite": {
+      "model": "jtechstorage:block/placed_backpack_netherite"
+    },
+    "facing=west,tier=netherite": {
+      "model": "jtechstorage:block/placed_backpack_netherite",
+      "y": 90
+    },
+    "facing=north,tier=netherite": {
+      "model": "jtechstorage:block/placed_backpack_netherite",
+      "y": 180
+    },
+    "facing=east,tier=netherite": {
+      "model": "jtechstorage:block/placed_backpack_netherite",
+      "y": 270
+    }
+  }
+}

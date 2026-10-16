@@ -1,0 +1,33 @@
+{
+  "criteria": {
+    "terminal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:storage_terminal"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:storage_terminal"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.root.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.root.description"
+    },
+    "background": "minecraft:block/polished_deepslate",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "requirements": [
+    [
+      "terminal"
+    ]
+  ]
+}

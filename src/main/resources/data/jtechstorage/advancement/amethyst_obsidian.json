@@ -1,0 +1,43 @@
+{
+  "parent": "jtechstorage:amethyst_spider",
+  "criteria": {
+    "gear": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "jtechstorage:amethyst_obsidian_helmet",
+              "jtechstorage:amethyst_obsidian_chestplate",
+              "jtechstorage:amethyst_obsidian_leggings",
+              "jtechstorage:amethyst_obsidian_boots",
+              "jtechstorage:amethyst_obsidian_sword",
+              "jtechstorage:amethyst_obsidian_pickaxe",
+              "jtechstorage:amethyst_obsidian_axe",
+              "jtechstorage:amethyst_obsidian_shovel",
+              "jtechstorage:amethyst_obsidian_hoe"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:amethyst_obsidian_sword"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.amethyst_obsidian.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.amethyst_obsidian.description"
+    },
+    "frame": "goal",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "gear"
+    ]
+  ]
+}

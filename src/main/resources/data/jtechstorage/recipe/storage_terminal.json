@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:polished_deepslate",
+    "B": "minecraft:amethyst_block",
+    "R": "minecraft:redstone_block",
+    "H": "minecraft:chest",
+    "X": "minecraft:diamond"
+  },
+  "pattern": [
+    "DBD",
+    "RHR",
+    "DXD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:storage_terminal"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "parent": "jtechstorage:backpack",
+  "criteria": {
+    "has": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:netherite_backpack"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:netherite_backpack"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.netherite_backpack.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.netherite_backpack.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "has"
+    ]
+  ]
+}

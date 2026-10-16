@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/phoenix_nest"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/phoenix_nest"
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/phoenix_nest"
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/phoenix_nest"
+    }
+  }
+}

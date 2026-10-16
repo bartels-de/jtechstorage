@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "addition": "#minecraft:netherite_tool_materials",
+  "base": "jtechstorage:diamond_capacity_upgrade",
+  "result": {
+    "id": "jtechstorage:netherite_capacity_upgrade"
+  },
+  "template": "minecraft:netherite_upgrade_smithing_template"
+}

@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "jtechstorage:amethyst_obsidian"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "jtechstorage:amethyst_obsidian"
+      }
+    ]
+  }
+}

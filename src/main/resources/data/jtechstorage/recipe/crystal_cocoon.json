@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "S": "minecraft:string",
+    "A": "minecraft:amethyst_block",
+    "F": "minecraft:fermented_spider_eye",
+    "E": "minecraft:ender_eye",
+    "O": "minecraft:crying_obsidian"
+  },
+  "pattern": [
+    "SAS",
+    "OFO",
+    "SES"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_cocoon"
+  }
+}

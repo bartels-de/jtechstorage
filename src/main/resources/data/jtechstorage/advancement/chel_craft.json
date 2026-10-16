@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:chel",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:crafting_table"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.chel_craft.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.chel_craft.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:first_link",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:chel"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.chel.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.chel.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

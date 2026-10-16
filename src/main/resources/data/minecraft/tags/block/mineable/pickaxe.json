@@ -1,0 +1,8 @@
+{
+  "values": [
+    "jtechstorage:storage_terminal",
+    "jtechstorage:crafting_terminal",
+    "jtechstorage:team_terminal",
+    "jtechstorage:trade_terminal"
+  ]
+}

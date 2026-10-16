@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:phoenix",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:amethyst_phoenix"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.amethyst_phoenix.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.amethyst_phoenix.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

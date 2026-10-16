@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jtechstorage:item/leather_backpack",
+    "layer1": "jtechstorage:item/leather_backpack_trim"
+  }
+}

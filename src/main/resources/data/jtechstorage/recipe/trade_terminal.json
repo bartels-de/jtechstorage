@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:polished_deepslate",
+    "E": "minecraft:emerald_block",
+    "A": "minecraft:amethyst_block",
+    "B": "minecraft:barrel",
+    "R": "minecraft:redstone_block"
+  },
+  "pattern": [
+    "DED",
+    "ABA",
+    "DRD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:trade_terminal"
+  }
+}

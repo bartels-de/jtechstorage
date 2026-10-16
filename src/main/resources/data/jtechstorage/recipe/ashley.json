@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "K": "minecraft:coal_block",
+    "M": "minecraft:mud",
+    "F": "minecraft:campfire",
+    "Z": "jtechstorage:amethyst_core"
+  },
+  "pattern": [
+    "KZK",
+    "MFM",
+    "KMK"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:ashley"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": "minecraft:crying_obsidian",
+    "A": "minecraft:amethyst_block",
+    "N": "minecraft:netherite_scrap"
+  },
+  "pattern": [
+    "CAC",
+    "ANA",
+    "CAC"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_obsidian"
+  }
+}

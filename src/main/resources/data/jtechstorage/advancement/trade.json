@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:trade_terminal"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.trade.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.trade.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

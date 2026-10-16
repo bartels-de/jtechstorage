@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:first_link",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:collector_moth"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.collector_moth.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.collector_moth.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_transmute",
+  "category": "equipment",
+  "input": "jtechstorage:wireless_terminal",
+  "material": "jtechstorage:wireless_core",
+  "result": {
+    "id": "jtechstorage:wireless_terminal",
+    "components": {
+      "jtechstorage:wireless_core": {},
+      "minecraft:enchantment_glint_override": true
+    }
+  }
+}

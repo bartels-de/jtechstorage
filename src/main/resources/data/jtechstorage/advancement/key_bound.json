@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:storage_key"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.key_bound.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.key_bound.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

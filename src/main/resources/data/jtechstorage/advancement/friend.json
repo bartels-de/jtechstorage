@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:player_head"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.friend.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.friend.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

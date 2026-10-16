@@ -1,0 +1,32 @@
+{
+  "parent": "jtechstorage:max_upgrade",
+  "criteria": {
+    "ender": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:ender_range_upgrade"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:ender_range_upgrade"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.ender_upgrade.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.ender_upgrade.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "ender"
+    ]
+  ]
+}

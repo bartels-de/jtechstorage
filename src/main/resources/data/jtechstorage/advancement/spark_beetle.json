@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:first_link",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:spark_beetle"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.spark_beetle.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.spark_beetle.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

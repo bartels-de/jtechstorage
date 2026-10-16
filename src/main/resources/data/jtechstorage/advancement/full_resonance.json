@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:spark_beetle",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:lightning_rod"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.full_resonance.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.full_resonance.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

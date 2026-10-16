@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": "minecraft:ender_eye",
+    "S": "minecraft:shulker_shell",
+    "U": "jtechstorage:netherite_range_upgrade",
+    "N": "minecraft:nether_star"
+  },
+  "pattern": [
+    "ESE",
+    "SUS",
+    "ENE"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:ender_range_upgrade"
+  }
+}

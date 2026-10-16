@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:phoenix",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:phoenix_nest"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.phoenix_mail.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.phoenix_mail.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

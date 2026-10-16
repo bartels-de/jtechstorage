@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:key_bound",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:chest"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.first_link.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.first_link.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

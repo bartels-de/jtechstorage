@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "M": "minecraft:gold_block",
+    "U": "jtechstorage:iron_range_upgrade"
+  },
+  "pattern": [
+    "AMA",
+    "MUM",
+    "AMA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:gold_range_upgrade"
+  }
+}

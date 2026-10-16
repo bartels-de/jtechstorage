@@ -1,0 +1,25 @@
+# Gradle / build output
+.gradle/
+build/
+out/
+bin/
+run/
+*.log
+
+# IDEs
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Local working files (not part of the mod)
+Claude outputs/

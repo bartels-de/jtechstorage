@@ -1,0 +1,26 @@
+{
+  "parent": "jtechstorage:find_crystal_lair",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:crystal_cocoon"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.summon_amethyst_spider.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.summon_amethyst_spider.description"
+    },
+    "frame": "task",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

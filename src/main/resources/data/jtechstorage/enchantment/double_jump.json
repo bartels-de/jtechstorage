@@ -1,0 +1,20 @@
+{
+  "anvil_cost": 6,
+  "description": {
+    "translate": "enchantment.jtechstorage.double_jump"
+  },
+  "max_cost": {
+    "base": 80,
+    "per_level_above_first": 20
+  },
+  "max_level": 2,
+  "min_cost": {
+    "base": 40,
+    "per_level_above_first": 20
+  },
+  "slots": [
+    "feet"
+  ],
+  "supported_items": "#minecraft:enchantable/foot_armor",
+  "weight": 1
+}

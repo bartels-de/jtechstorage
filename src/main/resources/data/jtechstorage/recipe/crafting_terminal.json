@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "jtechstorage:storage_terminal",
+    "minecraft:crafter"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crafting_terminal"
+  }
+}

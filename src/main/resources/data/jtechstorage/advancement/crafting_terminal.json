@@ -1,0 +1,31 @@
+{
+  "parent": "jtechstorage:root",
+  "criteria": {
+    "terminal": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:crafting_terminal"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:crafting_terminal"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.crafting_terminal.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.crafting_terminal.description"
+    }
+  },
+  "requirements": [
+    [
+      "terminal"
+    ]
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "base": "jtechstorage:diamond_backpack",
+  "addition": "#minecraft:netherite_tool_materials",
+  "template": "minecraft:netherite_upgrade_smithing_template",
+  "result": {
+    "id": "jtechstorage:netherite_backpack"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:first_link",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:storage_griffin"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.griffin.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.griffin.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

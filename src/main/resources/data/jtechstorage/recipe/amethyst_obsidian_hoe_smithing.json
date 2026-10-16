@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smithing_transform",
+  "template": "jtechstorage:amethyst_obsidian_upgrade_smithing_template",
+  "base": "minecraft:netherite_hoe",
+  "addition": "jtechstorage:crystal_obsidian",
+  "result": {
+    "id": "jtechstorage:amethyst_obsidian_hoe"
+  }
+}

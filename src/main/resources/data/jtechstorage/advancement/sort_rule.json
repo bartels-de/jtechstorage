@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:first_link",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:item_frame"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.sort_rule.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.sort_rule.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

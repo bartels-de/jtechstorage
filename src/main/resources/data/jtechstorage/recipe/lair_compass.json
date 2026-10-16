@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "E": "minecraft:ender_eye",
+    "P": "minecraft:popped_chorus_fruit",
+    "C": "minecraft:compass"
+  },
+  "pattern": [
+    "AEA",
+    "PCP",
+    "AEA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:lair_compass"
+  }
+}

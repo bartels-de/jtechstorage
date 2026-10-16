@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:first_link",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:amethyst_sprite"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.sprite.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.sprite.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

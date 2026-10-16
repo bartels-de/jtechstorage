@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:ender_upgrade",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:ender_eye"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.beyond_dimensions.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.beyond_dimensions.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

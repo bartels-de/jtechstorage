@@ -1,0 +1,12 @@
+{
+  "model": {
+    "type": "minecraft:model",
+    "model": "jtechstorage:item/iron_backpack",
+    "tints": [
+      {
+        "type": "minecraft:dye",
+        "default": -9736326
+      }
+    ]
+  }
+}

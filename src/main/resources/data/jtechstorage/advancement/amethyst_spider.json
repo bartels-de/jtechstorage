@@ -1,0 +1,35 @@
+{
+  "parent": "jtechstorage:summon_amethyst_spider",
+  "criteria": {
+    "kill": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "jtechstorage:amethyst_spider"
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:amethyst_obsidian_upgrade_smithing_template"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.amethyst_spider.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.amethyst_spider.description"
+    },
+    "frame": "challenge",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "kill"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 19071926,
+    "separation": 14,
+    "spacing": 36
+  },
+  "structures": [
+    {
+      "structure": "jtechstorage:crystal_lair",
+      "weight": 1
+    }
+  ]
+}

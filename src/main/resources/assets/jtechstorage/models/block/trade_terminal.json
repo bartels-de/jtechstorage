@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "jtechstorage:block/trade_terminal_front",
+    "side": "jtechstorage:block/storage_terminal_side",
+    "top": "jtechstorage:block/storage_terminal_top"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "M": "minecraft:phantom_membrane",
+    "S": "minecraft:spyglass",
+    "G": "minecraft:glow_ink_sac",
+    "B": "jtechstorage:amethyst_core",
+    "L": "minecraft:lantern"
+  },
+  "pattern": [
+    "MSM",
+    "GBG",
+    "MLM"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:collector_moth"
+  }
+}

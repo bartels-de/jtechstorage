@@ -1,0 +1,42 @@
+{
+  "parent": "jtechstorage:amethyst_obsidian",
+  "criteria": {
+    "armor": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:amethyst_obsidian_helmet"
+          },
+          {
+            "items": "jtechstorage:amethyst_obsidian_chestplate"
+          },
+          {
+            "items": "jtechstorage:amethyst_obsidian_leggings"
+          },
+          {
+            "items": "jtechstorage:amethyst_obsidian_boots"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:amethyst_obsidian_chestplate"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.amethyst_obsidian_armor.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.amethyst_obsidian_armor.description"
+    },
+    "frame": "challenge",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "armor"
+    ]
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "parent": "jtechstorage:root",
+  "criteria": {
+    "range": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:netherite_range_upgrade"
+          }
+        ]
+      }
+    },
+    "capacity": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:netherite_capacity_upgrade"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:netherite_range_upgrade"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.max_upgrade.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.max_upgrade.description"
+    }
+  },
+  "requirements": [
+    [
+      "range",
+      "capacity"
+    ]
+  ]
+}

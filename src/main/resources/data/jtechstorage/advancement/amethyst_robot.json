@@ -1,0 +1,34 @@
+{
+  "parent": "jtechstorage:summon_amethyst_robot",
+  "criteria": {
+    "kill": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "jtechstorage:amethyst_robot"
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:wireless_core"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.amethyst_robot.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.amethyst_robot.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "kill"
+    ]
+  ]
+}

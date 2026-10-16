@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "jtechstorage:item/amethyst_obsidian_shovel"
+  }
+}

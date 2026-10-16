@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:root",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:amethyst_draught"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.summon_amethyst_robot.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.summon_amethyst_robot.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}
