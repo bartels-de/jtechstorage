@@ -71,6 +71,7 @@ public class AmethystPhoenixRenderer extends MobRenderer<AmethystPhoenix, Amethy
 
 	@Override
 	protected void scale(AmethystPhoenixRenderState state, PoseStack poseStack) {
-		poseStack.scale(SCALE, SCALE, SCALE);
+		float scale = state.hologram ? 0.75f : SCALE;
+		poseStack.scale(scale, scale, scale);
 	}
 }

@@ -104,18 +104,17 @@ public class GuideBookScreen extends Screen {
 
 	private void buildPages() {
 		pages.add(new InfoPage("jtechstorage.guide.welcome.title", "jtechstorage.guide.welcome.body", ModGuide.AUTHOR));
+		pages.add(new InfoPage("jtechstorage.guide.contents.title", "jtechstorage.guide.contents.body"));
 		pages.add(new InfoPage("jtechstorage.guide.start.title", "jtechstorage.guide.start.body"));
+		pages.add(new InfoPage("jtechstorage.guide.terminal.title", "jtechstorage.guide.terminal.body"));
 		pages.add(new InfoPage("jtechstorage.guide.upgrades.title", "jtechstorage.guide.upgrades.body"));
+		pages.add(new InfoPage("jtechstorage.guide.sorting.title", "jtechstorage.guide.sorting.body"));
+		pages.add(new InfoPage("jtechstorage.guide.interface.title", "jtechstorage.guide.interface.body"));
+		pages.add(new InfoPage("jtechstorage.guide.friends.title", "jtechstorage.guide.friends.body"));
+		pages.add(new InfoPage("jtechstorage.guide.trade.title", "jtechstorage.guide.trade.body"));
 		pages.add(new InfoPage("jtechstorage.guide.boss.title", "jtechstorage.guide.boss.body"));
 		pages.add(new InfoPage("jtechstorage.guide.spider.title", "jtechstorage.guide.spider.body"));
 		pages.add(new InfoPage("jtechstorage.guide.amethyst_obsidian.title", "jtechstorage.guide.amethyst_obsidian.body"));
-		pages.add(new InfoPage("jtechstorage.guide.sorting.title", "jtechstorage.guide.sorting.body"));
-		pages.add(new InfoPage("jtechstorage.guide.friends.title", "jtechstorage.guide.friends.body"));
-		pages.add(new InfoPage("jtechstorage.guide.trade.title", "jtechstorage.guide.trade.body"));
-		pages.add(new InfoPage("jtechstorage.guide.phoenix.title", "jtechstorage.guide.phoenix.body"));
-		pages.add(new InfoPage("jtechstorage.guide.amethyst_phoenix.title", "jtechstorage.guide.amethyst_phoenix.body"));
-		pages.add(new InfoPage("jtechstorage.guide.fox.title", "jtechstorage.guide.fox.body"));
-		pages.add(new InfoPage("jtechstorage.guide.crystal_enchants.title", "jtechstorage.guide.crystal_enchants.body"));
 		pages.add(new InfoPage("jtechstorage.guide.sprite.title", "jtechstorage.guide.sprite.body"));
 		pages.add(new InfoPage("jtechstorage.guide.moth.title", "jtechstorage.guide.moth.body"));
 		pages.add(new InfoPage("jtechstorage.guide.griffin.title", "jtechstorage.guide.griffin.body"));
@@ -124,8 +123,12 @@ public class GuideBookScreen extends Screen {
 		pages.add(new InfoPage("jtechstorage.guide.peter.title", "jtechstorage.guide.peter.body"));
 		pages.add(new InfoPage("jtechstorage.guide.ashley.title", "jtechstorage.guide.ashley.body"));
 		pages.add(new InfoPage("jtechstorage.guide.rest.title", "jtechstorage.guide.rest.body"));
-		pages.add(new InfoPage("jtechstorage.guide.backpack.title", "jtechstorage.guide.backpack.body"));
 		pages.add(new InfoPage("jtechstorage.guide.cosmetics.title", "jtechstorage.guide.cosmetics.body"));
+		pages.add(new InfoPage("jtechstorage.guide.fox.title", "jtechstorage.guide.fox.body"));
+		pages.add(new InfoPage("jtechstorage.guide.crystal_enchants.title", "jtechstorage.guide.crystal_enchants.body"));
+		pages.add(new InfoPage("jtechstorage.guide.phoenix.title", "jtechstorage.guide.phoenix.body"));
+		pages.add(new InfoPage("jtechstorage.guide.amethyst_phoenix.title", "jtechstorage.guide.amethyst_phoenix.body"));
+		pages.add(new InfoPage("jtechstorage.guide.backpack.title", "jtechstorage.guide.backpack.body"));
 		pages.add(new InfoPage("jtechstorage.guide.recipes.title", "jtechstorage.guide.recipes.body"));
 
 		// identisch mit den Rezept-JSONs

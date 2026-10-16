@@ -77,6 +77,7 @@ public class AmethystSpider extends Monster {
 	private static final EntityDataAccessor<Integer> DATA_ANIM_TICKS = SynchedEntityData.defineId(AmethystSpider.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_ENRAGED = SynchedEntityData.defineId(AmethystSpider.class, EntityDataSerializers.BOOLEAN);
 	private static final EntityDataAccessor<Boolean> DATA_LEAPING = SynchedEntityData.defineId(AmethystSpider.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Boolean> DATA_HOLOGRAM = SynchedEntityData.defineId(AmethystSpider.class, EntityDataSerializers.BOOLEAN);
 
 	private final ServerBossEvent bossEvent = new ServerBossEvent(UUID.randomUUID(),
 			Component.translatable("entity.jtechstorage.amethyst_spider").withStyle(ChatFormatting.LIGHT_PURPLE),
@@ -119,6 +120,7 @@ public class AmethystSpider extends Monster {
 		builder.define(DATA_ANIM_TICKS, 0);
 		builder.define(DATA_ENRAGED, false);
 		builder.define(DATA_LEAPING, false);
+		builder.define(DATA_HOLOGRAM, false);
 	}
 
 	public int getAnim() {
@@ -135,6 +137,43 @@ public class AmethystSpider extends Monster {
 
 	public boolean isLeaping() {
 		return entityData.get(DATA_LEAPING);
+	}
+
+	public boolean isHologram() {
+		return entityData.get(DATA_HOLOGRAM);
+	}
+
+	/** Für den Rundgang: kein Verhalten, keine Bossleiste, wird nie gespeichert. */
+	public void makeHologram() {
+		entityData.set(DATA_HOLOGRAM, true);
+		setNoAi(true);
+		setNoGravity(true);
+		setPermanentlyInvulnerable(true);
+		setSilent(true);
+		bossEvent.setVisible(false);
+	}
+
+	@Override
+	public void tick() {
+		if (isHologram() && !level().isClientSide()) {
+			tickCount++;
+			setYRot(getYRot() + 1.5f);
+			yBodyRot = getYRot();
+			yHeadRot = getYRot();
+			return;
+		}
+
+		super.tick();
+	}
+
+	@Override
+	public boolean shouldBeSaved() {
+		return !isHologram() && super.shouldBeSaved();
+	}
+
+	@Override
+	public boolean isPushable() {
+		return !isHologram();
 	}
 
 	public void setHome(BlockPos pos) {
@@ -239,7 +278,10 @@ public class AmethystSpider extends Monster {
 	@Override
 	public void startSeenByPlayer(ServerPlayer player) {
 		super.startSeenByPlayer(player);
-		bossEvent.addPlayer(player);
+
+		if (!isHologram()) {
+			bossEvent.addPlayer(player);
+		}
 	}
 
 	@Override
@@ -548,6 +590,10 @@ public class AmethystSpider extends Monster {
 	@Override
 	protected void dropCustomDeathLoot(ServerLevel level, DamageSource source, boolean recentlyHit) {
 		super.dropCustomDeathLoot(level, source, recentlyHit);
+
+		if (isHologram()) {
+			return;
+		}
 		// genau ein Upgrade pro Sieg
 		spawnAtLocation(level, new ItemStack(EndContent.AMETHYST_OBSIDIAN_UPGRADE));
 		spawnAtLocation(level, new ItemStack(EndContent.CRYSTAL_OBSIDIAN));

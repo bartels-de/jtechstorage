@@ -16,6 +16,7 @@ public class AmethystSpiderRenderer extends MobRenderer<AmethystSpider, Amethyst
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/amethyst_spider.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/amethyst_spider_glow.png"));
 	private static final float SCALE = 1.7f;
+	private static final float HOLOGRAM_SCALE = 0.5f;
 
 	public AmethystSpiderRenderer(EntityRendererProvider.Context context) {
 		super(context, new AmethystSpiderModel(context.bakeLayer(AmethystSpiderModel.LAYER)), 2.4f);
@@ -57,10 +58,20 @@ public class AmethystSpiderRenderer extends MobRenderer<AmethystSpider, Amethyst
 		state.progress = state.anim == 0 ? 0.0f : Math.clamp(1.0f - (spider.getAnimTicks() - partialTick) / total, 0.0f, 1.0f);
 		state.enraged = spider.isEnraged();
 		state.leaping = spider.isLeaping();
+		state.hologram = spider.isHologram();
+	}
+
+	@Override
+	protected RenderType getRenderType(AmethystSpiderRenderState state, boolean bodyVisible, boolean translucent, boolean glowing) {
+		return state.hologram ? HologramRendering.renderType(TEXTURE) : super.getRenderType(state, bodyVisible, translucent, glowing);
 	}
 
 	@Override
 	protected int getModelTint(AmethystSpiderRenderState state) {
+		if (state.hologram) {
+			return HologramRendering.tint(state.ageInTicks);
+		}
+
 		return state.enraged ? 0xFFFFC4E8 : super.getModelTint(state);
 	}
 
@@ -71,6 +82,7 @@ public class AmethystSpiderRenderer extends MobRenderer<AmethystSpider, Amethyst
 
 	@Override
 	protected void scale(AmethystSpiderRenderState state, PoseStack poseStack) {
-		poseStack.scale(SCALE, SCALE, SCALE);
+		float scale = state.hologram ? HOLOGRAM_SCALE : SCALE;
+		poseStack.scale(scale, scale, scale);
 	}
 }
