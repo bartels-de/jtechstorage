@@ -60,7 +60,7 @@ public class JbartelsHologram extends PathfinderMob {
 				new Step(200, null, ModContent.PETER_CHEL_PARKER),
 				new Step(180, null, ModContent.ASHLEY),
 				new Step(220, new ItemStack(ModContent.PHOENIX_NEST_ITEM), ModContent.PHOENIX),
-				new Step(260, new ItemStack(ModContent.ROUTE_FEATHER), ModContent.AMETHYST_PHOENIX),
+				new Step(260, new ItemStack(ModContent.FLIGHT_PLAN), ModContent.AMETHYST_PHOENIX),
 				new Step(280, new ItemStack(EndContent.LAIR_COMPASS), EndContent.AMETHYST_SPIDER),
 				new Step(240, new ItemStack(Items.ENCHANTED_BOOK), ModContent.AMETHYST_FOX),
 				new Step(200, new ItemStack(ModContent.LEATHER_BACKPACK), null),

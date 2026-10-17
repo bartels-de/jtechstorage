@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:book",
+    "minecraft:amethyst_shard",
+    "minecraft:cookie"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:joke_book"
+  }
+}

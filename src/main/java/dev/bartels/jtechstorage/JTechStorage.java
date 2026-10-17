@@ -54,6 +54,36 @@ public class JTechStorage implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.DoubleJumpPayload.TYPE, dev.bartels.jtechstorage.net.DoubleJumpPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.PhoenixDepartPayload.TYPE, dev.bartels.jtechstorage.net.PhoenixDepartPayload.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.ConfigSyncPayload.TYPE, dev.bartels.jtechstorage.net.ConfigSyncPayload.STREAM_CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.DragonActionPayload.TYPE, dev.bartels.jtechstorage.net.DragonActionPayload.STREAM_CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.PhoenixStopEditPayload.TYPE, dev.bartels.jtechstorage.net.PhoenixStopEditPayload.STREAM_CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.FlightPlanEditPayload.TYPE, dev.bartels.jtechstorage.net.FlightPlanEditPayload.STREAM_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.PhoenixStopEditPayload.TYPE, (payload, context) -> {
+			net.minecraft.server.level.ServerPlayer player = context.player();
+
+			if (player.level().isLoaded(payload.pos()) && payload.pos().distToCenterSqr(player.position()) <= 10.0 * 10.0
+					&& player.level().getBlockEntity(payload.pos()) instanceof dev.bartels.jtechstorage.block.PhoenixStopBlockEntity stop) {
+				stop.apply(payload.name(), dev.bartels.jtechstorage.block.PhoenixStopBlockEntity.Rest.byId(payload.rest()));
+				player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("jtechstorage.phoenix_stop.saved", stop.getStopName()));
+			}
+		});
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.FlightPlanEditPayload.TYPE, (payload, context) -> {
+			net.minecraft.world.item.ItemStack stack = context.player().getItemInHand(payload.offHand()
+					? net.minecraft.world.InteractionHand.OFF_HAND : net.minecraft.world.InteractionHand.MAIN_HAND);
+
+			if (stack.is(ModContent.FLIGHT_PLAN)) {
+				dev.bartels.jtechstorage.item.FlightPlanItem.reorder(stack, payload.order());
+			}
+		});
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.DragonActionPayload.TYPE, (payload, context) -> {
+			if (context.player().getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan dragon) {
+				dragon.riderAction(context.player(), payload.action());
+			}
+		});
+		// Auf Cheldrogan: Linksklick ist der Klauenhieb – kein Abbauen und kein Schlagen mit der Hand
+		net.fabricmc.fabric.api.event.player.AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) ->
+				player.getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan ? net.minecraft.world.InteractionResult.FAIL : net.minecraft.world.InteractionResult.PASS);
+		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register((player, world, hand, entity, hit) ->
+				player.getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan ? net.minecraft.world.InteractionResult.FAIL : net.minecraft.world.InteractionResult.PASS);
 		net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
 				sender.sendPacket(new dev.bartels.jtechstorage.net.ConfigSyncPayload(ModConfig.toNetworkJson())));
 
@@ -72,6 +102,16 @@ public class JTechStorage implements ModInitializer {
 					&& menu.containerId == payload.containerId()
 					&& menu.stillValid(context.player())) {
 				menu.handleAction(context.player(), payload.action(), payload.prototype());
+			}
+		});
+
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.TerminalStatsRequestPayload.TYPE, dev.bartels.jtechstorage.net.TerminalStatsRequestPayload.STREAM_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.TerminalStatsPayload.TYPE, dev.bartels.jtechstorage.net.TerminalStatsPayload.STREAM_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.TerminalStatsRequestPayload.TYPE, (payload, context) -> {
+			if (context.player().containerMenu instanceof StorageTerminalMenu menu
+					&& menu.containerId == payload.containerId()
+					&& menu.stillValid(context.player())) {
+				menu.sendStats(context.player());
 			}
 		});
 

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "jtechstorage:block/phoenix_stop_top",
+    "side": "jtechstorage:block/phoenix_stop_side",
+    "bottom": "minecraft:block/polished_deepslate"
+  }
+}

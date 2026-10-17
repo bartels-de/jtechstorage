@@ -233,6 +233,25 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 		}
 	}
 
+	/** Statistik an den Client schicken (nur Server). */
+	public void sendStats(ServerPlayer player) {
+		if (terminal == null) {
+			return;
+		}
+
+		StorageNetwork current = terminal.buildNetwork();
+		dev.bartels.jtechstorage.network.NetworkStats stats = terminal.getStats();
+		long day = Math.floorDiv(player.level().getDefaultClockTime(), 24000L);
+
+		if (stats.needsSnapshot(day)) {
+			stats.snapshot(day, current);
+			terminal.setChanged();
+		}
+
+		ServerPlayNetworking.send(player, new dev.bartels.jtechstorage.net.TerminalStatsPayload(containerId, stats.history(),
+				stats.todayStart(), stats.changes(current)));
+	}
+
 	/** Verarbeitet einen Klick auf das Item-Raster oder einen Knopf (nur Server). */
 	public void handleAction(ServerPlayer player, TerminalActionPayload.Action action, ItemStack prototype) {
 		if (!hasPermission(StorageTerminalBlockEntity.Permission.ITEMS)) {

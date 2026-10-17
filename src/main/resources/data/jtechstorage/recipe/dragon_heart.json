@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:dragon_breath",
+    "C": "jtechstorage:crystal_obsidian",
+    "A": "minecraft:amethyst_block",
+    "N": "minecraft:nether_star",
+    "U": "jtechstorage:amethyst_obsidian_upgrade_smithing_template"
+  },
+  "pattern": [
+    "DCD",
+    "ANA",
+    "DUD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:dragon_heart"
+  }
+}

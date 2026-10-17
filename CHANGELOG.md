@@ -3,6 +3,55 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.23.0]
+
+### Added
+- **Cheldrogan**, Peter Chel Parker's dragon form: a four-block amethyst dragon on two legs.
+  - evolve Peter with the new **Dragon Heart** (dragon's breath, Crystal Obsidian, amethyst blocks, nether star,
+    Amethyst Obsidian Upgrade)
+  - rideable: walks on the ground, flies after taking off; left click = claw strike, R = crystal breath (rebindable)
+  - without a rider he guards the base, breathes crystal fire at out-of-reach monsters and heals at Ashley
+  - turns back into Peter at 0 health
+  - detailed model: horned head with crystal crown, S-shaped neck, gold chest plate with glowing core, bat wings with
+    glowing veins (folded on the ground, spread in flight) and a tail with a crystal morning star
+  - own sounds (growl, roar, claws, crystal breath, wing beats, transformation), advancement "Dragon Rider"
+  - config: `cheldroganHealth`, `cheldroganDamage`, `cheldroganBreathCooldownSeconds`
+- **Phoenix Stops and the Flight Plan** for the Amethyst Phoenix:
+  - up to four named stops, each with its own rest time (30 seconds, 5 minutes or one night)
+  - the Flight Plan collects stops by clicking them; right-click in the air opens a window to reorder or remove them
+  - the phoenix visits the stops in order and starts over
+- **Delivery orders** for Phoenix Stops: chests or barrels right next to a stop are filled or emptied when the Amethyst
+  Phoenix lands.
+  - modes: Off, Unload, Load, Both (unload everything not in the filters, then load the filter items)
+  - up to 9 filters (by item), each with an amount per visit (scroll wheel; Shift ×16, Ctrl ×64; right-click = all)
+  - the stop window shows the last visit with the amounts moved; passengers get a delivery message
+- **Storage statistics** in the Storage Terminal (button right of the hotbar):
+  - fill level, linked chests, item kinds and total items
+  - history of the last 14 in-game days (one snapshot per day) plus the current value
+  - item count per category, the most common items, and the biggest gains and losses since the start of the day
+- **Category tabs** in the Storage Terminal: 15 tabs (plus "all") filter the list by sorting category and show how many
+  items each category holds.
+- **One book per topic:** Recipe Book, Bestiary (3D models and health of every creature), Item Lexicon, Crystal
+  Chronicle (legend, bosses, enchantments, evolutions, roadmap) and Chel's Joke Book. All books have clickable contents
+  and chapter pages.
+- **Chel's Joke Book:** 55 new jokes (75 in total). Every joke you hear is recorded, Chel prefers jokes you don't know
+  yet, and your first joke book is a gift from Chel. Advancement "Laughing Stock" for all 75.
+- **Tooltips** for helpers, terminals and tools: a short description, plus the controls while holding Shift.
+- **Own creative tab** "JTechStorage" with every mod item (armor and tools also stay in the Combat tab).
+- **JEI info pages** for items without a recipe: Amethyst Core, Wireless Core, iron upgrades, Amethyst Obsidian Upgrade,
+  Peter Chel Parker, Cheldrogan, Amethyst Phoenix and the Storage Handbook.
+
+### Changed
+- **Unified helper controls:** sneak + right-click with an empty hand now packs up every helper, and it has to be done
+  twice within 3 seconds (protects against accidental packing).
+  - Storage Griffin: the chest opens with the inventory key while riding (no longer sneak + right-click).
+  - Amethyst Phoenix: the menu opens with the inventory key while riding; packing it up keeps chests, cargo and route
+    instead of requiring empty chests.
+- The Storage Handbook now covers basics and controls (new page "Helper Controls"); recipes moved to the Recipe Book.
+
+### Removed
+- Route Feather. Old feathers turn into an empty Flight Plan, and existing routes are kept as stops "A" and "B".
+
 ## [0.22.0]
 
 ### Added

@@ -484,8 +484,31 @@ public abstract class NetworkHelperMob extends PathfinderMob {
 			return InteractionResult.SUCCESS;
 		}
 
+		// Einheitlich für alle Helfer: Shift + Rechtsklick mit leerer Hand = einpacken – zur Sicherheit zweimal
+		if (hand == InteractionHand.MAIN_HAND && held.isEmpty() && player.isSecondaryUseActive() && !confirmPackUp(player)) {
+			return InteractionResult.SUCCESS;
+		}
+
 		InteractionResult result = interactWith(player, hand);
 		return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
+	}
+
+	private @Nullable UUID packRequester;
+	private long packRequestTime;
+
+	/** Erstes Shift + Rechtsklick: Hinweis; zweites innerhalb von 3 Sekunden: wirklich einpacken. */
+	protected boolean confirmPackUp(Player player) {
+		long now = level().getGameTime();
+
+		if (player.getUUID().equals(packRequester) && now - packRequestTime <= 60) {
+			packRequester = null;
+			return true;
+		}
+
+		packRequester = player.getUUID();
+		packRequestTime = now;
+		player.sendOverlayMessage(Component.translatable("jtechstorage.helper.pack_confirm", getDisplayName()).withStyle(ChatFormatting.YELLOW));
+		return false;
 	}
 
 	@Override

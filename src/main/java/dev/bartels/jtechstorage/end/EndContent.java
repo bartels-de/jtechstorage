@@ -170,10 +170,15 @@ public final class EndContent {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, WEB_SHOT_KEY, WEB_SHOT);
 		ArmorSetBonus.init();
 
+		// Rüstung und Werkzeuge zusätzlich im Vanilla-Kampf-Tab; alles andere im eigenen Tab (ModContent)
 		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.COMBAT).register(output -> GEAR.forEach(output::accept));
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.INGREDIENTS).register(output -> {
-			MISC.forEach(output::accept);
-			output.accept(CRYSTAL_ALTAR_ITEM);
-		});
+	}
+
+	/** Reihenfolge im eigenen Kreativ-Tab. */
+	public static List<Item> creativeItems() {
+		List<Item> items = new ArrayList<>(MISC);
+		items.addAll(GEAR);
+		items.add(CRYSTAL_ALTAR_ITEM);
+		return items;
 	}
 }

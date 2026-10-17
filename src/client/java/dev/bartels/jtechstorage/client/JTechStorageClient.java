@@ -48,6 +48,11 @@ import dev.bartels.jtechstorage.client.entity.PhoenixRenderer;
 import dev.bartels.jtechstorage.net.TeamStatePayload;
 
 public class JTechStorageClient implements ClientModInitializer {
+	public static final net.minecraft.client.KeyMapping.Category KEY_CATEGORY =
+			net.minecraft.client.KeyMapping.Category.register(dev.bartels.jtechstorage.JTechStorage.id("main"));
+	public static final net.minecraft.client.KeyMapping DRAGON_BREATH_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
+			new net.minecraft.client.KeyMapping("key.jtechstorage.dragon_breath", com.mojang.blaze3d.platform.InputConstants.KEY_R, KEY_CATEGORY));
+
 	private static boolean jumpWasDown;
 	private static boolean airJumpArmed;
 	private static int airJumps;
@@ -80,6 +85,28 @@ public class JTechStorageClient implements ClientModInitializer {
 				dev.bartels.jtechstorage.client.entity.AmethystPhoenixModel::createBodyLayer);
 		EntityRenderers.register(ModContent.AMETHYST_PHOENIX, dev.bartels.jtechstorage.client.entity.AmethystPhoenixRenderer::new);
 		MenuScreens.register(ModContent.AMETHYST_PHOENIX_MENU, AmethystPhoenixScreen::new);
+		MenuScreens.register(ModContent.PHOENIX_STOP_MENU, PhoenixStopScreen::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CheldroganModel.LAYER,
+				dev.bartels.jtechstorage.client.entity.CheldroganModel::createBodyLayer);
+		EntityRenderers.register(ModContent.CHELDROGAN, dev.bartels.jtechstorage.client.entity.CheldroganRenderer::new);
+		// Cheldrogan reiten: Linksklick = Klauenhieb, Taste (Standard R) = Kristall-Odem.
+		// START_CLIENT_TICK läuft vor der Vanilla-Tastenverarbeitung – die Klicks werden hier verbraucht.
+		net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.START_CLIENT_TICK.register(client -> {
+			if (client.player == null || !(client.player.getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan dragon)
+					|| dragon.getControllingPassenger() != client.player) {
+				return;
+			}
+
+			while (client.options.keyAttack.consumeClick()) {
+				ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.DragonActionPayload(dev.bartels.jtechstorage.entity.Cheldrogan.ACTION_CLAW));
+			}
+
+			while (DRAGON_BREATH_KEY.consumeClick()) {
+				ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.DragonActionPayload(dev.bartels.jtechstorage.entity.Cheldrogan.ACTION_BREATH));
+			}
+		});
+		// Tooltips: kurze Beschreibung, mit gedrückter Shift-Taste die Bedienung (Schlüssel tooltip.jtechstorage.<id>.N / .controls.N)
+		net.fabricmc.fabric.api.client.item.v1.ItemTooltipCallback.EVENT.register((stack, context, flag, lines) -> addModTooltip(stack, lines));
 		// Doppelsprung-Stiefel: in der Luft Sprungtaste erneut drücken (Bewegung des eigenen Spielers rechnet der Client)
 		net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.END_CLIENT_TICK.register(client -> {
 			net.minecraft.client.player.LocalPlayer player = client.player;
@@ -171,7 +198,14 @@ public class JTechStorageClient implements ClientModInitializer {
 				helper.register(new BackpackLayer(avatar, new BackpackModel(context.bakeLayer(BackpackModel.LAYER))));
 			}
 		});
-		GuideBookItem.openScreen = () -> Minecraft.getInstance().setScreenAndShow(new GuideBookScreen());
+		GuideBookItem.openScreen = stack -> Minecraft.getInstance().setScreenAndShow(new GuideBookScreen(stack));
+		dev.bartels.jtechstorage.item.FlightPlanItem.openScreen = hand -> {
+			Minecraft client = Minecraft.getInstance();
+
+			if (client.player != null) {
+				client.setScreenAndShow(new FlightPlanScreen(hand, client.player.getItemInHand(hand)));
+			}
+		};
 
 		ClientPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.ConfigSyncPayload.TYPE,
 				(payload, context) -> dev.bartels.jtechstorage.ModConfig.applyRemote(payload.json()));
@@ -195,11 +229,59 @@ public class JTechStorageClient implements ClientModInitializer {
 			}
 		});
 
+		ClientPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.TerminalStatsPayload.TYPE, (payload, context) -> {
+			if (Minecraft.getInstance().gui.screen() instanceof TerminalStatsScreen stats && stats.containerId() == payload.containerId()) {
+				stats.setStats(payload);
+			}
+		});
 		ClientPlayNetworking.registerGlobalReceiver(TerminalContentsPayload.TYPE, (payload, context) -> {
 			if (context.player().containerMenu instanceof StorageTerminalMenu menu
 					&& menu.containerId == payload.containerId()) {
 				menu.setClientContents(payload.entries(), payload.info(), payload.access());
 			}
 		});
+	}
+
+	private static void addModTooltip(net.minecraft.world.item.ItemStack stack, java.util.List<net.minecraft.network.chat.Component> lines) {
+		net.minecraft.resources.Identifier id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
+
+		if (!dev.bartels.jtechstorage.JTechStorage.MOD_ID.equals(id.getNamespace())) {
+			return;
+		}
+
+		String path = id.getPath().endsWith("_backpack") ? "backpack" : id.getPath();
+		String base = "tooltip.jtechstorage." + path;
+
+		if (!net.minecraft.locale.Language.getInstance().has(base + ".0")) {
+			return;
+		}
+
+		java.util.List<net.minecraft.network.chat.Component> add = new java.util.ArrayList<>();
+
+		for (int i = 0; net.minecraft.locale.Language.getInstance().has(base + "." + i); i++) {
+			add.add(net.minecraft.network.chat.Component.translatable(base + "." + i).withStyle(net.minecraft.ChatFormatting.GRAY));
+		}
+
+		boolean helper = stack.getItem() instanceof dev.bartels.jtechstorage.item.HelperSpawnItem;
+		boolean controls = net.minecraft.locale.Language.getInstance().has(base + ".controls.0");
+
+		if (controls || helper) {
+			if (net.minecraft.client.Minecraft.getInstance().hasShiftDown()) {
+				for (int i = 0; net.minecraft.locale.Language.getInstance().has(base + ".controls." + i); i++) {
+					add.add(net.minecraft.network.chat.Component.literal("• ").append(net.minecraft.network.chat.Component.translatable(base + ".controls." + i))
+							.withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+				}
+
+				if (helper) {
+					add.add(net.minecraft.network.chat.Component.literal("• ").append(net.minecraft.network.chat.Component.translatable("tooltip.jtechstorage.pack"))
+							.withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+				}
+			} else {
+				add.add(net.minecraft.network.chat.Component.translatable("tooltip.jtechstorage.hold_shift")
+						.withStyle(net.minecraft.ChatFormatting.DARK_PURPLE, net.minecraft.ChatFormatting.ITALIC));
+			}
+		}
+
+		lines.addAll(Math.min(1, lines.size()), add);
 	}
 }

@@ -11,6 +11,7 @@ import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.equipment.Equippable;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -99,13 +100,26 @@ public final class ModContent {
 			BuiltInRegistries.DATA_COMPONENT_TYPE, JTechStorage.id("wireless_core"),
 			DataComponentType.<Unit>builder().persistent(Unit.CODEC).networkSynchronized(Unit.STREAM_CODEC).build());
 
-	/** Route-Feder: Haltestellen A und B des Amethyst-Phönix. */
+	/** Alt (Route-Feder bis v0.24): Haltestellen A und B – nur noch zum Übernehmen alter Phönix-Items. */
 	public static final DataComponentType<GlobalPos> ROUTE_A = Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE, JTechStorage.id("route_a"),
 			DataComponentType.<GlobalPos>builder().persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC).build());
 	public static final DataComponentType<GlobalPos> ROUTE_B = Registry.register(
 			BuiltInRegistries.DATA_COMPONENT_TYPE, JTechStorage.id("route_b"),
 			DataComponentType.<GlobalPos>builder().persistent(GlobalPos.CODEC).networkSynchronized(GlobalPos.STREAM_CODEC).build());
+
+	/** Flugplan: Haltestellen des Amethyst-Phönix in Flugreihenfolge. */
+	public static final DataComponentType<List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop>> FLIGHT_PLAN_STOPS = Registry.register(
+			BuiltInRegistries.DATA_COMPONENT_TYPE, JTechStorage.id("flight_plan"),
+			DataComponentType.<List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop>>builder()
+					.persistent(dev.bartels.jtechstorage.item.FlightPlanItem.Stop.CODEC.listOf())
+					.networkSynchronized(dev.bartels.jtechstorage.item.FlightPlanItem.Stop.STREAM_CODEC.apply(ByteBufCodecs.list())).build());
+
+	/** Chels Witzbuch: Nummern der schon gehörten Witze. */
+	public static final DataComponentType<List<Integer>> JOKES_HEARD = Registry.register(
+			BuiltInRegistries.DATA_COMPONENT_TYPE, JTechStorage.id("jokes_heard"),
+			DataComponentType.<List<Integer>>builder().persistent(com.mojang.serialization.Codec.INT.listOf())
+					.networkSynchronized(ByteBufCodecs.VAR_INT.apply(ByteBufCodecs.list())).build());
 
 	// --- Blöcke ---------------------------------------------------------
 
@@ -139,6 +153,14 @@ public final class ModContent {
 	public static final BlockEntityType<PhoenixNestBlockEntity> PHOENIX_NEST_BLOCK_ENTITY =
 			FabricBlockEntityTypeBuilder.create(PhoenixNestBlockEntity::new, PHOENIX_NEST).build();
 
+	/** Phönix-Haltestelle: Landeplatz mit Name und Rastdauer. */
+	public static final ResourceKey<Block> PHOENIX_STOP_KEY = blockKey("phoenix_stop");
+	public static final Block PHOENIX_STOP = new dev.bartels.jtechstorage.block.PhoenixStopBlock(BlockBehaviour.Properties
+			.ofFullCopy(Blocks.POLISHED_DEEPSLATE).lightLevel(state -> 9).setId(PHOENIX_STOP_KEY));
+	public static final Item PHOENIX_STOP_ITEM = blockItem(PHOENIX_STOP, PHOENIX_STOP_KEY);
+	public static final BlockEntityType<dev.bartels.jtechstorage.block.PhoenixStopBlockEntity> PHOENIX_STOP_BLOCK_ENTITY =
+			FabricBlockEntityTypeBuilder.create(dev.bartels.jtechstorage.block.PhoenixStopBlockEntity::new, PHOENIX_STOP).build();
+
 	/** Abgestellter Rucksack (kein eigenes Item – entsteht per Shift + Rechtsklick mit einem Rucksack). */
 	public static final ResourceKey<Block> PLACED_BACKPACK_KEY = blockKey("placed_backpack");
 	public static final Block PLACED_BACKPACK = new PlacedBackpackBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.HAY_BLOCK)
@@ -148,7 +170,12 @@ public final class ModContent {
 
 	// --- Werkzeuge ------------------------------------------------------
 
-	public static final Item GUIDE_BOOK = item("guide_book", GuideBookItem::new, new Item.Properties().stacksTo(1));
+	public static final Item GUIDE_BOOK = book("guide_book", GuideBookItem.Kind.HANDBOOK, Rarity.COMMON);
+	public static final Item RECIPE_BOOK = book("recipe_book", GuideBookItem.Kind.RECIPES, Rarity.COMMON);
+	public static final Item BESTIARY = book("bestiary", GuideBookItem.Kind.BESTIARY, Rarity.UNCOMMON);
+	public static final Item ITEM_LEXICON = book("item_lexicon", GuideBookItem.Kind.LEXICON, Rarity.COMMON);
+	public static final Item CRYSTAL_CHRONICLE = book("crystal_chronicle", GuideBookItem.Kind.CHRONICLE, Rarity.RARE);
+	public static final Item JOKE_BOOK = book("joke_book", GuideBookItem.Kind.JOKES, Rarity.UNCOMMON);
 	public static final Item STORAGE_KEY = item("storage_key", StorageKeyItem::new, new Item.Properties().stacksTo(1));
 	public static final Item WIRELESS_TERMINAL = item("wireless_terminal", WirelessTerminalItem::new,
 			new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
@@ -238,6 +265,24 @@ public final class ModContent {
 	public static final Item PETER_CHEL_PARKER_ITEM = item("peter_chel_parker", p -> new HelperSpawnItem(() -> PETER_CHEL_PARKER, p),
 			new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
 
+	// --- Cheldrogan (Peters Drachenform) --------------------------------
+
+	public static final ResourceKey<EntityType<?>> CHELDROGAN_KEY = ResourceKey.create(Registries.ENTITY_TYPE, JTechStorage.id("cheldrogan"));
+	public static final EntityType<dev.bartels.jtechstorage.entity.Cheldrogan> CHELDROGAN = EntityType.Builder
+			.of(dev.bartels.jtechstorage.entity.Cheldrogan::new, MobCategory.MISC)
+			.sized(2.0f, 4.0f)
+			.fireImmune()
+			.clientTrackingRange(12)
+			.build(CHELDROGAN_KEY);
+	public static final Item CHELDROGAN_ITEM = item("cheldrogan", p -> new HelperSpawnItem(() -> CHELDROGAN, p),
+			new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
+	/** Drachenherz: verwandelt Peter Chel Parker in Cheldrogan. */
+	public static final Item DRAGON_HEART = item("dragon_heart", Item::new,
+			new Item.Properties().stacksTo(16).rarity(Rarity.EPIC).fireResistant()
+					.component(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true)
+					.component(DataComponents.LORE, new ItemLore(List.of(Component.translatable("item.jtechstorage.dragon_heart.lore")
+							.withStyle(ChatFormatting.LIGHT_PURPLE).withStyle(style -> style.withItalic(false))))));
+
 	public static final ResourceKey<EntityType<?>> CRYSTAL_PALADIN_KEY = ResourceKey.create(Registries.ENTITY_TYPE,
 			JTechStorage.id("crystal_paladin"));
 	public static final EntityType<CrystalPaladin> CRYSTAL_PALADIN = EntityType.Builder.of(CrystalPaladin::new, MobCategory.MISC)
@@ -276,8 +321,12 @@ public final class ModContent {
 	/** Nicht craftbar – entsteht durch Einpacken eines Amethyst-Phönix. */
 	public static final Item AMETHYST_PHOENIX_ITEM = item("amethyst_phoenix", p -> new HelperSpawnItem(() -> AMETHYST_PHOENIX, p),
 			new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
-	public static final Item ROUTE_FEATHER = item("route_feather", dev.bartels.jtechstorage.item.RouteFeatherItem::new,
+	public static final Item FLIGHT_PLAN = item("flight_plan", dev.bartels.jtechstorage.item.FlightPlanItem::new,
 			new Item.Properties().stacksTo(1).rarity(Rarity.RARE));
+	/** Entfernt in v0.25 – alte Federn werden im Inventar zum Flugplan. */
+	public static final Item ROUTE_FEATHER = Registry.register(BuiltInRegistries.ITEM, JTechStorage.id("route_feather"),
+			new dev.bartels.jtechstorage.item.RouteFeatherItem(new Item.Properties().stacksTo(1)
+					.setId(ResourceKey.create(Registries.ITEM, JTechStorage.id("route_feather")))));
 
 	public static final ResourceKey<EntityType<?>> AMETHYST_ROBOT_KEY = ResourceKey.create(Registries.ENTITY_TYPE, JTechStorage.id("amethyst_robot"));
 	public static final EntityType<AmethystRobot> AMETHYST_ROBOT = EntityType.Builder.of(AmethystRobot::new, MobCategory.MONSTER)
@@ -341,6 +390,8 @@ public final class ModContent {
 			new ExtendedMenuType<>(NestMenu::new, NestMenu.OpenData.STREAM_CODEC);
 	public static final ExtendedMenuType<dev.bartels.jtechstorage.menu.AmethystPhoenixMenu, dev.bartels.jtechstorage.menu.AmethystPhoenixMenu.OpenData> AMETHYST_PHOENIX_MENU =
 			new ExtendedMenuType<>(dev.bartels.jtechstorage.menu.AmethystPhoenixMenu::new, dev.bartels.jtechstorage.menu.AmethystPhoenixMenu.OpenData.STREAM_CODEC);
+	public static final ExtendedMenuType<dev.bartels.jtechstorage.menu.PhoenixStopMenu, dev.bartels.jtechstorage.menu.PhoenixStopMenu.OpenData> PHOENIX_STOP_MENU =
+			new ExtendedMenuType<>(dev.bartels.jtechstorage.menu.PhoenixStopMenu::new, dev.bartels.jtechstorage.menu.PhoenixStopMenu.OpenData.STREAM_CODEC);
 	public static final ExtendedMenuType<TradeMenu, TradeMenu.OpenData> TRADE_MENU =
 			new ExtendedMenuType<>(TradeMenu::new, TradeMenu.OpenData.STREAM_CODEC);
 
@@ -367,6 +418,10 @@ public final class ModContent {
 		Item item = Registry.register(BuiltInRegistries.ITEM, key, factory.apply(properties.setId(key)));
 		CREATIVE_ORDER.add(item);
 		return item;
+	}
+
+	private static Item book(String name, GuideBookItem.Kind kind, Rarity rarity) {
+		return item(name, p -> new GuideBookItem(kind, p), new Item.Properties().stacksTo(1).rarity(rarity));
 	}
 
 	/** Wert kommt aus der Konfiguration (Tooltip zeigt die Werte des Servers, siehe {@link UpgradeItem}). */
@@ -396,6 +451,10 @@ public final class ModContent {
 		Registry.register(BuiltInRegistries.ITEM, PHOENIX_NEST_KEY.identifier(), PHOENIX_NEST_ITEM);
 		Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, JTechStorage.id("phoenix_nest"), PHOENIX_NEST_BLOCK_ENTITY);
 		Registry.register(BuiltInRegistries.MENU, JTechStorage.id("nest"), NEST_MENU);
+		Registry.register(BuiltInRegistries.BLOCK, PHOENIX_STOP_KEY, PHOENIX_STOP);
+		Registry.register(BuiltInRegistries.ITEM, PHOENIX_STOP_KEY.identifier(), PHOENIX_STOP_ITEM);
+		Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, JTechStorage.id("phoenix_stop"), PHOENIX_STOP_BLOCK_ENTITY);
+		Registry.register(BuiltInRegistries.MENU, JTechStorage.id("phoenix_stop"), PHOENIX_STOP_MENU);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, AMETHYST_FOX_KEY, AMETHYST_FOX);
 		FabricDefaultAttributeRegistry.register(AMETHYST_FOX, dev.bartels.jtechstorage.entity.AmethystFox.createAttributes());
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, AMETHYST_PHOENIX_KEY, AMETHYST_PHOENIX);
@@ -415,6 +474,8 @@ public final class ModContent {
 		FabricDefaultAttributeRegistry.register(CHEL, Chel.createAttributes());
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, PETER_CHEL_PARKER_KEY, PETER_CHEL_PARKER);
 		FabricDefaultAttributeRegistry.register(PETER_CHEL_PARKER, PeterChelParker.createAttributes());
+		Registry.register(BuiltInRegistries.ENTITY_TYPE, CHELDROGAN_KEY, CHELDROGAN);
+		FabricDefaultAttributeRegistry.register(CHELDROGAN, dev.bartels.jtechstorage.entity.Cheldrogan.createAttributes());
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, CRYSTAL_PALADIN_KEY, CRYSTAL_PALADIN);
 		FabricDefaultAttributeRegistry.register(CRYSTAL_PALADIN, CrystalPaladin.createAttributes());
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, CRYSTAL_SHARD_KEY, CRYSTAL_SHARD);
@@ -425,7 +486,15 @@ public final class ModContent {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, ASHLEY_KEY, ASHLEY);
 		FabricDefaultAttributeRegistry.register(ASHLEY, Ashley.createAttributes());
 
-		CreativeModeTabEvents.modifyOutputEvent(CreativeModeTabs.FUNCTIONAL_BLOCKS)
-				.register(output -> CREATIVE_ORDER.forEach(output::accept));
+		// Eigener Kreativ-Tab mit allen Items der Mod (End-Inhalte hängt EndContent an)
+		Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, JTechStorage.id("main"),
+				net.fabricmc.fabric.api.creativetab.v1.FabricCreativeModeTab.builder()
+						.title(Component.translatable("itemGroup.jtechstorage"))
+						.icon(() -> new net.minecraft.world.item.ItemStack(STORAGE_TERMINAL_ITEM))
+						.displayItems((parameters, output) -> {
+							CREATIVE_ORDER.forEach(output::accept);
+							dev.bartels.jtechstorage.end.EndContent.creativeItems().forEach(output::accept);
+						})
+						.build());
 	}
 }

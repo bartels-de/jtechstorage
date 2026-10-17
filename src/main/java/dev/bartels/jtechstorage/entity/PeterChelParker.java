@@ -313,22 +313,74 @@ public class PeterChelParker extends NetworkHelperMob {
 			return InteractionResult.SUCCESS;
 		}
 
+		if (held.is(ModContent.DRAGON_HEART) && !(this instanceof Cheldrogan) && level() instanceof ServerLevel level) {
+			becomeDragon(level, player);
+			held.consume(1, player);
+			return InteractionResult.SUCCESS;
+		}
+
 		if (held.is(Items.DIAMOND) && level() instanceof ServerLevel) {
-			int joke;
-
-			do {
-				joke = random.nextInt(Chel.JOKES);
-			} while (joke == lastJoke);
-
+			int joke = Chel.pickJoke(player, lastJoke, random);
 			lastJoke = joke;
 			player.sendSystemMessage(Component.translatable("jtechstorage.chel.joke_format", getDisplayName(),
 					Component.translatable("jtechstorage.chel.joke." + joke)));
+
+			if (player instanceof ServerPlayer serverPlayer) {
+				Chel.recordJoke(serverPlayer, joke);
+			}
 			playSound(SoundEvents.WITCH_CELEBRATE, 1.0f, 0.9f);
 			held.consume(1, player);
 			return InteractionResult.SUCCESS;
 		}
 
 		return InteractionResult.PASS;
+	}
+
+	@Override
+	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
+		if (level().isClientSide() && player.getItemInHand(hand).is(ModContent.DRAGON_HEART) && !(this instanceof Cheldrogan)) {
+			return InteractionResult.SUCCESS;
+		}
+
+		return super.mobInteract(player, hand);
+	}
+
+	/** Drachenherz: Peter wird zu Cheldrogan. */
+	private void becomeDragon(ServerLevel level, Player player) {
+		Cheldrogan dragon = ModContent.CHELDROGAN.create(level, net.minecraft.world.entity.EntitySpawnReason.CONVERSION);
+
+		if (dragon == null) {
+			return;
+		}
+
+		net.minecraft.world.entity.LightningBolt bolt = net.minecraft.world.entity.EntityTypes.LIGHTNING_BOLT.create(level,
+				net.minecraft.world.entity.EntitySpawnReason.TRIGGERED);
+
+		if (bolt != null) {
+			bolt.snapTo(getX(), getY(), getZ());
+			bolt.setVisualOnly(true);
+			level.addFreshEntity(bolt);
+		}
+
+		dragon.snapTo(getX(), getY(), getZ(), getYRot(), 0.0f);
+		dragon.inheritFrom(this);
+		level.addFreshEntity(dragon);
+		level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, getX(), getY() + 2.0, getZ(), 120, 1.0, 1.6, 1.0, 0.7);
+		level.sendParticles(ParticleTypes.REVERSE_PORTAL, getX(), getY() + 2.0, getZ(), 120, 1.4, 2.0, 1.4, 0.2);
+		level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 2.0, getZ(), 60, 0.8, 2.0, 0.8, 0.2);
+		dragon.playSound(ModSounds.CHELDROGAN_TRANSFORM, 3.0f, 1.0f);
+
+		for (ServerPlayer listener : level.players()) {
+			if (listener == player || listener.distanceToSqr(this) < 48 * 48) {
+				listener.sendSystemMessage(Component.translatable("jtechstorage.cheldrogan.transform").withStyle(ChatFormatting.GOLD, ChatFormatting.BOLD));
+			}
+		}
+
+		if (player instanceof ServerPlayer serverPlayer) {
+			dev.bartels.jtechstorage.ModAdvancements.grant(serverPlayer, "cheldrogan");
+		}
+
+		discard();
 	}
 
 	private void sayToNearby(ServerLevel level, Component text) {

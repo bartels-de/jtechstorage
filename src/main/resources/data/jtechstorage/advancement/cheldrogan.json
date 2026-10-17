@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:peter_chel_parker",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:cheldrogan"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.cheldrogan.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.cheldrogan.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

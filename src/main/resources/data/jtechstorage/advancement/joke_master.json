@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:chel",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:joke_book"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.joke_master.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.joke_master.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

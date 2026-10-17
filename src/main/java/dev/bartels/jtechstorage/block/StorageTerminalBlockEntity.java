@@ -491,9 +491,26 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 		return resonance >= MAX_RESONANCE;
 	}
 
+	/** Lager-Statistik (Schnappschuss je Spieltag). */
+	private final dev.bartels.jtechstorage.network.NetworkStats stats = new dev.bartels.jtechstorage.network.NetworkStats();
+
+	public dev.bartels.jtechstorage.network.NetworkStats getStats() {
+		return stats;
+	}
+
 	/** Wird jeden Tick auf dem Server aufgerufen: Resonanz entlädt sich langsam (1 pro Sekunde). */
 	public static void serverTick(net.minecraft.world.level.Level level, BlockPos pos, BlockState state,
 			StorageTerminalBlockEntity terminal) {
+		// Statistik: bei jedem neuen Spieltag einen Schnappschuss (alle 10 Sekunden geprüft)
+		if (level.getGameTime() % 200 == 11) {
+			long day = Math.floorDiv(level.getDefaultClockTime(), 24000L);
+
+			if (terminal.stats.needsSnapshot(day)) {
+				terminal.stats.snapshot(day, terminal.buildNetwork());
+				terminal.setChanged();
+			}
+		}
+
 		if (terminal.resonance > 0 && level.getGameTime() % 20 == 0) {
 			terminal.resonance--;
 			terminal.setChanged();
@@ -648,6 +665,7 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 		output.putInt("ChannelVersion", 2);
 		output.putString("NetworkName", networkName);
 		output.putInt("Resonance", resonance);
+		stats.save(output);
 
 		if (!assignments.isEmpty()) {
 			output.store("SortKeys", BlockPos.CODEC.listOf(), List.copyOf(assignments.keySet()));
@@ -668,6 +686,7 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 		upgrades.setItem(CAPACITY_SLOT, input.read("CapacityUpgrade", ItemStack.CODEC).orElse(ItemStack.EMPTY));
 		links.clear();
 		links.addAll(input.read("Links", BlockPos.CODEC.listOf()).orElse(List.of()));
+		stats.load(input);
 		owner = input.read("Owner", UUIDUtil.CODEC).orElse(null);
 		ownerName = input.getStringOr("OwnerName", "");
 

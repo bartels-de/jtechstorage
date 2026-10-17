@@ -55,6 +55,10 @@ public class HelperSpawnItem extends Item {
 			griffin.loadFromItem(stack);
 		}
 
+		if (mob instanceof dev.bartels.jtechstorage.entity.AmethystPhoenix phoenix) {
+			phoenix.loadFromItem(stack);
+		}
+
 		mob.playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.0f, 1.3f);
 		stack.consume(1, player);
 		return InteractionResult.SUCCESS;
