@@ -522,7 +522,7 @@
   "advancements.jtechstorage.phoenix_mail.title": "Air Mail",
   "advancements.jtechstorage.phoenix_mail.description": "Send a parcel with the phoenix",
   "jtechstorage.guide.phoenix.title": "Phoenix Mail",
-  "jtechstorage.guide.phoenix.body": "Place a nest, link it with a bound key, place a phoenix next to it and link it. In the nest: choose a destination, put items on the fields, send – the phoenix takes them from storage and flies off. Arrivals go into the receiver's storage.",
+  "jtechstorage.guide.phoenix.body": "Place a nest, link it with a bound key, place a phoenix next to it and link it. In the nest: choose a destination, put items on the fields, send – the phoenix takes them from storage and flies off. Arrivals go into the receiver's storage. Right-clicking the phoenix opens the nest menu too.",
   "jtechstorage.guide.recipe.phoenix": "Phoenix: mail courier (lives in the nest)",
   "jtechstorage.guide.recipe.phoenix_nest": "Phoenix Nest: your storage's mail address",
   "entity.jtechstorage.amethyst_robot": "Amethyst Robot",
@@ -1114,5 +1114,6 @@
   "jtechstorage.stats.fill": "Fill level: %s %%",
   "jtechstorage.stats.history_soon": "History: one bar per in-game day",
   "jtechstorage.phoenix_stop.filter.help.0": "Click with an item: set · click empty-handed: clear",
-  "jtechstorage.phoenix_stop.filter.help.1": "Scroll: amount (Shift ×16, Ctrl ×64) · Right-click: all"
+  "jtechstorage.phoenix_stop.filter.help.1": "Scroll: amount (Shift ×16, Ctrl ×64) · Right-click: all",
+  "tooltip.jtechstorage.phoenix.controls.3": "Right-click: mail menu of its nest"
 }

@@ -376,6 +376,14 @@ public class Phoenix extends NetworkHelperMob {
 			return InteractionResult.SUCCESS;
 		}
 
+		// Rechtsklick mit leerer Hand: das Post-Menü seines Horsts öffnen
+		if (held.isEmpty() && hand == InteractionHand.MAIN_HAND && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer
+				&& nest != null && level().isLoaded(nest)
+				&& level().getBlockEntity(nest) instanceof dev.bartels.jtechstorage.block.PhoenixNestBlockEntity home
+				&& dev.bartels.jtechstorage.block.PhoenixNestBlock.openFor(serverPlayer, home)) {
+			return InteractionResult.SUCCESS;
+		}
+
 		return super.interactWith(player, hand);
 	}
 

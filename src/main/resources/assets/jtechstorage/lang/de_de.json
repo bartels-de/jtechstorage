@@ -522,7 +522,7 @@
   "advancements.jtechstorage.phoenix_mail.title": "Luftpost",
   "advancements.jtechstorage.phoenix_mail.description": "Schicke ein Paket mit dem Phönix",
   "jtechstorage.guide.phoenix.title": "Phönix-Post",
-  "jtechstorage.guide.phoenix.body": "Horst setzen, mit gekoppeltem Schlüssel verknüpfen, Phönix daneben setzen und verknüpfen. Im Horst: Ziel wählen, Items auf die Felder legen, abschicken – der Phönix holt sie aus dem Lager und fliegt los. Ankommendes landet im Lager des Empfängers.",
+  "jtechstorage.guide.phoenix.body": "Horst setzen, mit gekoppeltem Schlüssel verknüpfen, Phönix daneben setzen und verknüpfen. Im Horst: Ziel wählen, Items auf die Felder legen, abschicken – der Phönix holt sie aus dem Lager und fliegt los. Ankommendes landet im Lager des Empfängers. Rechtsklick auf den Phönix öffnet ebenfalls das Horst-Menü.",
   "jtechstorage.guide.recipe.phoenix": "Phönix: Post-Bote (wohnt im Horst)",
   "jtechstorage.guide.recipe.phoenix_nest": "Phönix-Horst: Post-Adresse deines Lagers",
   "entity.jtechstorage.amethyst_robot": "Amethyst-Roboter",
@@ -1114,5 +1114,6 @@
   "jtechstorage.stats.fill": "Füllstand: %s %%",
   "jtechstorage.stats.history_soon": "Verlauf: ein Balken pro Spieltag",
   "jtechstorage.phoenix_stop.filter.help.0": "Mit Item klicken: setzen · leer klicken: löschen",
-  "jtechstorage.phoenix_stop.filter.help.1": "Mausrad: Menge (Shift ×16, Strg ×64) · Rechtsklick: alle"
+  "jtechstorage.phoenix_stop.filter.help.1": "Mausrad: Menge (Shift ×16, Strg ×64) · Rechtsklick: alle",
+  "tooltip.jtechstorage.phoenix.controls.3": "Rechtsklick: Post-Menü seines Horsts"
 }

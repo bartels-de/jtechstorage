@@ -48,6 +48,9 @@ All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
   - Amethyst Phoenix: the menu opens with the inventory key while riding; packing it up keeps chests, cargo and route
     instead of requiring empty chests.
 - The Storage Handbook now covers basics and controls (new page "Helper Controls"); recipes moved to the Recipe Book.
+- The search field of the Storage Terminal is focused right away, so you can start typing immediately (Esc closes the
+  terminal).
+- Right-clicking a Phoenix with an empty hand opens the mail menu of its nest.
 
 ### Removed
 - Route Feather. Old feathers turn into an empty Flight Plan, and existing routes are kept as stops "A" and "B".

@@ -74,6 +74,8 @@ public class GuideBookScreen extends Screen {
 	/** Erste angezeigte Seite jeder Quellseite (Ziel für Links). */
 	private final Map<Page, Integer> firstDisplay = new IdentityHashMap<>();
 	private final Map<EntityType<?>, @Nullable LivingEntity> models = new HashMap<>();
+	/** Negative IDs für die Buch-Modelle (kollidieren nie mit echten Entities). */
+	private static int nextModelId = -1_000_000;
 	private @Nullable ContentsPage contents;
 	private int page;
 	private int left;
@@ -577,6 +579,8 @@ public class GuideBookScreen extends Screen {
 				Entity entity = type.create(minecraft.level, EntitySpawnReason.LOAD);
 
 				if (entity instanceof LivingEntity created) {
+					// Modelle stehen in keiner Welt – ohne eigene ID stürzt das Rendern ab (z. B. beim Wichtel)
+					created.setId(nextModelId--);
 					living = created;
 				}
 			} catch (RuntimeException ignored) {
@@ -688,8 +692,13 @@ public class GuideBookScreen extends Screen {
 				float height = Math.max(0.3f, model.getBbHeight());
 				float widthBlocks = Math.max(0.3f, model.getBbWidth());
 				int scale = (int) Math.clamp(Math.min((MODEL_HEIGHT - 6) / height, 90 / widthBlocks), 6.0f, 48.0f);
-				InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x + 4, y, x + TEXT_WIDTH - 4, y + MODEL_HEIGHT,
-						scale, 0.0625f, mouseX, mouseY, model);
+				try {
+					InventoryScreen.extractEntityInInventoryFollowsMouse(graphics, x + 4, y, x + TEXT_WIDTH - 4, y + MODEL_HEIGHT,
+							scale, 0.0625f, mouseX, mouseY, model);
+				} catch (RuntimeException exception) {
+					// Modell lässt sich nicht zeichnen – Seite ohne Modell statt Absturz
+					models.put(text.entity(), null);
+				}
 			}
 
 			y += MODEL_HEIGHT + 2;

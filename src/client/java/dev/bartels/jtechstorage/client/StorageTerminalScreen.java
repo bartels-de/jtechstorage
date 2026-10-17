@@ -134,6 +134,8 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			refilter();
 		});
 		addRenderableWidget(searchBox);
+		// Suchfeld gleich aktiv: einfach lostippen (ein Klick ins Raster gibt die Tastatur wieder frei)
+		setInitialFocus(searchBox);
 
 		refilter();
 	}
@@ -814,8 +816,7 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	public boolean keyPressed(KeyEvent event) {
 		if (searchBox.isFocused()) {
 			if (event.isEscape()) {
-				searchBox.setFocused(false);
-				setFocused(null);
+				onClose();
 				return true;
 			}
 
