@@ -66,4 +66,10 @@ public class AmethystFoxRenderer extends MobRenderer<AmethystFox, AmethystFoxRen
 	protected int getModelTint(AmethystFoxRenderState state) {
 		return state.hologram ? HologramRendering.tint(state.ageInTicks) : super.getModelTint(state);
 	}
+
+	/** Modell ist in doppelter Detaildichte gebaut. */
+	@Override
+	protected void scale(AmethystFoxRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);
+	}
 }

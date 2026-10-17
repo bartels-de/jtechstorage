@@ -16,126 +16,234 @@ import net.minecraft.util.Mth;
 import dev.bartels.jtechstorage.JTechStorage;
 
 /**
- * Chel: kleiner Tiefenschiefer-Kobold mit riesigem Kopf, schiefem Chaos-Blick, Spitzohren, Kristall-Strubbelhaaren,
- * einer Mini-Werkbank als Hut, Latzschürze und Amethyst-Hammer.
+ * Chel: chaotischer Tiefenschiefer-Kobold mit riesigem Kopf, schiefem Blick hinter dem Gold-Monokel, Zahnlücken-Grinsen,
+ * Kristall-Strubbelhaaren und Mini-Werkbank als Hut; Latzschürze, Werkzeuggürtel, Handschuhe, Stiefel und Amethyst-Hammer.
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/chel2.py (Teile und Posen), Animation von Hand.
  */
 public class ChelModel extends EntityModel<ChelRenderState> implements HelperHatModel {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("chel"), "main");
 
+	private final ModelPart chel;
+	private final ModelPart body;
 	private final ModelPart head;
+	private final ModelPart lids;
 	private final ModelPart hat;
-	private final ModelPart rightEar;
-	private final ModelPart leftEar;
-	private final ModelPart rightArm;
-	private final ModelPart leftArm;
-	private final ModelPart rightLeg;
-	private final ModelPart leftLeg;
+	private final ModelPart rEar;
+	private final ModelPart lEar;
+	private final ModelPart rArm;
+	private final ModelPart lArm;
+	private final ModelPart rHand;
+	private final ModelPart lHand;
+	private final ModelPart hammer;
+	private final ModelPart rLeg;
+	private final ModelPart lLeg;
+	private final ModelPart rFoot;
+	private final ModelPart lFoot;
+	private final ModelPart hair1;
+	private final ModelPart hair2;
+	private final ModelPart hair3;
 
 	public ChelModel(ModelPart root) {
 		super(root);
-		this.head = root.getChild("head");
-		this.hat = head.getChild("hat");
-		this.rightEar = head.getChild("right_ear");
-		this.leftEar = head.getChild("left_ear");
-		this.rightArm = root.getChild("right_arm");
-		this.leftArm = root.getChild("left_arm");
-		this.rightLeg = root.getChild("right_leg");
-		this.leftLeg = root.getChild("left_leg");
+		this.chel = root.getChild("chel");
+		this.body = root.getChild("chel").getChild("body");
+		this.head = root.getChild("chel").getChild("body").getChild("head");
+		this.lids = root.getChild("chel").getChild("body").getChild("head").getChild("lids");
+		this.hat = root.getChild("chel").getChild("body").getChild("head").getChild("hat");
+		this.rEar = root.getChild("chel").getChild("body").getChild("head").getChild("r_ear");
+		this.lEar = root.getChild("chel").getChild("body").getChild("head").getChild("l_ear");
+		this.rArm = root.getChild("chel").getChild("body").getChild("r_arm");
+		this.lArm = root.getChild("chel").getChild("body").getChild("l_arm");
+		this.rHand = root.getChild("chel").getChild("body").getChild("r_arm").getChild("r_hand");
+		this.lHand = root.getChild("chel").getChild("body").getChild("l_arm").getChild("l_hand");
+		this.hammer = root.getChild("chel").getChild("body").getChild("r_arm").getChild("r_hand").getChild("hammer");
+		this.rLeg = root.getChild("chel").getChild("body").getChild("r_leg");
+		this.lLeg = root.getChild("chel").getChild("body").getChild("l_leg");
+		this.rFoot = root.getChild("chel").getChild("body").getChild("r_leg").getChild("r_foot");
+		this.lFoot = root.getChild("chel").getChild("body").getChild("l_leg").getChild("l_foot");
+		this.hair1 = root.getChild("chel").getChild("body").getChild("head").getChild("hair1");
+		this.hair2 = root.getChild("chel").getChild("body").getChild("head").getChild("hair2");
+		this.hair3 = root.getChild("chel").getChild("body").getChild("head").getChild("hair3");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
-		PartDefinition p1 = root.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-4.0f, -7.0f, -3.5f, 8.0f, 7.0f, 7.0f, new CubeDeformation(0.0f))
-				.texOffs(56, 8).addBox(-1.0f, -3.5f, -4.5f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(0.0f, 15.0f, 0.0f));
-		p1.addOrReplaceChild("hat", CubeListBuilder.create()
-				.texOffs(32, 0).addBox(-3.0f, -4.0f, -3.0f, 6.0f, 4.0f, 6.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(0.5f, -7.0f, 0.0f, 0.0f, 0.2f, 0.18f));
-		p1.addOrReplaceChild("right_ear", CubeListBuilder.create()
-				.texOffs(0, 26).addBox(-1.0f, -1.5f, -1.0f, 1.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(-4.0f, -4.0f, 0.0f, 0.0f, 0.0f, -0.7f));
-		p1.addOrReplaceChild("left_ear", CubeListBuilder.create()
-				.texOffs(0, 26).mirror().addBox(0.0f, -1.5f, -1.0f, 1.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offsetAndRotation(4.0f, -4.0f, 0.0f, 0.0f, 0.0f, 0.7f));
-		p1.addOrReplaceChild("hair", CubeListBuilder.create()
-				.texOffs(56, 0).addBox(-0.5f, -3.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(60, 0).addBox(-0.5f, -2.0f, -0.5f, 1.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(-3.0f, -6.5f, 2.5f, -0.4f, 0.0f, -0.5f));
-		p1.addOrReplaceChild("hair2", CubeListBuilder.create()
-				.texOffs(60, 0).addBox(-0.5f, -2.0f, -0.5f, 1.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(3.2f, -6.5f, 2.8f, -0.3f, 0.0f, 0.6f));
-		root.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 16).addBox(-3.0f, -6.0f, -2.0f, 6.0f, 6.0f, 4.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(0.0f, 21.0f, 0.0f));
-		PartDefinition p8 = root.addOrReplaceChild("right_arm", CubeListBuilder.create()
-				.texOffs(24, 16).addBox(-1.0f, -0.5f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(-4.0f, 15.5f, 0.0f, 0.0f, 0.0f, 0.15f));
-		p8.addOrReplaceChild("hammer", CubeListBuilder.create()
-				.texOffs(40, 16).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(44, 16).addBox(-1.5f, 3.0f, -1.0f, 3.0f, 2.0f, 2.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(0.0f, 4.0f, 0.0f, -1.2f, 0.0f, 0.0f));
-		root.addOrReplaceChild("left_arm", CubeListBuilder.create()
-				.texOffs(24, 16).mirror().addBox(-1.0f, -0.5f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offsetAndRotation(4.0f, 15.5f, 0.0f, 0.0f, 0.0f, -0.15f));
-		root.addOrReplaceChild("right_leg", CubeListBuilder.create()
-				.texOffs(32, 16).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(-1.5f, 21.0f, 0.0f));
-		root.addOrReplaceChild("left_leg", CubeListBuilder.create()
-				.texOffs(32, 16).mirror().addBox(-1.0f, 0.0f, -1.0f, 2.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offset(1.5f, 21.0f, 0.0f));
-		return LayerDefinition.create(mesh, 64, 64);
+		PartDefinition p1 = root.addOrReplaceChild("chel", CubeListBuilder.create(),
+				PartPose.offset(0.0f, 24.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(52, 0).addBox(-4.0f, -9.0f, -3.0f, 8.0f, 9.0f, 6.0f, new CubeDeformation(0.0f))
+				.texOffs(240, 0).addBox(-3.5f, -8.5f, -3.6f, 7.0f, 8.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(110, 24).addBox(-1.5f, -5.0f, -4.2f, 3.0f, 2.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(190, 0).addBox(-4.5f, -2.0f, -3.5f, 9.0f, 2.0f, 7.0f, new CubeDeformation(0.1f))
+				.texOffs(56, 24).addBox(-6.0f, -2.5f, -1.5f, 3.0f, 3.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(56, 24).mirror().addBox(3.0f, -2.5f, -1.5f, 3.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offset(0.0f, -12.0f, 0.0f));
+		PartDefinition p3 = p2.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-7.0f, -12.0f, -6.0f, 14.0f, 12.0f, 12.0f, new CubeDeformation(0.0f))
+				.texOffs(66, 24).addBox(-1.0f, -6.0f, -7.6f, 2.0f, 3.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(44, 24).addBox(0.6f, -9.6f, -6.4f, 5.0f, 5.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, -9.0f, 0.0f));
+		p3.addOrReplaceChild("lids", CubeListBuilder.create()
+				.texOffs(78, 24).addBox(-5.5f, -9.4f, -6.6f, 11.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.ZERO);
+		p3.addOrReplaceChild("r_ear", CubeListBuilder.create()
+				.texOffs(0, 24).addBox(-1.0f, -6.0f, -2.0f, 2.0f, 5.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(118, 24).addBox(-0.5f, -2.0f, -2.6f, 1.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-7.0f, -6.5f, 0.5f, 0.0f, 0.35f, 1.15f));
+		p3.addOrReplaceChild("l_ear", CubeListBuilder.create()
+				.texOffs(0, 24).mirror().addBox(-1.0f, -6.0f, -2.0f, 2.0f, 5.0f, 4.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(7.0f, -6.5f, 0.5f, 0.0f, -0.35f, -1.15f));
+		p3.addOrReplaceChild("hair1", CubeListBuilder.create()
+				.texOffs(12, 24).addBox(-1.0f, -6.0f, -1.0f, 2.0f, 6.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-5.0f, -11.5f, -2.0f, -0.3f, 0.0f, -0.6f));
+		p3.addOrReplaceChild("hair2", CubeListBuilder.create()
+				.texOffs(36, 24).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(5.0f, -11.5f, 1.0f, 0.25f, 0.0f, 0.6f));
+		p3.addOrReplaceChild("hair3", CubeListBuilder.create()
+				.texOffs(12, 24).addBox(-1.0f, -6.0f, -1.0f, 2.0f, 6.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.5f, -11.8f, 3.5f, 0.6f, 0.4f, 0.1f));
+		p3.addOrReplaceChild("hair4", CubeListBuilder.create()
+				.texOffs(74, 24).addBox(-0.5f, -4.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.5f, -11.0f, 3.0f, 0.3f, 0.0f, -0.8f));
+		p3.addOrReplaceChild("hair5", CubeListBuilder.create()
+				.texOffs(36, 24).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.5f, -10.8f, -3.0f, -0.5f, 0.0f, 0.7f));
+		p3.addOrReplaceChild("hat", CubeListBuilder.create()
+				.texOffs(80, 0).addBox(-4.0f, -6.0f, -4.0f, 8.0f, 6.0f, 8.0f, new CubeDeformation(0.0f))
+				.texOffs(158, 0).addBox(-4.0f, -6.6f, -4.0f, 8.0f, 1.0f, 8.0f, new CubeDeformation(0.05f))
+				.texOffs(102, 24).addBox(3.6f, -4.5f, -4.6f, 3.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-0.5f, -11.6f, -0.5f, 0.0f, 0.2f, 0.14f));
+		PartDefinition p13 = p2.addOrReplaceChild("r_arm", CubeListBuilder.create()
+				.texOffs(130, 0).addBox(-1.5f, -1.0f, -1.5f, 3.0f, 7.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-5.5f, -8.0f, 0.0f, 0.0f, 0.0f, 0.12f));
+		PartDefinition p14 = p13.addOrReplaceChild("r_hand", CubeListBuilder.create()
+				.texOffs(20, 24).addBox(-2.0f, 0.0f, -2.0f, 4.0f, 3.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 5.5f, 0.0f));
+		p14.addOrReplaceChild("hammer", CubeListBuilder.create()
+				.texOffs(154, 0).addBox(-0.5f, -1.0f, -0.5f, 1.0f, 9.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(222, 0).addBox(-1.5f, -3.5f, -3.0f, 3.0f, 3.0f, 6.0f, new CubeDeformation(0.0f))
+				.texOffs(122, 24).addBox(-2.0f, -2.5f, -0.5f, 4.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 2.0f, -0.5f, 1.45f, 0.0f, 0.0f));
+		PartDefinition p16 = p2.addOrReplaceChild("l_arm", CubeListBuilder.create()
+				.texOffs(130, 0).mirror().addBox(-1.5f, -1.0f, -1.5f, 3.0f, 7.0f, 3.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(5.5f, -8.0f, 0.0f, 0.0f, 0.0f, -0.12f));
+		p16.addOrReplaceChild("l_hand", CubeListBuilder.create()
+				.texOffs(20, 24).mirror().addBox(-2.0f, 0.0f, -2.0f, 4.0f, 3.0f, 4.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offset(0.0f, 5.5f, 0.0f));
+		PartDefinition p18 = p2.addOrReplaceChild("r_leg", CubeListBuilder.create()
+				.texOffs(142, 0).addBox(-1.5f, 0.0f, -1.5f, 3.0f, 7.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(-2.2f, 0.0f, 0.0f));
+		p18.addOrReplaceChild("r_foot", CubeListBuilder.create()
+				.texOffs(112, 0).addBox(-2.0f, 0.0f, -3.0f, 4.0f, 5.0f, 5.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 24).addBox(-1.0f, 1.5f, -3.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 7.0f, 0.0f));
+		PartDefinition p20 = p2.addOrReplaceChild("l_leg", CubeListBuilder.create()
+				.texOffs(142, 0).mirror().addBox(-1.5f, 0.0f, -1.5f, 3.0f, 7.0f, 3.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offset(2.2f, 0.0f, 0.0f));
+		p20.addOrReplaceChild("l_foot", CubeListBuilder.create()
+				.texOffs(112, 0).mirror().addBox(-2.0f, 0.0f, -3.0f, 4.0f, 5.0f, 5.0f, new CubeDeformation(0.0f)).mirror(false)
+				.texOffs(132, 24).addBox(-1.0f, 1.5f, -3.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 7.0f, 0.0f));
+		return LayerDefinition.create(mesh, 256, 128);
 	}
 
 	@Override
 	public void setupAnim(ChelRenderState state) {
 		super.setupAnim(state);
 		float age = state.ageInTicks;
-		float pos = state.walkAnimationPos;
-		float speed = Math.min(state.walkAnimationSpeed, 1.0f);
-
-		head.yRot = state.yRot * Mth.DEG_TO_RAD;
-		head.xRot = state.xRot * Mth.DEG_TO_RAD;
-		// Chaos: Kopf wackelt, Hut tanzt, Ohren zucken
-		head.zRot = Mth.sin(age * 0.15f) * 0.12f;
+		lids.visible = state.resting;
 		hat.visible = state.headItem.isEmpty();
-		hat.zRot += Mth.sin(age * 0.21f) * 0.1f;
-		hat.y -= Math.max(0.0f, Mth.sin(age * 0.3f)) * 0.6f;
-		rightEar.zRot += Mth.sin(age * 0.5f) * 0.12f;
-		leftEar.zRot -= Mth.sin(age * 0.45f + 1.0f) * 0.12f;
-
-		rightLeg.xRot = Mth.cos(pos * 0.6662f) * 1.3f * speed;
-		leftLeg.xRot = Mth.cos(pos * 0.6662f + Mth.PI) * 1.3f * speed;
-		leftArm.xRot = Mth.cos(pos * 0.6662f) * 1.0f * speed;
-		leftArm.zRot += Mth.sin(age * 0.12f) * 0.08f;
-
-		if (state.crafting) {
-			// hämmern!
-			rightArm.xRot = -0.9f + Mth.sin(age * 1.1f) * 0.7f;
-			rightArm.yRot = 0.15f;
-			head.xRot += 0.35f;
-			rightEar.zRot += Mth.sin(age * 1.1f) * 0.2f;
-			leftEar.zRot -= Mth.sin(age * 1.1f) * 0.2f;
-		} else {
-			rightArm.xRot = Mth.cos(pos * 0.6662f + Mth.PI) * 1.0f * speed + Mth.sin(age * 0.1f) * 0.06f;
-		}
 
 		if (state.resting) {
-			head.xRot = 0.6f;
-			head.zRot = 0.25f;
+			poseSleep(1.0f);
+			float breath = Mth.sin(age * 0.06f);
+			head.xRot += breath * 0.04f;
+			body.y += breath * 0.25f;
+			return;
 		}
+
+		float pos = state.walkAnimationPos;
+		float speed = Math.min(state.walkAnimationSpeed, 1.0f);
+		head.yRot = state.yRot * Mth.DEG_TO_RAD;
+		head.xRot = state.xRot * Mth.DEG_TO_RAD;
+		// Chaos: Kopf wackelt, Hut tanzt, Ohren und Haare zucken
+		head.zRot += Mth.sin(age * 0.15f) * 0.12f;
+		hat.zRot += Mth.sin(age * 0.21f) * 0.1f;
+		hat.y -= Math.max(0.0f, Mth.sin(age * 0.3f)) * 1.2f;
+		rEar.zRot += Mth.sin(age * 0.5f) * 0.12f;
+		lEar.zRot -= Mth.sin(age * 0.45f + 1.0f) * 0.12f;
+		hair1.zRot += Mth.sin(age * 0.23f) * 0.08f;
+		hair2.zRot -= Mth.sin(age * 0.27f) * 0.08f;
+		hair3.xRot += Mth.sin(age * 0.19f) * 0.08f;
+
+		rLeg.xRot += Mth.cos(pos * 0.6662f) * 1.3f * speed;
+		lLeg.xRot += Mth.cos(pos * 0.6662f + Mth.PI) * 1.3f * speed;
+		lArm.xRot += Mth.cos(pos * 0.6662f) * 1.0f * speed;
+		lArm.zRot += Mth.sin(age * 0.12f) * 0.08f;
+		body.y += -Mth.abs(Mth.cos(pos * 0.6662f)) * 0.8f * speed;
+
+		if (state.crafting) {
+			// hämmern: ausholen und zuschlagen
+			float swing = (Mth.sin(age * 1.1f) + 1.0f) * 0.5f;
+			poseHammerUp(swing);
+			poseHammerDown(1.0f - swing);
+			rEar.zRot += Mth.sin(age * 1.1f) * 0.2f;
+			lEar.zRot -= Mth.sin(age * 1.1f) * 0.2f;
+		} else {
+			rArm.xRot += Mth.cos(pos * 0.6662f + Mth.PI) * 1.0f * speed + Mth.sin(age * 0.1f) * 0.06f;
+		}
+	}
+
+	private void poseHammerUp(float k) {
+		rArm.xRot += k * -2.400f;
+		rArm.zRot += k * 0.200f;
+		rHand.xRot += k * -0.400f;
+		head.xRot += k * 0.300f;
+	}
+
+	private void poseHammerDown(float k) {
+		rArm.xRot += k * -0.800f;
+		rArm.zRot += k * 0.100f;
+		rHand.xRot += k * -0.300f;
+		head.xRot += k * 0.450f;
+		body.xRot += k * 0.120f;
+	}
+
+	private void poseSleep(float k) {
+		body.y += k * 6.000f;
+		body.xRot += k * 0.100f;
+		rLeg.xRot += k * -1.450f;
+		rLeg.yRot += k * 0.200f;
+		lLeg.xRot += k * -1.450f;
+		lLeg.yRot += k * -0.200f;
+		rFoot.xRot += k * 0.300f;
+		lFoot.xRot += k * 0.300f;
+		head.xRot += k * 0.550f;
+		head.zRot += k * 0.300f;
+		head.y += k * 0.500f;
+		rArm.xRot += k * -0.500f;
+		rArm.zRot += k * 0.250f;
+		lArm.xRot += k * -0.600f;
+		lArm.zRot += k * -0.300f;
+		hammer.xRot += k * -0.900f;
+		hat.zRot += k * 0.250f;
+		hat.x += k * -1.000f;
+		rEar.zRot += k * -0.500f;
+		lEar.zRot += k * 0.500f;
 	}
 
 	@Override
 	public void translateToHat(PoseStack pose) {
 		root().translateAndRotate(pose);
+		chel.translateAndRotate(pose);
+		body.translateAndRotate(pose);
 		head.translateAndRotate(pose);
-		pose.translate(0.0f, 0.5f / 16.0f, 0.0f);
 	}
 
 	@Override
 	public float hatScale() {
-		return 1.0f;
+		return 1.6f;
 	}
 }

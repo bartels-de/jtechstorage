@@ -716,7 +716,7 @@
   "subtitles.jtechstorage.amethyst_phoenix.ambient": "Amethyst-Phönix ruft",
   "subtitles.jtechstorage.amethyst_phoenix.depart": "Amethyst-Phönix hebt ab",
   "subtitles.jtechstorage.amethyst_phoenix.evolve": "Phönix entwickelt sich",
-  "subtitles.jtechstorage.fox.ambient": "Fuchs kläfft",
+  "subtitles.jtechstorage.fox.ambient": "Fuchs fiept",
   "subtitles.jtechstorage.fox.dig": "Fuchs gräbt",
   "subtitles.jtechstorage.fox.found": "Fuchs findet ein Buch",
   "subtitles.jtechstorage.robot.ambient": "Roboter surrt",
@@ -1121,5 +1121,12 @@
   "subtitles.jtechstorage.beetle.step": "Käfer trippelt",
   "subtitles.jtechstorage.beetle.sleep": "Käfer schläft",
   "subtitles.jtechstorage.ashley.sleep": "Ashley schnarcht",
-  "subtitles.jtechstorage.ashley.step": "Ashley tapst"
+  "subtitles.jtechstorage.ashley.step": "Ashley tapst",
+  "subtitles.jtechstorage.griffin.flap": "Greif schlägt mit den Flügeln",
+  "subtitles.jtechstorage.griffin.step": "Greif läuft",
+  "subtitles.jtechstorage.griffin.sleep": "Greif schnarcht",
+  "subtitles.jtechstorage.chel.sleep": "Chel schnarcht",
+  "subtitles.jtechstorage.fox.sleep": "Fuchs schnauft im Schlaf",
+  "subtitles.jtechstorage.phoenix.flap": "Phönix schlägt mit den Flügeln",
+  "subtitles.jtechstorage.phoenix.sleep": "Phönix glimmt im Schlaf"
 }

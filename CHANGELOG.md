@@ -17,8 +17,20 @@ All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
   - Ashley: fluffy soot ball with glowing embers, big eyes, an amethyst hair clip (dyeable) and rising smoke puffs;
     waddles, sneezes and slumps down to sleep
   - work, alarm and sneeze animations play when the action happens
+- **Mob rework, wave 2:** the Storage Griffin, Chel, Amethyst Fox and Phoenix got the same treatment.
+  - Storage Griffin: eagle front with scaled amethyst plumage, feather collar, hooked beak and crystal crest, lion
+    hindquarters with glowing veins and a crystal tail tuft, wings that lie flat on the ground and spread wide in
+    flight, leather saddle with two saddlebags; lies down with its head tucked in to sleep
+  - Chel: huge head with a crooked look behind a gold monocle, gap-toothed grin, crystal hair and a mini crafting table
+    hat, leather bib apron, tool belt, gloves, buckled boots and an amethyst hammer he really swings; dozes off sitting
+  - Amethyst Fox: crystal kitsune with collar ruff, back crystals, gold headband, crystal-tipped ears, three bushy
+    three-part tails and orbiting crystal shards; digs with its front paws, curls up under its tails to sleep
+  - Phoenix: flame-gradient plumage with a glowing chest, flame crest with amethyst tips, long tail feathers with eye
+    spots and two flame streamers; sleeps with its head in its feathers when sitting at night (visual only)
 - **New and reworked sounds** for these four helpers: layered crystal chimes with chorus and reverb, new sleep sounds
   (breathing, snoring, humming), beetle and Ashley footsteps.
+- **Wave 2 sounds:** reworked calls for the griffin, Chel, fox and phoenix, plus wing beats for the griffin and
+  phoenix, griffin footsteps and sleep sounds for all four.
 
 ## [0.23.0]
 

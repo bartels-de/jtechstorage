@@ -17,7 +17,7 @@ public class PhoenixRenderer extends MobRenderer<Phoenix, PhoenixRenderState, Ph
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/phoenix.png");
 	private static final Identifier ACCENT = JTechStorage.id("textures/entity/phoenix_accent.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/phoenix_glow.png"));
-	private static final float SCALE = 1.25f;
+	private static final float SCALE = 0.625f;   // Modell in doppelter Detaildichte
 
 	public PhoenixRenderer(EntityRendererProvider.Context context) {
 		super(context, new PhoenixModel(context.bakeLayer(PhoenixModel.LAYER)), 0.4f);
@@ -69,6 +69,8 @@ public class PhoenixRenderer extends MobRenderer<Phoenix, PhoenixRenderState, Ph
 		}
 		state.flying = !state.hologram && (!hero.onGround() || hero.isMessenger() || hero.isDeparting());
 		state.away = hero.isAway();
+		long time = Math.floorMod(hero.level().getDefaultClockTime(), 24000L);
+		state.resting = !state.hologram && !state.flying && hero.onGround() && time >= 13000L && time <= 23000L;
 	}
 
 	@Override

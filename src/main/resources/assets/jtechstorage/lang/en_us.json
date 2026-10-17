@@ -1121,5 +1121,12 @@
   "subtitles.jtechstorage.beetle.step": "Beetle skitters",
   "subtitles.jtechstorage.beetle.sleep": "Beetle sleeps",
   "subtitles.jtechstorage.ashley.sleep": "Ashley snores",
-  "subtitles.jtechstorage.ashley.step": "Ashley pads"
+  "subtitles.jtechstorage.ashley.step": "Ashley pads",
+  "subtitles.jtechstorage.griffin.flap": "Griffin flaps",
+  "subtitles.jtechstorage.griffin.step": "Griffin steps",
+  "subtitles.jtechstorage.griffin.sleep": "Griffin snores",
+  "subtitles.jtechstorage.chel.sleep": "Chel snores",
+  "subtitles.jtechstorage.fox.sleep": "Fox breathes in its sleep",
+  "subtitles.jtechstorage.phoenix.flap": "Phoenix flaps",
+  "subtitles.jtechstorage.phoenix.sleep": "Phoenix smoulders asleep"
 }

@@ -15,6 +15,13 @@ public final class ModSounds {
 	public static final SoundEvent BEETLE_STEP = register("beetle.step");
 	public static final SoundEvent ASHLEY_SLEEP = register("ashley.sleep");
 	public static final SoundEvent ASHLEY_STEP = register("ashley.step");
+	public static final SoundEvent GRIFFIN_FLAP = register("griffin.flap");
+	public static final SoundEvent GRIFFIN_STEP = register("griffin.step");
+	public static final SoundEvent GRIFFIN_SLEEP = register("griffin.sleep");
+	public static final SoundEvent CHEL_SLEEP = register("chel.sleep");
+	public static final SoundEvent FOX_SLEEP = register("fox.sleep");
+	public static final SoundEvent PHOENIX_FLAP = register("phoenix.flap");
+	public static final SoundEvent PHOENIX_SLEEP = register("phoenix.sleep");
 	public static final SoundEvent MOTH_AMBIENT = register("moth.ambient");
 	public static final SoundEvent MOTH_ALARM = register("moth.alarm");
 	public static final SoundEvent GRIFFIN_AMBIENT = register("griffin.ambient");

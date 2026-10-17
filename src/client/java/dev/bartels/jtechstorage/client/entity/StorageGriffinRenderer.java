@@ -17,7 +17,7 @@ public class StorageGriffinRenderer extends MobRenderer<StorageGriffin, StorageG
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/storage_griffin.png");
 	private static final Identifier ACCENT = JTechStorage.id("textures/entity/storage_griffin_accent.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/storage_griffin_glow.png"));
-	private static final float SCALE = 1.3f;
+	private static final float SCALE = 0.65f;   // Modell in doppelter Detaildichte
 
 	public StorageGriffinRenderer(EntityRendererProvider.Context context) {
 		super(context, new StorageGriffinModel(context.bakeLayer(StorageGriffinModel.LAYER)), 0.8f);

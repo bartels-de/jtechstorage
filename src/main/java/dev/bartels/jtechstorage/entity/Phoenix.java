@@ -188,6 +188,11 @@ public class Phoenix extends NetworkHelperMob {
 			return;
 		}
 
+		// Flügelschlag im Flug (nicht unterwegs/unsichtbar)
+		if (!onGround() && !isAway() && tickCount % 12 == 0) {
+			playSound(ModSounds.PHOENIX_FLAP, 0.4f, 0.95f + random.nextFloat() * 0.15f);
+		}
+
 		if (isMessenger()) {
 			messengerTick(level);
 			return;
@@ -536,6 +541,8 @@ public class Phoenix extends NetworkHelperMob {
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
-		return ModSounds.PHOENIX_AMBIENT;
+		// nachts im Horst: leises Glimmen statt Trällern
+		long time = Math.floorMod(level().getDefaultClockTime(), 24000L);
+		return onGround() && !busy() && time >= 13000L && time <= 23000L ? ModSounds.PHOENIX_SLEEP : ModSounds.PHOENIX_AMBIENT;
 	}
 }

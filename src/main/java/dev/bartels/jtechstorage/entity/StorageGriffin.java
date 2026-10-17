@@ -240,6 +240,11 @@ public class StorageGriffin extends NetworkHelperMob implements net.minecraft.wo
 	public void aiStep() {
 		super.aiStep();
 
+		// Flügelschlag im Flug
+		if (!level().isClientSide() && isFlying() && !isHologram() && tickCount % 14 == 0) {
+			playSound(dev.bartels.jtechstorage.ModSounds.GRIFFIN_FLAP, 0.6f, 0.9f + random.nextFloat() * 0.2f);
+		}
+
 		if (level() instanceof ServerLevel serverLevel && tickCount % UNLOAD_INTERVAL == 0
 				&& onGround() && !isVehicle() && !isResting() && !inventory.isEmpty()) {
 			tryUnload(serverLevel);
@@ -303,6 +308,16 @@ public class StorageGriffin extends NetworkHelperMob implements net.minecraft.wo
 	protected void readAdditionalSaveData(ValueInput input) {
 		super.readAdditionalSaveData(input);
 		ContainerHelper.loadAllItems(input.childOrEmpty("GriffinInventory"), inventory.getItems());
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.GRIFFIN_SLEEP;
+	}
+
+	@Override
+	protected void playStepSound(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+		playSound(dev.bartels.jtechstorage.ModSounds.GRIFFIN_STEP, 0.4f, 0.9f + random.nextFloat() * 0.2f);
 	}
 
 	@Override

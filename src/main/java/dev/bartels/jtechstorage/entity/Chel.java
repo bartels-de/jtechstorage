@@ -905,6 +905,11 @@ public class Chel extends NetworkHelperMob {
 	}
 
 	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.CHEL_SLEEP;
+	}
+
+	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
 		return ModSounds.CHEL_AMBIENT;
 	}

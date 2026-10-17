@@ -36,7 +36,8 @@
     "sounds": [
       "jtechstorage:griffin/ambient1",
       "jtechstorage:griffin/ambient2",
-      "jtechstorage:griffin/ambient3"
+      "jtechstorage:griffin/ambient3",
+      "jtechstorage:griffin/ambient4"
     ]
   },
   "griffin.unload": {
@@ -82,7 +83,8 @@
     "subtitle": "subtitles.jtechstorage.chel.laugh",
     "sounds": [
       "jtechstorage:chel/laugh1",
-      "jtechstorage:chel/laugh2"
+      "jtechstorage:chel/laugh2",
+      "jtechstorage:chel/laugh3"
     ]
   },
   "peter.ambient": {
@@ -136,7 +138,8 @@
     "sounds": [
       "jtechstorage:phoenix/ambient1",
       "jtechstorage:phoenix/ambient2",
-      "jtechstorage:phoenix/ambient3"
+      "jtechstorage:phoenix/ambient3",
+      "jtechstorage:phoenix/ambient4"
     ]
   },
   "phoenix.depart": {
@@ -172,7 +175,8 @@
     "sounds": [
       "jtechstorage:fox/ambient1",
       "jtechstorage:fox/ambient2",
-      "jtechstorage:fox/ambient3"
+      "jtechstorage:fox/ambient3",
+      "jtechstorage:fox/ambient4"
     ]
   },
   "fox.dig": {
@@ -390,6 +394,61 @@
       "jtechstorage:ashley/step1",
       "jtechstorage:ashley/step2",
       "jtechstorage:ashley/step3"
+    ]
+  },
+  "griffin.flap": {
+    "subtitle": "subtitles.jtechstorage.griffin.flap",
+    "sounds": [
+      "jtechstorage:griffin/flap1",
+      "jtechstorage:griffin/flap2",
+      "jtechstorage:griffin/flap3"
+    ]
+  },
+  "griffin.step": {
+    "subtitle": "subtitles.jtechstorage.griffin.step",
+    "sounds": [
+      "jtechstorage:griffin/step1",
+      "jtechstorage:griffin/step2",
+      "jtechstorage:griffin/step3",
+      "jtechstorage:griffin/step4"
+    ]
+  },
+  "griffin.sleep": {
+    "subtitle": "subtitles.jtechstorage.griffin.sleep",
+    "sounds": [
+      "jtechstorage:griffin/sleep1",
+      "jtechstorage:griffin/sleep2",
+      "jtechstorage:griffin/sleep3"
+    ]
+  },
+  "chel.sleep": {
+    "subtitle": "subtitles.jtechstorage.chel.sleep",
+    "sounds": [
+      "jtechstorage:chel/sleep1",
+      "jtechstorage:chel/sleep2",
+      "jtechstorage:chel/sleep3"
+    ]
+  },
+  "fox.sleep": {
+    "subtitle": "subtitles.jtechstorage.fox.sleep",
+    "sounds": [
+      "jtechstorage:fox/sleep1",
+      "jtechstorage:fox/sleep2"
+    ]
+  },
+  "phoenix.flap": {
+    "subtitle": "subtitles.jtechstorage.phoenix.flap",
+    "sounds": [
+      "jtechstorage:phoenix/flap1",
+      "jtechstorage:phoenix/flap2",
+      "jtechstorage:phoenix/flap3"
+    ]
+  },
+  "phoenix.sleep": {
+    "subtitle": "subtitles.jtechstorage.phoenix.sleep",
+    "sounds": [
+      "jtechstorage:phoenix/sleep1",
+      "jtechstorage:phoenix/sleep2"
     ]
   }
 }
