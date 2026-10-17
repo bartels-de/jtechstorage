@@ -80,11 +80,11 @@ public final class ModContent {
 	public static final TagKey<Block> NETWORK_STORAGE = TagKey.create(Registries.BLOCK, JTechStorage.id("network_storage"));
 
 	/** Reichweite ohne Upgrade (Blöcke, kugelförmig). */
-	public static final int BASE_RANGE = 20;
+	public static final int BASE_RANGE = ModConfig.get().network.baseRange;
 	/** Anzahl verknüpfbarer Kisten ohne Upgrade (Doppeltruhe = 1). */
-	public static final int BASE_CAPACITY = 8;
+	public static final int BASE_CAPACITY = ModConfig.get().network.baseCapacity;
 	/** Drahtloses Terminal: Reichweite = Terminal-Reichweite × Faktor. */
-	public static final int WIRELESS_RANGE_FACTOR = 4;
+	public static final int WIRELESS_RANGE_FACTOR = ModConfig.get().network.wirelessRangeFactor;
 
 	private static final List<Item> CREATIVE_ORDER = new ArrayList<>();
 
@@ -168,24 +168,19 @@ public final class ModContent {
 
 	// --- Upgrades -------------------------------------------------------
 
-	public static final Item IRON_RANGE_UPGRADE = upgrade("iron_range_upgrade", UpgradeItem.Kind.RANGE, 32, Rarity.COMMON);
-	public static final Item GOLD_RANGE_UPGRADE = upgrade("gold_range_upgrade", UpgradeItem.Kind.RANGE, 48, Rarity.UNCOMMON);
-	public static final Item DIAMOND_RANGE_UPGRADE = upgrade("diamond_range_upgrade", UpgradeItem.Kind.RANGE, 64, Rarity.RARE);
-	public static final Item NETHERITE_RANGE_UPGRADE = upgrade("netherite_range_upgrade", UpgradeItem.Kind.RANGE, 96, Rarity.EPIC);
+	public static final Item IRON_RANGE_UPGRADE = upgrade("iron_range_upgrade", UpgradeItem.Kind.RANGE, () -> ModConfig.get().network.ironRange, Rarity.COMMON);
+	public static final Item GOLD_RANGE_UPGRADE = upgrade("gold_range_upgrade", UpgradeItem.Kind.RANGE, () -> ModConfig.get().network.goldRange, Rarity.UNCOMMON);
+	public static final Item DIAMOND_RANGE_UPGRADE = upgrade("diamond_range_upgrade", UpgradeItem.Kind.RANGE, () -> ModConfig.get().network.diamondRange, Rarity.RARE);
+	public static final Item NETHERITE_RANGE_UPGRADE = upgrade("netherite_range_upgrade", UpgradeItem.Kind.RANGE, () -> ModConfig.get().network.netheriteRange, Rarity.EPIC);
 	/** Endgame: Reichweite 128, Funk-Terminal grenzenlos und dimensionsübergreifend. */
 	public static final Item ENDER_RANGE_UPGRADE = item("ender_range_upgrade",
-			p -> new UpgradeItem(UpgradeItem.Kind.RANGE, 128, true, p),
-			new Item.Properties().stacksTo(16).rarity(Rarity.EPIC)
-					.component(DataComponents.LORE, new ItemLore(List.of(
-							Component.translatable("item.jtechstorage.range_upgrade.lore", 128)
-									.withStyle(ChatFormatting.GRAY).withStyle(style -> style.withItalic(false)),
-							Component.translatable("item.jtechstorage.ender_range_upgrade.lore")
-									.withStyle(ChatFormatting.DARK_PURPLE).withStyle(style -> style.withItalic(false))))));
+			p -> new UpgradeItem(UpgradeItem.Kind.RANGE, () -> ModConfig.get().network.enderRange, true, p),
+			new Item.Properties().stacksTo(16).rarity(Rarity.EPIC));
 
-	public static final Item IRON_CAPACITY_UPGRADE = upgrade("iron_capacity_upgrade", UpgradeItem.Kind.CAPACITY, 16, Rarity.COMMON);
-	public static final Item GOLD_CAPACITY_UPGRADE = upgrade("gold_capacity_upgrade", UpgradeItem.Kind.CAPACITY, 32, Rarity.UNCOMMON);
-	public static final Item DIAMOND_CAPACITY_UPGRADE = upgrade("diamond_capacity_upgrade", UpgradeItem.Kind.CAPACITY, 64, Rarity.RARE);
-	public static final Item NETHERITE_CAPACITY_UPGRADE = upgrade("netherite_capacity_upgrade", UpgradeItem.Kind.CAPACITY, 128, Rarity.EPIC);
+	public static final Item IRON_CAPACITY_UPGRADE = upgrade("iron_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.ironCapacity, Rarity.COMMON);
+	public static final Item GOLD_CAPACITY_UPGRADE = upgrade("gold_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.goldCapacity, Rarity.UNCOMMON);
+	public static final Item DIAMOND_CAPACITY_UPGRADE = upgrade("diamond_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.diamondCapacity, Rarity.RARE);
+	public static final Item NETHERITE_CAPACITY_UPGRADE = upgrade("netherite_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.netheriteCapacity, Rarity.EPIC);
 
 	// --- Amethyst-Wichtel ----------------------------------------------
 
@@ -374,16 +369,9 @@ public final class ModContent {
 		return item;
 	}
 
-	private static Item upgrade(String name, UpgradeItem.Kind kind, int value, Rarity rarity) {
-		String loreKey = kind == UpgradeItem.Kind.RANGE ? "item.jtechstorage.range_upgrade.lore" : "item.jtechstorage.capacity_upgrade.lore";
-		Item.Properties properties = new Item.Properties()
-				.stacksTo(16)
-				.rarity(rarity)
-				.component(DataComponents.LORE, new ItemLore(List.of(
-						Component.translatable(loreKey, value)
-								.withStyle(ChatFormatting.GRAY)
-								.withStyle(style -> style.withItalic(false)))));
-		return item(name, p -> new UpgradeItem(kind, value, p), properties);
+	/** Wert kommt aus der Konfiguration (Tooltip zeigt die Werte des Servers, siehe {@link UpgradeItem}). */
+	private static Item upgrade(String name, UpgradeItem.Kind kind, java.util.function.IntSupplier value, Rarity rarity) {
+		return item(name, p -> new UpgradeItem(kind, value, p), new Item.Properties().stacksTo(16).rarity(rarity));
 	}
 
 	public static void init() {

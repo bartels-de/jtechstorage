@@ -19,6 +19,7 @@ import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModAdvancements;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.entity.AmethystRobot;
@@ -93,7 +94,7 @@ public class AmethystDraughtItem extends Item {
 		}
 
 		dino.playSound(SoundEvents.BEACON_ACTIVATE, 4.0f, 0.5f);
-		dino.playSound(SoundEvents.IRON_GOLEM_REPAIR, 3.0f, 0.5f);
+		dino.playSound(ModSounds.ROBOT_AWAKEN, 4.0f, 1.0f);
 		player.sendSystemMessage(Component.translatable("jtechstorage.robot.summoned").withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.BOLD));
 		ModAdvancements.grant(player, "summon_amethyst_robot");
 	}

@@ -124,6 +124,30 @@ public abstract class NetworkHelperMob extends PathfinderMob {
 	}
 
 	// ------------------------------------------------------------------
+	// Sounds
+	// ------------------------------------------------------------------
+
+	/** Eigener Umgebungs-Sound des Helfers (null = stumm). Schweigt im Feierabend und als Hologramm. */
+	protected net.minecraft.sounds.@Nullable SoundEvent helperAmbientSound() {
+		return null;
+	}
+
+	@Override
+	protected net.minecraft.sounds.@Nullable SoundEvent getAmbientSound() {
+		return isHologram() || isResting() ? null : helperAmbientSound();
+	}
+
+	@Override
+	public int getAmbientSoundInterval() {
+		return 320;
+	}
+
+	@Override
+	protected float getSoundVolume() {
+		return 0.6f;
+	}
+
+	// ------------------------------------------------------------------
 	// Feierabend
 	// ------------------------------------------------------------------
 

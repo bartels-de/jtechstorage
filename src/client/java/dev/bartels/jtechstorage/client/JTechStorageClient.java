@@ -173,6 +173,10 @@ public class JTechStorageClient implements ClientModInitializer {
 		});
 		GuideBookItem.openScreen = () -> Minecraft.getInstance().setScreenAndShow(new GuideBookScreen());
 
+		ClientPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.ConfigSyncPayload.TYPE,
+				(payload, context) -> dev.bartels.jtechstorage.ModConfig.applyRemote(payload.json()));
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents.DISCONNECT.register(
+				(handler, client) -> dev.bartels.jtechstorage.ModConfig.restoreLocal());
 		ClientPlayNetworking.registerGlobalReceiver(ChelOrdersPayload.TYPE, (payload, context) -> {
 			if (context.player().containerMenu instanceof ChelOrderMenu menu && menu.containerId == payload.containerId()) {
 				menu.setClientData(payload.entries(), payload.status());

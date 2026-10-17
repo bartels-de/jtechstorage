@@ -32,6 +32,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.block.PhoenixNestBlockEntity;
 
@@ -172,8 +173,7 @@ public class Phoenix extends NetworkHelperMob {
 		awayUntil = level().getGameTime() + DEPART_TICKS + ticks;
 		entityData.set(DATA_DEPART, DEPART_TICKS);
 		getNavigation().stop();
-		playSound(SoundEvents.FIRECHARGE_USE, 1.0f, 1.2f);
-		playSound(SoundEvents.ENDER_DRAGON_FLAP, 0.8f, 1.6f);
+		playSound(ModSounds.PHOENIX_DEPART, 1.0f, 1.0f);
 	}
 
 	// ------------------------------------------------------------------
@@ -524,5 +524,10 @@ public class Phoenix extends NetworkHelperMob {
 	@Override
 	public Component statusText() {
 		return super.statusText();
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.PHOENIX_AMBIENT;
 	}
 }

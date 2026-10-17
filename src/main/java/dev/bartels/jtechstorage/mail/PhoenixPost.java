@@ -24,6 +24,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.saveddata.SavedData;
 import net.minecraft.world.level.saveddata.SavedDataType;
 
+import dev.bartels.jtechstorage.ModConfig;
 import dev.bartels.jtechstorage.JTechStorage;
 import dev.bartels.jtechstorage.block.PhoenixNestBlockEntity;
 
@@ -113,7 +114,7 @@ public class PhoenixPost extends SavedData {
 			PhoenixPost::new, CODEC, DataFixTypes.SAVED_DATA_COMMAND_STORAGE);
 
 	/** Flugtempo: Blöcke pro Sekunde. */
-	public static final double BLOCKS_PER_SECOND = 32.0;
+	public static final double BLOCKS_PER_SECOND = ModConfig.get().helpers.phoenixMailBlocksPerSecond;
 	public static final int MIN_FLIGHT = 5 * 20;
 	public static final int MAX_FLIGHT = 4 * 60 * 20;
 	public static final int OTHER_DIMENSION_FLIGHT = 60 * 20;

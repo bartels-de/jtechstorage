@@ -35,6 +35,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 
+import dev.bartels.jtechstorage.ModConfig;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.entity.SortAssignments;
 import dev.bartels.jtechstorage.entity.SortCategory;
@@ -459,8 +460,8 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 	// ------------------------------------------------------------------
 
 	public static final int MAX_RESONANCE = 1000;
-	public static final int RESONANCE_RANGE_BONUS = 16;
-	public static final float RESONANCE_HELPER_SPEED = 1.8f;
+	public static final int RESONANCE_RANGE_BONUS = ModConfig.get().network.resonanceRangeBonus;
+	public static final float RESONANCE_HELPER_SPEED = (float) ModConfig.get().network.resonanceHelperSpeed;
 
 	private int resonance;
 

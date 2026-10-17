@@ -58,6 +58,8 @@ import net.minecraft.world.phys.Vec3;
 
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModAdvancements;
 import dev.bartels.jtechstorage.menu.ChelOrderMenu;
 import dev.bartels.jtechstorage.ModContent;
@@ -80,8 +82,8 @@ import dev.bartels.jtechstorage.network.StorageNetwork;
 public class Chel extends NetworkHelperMob {
 	public static final int MAX_ORDERS = 8;
 	public static final int STAY_DISTANCE = 6;
-	private static final int CRAFT_INTERVAL = 100;
-	private static final int MAX_CRAFTS_PER_ROUND = 4;
+	private static final int CRAFT_INTERVAL = (int) Math.round(ModConfig.get().helpers.chelCraftIntervalSeconds * 20.0);
+	private static final int MAX_CRAFTS_PER_ROUND = ModConfig.get().helpers.chelMaxCraftsPerRound;
 	private static final int SAY_LINES = 16;
 	public static final int JOKES = 20;
 	public static final int MAX_TARGET = 999;
@@ -223,7 +225,7 @@ public class Chel extends NetworkHelperMob {
 			}
 		}
 
-		playSound(SoundEvents.WITCH_CELEBRATE, 1.0f, 1.6f);
+		playSound(ModSounds.CHEL_LAUGH, 1.0f, 1.0f);
 		spinTicks = 10;
 		jumpFromGround();
 		level.sendParticles(ParticleTypes.NOTE, getX(), getY() + 1.6, getZ(), 5, 0.4, 0.2, 0.4, 1.0);
@@ -258,7 +260,7 @@ public class Chel extends NetworkHelperMob {
 		level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 1.0, getZ(), 40, 0.4, 1.2, 0.4, 0.15);
 		level.sendParticles(ParticleTypes.WITCH, getX(), getY() + 1.0, getZ(), 40, 0.8, 1.0, 0.8, 0.05);
 		hero.playSound(SoundEvents.TOTEM_USE, 1.0f, 0.9f);
-		hero.playSound(SoundEvents.BEACON_ACTIVATE, 1.0f, 0.7f);
+		hero.playSound(ModSounds.PETER_TRANSFORM, 1.5f, 1.0f);
 
 		for (ServerPlayer listener : level.players()) {
 			if (listener == player || listener.distanceToSqr(this) < 32 * 32) {
@@ -491,8 +493,8 @@ public class Chel extends NetworkHelperMob {
 
 			if (crafted > 0) {
 				entityData.set(DATA_CRAFTING, 30);
-				playSound(SoundEvents.CRAFTER_CRAFT, 1.0f, 0.9f + random.nextFloat() * 0.4f);
-				playSound(SoundEvents.ANVIL_USE, 0.25f, 1.8f);
+				playSound(SoundEvents.CRAFTER_CRAFT, 0.6f, 0.9f + random.nextFloat() * 0.4f);
+				playSound(ModSounds.CHEL_CRAFT, 0.8f, 0.95f + random.nextFloat() * 0.1f);
 				level.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY() + 1.2, getZ(), 8, 0.4, 0.3, 0.4, 0.0);
 				level.sendParticles(ParticleTypes.WAX_ON, getX(), getY() + 1.6, getZ(), 6, 0.3, 0.2, 0.3, 0.5);
 				setStatus("jtechstorage.chel.status.crafted", crafted, prototype.getHoverName());
@@ -822,5 +824,10 @@ public class Chel extends NetworkHelperMob {
 				getNavigation().moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1.0);
 			}
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.CHEL_AMBIENT;
 	}
 }

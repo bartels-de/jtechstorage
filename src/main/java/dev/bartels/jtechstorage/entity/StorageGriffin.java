@@ -34,6 +34,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModAdvancements;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.block.StorageTerminalBlockEntity;
@@ -268,7 +269,7 @@ public class StorageGriffin extends NetworkHelperMob {
 
 		if (delivered > 0) {
 			level.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY() + 1.2, getZ(), 10, 0.6, 0.4, 0.6, 0.0);
-			playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.8f, 1.0f);
+			playSound(ModSounds.GRIFFIN_UNLOAD, 0.8f, 1.0f);
 			setStatus("jtechstorage.griffin.status.delivered", delivered);
 			Player ownerPlayer = owner != null ? level.getPlayerByUUID(owner) : null;
 
@@ -294,5 +295,10 @@ public class StorageGriffin extends NetworkHelperMob {
 	protected void readAdditionalSaveData(ValueInput input) {
 		super.readAdditionalSaveData(input);
 		ContainerHelper.loadAllItems(input.childOrEmpty("GriffinInventory"), inventory.getItems());
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.GRIFFIN_AMBIENT;
 	}
 }
