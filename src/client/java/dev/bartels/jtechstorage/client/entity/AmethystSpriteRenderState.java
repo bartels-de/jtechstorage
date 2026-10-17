@@ -11,4 +11,6 @@ public class AmethystSpriteRenderState extends ArmedEntityRenderState {
 	public boolean resting;
 	/** Trägt der Wichtel gerade etwas? Dann streckt er die Arme nach vorn. */
 	public boolean carrying;
+	/** Aktions-Animation (0–1): Arbeiten, Alarm oder Niesen. */
+	public float action;
 }

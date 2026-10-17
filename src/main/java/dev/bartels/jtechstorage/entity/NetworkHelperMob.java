@@ -132,9 +132,18 @@ public abstract class NetworkHelperMob extends PathfinderMob {
 		return null;
 	}
 
+	/** Leises Schlafgeräusch im Feierabend (null = stumm). */
+	protected net.minecraft.sounds.@Nullable SoundEvent helperSleepSound() {
+		return null;
+	}
+
 	@Override
 	protected net.minecraft.sounds.@Nullable SoundEvent getAmbientSound() {
-		return isHologram() || isResting() ? null : helperAmbientSound();
+		if (isHologram()) {
+			return null;
+		}
+
+		return isResting() ? helperSleepSound() : helperAmbientSound();
 	}
 
 	@Override
@@ -491,6 +500,36 @@ public abstract class NetworkHelperMob extends PathfinderMob {
 
 		InteractionResult result = interactWith(player, hand);
 		return result == InteractionResult.PASS ? super.mobInteract(player, hand) : result;
+	}
+
+	// ------------------------------------------------------------------
+	// Aktions-Animation (Arbeiten, Alarm, Niesen …) – per Entity-Event an die Clients
+	// ------------------------------------------------------------------
+
+	/** Entity-Event-ID für die Aktions-Animation. */
+	public static final byte EVENT_ACTION = 70;
+	public static final int ACTION_TICKS = 16;
+	private int actionStart = -1000;
+
+	/** Startet die Aktions-Animation auf allen Clients (nur Server). */
+	protected void playAction() {
+		level().broadcastEntityEvent(this, EVENT_ACTION);
+	}
+
+	@Override
+	public void handleEntityEvent(byte id) {
+		if (id == EVENT_ACTION) {
+			actionStart = tickCount;
+			return;
+		}
+
+		super.handleEntityEvent(id);
+	}
+
+	/** 0 → 1 → 0 während der Aktion (für Renderer). */
+	public float getActionAmount(float partialTick) {
+		float t = (tickCount - actionStart + partialTick) / ACTION_TICKS;
+		return t < 0.0f || t > 1.0f ? 0.0f : net.minecraft.util.Mth.sin(t * net.minecraft.util.Mth.PI);
 	}
 
 	private @Nullable UUID packRequester;

@@ -708,7 +708,7 @@
   "subtitles.jtechstorage.peter.ambient": "Peter summt heldenhaft",
   "subtitles.jtechstorage.peter.attack": "Peter schlägt zu",
   "subtitles.jtechstorage.peter.transform": "Chel verwandelt sich",
-  "subtitles.jtechstorage.ashley.ambient": "Ashley grummelt",
+  "subtitles.jtechstorage.ashley.ambient": "Ashley murmelt",
   "subtitles.jtechstorage.ashley.sneeze": "Ashley niest",
   "subtitles.jtechstorage.ashley.kicked": "Ashley wird getreten",
   "subtitles.jtechstorage.phoenix.ambient": "Phönix trällert",
@@ -1115,5 +1115,11 @@
   "jtechstorage.stats.history_soon": "Verlauf: ein Balken pro Spieltag",
   "jtechstorage.phoenix_stop.filter.help.0": "Mit Item klicken: setzen · leer klicken: löschen",
   "jtechstorage.phoenix_stop.filter.help.1": "Mausrad: Menge (Shift ×16, Strg ×64) · Rechtsklick: alle",
-  "tooltip.jtechstorage.phoenix.controls.3": "Rechtsklick: Post-Menü seines Horsts"
+  "tooltip.jtechstorage.phoenix.controls.3": "Rechtsklick: Post-Menü seines Horsts",
+  "subtitles.jtechstorage.sprite.sleep": "Wichtel schlummert",
+  "subtitles.jtechstorage.moth.sleep": "Falter ruht",
+  "subtitles.jtechstorage.beetle.step": "Käfer trippelt",
+  "subtitles.jtechstorage.beetle.sleep": "Käfer schläft",
+  "subtitles.jtechstorage.ashley.sleep": "Ashley schnarcht",
+  "subtitles.jtechstorage.ashley.step": "Ashley tapst"
 }

@@ -318,6 +318,7 @@ public class AmethystSprite extends NetworkHelperMob {
 			if (carried.isEmpty()) {
 				setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
 				playSound(ModSounds.SPRITE_WORK, 0.7f, 0.95f + random.nextFloat() * 0.1f);
+				playAction();
 				((ServerLevel) level()).sendParticles(ParticleTypes.WITCH, targetPos.getX() + 0.5, targetPos.getY() + 1.1,
 						targetPos.getZ() + 0.5, 6, 0.25, 0.1, 0.25, 0.01);
 				phase = Phase.IDLE;
@@ -462,6 +463,7 @@ public class AmethystSprite extends NetworkHelperMob {
 			ItemStack rest = terminal.buildNetwork().insert(carried.copy());
 			setItemInHand(InteractionHand.MAIN_HAND, rest);
 			playSound(ModSounds.SPRITE_WORK, 0.6f, 1.1f);
+			playAction();
 			((ServerLevel) level()).sendParticles(ParticleTypes.WITCH, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5,
 					6, 0.25, 0.1, 0.25, 0.01);
 			phase = Phase.IDLE;
@@ -490,6 +492,7 @@ public class AmethystSprite extends NetworkHelperMob {
 			if (moved > 0) {
 				playSound(SoundEvents.BUNDLE_INSERT, 0.8f, 1.2f);
 				playSound(ModSounds.SPRITE_WORK, 0.5f, 1.2f);
+				playAction();
 				((ServerLevel) level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 1.1,
 						pos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.0);
 			}
@@ -584,6 +587,11 @@ public class AmethystSprite extends NetworkHelperMob {
 		}
 
 		setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.SPRITE_SLEEP;
 	}
 
 	@Override

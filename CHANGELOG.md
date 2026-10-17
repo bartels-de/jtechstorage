@@ -3,6 +3,23 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.24.0]
+
+### Changed
+- **Mob rework, wave 1:** the Amethyst Sprite, Watch Moth, Spark Beetle and Ashley have new models and textures at
+  double detail density, new animations and a sleep pose.
+  - Amethyst Sprite: deepslate head with large glowing eyes, gold circlet and crystal crown, embroidered robe with core
+    crystal and satchel, crystal hands, two pairs of glass shard wings, crystal pendulum tail; sits down to sleep
+  - Watch Moth: furry collar, compound eyes, feathered antennae, crystal lantern tail, eye-spot forewings with fringes,
+    six legs; lands and folds its wings to sleep
+  - Spark Beetle: copper rhinoceros beetle with redstone rivets, amethyst-inlaid elytra that open while charging to
+    reveal glowing hind wings, lightning-rod horn, tripod walking gait; tucks its legs in to sleep
+  - Ashley: fluffy soot ball with glowing embers, big eyes, an amethyst hair clip (dyeable) and rising smoke puffs;
+    waddles, sneezes and slumps down to sleep
+  - work, alarm and sneeze animations play when the action happens
+- **New and reworked sounds** for these four helpers: layered crystal chimes with chorus and reverb, new sleep sounds
+  (breathing, snoring, humming), beetle and Ashley footsteps.
+
 ## [0.23.0]
 
 ### Added

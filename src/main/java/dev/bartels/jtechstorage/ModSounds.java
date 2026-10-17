@@ -9,6 +9,12 @@ import net.minecraft.sounds.SoundEvent;
 public final class ModSounds {
 	public static final SoundEvent SPRITE_AMBIENT = register("sprite.ambient");
 	public static final SoundEvent SPRITE_WORK = register("sprite.work");
+	public static final SoundEvent SPRITE_SLEEP = register("sprite.sleep");
+	public static final SoundEvent MOTH_SLEEP = register("moth.sleep");
+	public static final SoundEvent BEETLE_SLEEP = register("beetle.sleep");
+	public static final SoundEvent BEETLE_STEP = register("beetle.step");
+	public static final SoundEvent ASHLEY_SLEEP = register("ashley.sleep");
+	public static final SoundEvent ASHLEY_STEP = register("ashley.step");
 	public static final SoundEvent MOTH_AMBIENT = register("moth.ambient");
 	public static final SoundEvent MOTH_ALARM = register("moth.alarm");
 	public static final SoundEvent GRIFFIN_AMBIENT = register("griffin.ambient");

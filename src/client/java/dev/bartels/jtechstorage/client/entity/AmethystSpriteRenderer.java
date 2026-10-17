@@ -71,6 +71,7 @@ public class AmethystSpriteRenderer extends MobRenderer<AmethystSprite, Amethyst
 			state.accent = -1;
 		}
 		state.resting = sprite.isResting();
+		state.action = sprite.getActionAmount(partialTick);
 		ArmedEntityRenderState.extractArmedEntityRenderState(sprite, state, itemModelResolver, partialTick);
 		state.carrying = !sprite.getMainHandItem().isEmpty();
 	}
@@ -79,5 +80,11 @@ public class AmethystSpriteRenderer extends MobRenderer<AmethystSprite, Amethyst
 	@Override
 	protected int getBlockLightLevel(AmethystSprite sprite, BlockPos pos) {
 		return Math.max(10, super.getBlockLightLevel(sprite, pos));
+	}
+
+	/** Modell ist in doppelter Detaildichte gebaut. */
+	@Override
+	protected void scale(AmethystSpriteRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);
 	}
 }

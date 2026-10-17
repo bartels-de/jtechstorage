@@ -708,7 +708,7 @@
   "subtitles.jtechstorage.peter.ambient": "Peter hums heroically",
   "subtitles.jtechstorage.peter.attack": "Peter strikes",
   "subtitles.jtechstorage.peter.transform": "Chel transforms",
-  "subtitles.jtechstorage.ashley.ambient": "Ashley grumbles",
+  "subtitles.jtechstorage.ashley.ambient": "Ashley mumbles",
   "subtitles.jtechstorage.ashley.sneeze": "Ashley sneezes",
   "subtitles.jtechstorage.ashley.kicked": "Ashley gets kicked",
   "subtitles.jtechstorage.phoenix.ambient": "Phoenix trills",
@@ -1115,5 +1115,11 @@
   "jtechstorage.stats.history_soon": "History: one bar per in-game day",
   "jtechstorage.phoenix_stop.filter.help.0": "Click with an item: set · click empty-handed: clear",
   "jtechstorage.phoenix_stop.filter.help.1": "Scroll: amount (Shift ×16, Ctrl ×64) · Right-click: all",
-  "tooltip.jtechstorage.phoenix.controls.3": "Right-click: mail menu of its nest"
+  "tooltip.jtechstorage.phoenix.controls.3": "Right-click: mail menu of its nest",
+  "subtitles.jtechstorage.sprite.sleep": "Sprite slumbers",
+  "subtitles.jtechstorage.moth.sleep": "Moth rests",
+  "subtitles.jtechstorage.beetle.step": "Beetle skitters",
+  "subtitles.jtechstorage.beetle.sleep": "Beetle sleeps",
+  "subtitles.jtechstorage.ashley.sleep": "Ashley snores",
+  "subtitles.jtechstorage.ashley.step": "Ashley pads"
 }

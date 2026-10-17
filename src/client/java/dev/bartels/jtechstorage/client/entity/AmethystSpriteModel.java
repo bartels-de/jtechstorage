@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
 import net.minecraft.client.model.ArmedModel;
+import net.minecraft.world.entity.HumanoidArm;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.ModelPart;
@@ -14,119 +15,236 @@ import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.model.geom.builders.MeshDefinition;
 import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.HumanoidArm;
 
 import dev.bartels.jtechstorage.JTechStorage;
 
 /**
- * Amethyst-Wichtel: Tiefenschiefer-Köpfchen mit großen leuchtenden Augen und Kristallkrone, kleine Robe mit
- * leuchtendem Kern-Kristall, Kristallhände und zwei schwebende Kristallsplitter-Flügel; unten ein Kristall-Zipfel.
+ * Amethyst-Wichtel: schwebender Kristall-Kobold mit Leuchtaugen, Goldreif und Kristallkrone, Robe mit Kernkristall und
+ * Umhängetasche, Kristallhände, zwei Paar Splitterflügel und Kristallpendel. Schläft im Sitzen mit geschlossenen Augen.
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/sprite2.py (Teile und Posen), Animation von Hand.
  */
 public class AmethystSpriteModel extends EntityModel<AmethystSpriteRenderState> implements ArmedModel<AmethystSpriteRenderState>, HelperHatModel {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("amethyst_sprite"), "main");
 
 	private final ModelPart sprite;
-	private final ModelPart head;
 	private final ModelPart body;
-	private final ModelPart rightArm;
-	private final ModelPart leftArm;
-	private final ModelPart rightWing;
-	private final ModelPart leftWing;
-	private final ModelPart crownRight;
-	private final ModelPart crownLeft;
+	private final ModelPart head;
+	private final ModelPart lids;
+	private final ModelPart rArm;
+	private final ModelPart lArm;
+	private final ModelPart rHand;
+	private final ModelPart lHand;
+	private final ModelPart rWing;
+	private final ModelPart lWing;
+	private final ModelPart rWingLo;
+	private final ModelPart lWingLo;
+	private final ModelPart tail;
+	private final ModelPart tailGem;
+	private final ModelPart crownM;
+	private final ModelPart crownR;
+	private final ModelPart crownL;
+	private final ModelPart rEar;
+	private final ModelPart lEar;
 
 	public AmethystSpriteModel(ModelPart root) {
 		super(root);
 		this.sprite = root.getChild("sprite");
-		this.head = sprite.getChild("head");
-		this.body = sprite.getChild("body");
-		this.rightArm = body.getChild("right_arm");
-		this.leftArm = body.getChild("left_arm");
-		this.rightWing = body.getChild("right_wing");
-		this.leftWing = body.getChild("left_wing");
-		this.crownRight = head.getChild("crown_right");
-		this.crownLeft = head.getChild("crown_left");
+		this.body = root.getChild("sprite").getChild("body");
+		this.head = root.getChild("sprite").getChild("head");
+		this.lids = root.getChild("sprite").getChild("head").getChild("lids");
+		this.rArm = root.getChild("sprite").getChild("body").getChild("r_arm");
+		this.lArm = root.getChild("sprite").getChild("body").getChild("l_arm");
+		this.rHand = root.getChild("sprite").getChild("body").getChild("r_arm").getChild("r_hand");
+		this.lHand = root.getChild("sprite").getChild("body").getChild("l_arm").getChild("l_hand");
+		this.rWing = root.getChild("sprite").getChild("body").getChild("r_wing");
+		this.lWing = root.getChild("sprite").getChild("body").getChild("l_wing");
+		this.rWingLo = root.getChild("sprite").getChild("body").getChild("r_wing_lo");
+		this.lWingLo = root.getChild("sprite").getChild("body").getChild("l_wing_lo");
+		this.tail = root.getChild("sprite").getChild("body").getChild("tail");
+		this.tailGem = root.getChild("sprite").getChild("body").getChild("tail").getChild("tail_gem");
+		this.crownM = root.getChild("sprite").getChild("head").getChild("crown_m");
+		this.crownR = root.getChild("sprite").getChild("head").getChild("crown_r");
+		this.crownL = root.getChild("sprite").getChild("head").getChild("crown_l");
+		this.rEar = root.getChild("sprite").getChild("head").getChild("r_ear");
+		this.lEar = root.getChild("sprite").getChild("head").getChild("l_ear");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
 		PartDefinition p1 = root.addOrReplaceChild("sprite", CubeListBuilder.create(),
-				PartPose.offset(0.0f, 23.5f, 0.0f));
-		PartDefinition p2 = p1.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-3.0f, -6.0f, -3.0f, 6.0f, 6.0f, 6.0f, new CubeDeformation(0.0f))
-				.texOffs(24, 0).addBox(-1.0f, -10.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(0.0f, -8.0f, 0.0f));
-		p2.addOrReplaceChild("crown_right", CubeListBuilder.create()
-				.texOffs(32, 0).addBox(-0.5f, -3.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(-2.0f, -5.5f, 0.5f, 0.0f, 0.0f, -0.45f));
-		p2.addOrReplaceChild("crown_left", CubeListBuilder.create()
-				.texOffs(32, 0).mirror().addBox(-0.5f, -3.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offsetAndRotation(2.0f, -5.5f, -0.5f, 0.0f, 0.0f, 0.45f));
-		p2.addOrReplaceChild("crown_back", CubeListBuilder.create()
-				.texOffs(32, 0).addBox(-0.5f, -2.5f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(0.5f, -5.5f, 2.0f, -0.5f, 0.0f, 0.0f));
-		PartDefinition p6 = p1.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 12).addBox(-2.0f, 0.0f, -1.5f, 4.0f, 4.0f, 3.0f, new CubeDeformation(0.0f))
-				.texOffs(14, 12).addBox(-1.5f, 4.0f, -1.0f, 3.0f, 2.0f, 2.0f, new CubeDeformation(0.0f))
-				.texOffs(24, 10).addBox(-0.5f, 6.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(28, 10).addBox(-1.0f, 1.0f, -2.0f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(0.0f, -8.0f, 0.0f, 0.1f, 0.0f, 0.0f));
-		p6.addOrReplaceChild("right_arm", CubeListBuilder.create()
-				.texOffs(40, 0).addBox(-0.5f, -0.5f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(44, 0).addBox(-1.0f, 3.0f, -1.0f, 2.0f, 1.0f, 2.0f, new CubeDeformation(-0.2f)),
-				PartPose.offsetAndRotation(-2.6f, 0.5f, 0.0f, 0.0f, 0.0f, 0.3f));
-		p6.addOrReplaceChild("left_arm", CubeListBuilder.create()
-				.texOffs(40, 0).mirror().addBox(-0.5f, -0.5f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false)
-				.texOffs(44, 0).mirror().addBox(-1.0f, 3.0f, -1.0f, 2.0f, 1.0f, 2.0f, new CubeDeformation(-0.2f)).mirror(false),
-				PartPose.offsetAndRotation(2.6f, 0.5f, 0.0f, 0.0f, 0.0f, -0.3f));
-		p6.addOrReplaceChild("right_wing", CubeListBuilder.create()
-				.texOffs(0, 20).addBox(-6.0f, -4.0f, 0.0f, 6.0f, 6.0f, 0.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(-1.0f, 1.0f, 1.6f, 0.0f, 0.55f, 0.0f));
-		p6.addOrReplaceChild("left_wing", CubeListBuilder.create()
-				.texOffs(0, 20).mirror().addBox(0.0f, -4.0f, 0.0f, 6.0f, 6.0f, 0.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offsetAndRotation(1.0f, 1.0f, 1.6f, 0.0f, -0.55f, 0.0f));
-		return LayerDefinition.create(mesh, 64, 32);
+				PartPose.offset(0.0f, 15.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(52, 0).addBox(-5.0f, 0.0f, -4.0f, 10.0f, 8.0f, 8.0f, new CubeDeformation(0.0f))
+				.texOffs(68, 24).addBox(-6.0f, -0.8f, -5.0f, 12.0f, 2.0f, 10.0f, new CubeDeformation(0.0f))
+				.texOffs(116, 0).addBox(-6.0f, 7.0f, -5.0f, 12.0f, 5.0f, 10.0f, new CubeDeformation(0.0f))
+				.texOffs(0, 24).addBox(-7.0f, 11.0f, -6.0f, 14.0f, 2.0f, 12.0f, new CubeDeformation(0.0f))
+				.texOffs(112, 24).addBox(-5.0f, 6.0f, -4.0f, 10.0f, 2.0f, 8.0f, new CubeDeformation(0.5f))
+				.texOffs(98, 38).addBox(-1.0f, 6.0f, -4.9f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(16, 38).addBox(-2.0f, 1.5f, -5.0f, 4.0f, 4.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(168, 24).addBox(5.2f, 5.2f, -2.0f, 4.0f, 6.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(82, 38).addBox(5.2f, 5.0f, -2.6f, 4.0f, 2.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(104, 38).addBox(-5.0f, 0.8f, -4.25f, 10.0f, 2.0f, 0.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -12.0f, 0.0f, 0.08f, 0.0f, 0.0f));
+		PartDefinition p3 = p2.addOrReplaceChild("r_arm", CubeListBuilder.create()
+				.texOffs(184, 24).addBox(-2.0f, -1.0f, -2.0f, 4.0f, 6.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(54, 38).addBox(-2.0f, 4.0f, -2.0f, 4.0f, 1.0f, 4.0f, new CubeDeformation(0.3f)),
+				PartPose.offsetAndRotation(-6.8f, 1.2f, 0.0f, 0.0f, 0.0f, 0.25f));
+		p3.addOrReplaceChild("r_hand", CubeListBuilder.create()
+				.texOffs(220, 24).addBox(-2.0f, 0.0f, -2.0f, 4.0f, 4.0f, 4.0f, new CubeDeformation(-0.1f))
+				.texOffs(78, 38).addBox(-0.5f, 0.5f, -2.8f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 5.0f, 0.0f));
+		PartDefinition p5 = p2.addOrReplaceChild("l_arm", CubeListBuilder.create()
+				.texOffs(184, 24).mirror().addBox(-2.0f, -1.0f, -2.0f, 4.0f, 6.0f, 4.0f, new CubeDeformation(0.0f)).mirror(false)
+				.texOffs(54, 38).mirror().addBox(-2.0f, 4.0f, -2.0f, 4.0f, 1.0f, 4.0f, new CubeDeformation(0.3f)).mirror(false),
+				PartPose.offsetAndRotation(6.8f, 1.2f, 0.0f, 0.0f, 0.0f, -0.25f));
+		p5.addOrReplaceChild("l_hand", CubeListBuilder.create()
+				.texOffs(220, 24).mirror().addBox(-2.0f, 0.0f, -2.0f, 4.0f, 4.0f, 4.0f, new CubeDeformation(-0.1f)).mirror(false)
+				.texOffs(78, 38).addBox(-0.5f, 0.5f, -2.8f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 5.0f, 0.0f));
+		p2.addOrReplaceChild("r_wing", CubeListBuilder.create()
+				.texOffs(88, 0).addBox(-14.0f, -12.0f, 0.0f, 14.0f, 16.0f, 0.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-2.0f, 1.2f, 4.1f, 0.15f, 0.55f, -0.15f));
+		p2.addOrReplaceChild("l_wing", CubeListBuilder.create()
+				.texOffs(88, 0).mirror().addBox(0.0f, -12.0f, 0.0f, 14.0f, 16.0f, 0.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(2.0f, 1.2f, 4.1f, 0.15f, -0.55f, 0.15f));
+		p2.addOrReplaceChild("r_wing_lo", CubeListBuilder.create()
+				.texOffs(148, 24).addBox(-10.0f, -2.0f, 0.0f, 10.0f, 10.0f, 0.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-2.0f, 5.2f, 4.0f, -0.1f, 0.75f, 0.35f));
+		p2.addOrReplaceChild("l_wing_lo", CubeListBuilder.create()
+				.texOffs(148, 24).mirror().addBox(0.0f, -2.0f, 0.0f, 10.0f, 10.0f, 0.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(2.0f, 5.2f, 4.0f, -0.1f, -0.75f, -0.35f));
+		PartDefinition p11 = p2.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(8, 38).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 6.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 12.8f, 0.6f));
+		p11.addOrReplaceChild("tail_gem", CubeListBuilder.create()
+				.texOffs(236, 24).addBox(-2.0f, -2.0f, -2.0f, 4.0f, 4.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(70, 38).addBox(-1.0f, 2.2f, -1.0f, 2.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 7.2f, 0.0f, 0.785f, 0.0f, 0.785f));
+		PartDefinition p13 = p1.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-7.0f, -12.0f, -6.0f, 14.0f, 12.0f, 12.0f, new CubeDeformation(0.0f))
+				.texOffs(160, 0).addBox(-7.0f, -10.4f, -6.0f, 14.0f, 2.0f, 12.0f, new CubeDeformation(0.3f))
+				.texOffs(92, 38).addBox(-1.0f, -10.6f, -6.6f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, -12.0f, 0.0f));
+		p13.addOrReplaceChild("lids", CubeListBuilder.create()
+				.texOffs(28, 38).addBox(-6.0f, -7.6f, -6.4f, 12.0f, 4.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.ZERO);
+		p13.addOrReplaceChild("r_ear", CubeListBuilder.create()
+				.texOffs(200, 24).addBox(-2.0f, -6.0f, -2.0f, 2.0f, 6.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-6.8f, -6.0f, 1.0f, 0.0f, 0.0f, 0.75f));
+		p13.addOrReplaceChild("l_ear", CubeListBuilder.create()
+				.texOffs(200, 24).mirror().addBox(0.0f, -6.0f, -2.0f, 2.0f, 6.0f, 4.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(6.8f, -6.0f, 1.0f, 0.0f, 0.0f, -0.75f));
+		p13.addOrReplaceChild("crown_m", CubeListBuilder.create()
+				.texOffs(52, 24).addBox(-2.0f, -10.0f, -2.0f, 4.0f, 10.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -11.2f, 1.0f, -0.1f, 0.785f, 0.0f));
+		p13.addOrReplaceChild("crown_r", CubeListBuilder.create()
+				.texOffs(212, 24).addBox(-1.0f, -8.0f, -1.0f, 2.0f, 8.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.4f, -10.8f, 0.6f, 0.1f, 0.0f, -0.45f));
+		p13.addOrReplaceChild("crown_l", CubeListBuilder.create()
+				.texOffs(212, 24).mirror().addBox(-1.0f, -8.0f, -1.0f, 2.0f, 8.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(4.4f, -10.8f, 0.6f, 0.1f, 0.0f, 0.45f));
+		p13.addOrReplaceChild("crown_b", CubeListBuilder.create()
+				.texOffs(0, 38).addBox(-1.0f, -6.0f, -1.0f, 2.0f, 6.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -10.8f, 4.8f, -0.55f, 0.0f, 0.0f));
+		return LayerDefinition.create(mesh, 256, 128);
 	}
 
 	@Override
 	public void setupAnim(AmethystSpriteRenderState state) {
 		super.setupAnim(state);
 		float age = state.ageInTicks;
+		lids.visible = state.resting;
 
-		// Schweben und Wippen
-		sprite.y += Mth.sin(age * 0.12f) * 0.8f;
+		if (state.resting) {
+			poseSleep(1.0f);
+			float breath = Mth.sin(age * 0.07f);
+			body.y += breath * 0.3f;
+			head.y += breath * 0.45f;
+			head.zRot += Mth.sin(age * 0.03f) * 0.06f;
+			rWing.yRot += breath * 0.03f;
+			lWing.yRot -= breath * 0.03f;
+			return;
+		}
+
+		// Schweben, Kopf folgt dem Blick
+		sprite.y += Mth.sin(age * 0.12f) * 1.6f;
 		head.yRot = state.yRot * Mth.DEG_TO_RAD;
 		head.xRot = state.xRot * Mth.DEG_TO_RAD;
 		head.zRot = Mth.sin(age * 0.07f) * 0.05f;
-		body.xRot = 0.1f + state.walkAnimationSpeed * 0.4f;
-		crownRight.zRot += Mth.sin(age * 0.1f) * 0.05f;
-		crownLeft.zRot -= Mth.sin(age * 0.1f) * 0.05f;
+		body.xRot += state.walkAnimationSpeed * 0.45f;
+		crownR.zRot += Mth.sin(age * 0.1f) * 0.05f;
+		crownL.zRot -= Mth.sin(age * 0.1f) * 0.05f;
+		crownM.yRot += Mth.sin(age * 0.05f) * 0.08f;
+		float twitch = Mth.sin(age * 0.37f) > 0.97f ? 0.25f : 0.0f;
+		rEar.zRot += twitch;
+		lEar.zRot -= twitch;
 
-		// Kristallflügel schwirren
-		float buzz = Mth.sin(age * 0.9f) * 0.25f;
-		rightWing.yRot = 0.55f + buzz;
-		leftWing.yRot = -0.55f - buzz;
-		rightWing.zRot = Mth.sin(age * 0.2f) * 0.1f;
-		leftWing.zRot = -Mth.sin(age * 0.2f) * 0.1f;
+		// Flügel schwirren (das untere Paar etwas versetzt), Pendel schwingt
+		float buzz = Mth.sin(age * 1.6f);
+		float buzzLo = Mth.sin(age * 1.6f - 0.9f);
+		rWing.yRot += buzz * 0.35f;
+		lWing.yRot -= buzz * 0.35f;
+		rWingLo.yRot += buzzLo * 0.3f;
+		lWingLo.yRot -= buzzLo * 0.3f;
+		tail.xRot += Mth.sin(age * 0.1f) * 0.15f + state.walkAnimationSpeed * 0.7f;
+		tail.zRot += Mth.sin(age * 0.13f) * 0.12f;
+		tailGem.yRot += age * 0.05f;
 
 		if (state.carrying) {
-			rightArm.xRot = -1.1f;
-			leftArm.xRot = -1.1f;
-			rightArm.yRot = 0.2f;
-			leftArm.yRot = -0.2f;
-			rightArm.zRot = 0.0f;
-			leftArm.zRot = 0.0f;
+			poseCarry(1.0f);
 		} else {
-			rightArm.xRot = Mth.sin(age * 0.1f) * 0.15f;
-			leftArm.xRot = -Mth.sin(age * 0.1f) * 0.15f;
+			rArm.xRot += Mth.sin(age * 0.1f) * 0.15f;
+			lArm.xRot -= Mth.sin(age * 0.1f) * 0.15f;
 		}
 
-		if (state.resting) {
-			head.xRot = 0.55f;
-			rightWing.yRot = 1.1f;
-			leftWing.yRot = -1.1f;
+		if (state.action > 0.0f) {
+			poseWork(state.action);
 		}
+	}
+
+	private void poseCarry(float k) {
+		rArm.xRot += k * -1.150f;
+		rArm.zRot += k * 0.200f;
+		lArm.xRot += k * -1.150f;
+		lArm.zRot += k * -0.200f;
+		rHand.xRot += k * -0.300f;
+		lHand.xRot += k * -0.300f;
+	}
+
+	private void poseSleep(float k) {
+		sprite.y += k * 6.400f;
+		body.xRot += k * 0.220f;
+		head.xRot += k * 0.500f;
+		head.y += k * 1.200f;
+		head.z += k * -0.800f;
+		rArm.xRot += k * -0.750f;
+		rArm.zRot += k * 0.550f;
+		lArm.xRot += k * -0.750f;
+		lArm.zRot += k * -0.550f;
+		rHand.xRot += k * -0.500f;
+		lHand.xRot += k * -0.500f;
+		rWing.yRot += k * 0.950f;
+		rWing.xRot += k * 0.450f;
+		lWing.yRot += k * -0.950f;
+		lWing.xRot += k * 0.450f;
+		rWingLo.yRot += k * 0.900f;
+		lWingLo.yRot += k * -0.900f;
+		tail.xRot += k * 1.300f;
+		tail.z += k * 1.000f;
+		tailGem.xRot += k * 0.400f;
+		rEar.zRot += k * -0.500f;
+		lEar.zRot += k * 0.500f;
+		crownR.zRot += k * -0.150f;
+		crownL.zRot += k * 0.150f;
+	}
+
+	private void poseWork(float k) {
+		rArm.xRot += k * -1.600f;
+		rArm.zRot += k * -0.300f;
+		rHand.xRot += k * -0.400f;
+		head.xRot += k * 0.300f;
 	}
 
 	@Override
@@ -134,10 +252,11 @@ public class AmethystSpriteModel extends EntityModel<AmethystSpriteRenderState> 
 		root().translateAndRotate(pose);
 		sprite.translateAndRotate(pose);
 		body.translateAndRotate(pose);
-		pose.translate(0.0f, 0.0625f, -0.05f);
-		pose.rotate(Axis.XP, rightArm.xRot);
-		pose.translate(0.0f, 0.2f, -0.05f);
-		pose.scale(0.7f, 0.7f, 0.7f);
+		rArm.translateAndRotate(pose);
+		rHand.translateAndRotate(pose);
+		pose.translate(0.0f, 0.15f, -0.1f);
+		pose.rotate(Axis.XP, -rArm.xRot * 0.3f);
+		pose.scale(1.4f, 1.4f, 1.4f);
 	}
 
 	@Override
@@ -145,11 +264,10 @@ public class AmethystSpriteModel extends EntityModel<AmethystSpriteRenderState> 
 		root().translateAndRotate(pose);
 		sprite.translateAndRotate(pose);
 		head.translateAndRotate(pose);
-		pose.translate(0.0f, 0.0f, 0.0f);
 	}
 
 	@Override
 	public float hatScale() {
-		return 0.75f;
+		return 1.6f;
 	}
 }

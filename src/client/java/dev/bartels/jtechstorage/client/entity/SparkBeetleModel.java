@@ -16,144 +16,284 @@ import net.minecraft.util.Mth;
 import dev.bartels.jtechstorage.JTechStorage;
 
 /**
- * Blitz-Käfer im Amethyst-Stil: Tiefenschiefer-Körper, gewölbte Kristall-Flügeldecken mit leuchtender Naht,
- * goldenes Blitzableiter-Horn mit Kristallspitze, sechs geknickte Beine. Beim Aufladen flattern die Flügeldecken.
+ * Blitz-Käfer: Kupfer-Nashornkäfer mit Redstone-Nieten, Deckflügeln mit Amethyst-Einlage (öffnen sich beim Aufladen,
+ * darunter glühende Hautflügel), Blitzableiter-Horn mit Amethyst-Kugel und sechs gegliederten Beinen.
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/beetle2.py (Teile und Posen), Animation von Hand.
  */
 public class SparkBeetleModel extends EntityModel<SparkBeetleRenderState> implements HelperHatModel {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("spark_beetle"), "main");
 
+	private final ModelPart beetle;
 	private final ModelPart body;
 	private final ModelPart head;
-	private final ModelPart rightAntenna;
-	private final ModelPart leftAntenna;
-	private final ModelPart rightElytron;
-	private final ModelPart leftElytron;
-	private final ModelPart[] rightLegs = new ModelPart[3];
-	private final ModelPart[] leftLegs = new ModelPart[3];
+	private final ModelPart lids;
+	private final ModelPart rElytron;
+	private final ModelPart lElytron;
+	private final ModelPart rHwing;
+	private final ModelPart lHwing;
+	private final ModelPart horn;
+	private final ModelPart horn2;
+	private final ModelPart rMand;
+	private final ModelPart lMand;
+	private final ModelPart rAnt;
+	private final ModelPart lAnt;
+	private final ModelPart rLeg0;
+	private final ModelPart rLeg1;
+	private final ModelPart rLeg2;
+	private final ModelPart lLeg0;
+	private final ModelPart lLeg1;
+	private final ModelPart lLeg2;
+	private final ModelPart rTibia0;
+	private final ModelPart rTibia1;
+	private final ModelPart rTibia2;
+	private final ModelPart lTibia0;
+	private final ModelPart lTibia1;
+	private final ModelPart lTibia2;
 
 	public SparkBeetleModel(ModelPart root) {
 		super(root);
-		this.body = root.getChild("body");
-		this.head = body.getChild("head");
-		this.rightAntenna = head.getChild("right_antenna");
-		this.leftAntenna = head.getChild("left_antenna");
-		this.rightElytron = body.getChild("right_elytron");
-		this.leftElytron = body.getChild("left_elytron");
-
-		for (int i = 0; i < 3; i++) {
-			rightLegs[i] = root.getChild("right_leg_" + i);
-			leftLegs[i] = root.getChild("left_leg_" + i);
-		}
+		this.beetle = root.getChild("beetle");
+		this.body = root.getChild("beetle").getChild("body");
+		this.head = root.getChild("beetle").getChild("body").getChild("head");
+		this.lids = root.getChild("beetle").getChild("body").getChild("head").getChild("lids");
+		this.rElytron = root.getChild("beetle").getChild("body").getChild("r_elytron");
+		this.lElytron = root.getChild("beetle").getChild("body").getChild("l_elytron");
+		this.rHwing = root.getChild("beetle").getChild("body").getChild("r_hwing");
+		this.lHwing = root.getChild("beetle").getChild("body").getChild("l_hwing");
+		this.horn = root.getChild("beetle").getChild("body").getChild("head").getChild("horn");
+		this.horn2 = root.getChild("beetle").getChild("body").getChild("head").getChild("horn").getChild("horn2");
+		this.rMand = root.getChild("beetle").getChild("body").getChild("head").getChild("r_mand");
+		this.lMand = root.getChild("beetle").getChild("body").getChild("head").getChild("l_mand");
+		this.rAnt = root.getChild("beetle").getChild("body").getChild("head").getChild("r_ant");
+		this.lAnt = root.getChild("beetle").getChild("body").getChild("head").getChild("l_ant");
+		this.rLeg0 = root.getChild("beetle").getChild("body").getChild("r_leg0");
+		this.rLeg1 = root.getChild("beetle").getChild("body").getChild("r_leg1");
+		this.rLeg2 = root.getChild("beetle").getChild("body").getChild("r_leg2");
+		this.lLeg0 = root.getChild("beetle").getChild("body").getChild("l_leg0");
+		this.lLeg1 = root.getChild("beetle").getChild("body").getChild("l_leg1");
+		this.lLeg2 = root.getChild("beetle").getChild("body").getChild("l_leg2");
+		this.rTibia0 = root.getChild("beetle").getChild("body").getChild("r_leg0").getChild("r_tibia0");
+		this.rTibia1 = root.getChild("beetle").getChild("body").getChild("r_leg1").getChild("r_tibia1");
+		this.rTibia2 = root.getChild("beetle").getChild("body").getChild("r_leg2").getChild("r_tibia2");
+		this.lTibia0 = root.getChild("beetle").getChild("body").getChild("l_leg0").getChild("l_tibia0");
+		this.lTibia1 = root.getChild("beetle").getChild("body").getChild("l_leg1").getChild("l_tibia1");
+		this.lTibia2 = root.getChild("beetle").getChild("body").getChild("l_leg2").getChild("l_tibia2");
 	}
 
 	public static LayerDefinition createBodyLayer() {
 		MeshDefinition mesh = new MeshDefinition();
 		PartDefinition root = mesh.getRoot();
-		PartDefinition p1 = root.addOrReplaceChild("body", CubeListBuilder.create()
-				.texOffs(0, 0).addBox(-3.0f, -2.0f, -4.0f, 6.0f, 3.0f, 8.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(0.0f, 21.0f, 0.0f));
-		PartDefinition p2 = p1.addOrReplaceChild("head", CubeListBuilder.create()
-				.texOffs(28, 0).addBox(-2.0f, -1.5f, -3.0f, 4.0f, 3.0f, 3.0f, new CubeDeformation(0.0f))
-				.texOffs(42, 0).addBox(-2.0f, 0.5f, -4.0f, 1.0f, 1.0f, 2.0f, new CubeDeformation(0.0f))
-				.texOffs(42, 0).mirror().addBox(1.0f, 0.5f, -4.0f, 1.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offset(0.0f, -0.5f, -4.0f));
-		p2.addOrReplaceChild("horn", CubeListBuilder.create()
-				.texOffs(48, 0).addBox(-0.5f, -3.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(52, 0).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(-0.2f)),
-				PartPose.offsetAndRotation(0.0f, -1.5f, -1.5f, 0.25f, 0.0f, 0.0f));
-		p2.addOrReplaceChild("right_antenna", CubeListBuilder.create()
-				.texOffs(42, 4).addBox(-0.5f, -3.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(-0.25f)),
-				PartPose.offsetAndRotation(-1.5f, -1.5f, -2.5f, -0.6f, 0.0f, -0.5f));
-		p2.addOrReplaceChild("left_antenna", CubeListBuilder.create()
-				.texOffs(42, 4).mirror().addBox(-0.5f, -3.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(-0.25f)).mirror(false),
-				PartPose.offsetAndRotation(1.5f, -1.5f, -2.5f, -0.6f, 0.0f, 0.5f));
-		PartDefinition p6 = p1.addOrReplaceChild("right_elytron", CubeListBuilder.create()
-				.texOffs(0, 11).addBox(-4.0f, -2.0f, 0.0f, 4.0f, 2.0f, 9.0f, new CubeDeformation(0.0f))
-				.texOffs(38, 11).addBox(-3.5f, -3.0f, 1.0f, 3.0f, 1.0f, 7.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(0.0f, -1.5f, -4.5f));
-		p6.addOrReplaceChild("right_elytron_crystal", CubeListBuilder.create()
-				.texOffs(26, 11).addBox(-1.0f, -3.0f, -1.0f, 2.0f, 3.0f, 2.0f, new CubeDeformation(0.0f))
-				.texOffs(34, 11).addBox(-2.0f, -2.0f, 1.5f, 1.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(-2.0f, -2.5f, 6.0f, 0.35f, 0.0f, -0.3f));
-		PartDefinition p8 = p1.addOrReplaceChild("left_elytron", CubeListBuilder.create()
-				.texOffs(0, 11).mirror().addBox(0.0f, -2.0f, 0.0f, 4.0f, 2.0f, 9.0f, new CubeDeformation(0.0f)).mirror(false)
-				.texOffs(38, 11).mirror().addBox(0.5f, -3.0f, 1.0f, 3.0f, 1.0f, 7.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offset(0.0f, -1.5f, -4.5f));
-		p8.addOrReplaceChild("left_elytron_crystal", CubeListBuilder.create()
-				.texOffs(26, 11).mirror().addBox(-1.0f, -3.0f, -1.0f, 2.0f, 3.0f, 2.0f, new CubeDeformation(0.0f)).mirror(false)
-				.texOffs(34, 11).addBox(1.0f, -2.0f, 1.5f, 1.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(2.0f, -2.5f, 6.0f, 0.35f, 0.0f, 0.3f));
-		root.addOrReplaceChild("right_leg_0", CubeListBuilder.create()
-				.texOffs(0, 22).addBox(-2.0f, -0.5f, -0.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(6, 22).addBox(-2.5f, 0.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(-2.5f, 20.5f, -2.5f));
-		root.addOrReplaceChild("left_leg_0", CubeListBuilder.create()
-				.texOffs(0, 22).mirror().addBox(0.0f, -0.5f, -0.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false)
-				.texOffs(6, 22).mirror().addBox(1.5f, 0.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offset(2.5f, 20.5f, -2.5f));
-		root.addOrReplaceChild("right_leg_1", CubeListBuilder.create()
-				.texOffs(0, 22).addBox(-2.0f, -0.5f, -0.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(6, 22).addBox(-2.5f, 0.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(-2.5f, 20.5f, 0.0f));
-		root.addOrReplaceChild("left_leg_1", CubeListBuilder.create()
-				.texOffs(0, 22).mirror().addBox(0.0f, -0.5f, -0.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false)
-				.texOffs(6, 22).mirror().addBox(1.5f, 0.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offset(2.5f, 20.5f, 0.0f));
-		root.addOrReplaceChild("right_leg_2", CubeListBuilder.create()
-				.texOffs(0, 22).addBox(-2.0f, -0.5f, -0.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f))
-				.texOffs(6, 22).addBox(-2.5f, 0.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offset(-2.5f, 20.5f, 2.5f));
-		root.addOrReplaceChild("left_leg_2", CubeListBuilder.create()
-				.texOffs(0, 22).mirror().addBox(0.0f, -0.5f, -0.5f, 2.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false)
-				.texOffs(6, 22).mirror().addBox(1.5f, 0.0f, -0.5f, 1.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)).mirror(false),
-				PartPose.offset(2.5f, 20.5f, 2.5f));
-		return LayerDefinition.create(mesh, 64, 32);
+		PartDefinition p1 = root.addOrReplaceChild("beetle", CubeListBuilder.create(),
+				PartPose.offset(0.0f, 24.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(112, 0).addBox(-5.0f, -12.0f, -6.0f, 10.0f, 5.0f, 8.0f, new CubeDeformation(0.0f))
+				.texOffs(0, 17).addBox(-4.0f, -13.2f, -5.5f, 8.0f, 2.0f, 7.0f, new CubeDeformation(0.0f))
+				.texOffs(0, 0).addBox(-5.0f, -10.5f, 0.5f, 10.0f, 5.0f, 12.0f, new CubeDeformation(0.0f))
+				.texOffs(148, 0).addBox(-4.0f, -5.6f, 1.0f, 8.0f, 1.0f, 11.0f, new CubeDeformation(0.0f)),
+				PartPose.ZERO);
+		PartDefinition p3 = p2.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(30, 17).addBox(-3.0f, -2.0f, -5.0f, 6.0f, 4.0f, 5.0f, new CubeDeformation(0.0f))
+				.texOffs(162, 17).addBox(-3.6f, -1.6f, -4.6f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(162, 17).addBox(1.6f, -1.6f, -4.6f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -7.5f, -6.0f, 0.15f, 0.0f, 0.0f));
+		p3.addOrReplaceChild("lids", CubeListBuilder.create()
+				.texOffs(148, 17).addBox(-3.7f, -1.8f, -4.8f, 6.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.ZERO);
+		p3.addOrReplaceChild("r_mand", CubeListBuilder.create()
+				.texOffs(108, 17).addBox(-0.5f, -0.5f, -4.0f, 1.0f, 1.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-1.8f, 0.8f, -4.6f, 0.0f, 0.35f, 0.0f));
+		p3.addOrReplaceChild("l_mand", CubeListBuilder.create()
+				.texOffs(108, 17).addBox(-0.5f, -0.5f, -4.0f, 1.0f, 1.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(1.8f, 0.8f, -4.6f, 0.0f, -0.35f, 0.0f));
+		PartDefinition p7 = p3.addOrReplaceChild("r_ant", CubeListBuilder.create()
+				.texOffs(118, 17).addBox(-0.5f, -0.5f, -4.0f, 1.0f, 1.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-2.4f, -1.4f, -4.2f, -0.95f, -0.5f, 0.0f));
+		p7.addOrReplaceChild("r_ant2", CubeListBuilder.create()
+				.texOffs(118, 17).addBox(-0.5f, -0.5f, -4.0f, 1.0f, 1.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(142, 17).addBox(-0.5f, -1.0f, -5.6f, 1.0f, 2.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 0.0f, -3.6f, 0.7f, 0.0f, 0.0f));
+		PartDefinition p9 = p3.addOrReplaceChild("l_ant", CubeListBuilder.create()
+				.texOffs(118, 17).addBox(-0.5f, -0.5f, -4.0f, 1.0f, 1.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(2.4f, -1.4f, -4.2f, -0.95f, 0.5f, 0.0f));
+		p9.addOrReplaceChild("l_ant2", CubeListBuilder.create()
+				.texOffs(118, 17).addBox(-0.5f, -0.5f, -4.0f, 1.0f, 1.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(142, 17).addBox(-0.5f, -1.0f, -5.6f, 1.0f, 2.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 0.0f, -3.6f, 0.7f, 0.0f, 0.0f));
+		PartDefinition p11 = p3.addOrReplaceChild("horn", CubeListBuilder.create()
+				.texOffs(52, 17).addBox(-1.5f, -5.0f, -1.5f, 3.0f, 5.0f, 3.0f, new CubeDeformation(0.0f))
+				.texOffs(92, 17).addBox(-2.0f, -2.5f, -2.0f, 4.0f, 1.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -1.4f, -3.0f, -0.35f, 0.0f, 0.0f));
+		PartDefinition p12 = p11.addOrReplaceChild("horn2", CubeListBuilder.create()
+				.texOffs(64, 17).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -4.6f, 0.0f, -0.45f, 0.0f, 0.0f));
+		p12.addOrReplaceChild("horn_tip", CubeListBuilder.create()
+				.texOffs(72, 17).addBox(-1.5f, -1.5f, -1.5f, 3.0f, 3.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -6.0f, 0.0f, 0.785f, 0.0f, 0.785f));
+		p2.addOrReplaceChild("r_elytron", CubeListBuilder.create()
+				.texOffs(44, 0).addBox(-6.0f, -1.5f, 0.0f, 6.0f, 3.0f, 14.0f, new CubeDeformation(0.0f))
+				.texOffs(84, 0).addBox(-6.6f, 0.5f, 0.5f, 1.0f, 2.0f, 13.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-0.1f, -11.4f, -0.6f, -0.05f, 0.0f, 0.0f));
+		p2.addOrReplaceChild("l_elytron", CubeListBuilder.create()
+				.texOffs(44, 0).mirror().addBox(0.0f, -1.5f, 0.0f, 6.0f, 3.0f, 14.0f, new CubeDeformation(0.0f)).mirror(false)
+				.texOffs(84, 0).mirror().addBox(5.6f, 0.5f, 0.5f, 1.0f, 2.0f, 13.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(0.1f, -11.4f, -0.6f, -0.05f, 0.0f, 0.0f));
+		p2.addOrReplaceChild("r_hwing", CubeListBuilder.create()
+				.texOffs(186, 0).addBox(-12.0f, 0.0f, 0.0f, 12.0f, 0.0f, 10.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-2.0f, -10.6f, 0.5f, 0.0f, 1.35f, 0.0f));
+		p2.addOrReplaceChild("l_hwing", CubeListBuilder.create()
+				.texOffs(186, 0).mirror().addBox(0.0f, 0.0f, 0.0f, 12.0f, 0.0f, 10.0f, new CubeDeformation(0.0f)).mirror(false),
+				PartPose.offsetAndRotation(2.0f, -10.6f, 0.5f, 0.0f, -1.35f, 0.0f));
+		PartDefinition p18 = p2.addOrReplaceChild("r_leg0", CubeListBuilder.create()
+				.texOffs(84, 17).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.4f, -6.6f, -3.5f, 0.0f, -0.5f, 1.25f));
+		p18.addOrReplaceChild("r_tibia0", CubeListBuilder.create()
+				.texOffs(128, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 17).addBox(-1.0f, 3.6f, -2.0f, 2.0f, 1.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 3.6f, 0.0f, 0.0f, 0.0f, -1.5f));
+		PartDefinition p20 = p2.addOrReplaceChild("r_leg1", CubeListBuilder.create()
+				.texOffs(84, 17).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.4f, -6.6f, 1.5f, 0.0f, 0.0f, 1.25f));
+		p20.addOrReplaceChild("r_tibia1", CubeListBuilder.create()
+				.texOffs(128, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 17).addBox(-1.0f, 3.6f, -2.0f, 2.0f, 1.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 3.6f, 0.0f, 0.0f, 0.0f, -1.5f));
+		PartDefinition p22 = p2.addOrReplaceChild("r_leg2", CubeListBuilder.create()
+				.texOffs(84, 17).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.4f, -6.6f, 6.5f, 0.0f, 0.5f, 1.25f));
+		p22.addOrReplaceChild("r_tibia2", CubeListBuilder.create()
+				.texOffs(128, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 17).addBox(-1.0f, 3.6f, -2.0f, 2.0f, 1.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 3.6f, 0.0f, 0.0f, 0.0f, -1.5f));
+		PartDefinition p24 = p2.addOrReplaceChild("l_leg0", CubeListBuilder.create()
+				.texOffs(84, 17).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.4f, -6.6f, -3.5f, 0.0f, 0.5f, -1.25f));
+		p24.addOrReplaceChild("l_tibia0", CubeListBuilder.create()
+				.texOffs(128, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 17).addBox(-1.0f, 3.6f, -2.0f, 2.0f, 1.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 3.6f, 0.0f, 0.0f, 0.0f, 1.5f));
+		PartDefinition p26 = p2.addOrReplaceChild("l_leg1", CubeListBuilder.create()
+				.texOffs(84, 17).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.4f, -6.6f, 1.5f, 0.0f, 0.0f, -1.25f));
+		p26.addOrReplaceChild("l_tibia1", CubeListBuilder.create()
+				.texOffs(128, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 17).addBox(-1.0f, 3.6f, -2.0f, 2.0f, 1.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 3.6f, 0.0f, 0.0f, 0.0f, 1.5f));
+		PartDefinition p28 = p2.addOrReplaceChild("l_leg2", CubeListBuilder.create()
+				.texOffs(84, 17).addBox(-1.0f, 0.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.4f, -6.6f, 6.5f, 0.0f, -0.5f, -1.25f));
+		p28.addOrReplaceChild("l_tibia2", CubeListBuilder.create()
+				.texOffs(128, 17).addBox(-0.5f, 0.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(132, 17).addBox(-1.0f, 3.6f, -2.0f, 2.0f, 1.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 3.6f, 0.0f, 0.0f, 0.0f, 1.5f));
+		return LayerDefinition.create(mesh, 256, 128);
 	}
 
 	@Override
 	public void setupAnim(SparkBeetleRenderState state) {
 		super.setupAnim(state);
 		float age = state.ageInTicks;
-		head.yRot = Mth.clamp(state.yRot, -40.0f, 40.0f) * Mth.DEG_TO_RAD * 0.6f;
-		rightAntenna.zRot += Mth.sin(age * 0.3f) * 0.15f;
-		leftAntenna.zRot -= Mth.sin(age * 0.3f + 1.0f) * 0.15f;
-		body.y += Mth.sin(age * 0.2f) * 0.15f;
-
-		if (state.charging) {
-			// Flügeldecken öffnen sich leicht und vibrieren
-			float buzz = Mth.sin(age * 2.2f) * 0.06f;
-			rightElytron.yRot = 0.18f + buzz;
-			leftElytron.yRot = -0.18f - buzz;
-			rightElytron.zRot = -0.25f;
-			leftElytron.zRot = 0.25f;
-		}
-
-		float pos = state.walkAnimationPos * 1.6f;
-		float speed = Math.min(state.walkAnimationSpeed, 1.0f);
-
-		for (int i = 0; i < 3; i++) {
-			float phase = (i % 2 == 0) ? 0.0f : Mth.PI;
-			rightLegs[i].yRot = Mth.cos(pos + phase) * 0.6f * speed;
-			leftLegs[i].yRot = Mth.cos(pos + phase + Mth.PI) * 0.6f * speed;
-			rightLegs[i].zRot = Math.max(0.0f, Mth.sin(pos + phase)) * 0.4f * speed;
-			leftLegs[i].zRot = -Math.max(0.0f, Mth.sin(pos + phase + Mth.PI)) * 0.4f * speed;
-		}
+		lids.visible = state.resting;
 
 		if (state.resting) {
-			head.xRot = 0.35f;
+			poseSleep(1.0f);
+			body.y += Mth.sin(age * 0.06f) * 0.25f;
+			return;
 		}
+
+		// Dreifuß-Gang: Gruppe A (rechts vorne, links Mitte, rechts hinten) gegen Gruppe B
+		float t = state.walkAnimationPos * 1.4f;
+		float amp = Math.min(1.0f, state.walkAnimationSpeed * 1.6f);
+		float a = Mth.sin(t);
+		float lift = Math.max(0.0f, Mth.cos(t)) * 0.35f * amp;
+		float liftB = Math.max(0.0f, -Mth.cos(t)) * 0.35f * amp;
+		rLeg0.yRot += a * 0.45f * amp;
+		lLeg1.yRot -= a * 0.45f * amp;
+		rLeg2.yRot += a * 0.45f * amp;
+		lLeg0.yRot += a * 0.45f * amp;
+		rLeg1.yRot -= a * 0.45f * amp;
+		lLeg2.yRot += a * 0.45f * amp;
+		rLeg0.zRot += lift;
+		lLeg1.zRot -= lift;
+		rLeg2.zRot += lift;
+		lLeg0.zRot -= liftB;
+		rLeg1.zRot += liftB;
+		lLeg2.zRot -= liftB;
+		body.y += Mth.abs(Mth.cos(t)) * -0.4f * amp;
+
+		head.yRot += state.yRot * Mth.DEG_TO_RAD * 0.5f;
+		head.xRot += state.xRot * Mth.DEG_TO_RAD * 0.4f;
+		rAnt.xRot += Mth.sin(age * 0.17f) * 0.12f;
+		lAnt.xRot += Mth.sin(age * 0.17f + 1.3f) * 0.12f;
+		rMand.yRot += Mth.sin(age * 0.3f) * 0.08f;
+		lMand.yRot -= Mth.sin(age * 0.3f) * 0.08f;
+
+		if (state.charging) {
+			poseCharge(1.0f);
+			float buzz = Mth.sin(age * 2.4f) * 0.3f;
+			rHwing.zRot += buzz;
+			lHwing.zRot -= buzz;
+			horn.xRot += Mth.sin(age * 0.8f) * 0.04f;
+		}
+	}
+
+	private void poseCharge(float k) {
+		rElytron.zRot += k * 0.750f;
+		rElytron.yRot += k * 0.350f;
+		lElytron.zRot += k * -0.750f;
+		lElytron.yRot += k * -0.350f;
+		rHwing.yRot += k * 1.050f;
+		rHwing.zRot += k * 0.200f;
+		lHwing.yRot += k * -1.050f;
+		lHwing.zRot += k * -0.200f;
+		head.xRot += k * -0.250f;
+		horn.xRot += k * -0.200f;
+	}
+
+	private void poseSleep(float k) {
+		beetle.y += k * 2.200f;
+		head.xRot += k * 0.300f;
+		head.y += k * 0.600f;
+		rAnt.xRot += k * 0.350f;
+		rAnt.yRot += k * 0.300f;
+		lAnt.xRot += k * 0.350f;
+		lAnt.yRot += k * -0.300f;
+		rMand.yRot += k * 0.300f;
+		lMand.yRot += k * -0.300f;
+		rLeg0.zRot += k * 0.300f;
+		rTibia0.zRot += k * -0.900f;
+		rLeg1.zRot += k * 0.300f;
+		rTibia1.zRot += k * -0.900f;
+		rLeg2.zRot += k * 0.300f;
+		rTibia2.zRot += k * -0.900f;
+		lLeg0.zRot += k * -0.300f;
+		lTibia0.zRot += k * 0.900f;
+		lLeg1.zRot += k * -0.300f;
+		lTibia1.zRot += k * 0.900f;
+		lLeg2.zRot += k * -0.300f;
+		lTibia2.zRot += k * 0.900f;
+	}
+
+	private void poseWalk(float k) {
+		rLeg0.yRot += k * 0.350f;
+		rLeg1.yRot += k * -0.350f;
+		rLeg2.yRot += k * 0.350f;
+		lLeg0.yRot += k * -0.350f;
+		lLeg1.yRot += k * 0.350f;
+		lLeg2.yRot += k * -0.350f;
 	}
 
 	@Override
 	public void translateToHat(PoseStack pose) {
 		root().translateAndRotate(pose);
+		beetle.translateAndRotate(pose);
 		body.translateAndRotate(pose);
 		head.translateAndRotate(pose);
-		pose.translate(0.0f, 2.0f / 16.0f, -1.5f / 16.0f);
+		pose.translate(0.0f, 2.0f / 16.0f, -2.5f / 16.0f);
 	}
 
 	@Override
 	public float hatScale() {
-		return 0.5f;
+		return 0.75f;
 	}
 }
