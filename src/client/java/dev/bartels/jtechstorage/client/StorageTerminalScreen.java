@@ -80,6 +80,19 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	private static boolean descending = true;
 	private static boolean onlySpecial = false;
 	private static String lastSearch = "";
+	/** Kategorie-Reiter links neben dem Terminal (null = alle). */
+	private static dev.bartels.jtechstorage.entity.@Nullable SortCategory category = null;
+	private static final int TAB_SIZE = 20;
+	private static final int TAB_GAP = 1;
+	private static final int TAB_ROWS = 8;
+	static final ItemStack[] CATEGORY_ICONS = {
+			new ItemStack(Items.BREAD), new ItemStack(Items.ENCHANTED_BOOK), new ItemStack(Items.IRON_CHESTPLATE),
+			new ItemStack(Items.IRON_PICKAXE), new ItemStack(Items.REDSTONE), new ItemStack(Items.RAW_IRON),
+			new ItemStack(Items.IRON_INGOT), new ItemStack(Items.FLOWER_POT), new ItemStack(Items.WHEAT),
+			new ItemStack(Items.OAK_SAPLING), new ItemStack(Items.OAK_LOG), new ItemStack(Items.BONE),
+			new ItemStack(Items.DIRT), new ItemStack(Items.COBBLESTONE), new ItemStack(Items.CHEST)};
+	private final java.util.EnumMap<dev.bartels.jtechstorage.entity.SortCategory, Integer> categoryCounts =
+			new java.util.EnumMap<>(dev.bartels.jtechstorage.entity.SortCategory.class);
 
 	private final StorageTerminalMenu.Layout layout;
 	private final int rows;
@@ -134,8 +147,16 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		String phrase = lastSearch.toLowerCase(Locale.ROOT).trim();
 		String[] terms = phrase.split("\\s+");
 		List<StorageNetwork.Entry> result = new ArrayList<>();
+		categoryCounts.clear();
 
 		for (StorageNetwork.Entry entry : menu.getClientEntries()) {
+			dev.bartels.jtechstorage.entity.SortCategory entryCategory = dev.bartels.jtechstorage.entity.SortCategory.of(entry.prototype());
+			categoryCounts.merge(entryCategory, 1, Integer::sum);
+
+			if (category != null && entryCategory != category) {
+				continue;
+			}
+
 			if (onlySpecial && !isSpecial(entry.prototype())) {
 				continue;
 			}
@@ -298,10 +319,71 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		super.extractContents(graphics, mouseX, mouseY, delta);
 
 		extractGrid(graphics, mouseX, mouseY);
+		extractButtonAt(graphics, SETTINGS_BUTTON_X, layout.inventoryY() + 58, mouseX, mouseY, false);
+		// kleines Balkendiagramm als Symbol
+		int chartX = leftPos + SETTINGS_BUTTON_X + 4;
+		int chartBottom = topPos + layout.inventoryY() + 58 + 14;
+		graphics.fill(chartX, chartBottom - 4, chartX + 3, chartBottom, GuiTheme.text());
+		graphics.fill(chartX + 4, chartBottom - 9, chartX + 7, chartBottom, GuiTheme.text());
+		graphics.fill(chartX + 8, chartBottom - 6, chartX + 11, chartBottom, GuiTheme.text());
 		extractButtonAt(graphics, SETTINGS_BUTTON_X, layout.inventoryY() + 38, mouseX, mouseY, false);
 		graphics.text(font, "⚙", leftPos + SETTINGS_BUTTON_X + 9 - font.width("⚙") / 2, topPos + layout.inventoryY() + 43, GuiTheme.text(), false);
 		extractScrollbar(graphics);
 		extractToolbar(graphics, mouseX, mouseY);
+		extractCategoryTabs(graphics, mouseX, mouseY);
+	}
+
+	// ------------------------------------------------------------------
+	// Kategorie-Reiter (zwei Spalten links neben dem Terminal)
+	// ------------------------------------------------------------------
+
+	/** Reiter 0 = alle, 1..15 = Kategorien in Wichtel-Reihenfolge. */
+	private int tabX(int index) {
+		int column = index / TAB_ROWS;
+		return leftPos - 2 - (2 - column) * (TAB_SIZE + TAB_GAP);
+	}
+
+	private int tabY(int index) {
+		return topPos + 4 + (index % TAB_ROWS) * (TAB_SIZE + TAB_GAP);
+	}
+
+	private static dev.bartels.jtechstorage.entity.@Nullable SortCategory tabCategory(int index) {
+		return index == 0 ? null : dev.bartels.jtechstorage.entity.SortCategory.values()[index - 1];
+	}
+
+	private int tabAt(double mouseX, double mouseY) {
+		for (int index = 0; index <= dev.bartels.jtechstorage.entity.SortCategory.values().length; index++) {
+			int x = tabX(index);
+			int y = tabY(index);
+
+			if (mouseX >= x && mouseX < x + TAB_SIZE && mouseY >= y && mouseY < y + TAB_SIZE) {
+				return index;
+			}
+		}
+
+		return -1;
+	}
+
+	/** Für JEI: Bereich der Reiter freihalten. */
+	public List<net.minecraft.client.renderer.Rect2i> getExtraAreas() {
+		int x = tabX(0);
+		return List.of(new net.minecraft.client.renderer.Rect2i(x, topPos + 4, leftPos - x, TAB_ROWS * (TAB_SIZE + TAB_GAP)));
+	}
+
+	private void extractCategoryTabs(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
+		int hovered = tabAt(mouseX, mouseY);
+
+		for (int index = 0; index <= dev.bartels.jtechstorage.entity.SortCategory.values().length; index++) {
+			dev.bartels.jtechstorage.entity.SortCategory tab = tabCategory(index);
+			boolean selected = tab == category;
+			boolean empty = tab != null && categoryCounts.getOrDefault(tab, 0) == 0;
+			int x = tabX(index);
+			int y = tabY(index);
+			GuiTheme.face(graphics, x, y, TAB_SIZE, TAB_SIZE, selected ? GuiTheme.accent()
+					: index == hovered ? GuiTheme.accentHover() : empty ? GuiTheme.DISABLED_FACE : GuiTheme.accentDark());
+			ItemStack icon = tab == null ? new ItemStack(dev.bartels.jtechstorage.ModContent.STORAGE_TERMINAL_ITEM) : CATEGORY_ICONS[tab.ordinal()];
+			graphics.item(icon, x + 2, y + 2);
+		}
 	}
 
 	private void extractGrid(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -442,6 +524,18 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			return;
 		}
 
+		int tab = tabAt(mouseX, mouseY);
+
+		if (tab >= 0) {
+			dev.bartels.jtechstorage.entity.SortCategory tabCategory = tabCategory(tab);
+			Component name = tabCategory == null ? Component.translatable("jtechstorage.terminal.category.all")
+					: Component.translatable(tabCategory.translationKey());
+			int count = tabCategory == null ? menu.getClientEntries().size() : categoryCounts.getOrDefault(tabCategory, 0);
+			graphics.setComponentTooltipForNextFrame(font, List.of(name,
+					Component.translatable("jtechstorage.terminal.category.count", count).withStyle(ChatFormatting.GRAY)), mouseX, mouseY);
+			return;
+		}
+
 		StorageNetwork.Entry entry = entryAt(gridIndexAt(mouseX, mouseY));
 
 		if (entry != null) {
@@ -513,6 +607,8 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			graphics.setTooltipForNextFrame(font, Component.translatable("jtechstorage.terminal.clear_grid"), mouseX, mouseY);
 		} else if (isOver(SETTINGS_BUTTON_X, layout.inventoryY() + 38, BUTTON_SIZE, BUTTON_SIZE, mouseX, mouseY)) {
 			graphics.setTooltipForNextFrame(font, Component.translatable("jtechstorage.gui.settings"), mouseX, mouseY);
+		} else if (isOver(SETTINGS_BUTTON_X, layout.inventoryY() + 58, BUTTON_SIZE, BUTTON_SIZE, mouseX, mouseY)) {
+			graphics.setTooltipForNextFrame(font, Component.translatable("jtechstorage.stats.open"), mouseX, mouseY);
 		} else if (hoveredSlot != null && !hoveredSlot.hasItem() && hoveredSlot.index == StorageTerminalMenu.RANGE_SLOT) {
 			graphics.setTooltipForNextFrame(font, Component.translatable("jtechstorage.terminal.upgrade_slot.range"), mouseX, mouseY);
 		} else if (hoveredSlot != null && !hoveredSlot.hasItem() && hoveredSlot.index == StorageTerminalMenu.CAPACITY_SLOT) {
@@ -571,6 +667,22 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 		if (isOver(SETTINGS_BUTTON_X, layout.inventoryY() + 38, BUTTON_SIZE, BUTTON_SIZE, mouseX, mouseY)) {
 			minecraft.setScreenAndShow(new GuiSettingsScreen(this));
+			return true;
+		}
+
+		if (isOver(SETTINGS_BUTTON_X, layout.inventoryY() + 58, BUTTON_SIZE, BUTTON_SIZE, mouseX, mouseY)) {
+			minecraft.setScreenAndShow(new TerminalStatsScreen(this, menu));
+			return true;
+		}
+
+		int tab = tabAt(mouseX, mouseY);
+
+		if (tab >= 0) {
+			dev.bartels.jtechstorage.entity.SortCategory clicked = tabCategory(tab);
+			category = event.button() == 1 || clicked == category ? null : clicked;
+			scrollRow = 0;
+			refilter();
+			minecraft.getSoundManager().play(net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(net.minecraft.sounds.SoundEvents.UI_BUTTON_CLICK, 1.0f));
 			return true;
 		}
 

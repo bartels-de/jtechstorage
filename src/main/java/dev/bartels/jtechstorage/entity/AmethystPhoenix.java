@@ -50,12 +50,12 @@ import dev.bartels.jtechstorage.menu.AmethystPhoenixMenu;
 
 /**
  * Amethyst-Phönix – die Entwicklungsstufe des Phönix (Rechtsklick mit einem Amethyst-Obsidian-Upgrade).
- * Groß, zwei Sitze für Spieler, bis zu vier ausrüstbare Kisten. Mit einer Route-Feder bekommt er zwei Haltestellen
- * und pendelt dann selbstständig: Flug zur Haltestelle, dort eine ganze Nacht Rast, bei Sonnenaufgang zurück.
+ * Groß, zwei Sitze für Spieler, bis zu vier ausrüstbare Kisten. Mit einem Flugplan bekommt er 2–4 Haltestellen
+ * und fliegt sie dann selbstständig der Reihe nach an; die Rastdauer stellt jede Haltestelle selbst ein.
  * Wer vorne sitzt, kann mit der Sprungtaste früher starten. Je mehr Kisten und Ladung, desto langsamer fliegt er.
  * Im Sitz-Modus bewegt er sich nicht.
  */
-public class AmethystPhoenix extends NetworkHelperMob {
+public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.world.entity.HasCustomInventoryScreen {
 	public static final int CHEST_SLOTS = 27;
 	public static final int MAX_CHESTS = 4;
 	public static final int STATE_IDLE = 0;
@@ -76,9 +76,17 @@ public class AmethystPhoenix extends NetworkHelperMob {
 			updateLoad();
 		}
 	};
-	private @Nullable BlockPos stopA;
-	private @Nullable BlockPos stopB;
-	/** Ziel des aktuellen bzw. nächsten Flugs: 0 = A, 1 = B. */
+	/** Haltestelle der Route (Name als Kopie, falls der Block gerade nicht geladen ist). */
+	public record RouteStop(BlockPos pos, String name) {
+		public static final com.mojang.serialization.Codec<RouteStop> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.create(
+				instance -> instance.group(
+						BlockPos.CODEC.fieldOf("pos").forGetter(RouteStop::pos),
+						com.mojang.serialization.Codec.STRING.fieldOf("name").forGetter(RouteStop::name)
+				).apply(instance, RouteStop::new));
+	}
+
+	private final List<RouteStop> stops = new java.util.ArrayList<>();
+	/** Index der Haltestelle, zu der er fliegt bzw. an der er rastet. */
 	private int target;
 	private long departAt;
 	private double cruiseY;
@@ -140,8 +148,16 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		return cargo;
 	}
 
-	public @Nullable BlockPos getStop(int index) {
-		return index == 0 ? stopA : stopB;
+	public List<RouteStop> getStops() {
+		return List.copyOf(stops);
+	}
+
+	private boolean hasRoute() {
+		return stops.size() >= 2;
+	}
+
+	private @Nullable RouteStop targetStop() {
+		return target >= 0 && target < stops.size() ? stops.get(target) : null;
 	}
 
 	public int getTargetStop() {
@@ -220,17 +236,65 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	// Route
 	// ------------------------------------------------------------------
 
-	/** Neue Route von der Route-Feder. Er fliegt zuerst zu A (ist er schon dort, rastet er gleich). */
-	public void setRoute(BlockPos a, BlockPos b) {
-		stopA = a.immutable();
-		stopB = b.immutable();
+	/** Neue Route vom Flugplan. Er fliegt zuerst zur ersten Haltestelle (ist er schon dort, rastet er gleich). */
+	public void setRoute(List<RouteStop> route) {
+		stops.clear();
+
+		for (RouteStop stop : route) {
+			if (stops.size() < dev.bartels.jtechstorage.item.FlightPlanItem.MAX_STOPS) {
+				stops.add(new RouteStop(stop.pos().immutable(), stop.name()));
+			}
+		}
+
 		target = 0;
 
-		if (position().distanceTo(landing(stopA)) < 8.0) {
+		if (!hasRoute()) {
+			setState(STATE_IDLE);
+		} else if (position().distanceTo(landing(stops.getFirst().pos())) < 8.0) {
 			arrive();
 		} else {
 			takeOff();
 		}
+	}
+
+	/** Route aus einem Flugplan (alle Haltestellen müssen in dieser Dimension liegen). */
+	private @Nullable List<RouteStop> routeFrom(List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan) {
+		List<RouteStop> route = new java.util.ArrayList<>();
+
+		for (dev.bartels.jtechstorage.item.FlightPlanItem.Stop stop : plan) {
+			if (!stop.pos().dimension().equals(level().dimension())) {
+				return null;
+			}
+
+			route.add(new RouteStop(stop.pos().pos(), stop.name()));
+		}
+
+		return route;
+	}
+
+	private List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> toPlan() {
+		List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan = new java.util.ArrayList<>();
+
+		for (RouteStop stop : stops) {
+			plan.add(new dev.bartels.jtechstorage.item.FlightPlanItem.Stop(GlobalPos.of(level().dimension(), stop.pos()), stop.name()));
+		}
+
+		return plan;
+	}
+
+	/** Route als Text: „Hafen → Mine → Farm → …“. */
+	public Component routeText() {
+		net.minecraft.network.chat.MutableComponent text = Component.empty();
+
+		for (int i = 0; i < stops.size(); i++) {
+			if (i > 0) {
+				text.append(" → ");
+			}
+
+			text.append(stopName(i));
+		}
+
+		return text.append(" ↺");
 	}
 
 	private static Vec3 landing(BlockPos stop) {
@@ -245,11 +309,11 @@ public class AmethystPhoenix extends NetworkHelperMob {
 
 	/** Abflug von der Haltestelle, an der er gerade rastet. */
 	public boolean departNow() {
-		if (getState() != STATE_RESTING || isSitting() || stopA == null || stopB == null) {
+		if (getState() != STATE_RESTING || isSitting() || !hasRoute()) {
 			return false;
 		}
 
-		target = 1 - target;
+		target = (target + 1) % stops.size();
 		takeOff();
 		tellPassengers(Component.translatable("jtechstorage.amethyst_phoenix.depart", stopName(target)));
 
@@ -264,9 +328,35 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	private void arrive() {
 		setState(STATE_RESTING);
 		setDeltaMovement(Vec3.ZERO);
-		departAt = nextDeparture(level().getDefaultClockTime());
+		dev.bartels.jtechstorage.block.PhoenixStopBlockEntity.Rest rest = dev.bartels.jtechstorage.block.PhoenixStopBlockEntity.Rest.NIGHT;
+		RouteStop stop = targetStop();
+
+		// Rastdauer (und aktuellen Namen) von der Haltestelle lesen – fehlt der Block, rastet er eine Nacht
+		if (stop != null && level().getBlockEntity(stop.pos()) instanceof dev.bartels.jtechstorage.block.PhoenixStopBlockEntity block) {
+			rest = block.getRest();
+
+			if (block.hasName()) {
+				stops.set(target, new RouteStop(stop.pos(), block.getStopName()));
+			}
+
+			// Lieferauftrag: mit den Kisten neben der Haltestelle tauschen
+			if (level() instanceof ServerLevel serverLevel && getChests() > 0) {
+				dev.bartels.jtechstorage.block.PhoenixStopBlockEntity.Exchange exchange = block.exchange(serverLevel, cargo, getChests() * CHEST_SLOTS);
+
+				if (exchange.unloaded() > 0 || exchange.loaded() > 0) {
+					tellPassengers(Component.translatable("jtechstorage.amethyst_phoenix.exchange", exchange.unloaded(), exchange.loaded()));
+					serverLevel.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.6, getZ(), 12, 0.8, 0.3, 0.8, 0.02);
+				}
+			}
+		}
+
+		departAt = nextDeparture(level().getDefaultClockTime(), rest);
 		playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 1.2f, 0.8f);
-		tellPassengers(Component.translatable("jtechstorage.amethyst_phoenix.arrived", stopName(target)));
+		tellPassengers(Component.translatable("jtechstorage.amethyst_phoenix.arrived", stopName(target), Component.translatable(rest.key())));
+	}
+
+	static long nextDeparture(long time, dev.bartels.jtechstorage.block.PhoenixStopBlockEntity.Rest rest) {
+		return rest.ticks > 0 ? time + rest.ticks : nextDeparture(time);
 	}
 
 	/** Nächster Sonnenaufgang, nachdem eine ganze Nacht (13000–24000) vergangen ist. */
@@ -282,10 +372,12 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	}
 
 	private Component stopName(int index) {
-		BlockPos stop = getStop(index);
-		String letter = index == 0 ? "A" : "B";
-		return stop == null ? Component.literal(letter)
-				: Component.translatable("jtechstorage.amethyst_phoenix.stop", letter, stop.getX(), stop.getY(), stop.getZ());
+		if (index < 0 || index >= stops.size()) {
+			return Component.literal("?");
+		}
+
+		String name = stops.get(index).name();
+		return name.isBlank() ? Component.translatable("jtechstorage.amethyst_phoenix.stop", index + 1) : Component.literal(name);
 	}
 
 	private void tellPassengers(Component message) {
@@ -312,7 +404,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 			updateStatus();
 
 			// Chunks entlang der Route geladen halten (wie bei einer Enderperle), damit er auch ohne Spieler weiterpendelt
-			if (stopA != null && !isSitting()) {
+			if (hasRoute() && !isSitting()) {
 				level.getChunkSource().addTicketWithRadius(TicketType.ENDER_PEARL, ChunkPos.containing(blockPosition()), 2);
 			}
 		}
@@ -334,7 +426,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		int state = getState();
 
 		if (state == STATE_RESTING) {
-			if (stopA != null && stopB != null && level.getDefaultClockTime() >= departAt) {
+			if (hasRoute() && level.getDefaultClockTime() >= departAt) {
 				departNow();
 			}
 
@@ -345,14 +437,14 @@ public class AmethystPhoenix extends NetworkHelperMob {
 			return;
 		}
 
-		BlockPos stop = getStop(target);
+		RouteStop stop = targetStop();
 
 		if (stop == null) {
 			setState(STATE_IDLE);
 			return;
 		}
 
-		Vec3 goal = landing(stop);
+		Vec3 goal = landing(stop.pos());
 		Vec3 pos = position();
 		Vec3 flat = new Vec3(goal.x - pos.x, 0, goal.z - pos.z);
 		double distance = flat.length();
@@ -415,11 +507,11 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	private void updateStatus() {
 		if (isSitting()) {
 			setStatus("jtechstorage.amethyst_phoenix.status.sitting");
-		} else if (stopA == null || stopB == null) {
+		} else if (!hasRoute()) {
 			setStatus(unlinkedStatus());
 		} else if (getState() == STATE_FLYING) {
-			BlockPos stop = getStop(target);
-			int distance = stop == null ? 0 : (int) Math.sqrt(stop.distToCenterSqr(position()));
+			RouteStop stop = targetStop();
+			int distance = stop == null ? 0 : (int) Math.sqrt(stop.pos().distToCenterSqr(position()));
 			setStatus("jtechstorage.amethyst_phoenix.status.flying", stopName(target), distance, getSpeedPercent());
 		} else if (getState() == STATE_RESTING) {
 			setStatus("jtechstorage.amethyst_phoenix.status.resting", stopName(target), getMinutesUntilDeparture());
@@ -455,7 +547,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 
 	/** Items, die eine eigene Aktion auslösen – dabei darf die zweite Hand nicht zusätzlich „aufsitzen“ auslösen. */
 	private static boolean isActionItem(ItemStack stack) {
-		return stack.is(Items.CHEST) || stack.is(ModContent.ROUTE_FEATHER);
+		return stack.is(Items.CHEST) || stack.is(ModContent.FLIGHT_PLAN);
 	}
 
 	@Override
@@ -494,23 +586,24 @@ public class AmethystPhoenix extends NetworkHelperMob {
 			return InteractionResult.SUCCESS;
 		}
 
-		if (held.is(ModContent.ROUTE_FEATHER)) {
-			GlobalPos a = held.get(ModContent.ROUTE_A);
-			GlobalPos b = held.get(ModContent.ROUTE_B);
+		if (held.is(ModContent.FLIGHT_PLAN)) {
+			List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan = dev.bartels.jtechstorage.item.FlightPlanItem.stops(held);
 
-			if (a == null || b == null) {
-				player.sendOverlayMessage(Component.translatable("jtechstorage.route_feather.incomplete"));
+			if (plan.size() < 2) {
+				player.sendOverlayMessage(Component.translatable("jtechstorage.flight_plan.too_short"));
 				return InteractionResult.FAIL;
 			}
 
-			if (!a.dimension().equals(level().dimension()) || !b.dimension().equals(level().dimension())) {
-				player.sendOverlayMessage(Component.translatable("jtechstorage.route_feather.dimension"));
+			List<RouteStop> route = routeFrom(plan);
+
+			if (route == null) {
+				player.sendOverlayMessage(Component.translatable("jtechstorage.flight_plan.dimension"));
 				return InteractionResult.FAIL;
 			}
 
-			setRoute(a.pos(), b.pos());
+			setRoute(route);
 			playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 1.4f);
-			player.sendOverlayMessage(Component.translatable("jtechstorage.amethyst_phoenix.route_set", stopName(0), stopName(1)));
+			player.sendOverlayMessage(Component.translatable("jtechstorage.amethyst_phoenix.route_set", routeText()));
 			return InteractionResult.SUCCESS;
 		}
 
@@ -519,10 +612,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		}
 
 		if (held.isEmpty() && player.isSecondaryUseActive()) {
-			if (player instanceof ServerPlayer serverPlayer) {
-				serverPlayer.openMenu(new MenuProvider());
-			}
-
+			pack(player);
 			return InteractionResult.SUCCESS;
 		}
 
@@ -566,17 +656,78 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		return true;
 	}
 
-	/** Einpacken (ohne Kisten und Mitreisende). */
+	/** Inventar-Taste beim Reiten: Menü mit Kisten, Status und Knöpfen. */
+	@Override
+	public void openCustomInventoryScreen(Player player) {
+		if (player instanceof ServerPlayer serverPlayer && mayInteract(player)) {
+			serverPlayer.openMenu(new MenuProvider());
+		}
+	}
+
+	/** Einpacken: Kisten samt Ladung und die Route wandern mit ins Item; Mitreisende steigen ab. */
 	public boolean pack(Player player) {
-		if (getChests() > 0 || isVehicle()) {
-			player.sendOverlayMessage(Component.translatable("jtechstorage.amethyst_phoenix.cannot_pack"));
-			return false;
+		ejectPassengers();
+		ItemStack item = createPackedItem(ModContent.AMETHYST_PHOENIX_ITEM, player);
+
+		if (getChests() > 0) {
+			java.util.List<ItemStack> items = new java.util.ArrayList<>();
+
+			for (int slot = 0; slot < cargo.getContainerSize(); slot++) {
+				items.add(cargo.getItem(slot).copy());
+			}
+
+			item.set(net.minecraft.core.component.DataComponents.CONTAINER, net.minecraft.world.item.component.ItemContainerContents.fromItems(items));
+			net.minecraft.nbt.CompoundTag tag = new net.minecraft.nbt.CompoundTag();
+			tag.putInt("Chests", getChests());
+			item.set(net.minecraft.core.component.DataComponents.CUSTOM_DATA, net.minecraft.world.item.component.CustomData.of(tag));
+			cargo.clearContent();
 		}
 
-		player.getInventory().placeItemBackInInventory(createPackedItem(ModContent.AMETHYST_PHOENIX_ITEM, player), Prediction.SERVER_ONLY);
+		if (hasRoute()) {
+			item.set(ModContent.FLIGHT_PLAN_STOPS, List.copyOf(toPlan()));
+		}
+
+		player.getInventory().placeItemBackInInventory(item, Prediction.SERVER_ONLY);
 		playSound(SoundEvents.FIRECHARGE_USE, 0.6f, 1.4f);
 		discard();
 		return true;
+	}
+
+	/** Beim Absetzen aus dem Item: Kisten, Ladung und Route übernehmen. */
+	public void loadFromItem(ItemStack stack) {
+		net.minecraft.world.item.component.CustomData data = stack.get(net.minecraft.core.component.DataComponents.CUSTOM_DATA);
+		int chests = data != null ? Math.clamp(data.copyTag().getIntOr("Chests", 0), 0, MAX_CHESTS) : 0;
+
+		if (chests > 0) {
+			entityData.set(DATA_CHESTS, chests);
+			net.minecraft.world.item.component.ItemContainerContents contents = stack.get(net.minecraft.core.component.DataComponents.CONTAINER);
+
+			if (contents != null) {
+				net.minecraft.core.NonNullList<ItemStack> items = net.minecraft.core.NonNullList.withSize(cargo.getContainerSize(), ItemStack.EMPTY);
+				contents.copyInto(items);
+
+				for (int slot = 0; slot < items.size(); slot++) {
+					cargo.setItem(slot, items.get(slot));
+				}
+			}
+
+			updateLoad();
+		}
+
+		List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan = stack.get(ModContent.FLIGHT_PLAN_STOPS);
+		GlobalPos a = stack.get(ModContent.ROUTE_A);
+		GlobalPos b = stack.get(ModContent.ROUTE_B);
+
+		if (plan == null && a != null && b != null) {
+			// Phönix-Item aus v0.20–v0.24 (Route-Feder)
+			plan = List.of(new dev.bartels.jtechstorage.item.FlightPlanItem.Stop(a, "A"), new dev.bartels.jtechstorage.item.FlightPlanItem.Stop(b, "B"));
+		}
+
+		List<RouteStop> route = plan == null ? null : routeFrom(plan);
+
+		if (route != null && route.size() >= 2) {
+			setRoute(route);
+		}
 	}
 
 	/** Entwicklung: aus einem Phönix wird ein Amethyst-Phönix (Besitzer, Netzwerk, Farbe, Name und Hut bleiben). */
@@ -653,13 +804,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		output.putLong("DepartAt", departAt);
 		output.putDouble("CruiseY", cruiseY);
 
-		if (stopA != null) {
-			output.store("StopA", BlockPos.CODEC, stopA);
-		}
-
-		if (stopB != null) {
-			output.store("StopB", BlockPos.CODEC, stopB);
-		}
+		output.store("Stops", RouteStop.CODEC.listOf(), List.copyOf(stops));
 
 		ValueOutput.TypedOutputList<ItemStackWithSlot> items = output.list("Cargo", ItemStackWithSlot.CODEC);
 
@@ -679,8 +824,17 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		target = input.getIntOr("Target", 0);
 		departAt = input.getLongOr("DepartAt", 0L);
 		cruiseY = input.getDoubleOr("CruiseY", getY());
-		stopA = input.read("StopA", BlockPos.CODEC).orElse(null);
-		stopB = input.read("StopB", BlockPos.CODEC).orElse(null);
+		stops.clear();
+		stops.addAll(input.read("Stops", RouteStop.CODEC.listOf()).orElse(List.of()));
+		BlockPos legacyA = input.read("StopA", BlockPos.CODEC).orElse(null);
+		BlockPos legacyB = input.read("StopB", BlockPos.CODEC).orElse(null);
+
+		if (stops.isEmpty() && legacyA != null && legacyB != null) {
+			stops.add(new RouteStop(legacyA, "A"));
+			stops.add(new RouteStop(legacyB, "B"));
+		}
+
+		target = stops.isEmpty() ? 0 : Math.floorMod(target, stops.size());
 		setState(input.getIntOr("State", STATE_IDLE));
 		entityData.set(DATA_SITTING, input.getBooleanOr("Sitting", false));
 
@@ -700,7 +854,13 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	private class MenuProvider implements ExtendedMenuProvider<AmethystPhoenixMenu.OpenData> {
 		@Override
 		public AmethystPhoenixMenu.OpenData getScreenOpeningData(ServerPlayer player) {
-			return new AmethystPhoenixMenu.OpenData(getId(), java.util.Optional.ofNullable(stopA), java.util.Optional.ofNullable(stopB));
+			List<String> names = new java.util.ArrayList<>();
+
+			for (int i = 0; i < stops.size(); i++) {
+				names.add(stopName(i).getString());
+			}
+
+			return new AmethystPhoenixMenu.OpenData(getId(), names, target);
 		}
 
 		@Override
@@ -714,10 +874,6 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		}
 	}
 
-	/** Für Statusanzeigen. */
-	public List<Component> routeLines() {
-		return List.of(stopName(0), stopName(1));
-	}
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {

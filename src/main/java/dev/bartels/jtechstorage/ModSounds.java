@@ -47,6 +47,13 @@ public final class ModSounds {
 	public static final SoundEvent SPIDER_SHRIEK = register("spider.shriek");
 	public static final SoundEvent SPIDER_WEB = register("spider.web");
 	public static final SoundEvent SPIDER_AWAKEN = register("spider.awaken");
+	public static final SoundEvent CHELDROGAN_AMBIENT = register("cheldrogan.ambient");
+	public static final SoundEvent CHELDROGAN_HURT = register("cheldrogan.hurt");
+	public static final SoundEvent CHELDROGAN_CLAW = register("cheldrogan.claw");
+	public static final SoundEvent CHELDROGAN_BREATH = register("cheldrogan.breath");
+	public static final SoundEvent CHELDROGAN_ROAR = register("cheldrogan.roar");
+	public static final SoundEvent CHELDROGAN_FLAP = register("cheldrogan.flap");
+	public static final SoundEvent CHELDROGAN_TRANSFORM = register("cheldrogan.transform");
 
 	private ModSounds() {
 	}

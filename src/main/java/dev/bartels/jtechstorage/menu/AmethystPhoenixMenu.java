@@ -1,10 +1,9 @@
 package dev.bartels.jtechstorage.menu;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.jspecify.annotations.Nullable;
 
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.ByteBufCodecs;
 import net.minecraft.network.codec.StreamCodec;
@@ -45,11 +44,12 @@ public class AmethystPhoenixMenu extends AbstractContainerMenu {
 
 	private static final int CARGO = AmethystPhoenix.CHEST_SLOTS * AmethystPhoenix.MAX_CHESTS;
 
-	public record OpenData(int entityId, Optional<BlockPos> stopA, Optional<BlockPos> stopB) {
+	/** Haltestellen-Namen in Flugreihenfolge und Index des aktuellen Ziels. */
+	public record OpenData(int entityId, List<String> stops, int target) {
 		public static final StreamCodec<RegistryFriendlyByteBuf, OpenData> STREAM_CODEC = StreamCodec.composite(
 				ByteBufCodecs.VAR_INT, OpenData::entityId,
-				ByteBufCodecs.optional(BlockPos.STREAM_CODEC), OpenData::stopA,
-				ByteBufCodecs.optional(BlockPos.STREAM_CODEC), OpenData::stopB,
+				ByteBufCodecs.stringUtf8(64).apply(ByteBufCodecs.list(8)), OpenData::stops,
+				ByteBufCodecs.VAR_INT, OpenData::target,
 				OpenData::new);
 	}
 
@@ -144,12 +144,12 @@ public class AmethystPhoenixMenu extends AbstractContainerMenu {
 		return data.get(5);
 	}
 
-	public Optional<BlockPos> stop(int index) {
-		if (openData == null) {
-			return Optional.empty();
-		}
+	public List<String> stops() {
+		return openData == null ? List.of() : openData.stops();
+	}
 
-		return index == 0 ? openData.stopA() : openData.stopB();
+	public int target() {
+		return openData == null ? 0 : openData.target();
 	}
 
 	private class CargoSlot extends Slot {

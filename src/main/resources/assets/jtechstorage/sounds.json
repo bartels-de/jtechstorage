@@ -291,5 +291,56 @@
     "sounds": [
       "jtechstorage:spider/awaken1"
     ]
+  },
+  "cheldrogan.ambient": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.ambient",
+    "sounds": [
+      "jtechstorage:cheldrogan/ambient1",
+      "jtechstorage:cheldrogan/ambient2",
+      "jtechstorage:cheldrogan/ambient3"
+    ]
+  },
+  "cheldrogan.hurt": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.hurt",
+    "sounds": [
+      "jtechstorage:cheldrogan/hurt1",
+      "jtechstorage:cheldrogan/hurt2",
+      "jtechstorage:cheldrogan/hurt3"
+    ]
+  },
+  "cheldrogan.claw": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.claw",
+    "sounds": [
+      "jtechstorage:cheldrogan/claw1",
+      "jtechstorage:cheldrogan/claw2",
+      "jtechstorage:cheldrogan/claw3"
+    ]
+  },
+  "cheldrogan.breath": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.breath",
+    "sounds": [
+      "jtechstorage:cheldrogan/breath1"
+    ]
+  },
+  "cheldrogan.roar": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.roar",
+    "sounds": [
+      "jtechstorage:cheldrogan/roar1",
+      "jtechstorage:cheldrogan/roar2"
+    ]
+  },
+  "cheldrogan.flap": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.flap",
+    "sounds": [
+      "jtechstorage:cheldrogan/flap1",
+      "jtechstorage:cheldrogan/flap2",
+      "jtechstorage:cheldrogan/flap3"
+    ]
+  },
+  "cheldrogan.transform": {
+    "subtitle": "subtitles.jtechstorage.cheldrogan.transform",
+    "sounds": [
+      "jtechstorage:cheldrogan/transform1"
+    ]
   }
 }

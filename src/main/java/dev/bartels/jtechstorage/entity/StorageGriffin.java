@@ -49,7 +49,7 @@ import dev.bartels.jtechstorage.block.StorageTerminalBlockEntity;
  *     <li>Shift + Rechtsklick mit Leine: einpacken (Inhalt bleibt im Item)</li>
  * </ul>
  */
-public class StorageGriffin extends NetworkHelperMob {
+public class StorageGriffin extends NetworkHelperMob implements net.minecraft.world.entity.HasCustomInventoryScreen {
 	public static final int SIZE = 27;
 	private static final int UNLOAD_INTERVAL = 40;
 
@@ -112,9 +112,7 @@ public class StorageGriffin extends NetworkHelperMob {
 		}
 
 		if (player.isSecondaryUseActive() && held.isEmpty()) {
-			player.openMenu(new SimpleMenuProvider((id, playerInventory, p) -> ChestMenu.threeRows(id, playerInventory, inventory),
-					getDisplayName()));
-			playSound(SoundEvents.CHEST_OPEN, 0.6f, 1.2f);
+			packUp(player);
 			return InteractionResult.SUCCESS;
 		}
 
@@ -134,6 +132,16 @@ public class StorageGriffin extends NetworkHelperMob {
 		}
 
 		return InteractionResult.PASS;
+	}
+
+	/** Inventar-Taste beim Reiten öffnet die Truhe auf dem Rücken (wie beim Esel). */
+	@Override
+	public void openCustomInventoryScreen(Player player) {
+		if (!level().isClientSide() && mayInteract(player)) {
+			player.openMenu(new SimpleMenuProvider((id, playerInventory, p) -> ChestMenu.threeRows(id, playerInventory, inventory),
+					getDisplayName()));
+			playSound(SoundEvents.CHEST_OPEN, 0.6f, 1.2f);
+		}
 	}
 
 	private void packUp(Player player) {

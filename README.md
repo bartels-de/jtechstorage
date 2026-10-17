@@ -30,10 +30,12 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
 - 👥 **Teams and trade.** Roles from guest to owner, team colors, event channels and a small shop that sells straight
   from storage.
 - 🔥 **Phoenix mail and travel.** Send parcels to a friend's storage. Evolve the phoenix into a rideable amethyst phoenix
-  that shuttles players and cargo between two stops.
+  that flies players and cargo along a route of up to four named stops.
 - ⚔️ **Bosses and End content.** The Amethyst Robot, the Crystal Lair in the outer End with the Great Amethyst Spider,
   and Amethyst Obsidian gear with a set bonus.
 - 🦊 **Crystal enchantments.** Five new enchantments that only the Amethyst Fox can dig up.
+- 📚 **A library of books.** Handbook, recipe book, bestiary with 3D models, item lexicon, crystal chronicle and
+  Chel's joke book with 75 collectible jokes.
 - 🎨 **Readable, themeable UI.** Light and dark themes, accent colors and adjustable terminal size, in English and German.
 - 🔊 **Own sounds and a server config.** Synthesized crystal sounds for every creature, and a commented config file for
   ranges, bosses and helper speeds.
@@ -54,7 +56,8 @@ Java **25** is required. The mod has to be installed on both the server and the 
    Double chests count as one. While you hold the key, linked containers sparkle.
 4. Open the terminal. You'll see every item in every linked container.
 
-On first join you get the **Storage Handbook** (all recipes and guides). A short hologram tour by Jbartels also explains
+On first join you get the **Storage Handbook** (basics and controls). Every other topic has its own book, see
+[Books](#books). A short hologram tour by Jbartels also explains
 the mod step by step. Sneak + right-click with the handbook restarts the tour.
 
 ## Features
@@ -76,6 +79,10 @@ wireless terminal work without a range limit and across dimensions.
 - **Terminal controls:** left click takes a stack, right click takes half, shift-click moves it to your inventory, and
   clicking with an item stores it. Search supports names and enchantments (`sharpness v`), `$enchantment`, `@mod` and
   `#tag`.
+- **Statistics:** the chart button right of the hotbar shows the fill level, a 14-day history, categories, the most
+  common items and today's biggest gains and losses.
+- **Category tabs:** the tabs on the left of the terminal filter the list by the 15 sorting categories. Click the active
+  tab again (or right-click) to show everything.
 - **Sorting rules:** an item frame with an item on a linked chest makes that chest accept only that item, and the chest
   is preferred for it.
 - **Crafting Terminal:** a 3×3 grid that refills from the network after every craft. Shift-click crafts as many as
@@ -103,17 +110,28 @@ wireless terminal work without a range limit and across dimensions.
 
 ### Helpers
 
-All helpers are invulnerable and persistent. Link them with a bound Storage Key. Sneak + right-click with an empty hand
-packs them back into an item. Every helper recipe needs an **Amethyst Core**, which drops from the Amethyst Robot.
+All helpers are persistent and share the same controls:
+
+| Action | Effect |
+|---|---|
+| Click with a bound Storage Key | link to your storage |
+| Right-click | main action (status, menu or mount) |
+| Sneak + right-click twice | pack up into an item (name, color and contents are kept) |
+| Inventory key while riding | chest (Storage Griffin) or menu (Amethyst Phoenix) |
+| Dye / hat / shears | recolor / put on a hat / reset |
+
+Hover over any mod item and hold **Shift** to see its controls. Every helper recipe needs an **Amethyst Core**, which
+drops from the Amethyst Robot.
 
 | Helper | What it does |
 |---|---|
 | **Amethyst Sprite** | Gives every chest a fixed category (15 categories) and moves stacks there. Picks up loose items around the terminal, tidies chests from the inside and empties placed backpacks. |
 | **Watch Moth** | Night guard. Makes monsters within 24 blocks glow, rings an alarm and reports targets to Peter. |
-| **Storage Griffin** | Flying mount with a 27-slot chest. It unloads into the network when it lands near the terminal. |
+| **Storage Griffin** | Flying mount with a 27-slot chest (inventory key while riding). It unloads into the network when it lands near the terminal. |
 | **Spark Beetle** | Charges the terminal with resonance. Feed it redstone or glowstone for a boost. |
 | **Chel** | Chaotic auto-crafter. Keeps up to 8 items in stock using crafting recipes, and tells a joke for a diamond. |
 | **Peter Chel Parker** | Chel fed a nether star. Base protector who fights every monster within 16 blocks. |
+| **Cheldrogan** | Peter fed a Dragon Heart. A rideable amethyst dragon (see below). |
 | **Ashley** | A grubby ash creature. Peter heals by kicking her, which she does not appreciate. |
 | **Phoenix** | Mail carrier that lives in a Phoenix Nest (see below). |
 | **Amethyst Phoenix** | Large travel and cargo phoenix (see below). |
@@ -121,6 +139,19 @@ packs them back into an item. Every helper recipe needs an **Amethyst Core**, wh
 
 Helpers can be dyed and wear hats (pumpkin, flowers, cake, candle and more; extendable via the
 `jtechstorage:helper_hats` item tag). At night they rest unless the terminal has resonance.
+
+### Cheldrogan
+
+Craft a **Dragon Heart** (dragon's breath, Crystal Obsidian, amethyst blocks, a nether star and an Amethyst Obsidian
+Upgrade) and right-click Peter Chel Parker with it. He rises as **Cheldrogan**, a four-block amethyst dragon standing on
+two legs, with a crystal crown, a glowing core in his golden chest plate, huge wings and a crystal hammer on his tail.
+
+- **Riding:** right-click to mount. He walks on the ground; press jump to take off, then he flies where you look and jump
+  rises. **Left click** = claw strike, **R** = crystal breath (a cone of crystal fire with a short cooldown; the key can
+  be changed in the controls).
+- **Guarding:** without a rider he guards the base like Peter, uses his crystal breath on targets he cannot reach and
+  heals at Ashley. If you dismount far away from his base, that spot becomes his new base.
+- At 0 health the Dragon Heart burns out and he turns back into Peter.
 
 ### Phoenix mail
 
@@ -134,12 +165,17 @@ is full. Unloaded destinations simply wait, so nothing is lost. Daily standing o
 
 Right-click a phoenix with an **Amethyst Obsidian Upgrade** to evolve it into a large, majestic Amethyst Phoenix.
 
-- Use a **Route Feather** to set stop A and stop B, then right-click the phoenix with it.
-- It shuttles between the stops, rests one whole night at each and departs at sunrise. It keeps chunks along its path
-  loaded.
+- Build up to four **Phoenix Stops** and right-click each to give it a name and a rest time (30 seconds, 5 minutes or
+  one night).
+- Click the stops with a **Flight Plan** in the order you want. Right-click in the air to reorder or remove stops, then
+  right-click the phoenix with the plan.
+- It visits the stops in order, rests as long as each stop says and starts over. It keeps chunks along its path loaded.
+- **Delivery orders:** put chests or barrels right next to a stop and choose *Unload*, *Load* or *Both* in the stop's
+  window. Up to 9 filters (with an amount per visit) decide which items move. *Both* unloads everything that isn't in
+  the filters and loads the filter items, so one stop can deliver and pick up at the same time.
 - **Two seats.** The player in front can press jump to depart early.
 - **Up to four chests** (27 slots each). More chests and more cargo make it slower.
-- Sit mode stops all movement. Sneak + right-click opens its menu.
+- Sit mode stops all movement. The inventory key while riding opens its menu; packing it up keeps chests, cargo and route.
 
 ### Bosses and the End
 
@@ -206,7 +242,22 @@ The gear button in the terminal opens UI settings, which apply to all screens of
 - terminal height (4–10 rows or auto)
 - item count size
 
-The mod also adds its own advancement tab and JEI support.
+The mod has its own creative tab and advancement tab. With JEI, items without a recipe (boss loot, evolutions) show an
+info page that explains where they come from.
+
+### Books
+
+| Book | Recipe (shapeless) | Contents |
+|---|---|---|
+| **Storage Handbook** | book + amethyst shard | Basics, terminal, upgrades, teams, phoenix, backpacks, controls |
+| **Recipe Book** | + crafting table | Every recipe, sorted by chapter |
+| **Bestiary** | + feather | All helpers, evolutions and bosses with a 3D model and health |
+| **Item Lexicon** | + item frame | Every block, tool, material and piece of gear explained |
+| **Crystal Chronicle** | + ender eye | Legend, bosses, Amethyst Obsidian, crystal enchantments, evolutions, roadmap |
+| **Chel's Joke Book** | + cookie | Collects every joke Chel and Peter tell you (75 in total) |
+
+Every book has a clickable table of contents, and ☰ at the top left jumps back to it. Chel gives you your first joke
+book with his first joke, and collecting all 75 jokes unlocks an advancement.
 
 ### Configuration
 

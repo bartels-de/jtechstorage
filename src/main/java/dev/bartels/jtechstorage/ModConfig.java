@@ -78,6 +78,9 @@ public final class ModConfig {
 		public int spriteBackpackRadius = 10;
 		public int mothWatchRadius = 24;
 		public int peterGuardRadius = 16;
+		public double cheldroganHealth = 250.0;
+		public double cheldroganDamage = 24.0;
+		public double cheldroganBreathCooldownSeconds = 4.0;
 		public double phoenixMailBlocksPerSecond = 32.0;
 		public double amethystPhoenixBlocksPerSecond = 12.0;
 	}
@@ -218,6 +221,9 @@ public final class ModConfig {
 		h.spriteBackpackRadius = clamp(h.spriteBackpackRadius, 0, 64);
 		h.mothWatchRadius = clamp(h.mothWatchRadius, 1, 128);
 		h.peterGuardRadius = clamp(h.peterGuardRadius, 1, 64);
+		h.cheldroganHealth = clamp(h.cheldroganHealth, 1.0, 100000.0);
+		h.cheldroganDamage = clamp(h.cheldroganDamage, 0.0, 10000.0);
+		h.cheldroganBreathCooldownSeconds = clamp(h.cheldroganBreathCooldownSeconds, 0.5, 600.0);
 		h.phoenixMailBlocksPerSecond = clamp(h.phoenixMailBlocksPerSecond, 1.0, 10000.0);
 		h.amethystPhoenixBlocksPerSecond = clamp(h.amethystPhoenixBlocksPerSecond, 1.0, 100.0);
 	}
@@ -281,7 +287,10 @@ public final class ModConfig {
 				new Entry("spriteCollectRadius", h.spriteCollectRadius, "Amethyst Sprite: item pickup radius around the terminal"),
 				new Entry("spriteBackpackRadius", h.spriteBackpackRadius, "Amethyst Sprite: radius for emptying placed backpacks"),
 				new Entry("mothWatchRadius", h.mothWatchRadius, "Watch Moth: radius for glowing monsters / Wach-Radius"),
-				new Entry("peterGuardRadius", h.peterGuardRadius, "Peter Chel Parker: guard radius / Schutz-Radius"),
+				new Entry("peterGuardRadius", h.peterGuardRadius, "Peter Chel Parker (and Cheldrogan): guard radius / Schutz-Radius"),
+				new Entry("cheldroganHealth", h.cheldroganHealth, "Cheldrogan: health (0 = turns back into Peter) / Leben"),
+				new Entry("cheldroganDamage", h.cheldroganDamage, "Cheldrogan: claw damage / Klauenschaden"),
+				new Entry("cheldroganBreathCooldownSeconds", h.cheldroganBreathCooldownSeconds, "Cheldrogan: crystal breath cooldown when ridden / Odem-Abklingzeit"),
 				new Entry("phoenixMailBlocksPerSecond", h.phoenixMailBlocksPerSecond, "Phoenix mail: flight speed for parcel delivery time"),
 				new Entry("amethystPhoenixBlocksPerSecond", h.amethystPhoenixBlocksPerSecond, "Amethyst Phoenix: travel speed without cargo")), true);
 

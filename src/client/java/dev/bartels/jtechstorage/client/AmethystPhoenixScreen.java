@@ -1,10 +1,7 @@
 package dev.bartels.jtechstorage.client;
 
-import java.util.Optional;
-
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.input.MouseButtonEvent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
 
@@ -174,15 +171,24 @@ public class AmethystPhoenixScreen extends ThemedContainerScreen<AmethystPhoenix
 	}
 
 	private Component routeText() {
-		Optional<BlockPos> a = menu.stop(0);
-		Optional<BlockPos> b = menu.stop(1);
+		java.util.List<String> stops = menu.stops();
 
-		if (a.isEmpty() || b.isEmpty()) {
+		if (stops.size() < 2) {
 			return Component.translatable("jtechstorage.amethyst_phoenix.gui.route_none");
 		}
 
-		return Component.translatable("jtechstorage.amethyst_phoenix.gui.route", a.get().getX(), a.get().getY(), a.get().getZ(),
-				b.get().getX(), b.get().getY(), b.get().getZ());
+		net.minecraft.network.chat.MutableComponent route = Component.empty();
+
+		for (int i = 0; i < stops.size(); i++) {
+			if (i > 0) {
+				route.append(" → ");
+			}
+
+			Component name = Component.literal(stops.get(i));
+			route.append(i == menu.target() ? name.copy().withStyle(net.minecraft.ChatFormatting.BOLD) : name);
+		}
+
+		return Component.translatable("jtechstorage.amethyst_phoenix.gui.route", route);
 	}
 
 	@Override

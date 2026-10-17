@@ -35,6 +35,26 @@ public class JTechStorageJeiPlugin implements IModPlugin {
 		registration.addRecipeTransferHandler(new CraftingTerminalTransferHandler(registration.getTransferHelper()), RecipeTypes.CRAFTING);
 	}
 
+	/** Infoseiten für Items ohne Rezept (Beute, Entwicklungen): Taste U/R in JEI zeigt, woher sie kommen. */
+	@Override
+	public void registerRecipes(mezz.jei.api.registration.IRecipeRegistration registration) {
+		info(registration, "amethyst_core");
+		info(registration, "wireless_core");
+		info(registration, "iron_range_upgrade");
+		info(registration, "iron_capacity_upgrade");
+		info(registration, "amethyst_obsidian_upgrade_smithing_template");
+		info(registration, "peter_chel_parker");
+		info(registration, "cheldrogan");
+		info(registration, "amethyst_phoenix");
+		info(registration, "guide_book");
+	}
+
+	private static void info(mezz.jei.api.registration.IRecipeRegistration registration, String id) {
+		net.minecraft.core.registries.BuiltInRegistries.ITEM.getOptional(JTechStorage.id(id)).ifPresent(item ->
+				registration.addItemStackInfo(new net.minecraft.world.item.ItemStack(item),
+						net.minecraft.network.chat.Component.translatable("jei.jtechstorage.info." + id)));
+	}
+
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
 		registration.addGuiContainerHandler(StorageTerminalScreen.class, new IGuiContainerHandler<StorageTerminalScreen>() {
@@ -48,6 +68,11 @@ public class JTechStorageJeiPlugin implements IModPlugin {
 				}
 
 				return builder.createBuilder(hovered.stack()).buildWithArea(new Rect2i(hovered.x(), hovered.y(), 16, 16));
+			}
+
+			@Override
+			public java.util.List<Rect2i> getGuiExtraAreas(StorageTerminalScreen screen) {
+				return screen.getExtraAreas();
 			}
 		});
 	}

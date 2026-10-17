@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:gold_ingot",
+    "L": "minecraft:lodestone",
+    "D": "minecraft:polished_deepslate"
+  },
+  "pattern": [
+    " A ",
+    "GLG",
+    "DDD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:phoenix_stop"
+  }
+}

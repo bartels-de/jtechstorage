@@ -85,7 +85,7 @@ public class Chel extends NetworkHelperMob {
 	private static final int CRAFT_INTERVAL = (int) Math.round(ModConfig.get().helpers.chelCraftIntervalSeconds * 20.0);
 	private static final int MAX_CRAFTS_PER_ROUND = ModConfig.get().helpers.chelMaxCraftsPerRound;
 	private static final int SAY_LINES = 16;
-	public static final int JOKES = 20;
+	public static final int JOKES = 75;
 	public static final int MAX_TARGET = 999;
 	private static final EntityDataAccessor<Integer> DATA_CRAFTING = SynchedEntityData.defineId(Chel.class,
 			EntityDataSerializers.INT);
@@ -210,18 +210,14 @@ public class Chel extends NetworkHelperMob {
 	// ------------------------------------------------------------------
 
 	private void tellJoke(ServerLevel level, Player player) {
-		int joke;
-
-		do {
-			joke = random.nextInt(JOKES);
-		} while (joke == lastJoke);
-
+		int joke = pickJoke(player, lastJoke, random);
 		lastJoke = joke;
 		Component text = Component.translatable("jtechstorage.chel.joke." + joke);
 
 		for (ServerPlayer listener : level.players()) {
 			if (listener == player || listener.distanceToSqr(this) < 12 * 12) {
 				listener.sendSystemMessage(Component.translatable("jtechstorage.chel.joke_format", getDisplayName(), text));
+				recordJoke(listener, joke);
 			}
 		}
 
@@ -229,6 +225,88 @@ public class Chel extends NetworkHelperMob {
 		spinTicks = 10;
 		jumpFromGround();
 		level.sendParticles(ParticleTypes.NOTE, getX(), getY() + 1.6, getZ(), 5, 0.4, 0.2, 0.4, 1.0);
+	}
+
+	// ------------------------------------------------------------------
+	// Witzbuch
+	// ------------------------------------------------------------------
+
+	/** Meist ein Witz, den der Spieler noch nicht im Witzbuch hat – sonst irgendeiner (nie zweimal hintereinander). */
+	public static int pickJoke(Player player, int last, net.minecraft.util.RandomSource random) {
+		List<Integer> heard = jokeBook(player).getOrDefault(ModContent.JOKES_HEARD, List.of());
+
+		if (heard.size() < JOKES && random.nextFloat() < 0.7f) {
+			List<Integer> fresh = new java.util.ArrayList<>();
+
+			for (int i = 0; i < JOKES; i++) {
+				if (!heard.contains(i) && i != last) {
+					fresh.add(i);
+				}
+			}
+
+			if (!fresh.isEmpty()) {
+				return fresh.get(random.nextInt(fresh.size()));
+			}
+		}
+
+		int joke;
+
+		do {
+			joke = random.nextInt(JOKES);
+		} while (joke == last);
+
+		return joke;
+	}
+
+	/** Erstes Witzbuch im Inventar (oder leer). */
+	public static ItemStack jokeBook(Player player) {
+		net.minecraft.world.entity.player.Inventory inventory = player.getInventory();
+
+		for (int slot = 0; slot < inventory.getContainerSize(); slot++) {
+			ItemStack stack = inventory.getItem(slot);
+
+			if (stack.is(ModContent.JOKE_BOOK)) {
+				return stack;
+			}
+		}
+
+		return ItemStack.EMPTY;
+	}
+
+	/** Trägt einen gehörten Witz ins Witzbuch ein. Wer noch nie eins hatte, bekommt beim ersten Witz eins geschenkt. */
+	public static void recordJoke(ServerPlayer player, int joke) {
+		ItemStack book = jokeBook(player);
+
+		if (book.isEmpty()) {
+			if (player.entityTags().contains("jtechstorage.joke_book")) {
+				return;
+			}
+
+			player.addTag("jtechstorage.joke_book");
+			book = new ItemStack(ModContent.JOKE_BOOK);
+			book.set(ModContent.JOKES_HEARD, List.of(joke));
+			player.getInventory().placeItemBackInInventory(book, net.minecraft.util.Prediction.SERVER_ONLY);
+			player.sendSystemMessage(Component.translatable("jtechstorage.joke_book.gift").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+			return;
+		}
+
+		List<Integer> heard = book.getOrDefault(ModContent.JOKES_HEARD, List.of());
+
+		if (heard.contains(joke)) {
+			return;
+		}
+
+		List<Integer> updated = new java.util.ArrayList<>(heard);
+		updated.add(joke);
+		updated.sort(null);
+		book.set(ModContent.JOKES_HEARD, List.copyOf(updated));
+		player.sendOverlayMessage(Component.translatable("jtechstorage.joke_book.new", updated.size(), JOKES)
+				.withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+
+		if (updated.size() >= JOKES) {
+			dev.bartels.jtechstorage.ModAdvancements.grant(player, "joke_master");
+			player.sendSystemMessage(Component.translatable("jtechstorage.joke_book.complete").withStyle(net.minecraft.ChatFormatting.GOLD));
+		}
 	}
 
 	/** Netherstern: Chel wird zu Peter Chel Parker, dem Beschützer der Basis. */
