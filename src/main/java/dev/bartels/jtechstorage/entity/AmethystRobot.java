@@ -43,6 +43,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 
 /**
@@ -63,7 +65,7 @@ public class AmethystRobot extends Monster {
 	public static final int LASER_CHARGE = 30;
 	private static final double LASER_RANGE = 26.0;
 	/** Chance auf einen Kern (Amethyst- oder Funk-Kern, je zur Hälfte). */
-	public static final float CORE_CHANCE = 0.3f;
+	public static final float CORE_CHANCE = (float) ModConfig.get().bosses.robotCoreChance;
 
 	private static final EntityDataAccessor<Integer> DATA_ANIM = SynchedEntityData.defineId(AmethystRobot.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_ANIM_TICKS = SynchedEntityData.defineId(AmethystRobot.class, EntityDataSerializers.INT);
@@ -80,14 +82,19 @@ public class AmethystRobot extends Monster {
 		setPersistenceRequired();
 	}
 
+	/** Schaden der Spezialangriffe, skaliert mit {@code bosses.robot.damageMultiplier}. */
+	private static float scaled(double amount) {
+		return (float) (amount * ModConfig.get().bosses.robot.damageMultiplier);
+	}
+
 	public static AttributeSupplier.Builder createAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 400.0)
-				.add(Attributes.ATTACK_DAMAGE, 16.0)
+				.add(Attributes.MAX_HEALTH, ModConfig.get().bosses.robot.health)
+				.add(Attributes.ATTACK_DAMAGE, 16.0 * ModConfig.get().bosses.robot.damageMultiplier)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.5)
 				.add(Attributes.MOVEMENT_SPEED, 0.28)
 				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
-				.add(Attributes.ARMOR, 10.0)
+				.add(Attributes.ARMOR, ModConfig.get().bosses.robot.armor)
 				.add(Attributes.ARMOR_TOUGHNESS, 4.0)
 				.add(Attributes.STEP_HEIGHT, 1.6)
 				.add(Attributes.FOLLOW_RANGE, 48.0);
@@ -300,8 +307,8 @@ public class AmethystRobot extends Monster {
 	}
 
 	private void stomp(ServerLevel level) {
-		playSound(SoundEvents.GENERIC_EXPLODE.value(), 1.2f, 0.6f);
-		playSound(SoundEvents.IRON_GOLEM_ATTACK, 2.0f, 0.5f);
+		playSound(SoundEvents.GENERIC_EXPLODE.value(), 0.8f, 0.6f);
+		playSound(ModSounds.ROBOT_SLAM, 2.5f, 0.9f);
 
 		for (int i = 0; i < 24; i++) {
 			double angle = i / 24.0 * Math.PI * 2;
@@ -315,7 +322,7 @@ public class AmethystRobot extends Monster {
 				e -> e != this && !(e instanceof AmethystRobot) && e.isAlive())) {
 			double distance = target.distanceTo(this);
 			float damage = (float) Math.max(4.0, 12.0 - distance);
-			target.hurtServer(level, damageSources().mobAttack(this), damage);
+			target.hurtServer(level, damageSources().mobAttack(this), scaled(damage));
 			Vec3 push = target.position().subtract(position()).normalize().scale(0.9);
 			target.push(push.x, 0.9, push.z);
 		}
@@ -335,7 +342,7 @@ public class AmethystRobot extends Monster {
 				continue;   // vorne schlägt er lieber mit der Faust
 			}
 
-			target.hurtServer(level, damageSources().mobAttack(this), 12.0f);
+			target.hurtServer(level, damageSources().mobAttack(this), scaled(12.0f));
 			Vec3 push = to.scale(2.0);
 			target.push(push.x, 0.5, push.z);
 		}
@@ -364,7 +371,7 @@ public class AmethystRobot extends Monster {
 		}
 
 		level.sendParticles(ParticleTypes.EXPLOSION, end.x, end.y, end.z, 1, 0, 0, 0, 0);
-		playSound(SoundEvents.WARDEN_SONIC_BOOM, 2.0f, 1.4f);
+		playSound(ModSounds.ROBOT_LASER, 3.0f, 1.0f);
 		float damage = isEnraged() ? 18.0f : 13.0f;
 		Vec3 finalEnd = end;
 
@@ -376,7 +383,7 @@ public class AmethystRobot extends Monster {
 			Vec3 closest = start.add(line.scale(t));
 
 			if (closest.distanceTo(center) < target.getBbWidth() / 2.0 + 0.8) {
-				target.hurtServer(level, damageSources().indirectMagic(this, this), damage);
+				target.hurtServer(level, damageSources().indirectMagic(this, this), scaled(damage));
 				target.push(direction.x * 0.8, 0.3, direction.z * 0.8);
 			}
 		}
@@ -384,22 +391,22 @@ public class AmethystRobot extends Monster {
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-		return SoundEvents.BEACON_AMBIENT;
+		return ModSounds.ROBOT_AMBIENT;
 	}
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.IRON_GOLEM_HURT;
+		return ModSounds.ROBOT_HURT;
 	}
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent getDeathSound() {
-		return SoundEvents.IRON_GOLEM_DEATH;
+		return ModSounds.ROBOT_DEATH;
 	}
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(SoundEvents.IRON_GOLEM_STEP, 1.5f, 0.6f);
+		playSound(ModSounds.ROBOT_STEP, 1.5f, 0.9f + random.nextFloat() * 0.2f);
 	}
 
 	@Override
@@ -407,7 +414,7 @@ public class AmethystRobot extends Monster {
 		boolean hit = super.doHurtTarget(level, target);
 
 		if (hit && isEnraged() && target instanceof LivingEntity living) {
-			living.hurtServer(level, damageSources().mobAttack(this), 6.0f);
+			living.hurtServer(level, damageSources().mobAttack(this), scaled(6.0f));
 		}
 
 		return hit;
@@ -548,8 +555,7 @@ public class AmethystRobot extends Monster {
 					tailSwipe(level);
 				} else if (action == ANIM_SLAM && busy == 5 && target != null && distanceTo(target) < reach(target) + 1.0) {
 					doHurtTarget(level, target);
-					playSound(SoundEvents.IRON_GOLEM_ATTACK, 2.0f, 0.6f);
-					playSound(SoundEvents.AMETHYST_CLUSTER_BREAK, 1.5f, 0.6f);
+					playSound(ModSounds.ROBOT_SLAM, 2.0f, 1.1f);
 				} else if (action == ANIM_DASH && busy == 0 && target != null) {
 					Vec3 dir = target.position().subtract(position());
 					chargeDir = new Vec3(dir.x, 0, dir.z).normalize();
@@ -580,7 +586,7 @@ public class AmethystRobot extends Monster {
 			} else if (laserCd <= 0 && distance > 5 && distance < LASER_RANGE - 2 && hasLineOfSight(target)) {
 				act(ANIM_LASER, LASER_CHARGE);
 				laserDir = target.getEyePosition().subtract(position().add(0, 3.6, 0)).normalize();
-				playSound(SoundEvents.WARDEN_SONIC_CHARGE, 2.0f, 1.3f);
+				playSound(ModSounds.ROBOT_LASER_CHARGE, 3.0f, 1.0f);
 				laserCd = cd(140);
 			} else if (stompCd <= 0 && distance < 7) {
 				act(ANIM_STOMP, 20);
@@ -654,7 +660,7 @@ public class AmethystRobot extends Monster {
 			if (!chargeHit) {
 				for (LivingEntity hit : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(0.8),
 						e -> e != AmethystRobot.this && !(e instanceof AmethystRobot) && e.isAlive())) {
-					hit.hurtServer(level, damageSources().mobAttack(AmethystRobot.this), isEnraged() ? 24.0f : 18.0f);
+					hit.hurtServer(level, damageSources().mobAttack(AmethystRobot.this), scaled(isEnraged() ? 24.0f : 18.0f));
 					hit.push(chargeDir.x * 2.2, 0.7, chargeDir.z * 2.2);
 					chargeHit = true;
 					playSound(SoundEvents.ANVIL_LAND, 1.2f, 0.7f);

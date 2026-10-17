@@ -52,6 +52,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.end.EndContent;
 
 /**
@@ -100,14 +102,19 @@ public class AmethystSpider extends Monster {
 		bossEvent.setDarkenScreen(true);
 	}
 
+	/** Schaden der Spezialangriffe, skaliert mit {@code bosses.spider.damageMultiplier}. */
+	private static float scaled(double amount) {
+		return (float) (amount * ModConfig.get().bosses.spider.damageMultiplier);
+	}
+
 	public static AttributeSupplier.Builder createAttributes() {
 		return Monster.createMonsterAttributes()
-				.add(Attributes.MAX_HEALTH, 600.0)
-				.add(Attributes.ATTACK_DAMAGE, 18.0)
+				.add(Attributes.MAX_HEALTH, ModConfig.get().bosses.spider.health)
+				.add(Attributes.ATTACK_DAMAGE, 18.0 * ModConfig.get().bosses.spider.damageMultiplier)
 				.add(Attributes.ATTACK_KNOCKBACK, 1.0)
 				.add(Attributes.MOVEMENT_SPEED, 0.32)
 				.add(Attributes.KNOCKBACK_RESISTANCE, 1.0)
-				.add(Attributes.ARMOR, 14.0)
+				.add(Attributes.ARMOR, ModConfig.get().bosses.spider.armor)
 				.add(Attributes.ARMOR_TOUGHNESS, 6.0)
 				.add(Attributes.STEP_HEIGHT, 2.0)
 				.add(Attributes.FOLLOW_RANGE, 64.0);
@@ -238,7 +245,7 @@ public class AmethystSpider extends Monster {
 		if (!isEnraged() && getHealth() < getMaxHealth() * 0.5f) {
 			entityData.set(DATA_ENRAGED, true);
 			getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(0.42);
-			getAttribute(Attributes.ARMOR).setBaseValue(20.0);
+			getAttribute(Attributes.ARMOR).setBaseValue(Math.min(30.0, ModConfig.get().bosses.spider.armor + 6.0));
 			shriek(level);
 			brood(level);
 			level.sendParticles(ParticleTypes.REVERSE_PORTAL, getX(), getY() + 1.5, getZ(), 120, 2.5, 1.0, 2.5, 0.15);
@@ -335,9 +342,7 @@ public class AmethystSpider extends Monster {
 	/** Resonanz-Schrei: Dunkelheit + Langsamkeit, schiebt leicht weg. */
 	private void shriek(ServerLevel level) {
 		playAnim(ANIM_SHRIEK, 30);
-		playSound(SoundEvents.SPIDER_AMBIENT, 4.0f, 0.3f);
-		playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 4.0f, 0.5f);
-		playSound(SoundEvents.WARDEN_ROAR, 1.5f, 1.6f);
+		playSound(ModSounds.SPIDER_SHRIEK, 4.0f, 1.0f);
 		level.sendParticles(ParticleTypes.SONIC_BOOM, getX(), getY() + 1.5, getZ(), 1, 0, 0, 0, 0);
 
 		for (int i = 0; i < 40; i++) {
@@ -391,8 +396,7 @@ public class AmethystSpider extends Monster {
 			level.addFreshEntity(shot);
 		}
 
-		playSound(SoundEvents.LLAMA_SPIT, 2.0f, 0.5f);
-		playSound(SoundEvents.SPIDER_HURT, 1.0f, 1.6f);
+		playSound(ModSounds.SPIDER_WEB, 2.0f, 0.9f + random.nextFloat() * 0.2f);
 	}
 
 	/** Spinnennetz für 5 Sekunden (nur in Luft). */
@@ -468,7 +472,7 @@ public class AmethystSpider extends Monster {
 
 			for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class,
 					new net.minecraft.world.phys.AABB(x - 1.3, y - 1, z - 1.3, x + 1.3, y + 2.5, z + 1.3), this::isFoe)) {
-				target.hurtServer(level, damageSources().indirectMagic(this, this), damage);
+				target.hurtServer(level, damageSources().indirectMagic(this, this), scaled(damage));
 				target.push(0, 0.6, 0);
 			}
 		}
@@ -495,8 +499,8 @@ public class AmethystSpider extends Monster {
 		setDeltaMovement(flat.x * speed, 0.95, flat.z * speed);
 		entityData.set(DATA_LEAPING, true);
 		airTicks = 0;
-		playSound(SoundEvents.SPIDER_AMBIENT, 3.0f, 0.5f);
-		playSound(SoundEvents.RAVAGER_ROAR, 1.0f, 1.5f);
+		playSound(ModSounds.SPIDER_AMBIENT, 3.0f, 0.8f);
+		playSound(SoundEvents.RAVAGER_ROAR, 0.8f, 1.5f);
 	}
 
 	private void tickLeap(ServerLevel level) {
@@ -532,7 +536,7 @@ public class AmethystSpider extends Monster {
 
 		for (LivingEntity target : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.5, 2, 4.5), this::isFoe)) {
 			double distance = target.distanceTo(this);
-			target.hurtServer(level, damageSources().mobAttack(this), (float) Math.max(5.0, base - distance * 1.5));
+			target.hurtServer(level, damageSources().mobAttack(this), scaled((float) Math.max(5.0, base - distance * 1.5)));
 			Vec3 push = target.position().subtract(position()).normalize().scale(1.1);
 			target.push(push.x, 0.7, push.z);
 		}
@@ -555,17 +559,17 @@ public class AmethystSpider extends Monster {
 
 	@Override
 	protected @Nullable SoundEvent getAmbientSound() {
-		return SoundEvents.SPIDER_AMBIENT;
+		return ModSounds.SPIDER_AMBIENT;
 	}
 
 	@Override
 	protected SoundEvent getHurtSound(DamageSource source) {
-		return SoundEvents.SPIDER_HURT;
+		return ModSounds.SPIDER_HURT;
 	}
 
 	@Override
 	protected SoundEvent getDeathSound() {
-		return SoundEvents.SPIDER_DEATH;
+		return ModSounds.SPIDER_DEATH;
 	}
 
 	@Override
@@ -580,7 +584,7 @@ public class AmethystSpider extends Monster {
 
 	@Override
 	protected void playStepSound(BlockPos pos, BlockState state) {
-		playSound(SoundEvents.SPIDER_STEP, 1.2f, 0.5f);
+		playSound(ModSounds.SPIDER_STEP, 1.2f, 0.9f + random.nextFloat() * 0.2f);
 	}
 
 	// ------------------------------------------------------------------

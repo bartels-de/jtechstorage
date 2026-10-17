@@ -107,7 +107,10 @@ public class GuideBookScreen extends Screen {
 		pages.add(new InfoPage("jtechstorage.guide.contents.title", "jtechstorage.guide.contents.body"));
 		pages.add(new InfoPage("jtechstorage.guide.start.title", "jtechstorage.guide.start.body"));
 		pages.add(new InfoPage("jtechstorage.guide.terminal.title", "jtechstorage.guide.terminal.body"));
-		pages.add(new InfoPage("jtechstorage.guide.upgrades.title", "jtechstorage.guide.upgrades.body"));
+		dev.bartels.jtechstorage.ModConfig.Network net = dev.bartels.jtechstorage.ModConfig.get().network;
+		pages.add(new InfoPage("jtechstorage.guide.upgrades.title", "jtechstorage.guide.upgrades.body",
+				net.baseRange, net.ironRange, net.goldRange, net.diamondRange, net.netheriteRange, net.enderRange,
+				net.baseCapacity, net.ironCapacity, net.goldCapacity, net.diamondCapacity, net.netheriteCapacity));
 		pages.add(new InfoPage("jtechstorage.guide.sorting.title", "jtechstorage.guide.sorting.body"));
 		pages.add(new InfoPage("jtechstorage.guide.interface.title", "jtechstorage.guide.interface.body"));
 		pages.add(new InfoPage("jtechstorage.guide.friends.title", "jtechstorage.guide.friends.body"));

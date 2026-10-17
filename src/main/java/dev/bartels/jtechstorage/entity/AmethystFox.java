@@ -43,6 +43,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModAdvancements;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.block.StorageTerminalBlockEntity;
@@ -56,10 +58,10 @@ import dev.bartels.jtechstorage.enchant.ModEnchantments;
  */
 public class AmethystFox extends NetworkHelperMob {
 	/** Wartezeit zwischen zwei Funden (Spielzeit-Ticks, 3 Tage). */
-	public static final long DIG_INTERVAL = 72000L;
+	public static final long DIG_INTERVAL = Math.round(ModConfig.get().helpers.foxDigIntervalDays * 24000.0);
 	public static final int DIG_TICKS = 70;
 	private static final int ROAM = 10;
-	private static final int MAX_FEEDINGS_PER_DAY = 4;
+	private static final int MAX_FEEDINGS_PER_DAY = ModConfig.get().helpers.foxMaxFeedingsPerDay;
 
 	private static final EntityDataAccessor<Integer> DATA_DIG = SynchedEntityData.defineId(AmethystFox.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Boolean> DATA_READY = SynchedEntityData.defineId(AmethystFox.class, EntityDataSerializers.BOOLEAN);
@@ -153,7 +155,11 @@ public class AmethystFox extends NetworkHelperMob {
 			}
 
 			if (dig % 10 == 0) {
-				playSound(below.getSoundType().getHitSound(), 0.6f, 1.2f);
+				playSound(below.getSoundType().getHitSound(), 0.4f, 1.2f);
+			}
+
+			if (dig % 18 == 0) {
+				playSound(ModSounds.FOX_DIG, 0.8f, 0.95f + random.nextFloat() * 0.1f);
 			}
 
 			if (dig == 1) {
@@ -239,8 +245,7 @@ public class AmethystFox extends NetworkHelperMob {
 				.map(e -> Enchantment.getFullname(e.getKey(), e.getIntValue())).orElse(book.getHoverName());
 		level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, getX(), getY() + 0.6, getZ(), 25, 0.3, 0.4, 0.3, 0.3);
 		level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.6, getZ(), 15, 0.3, 0.4, 0.3, 0.08);
-		playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.0f, 1.4f);
-		playSound(SoundEvents.FOX_AMBIENT, 1.0f, 1.3f);
+		playSound(ModSounds.FOX_FOUND, 1.2f, 1.0f);
 
 		StorageTerminalBlockEntity terminal = terminal();
 		boolean stored = false;
@@ -326,14 +331,10 @@ public class AmethystFox extends NetworkHelperMob {
 	}
 
 	@Override
-	protected net.minecraft.sounds.@Nullable SoundEvent getAmbientSound() {
-		return isResting() ? SoundEvents.FOX_SLEEP : SoundEvents.FOX_AMBIENT;
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.FOX_AMBIENT;
 	}
 
-	@Override
-	public float getVoicePitch() {
-		return 1.25f;
-	}
 
 	@Override
 	protected void addAdditionalSaveData(ValueOutput output) {

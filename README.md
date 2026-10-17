@@ -35,6 +35,8 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
   and Amethyst Obsidian gear with a set bonus.
 - 🦊 **Crystal enchantments.** Five new enchantments that only the Amethyst Fox can dig up.
 - 🎨 **Readable, themeable UI.** Light and dark themes, accent colors and adjustable terminal size, in English and German.
+- 🔊 **Own sounds and a server config.** Synthesized crystal sounds for every creature, and a commented config file for
+  ranges, bosses and helper speeds.
 
 ## Installation
 
@@ -205,6 +207,24 @@ The gear button in the terminal opens UI settings, which apply to all screens of
 - item count size
 
 The mod also adds its own advancement tab and JEI support.
+
+### Configuration
+
+On first start the mod creates `config/jtechstorage.json` (JSON with comments). It controls:
+
+- **Network:** range and capacity for every upgrade tier, wireless range factor, resonance bonuses.
+- **Bosses:** health, armor and a damage multiplier for the Amethyst Robot and the Great Amethyst Spider, plus the
+  robot's core drop chance.
+- **Helpers:** the Amethyst Fox's dig interval and feeding limit, Chel's crafting speed, the Amethyst Sprite's pause
+  and radii, watch and guard radii, and phoenix speeds.
+
+Changes apply after a restart. Delete a line (or the whole file) to restore its default. On a server, the server's
+file counts; clients receive its values for tooltips and the handbook.
+
+### Sounds
+
+All helpers and both bosses have their own synthesized sounds in the mod's crystal style: chimes, hums, chirps and
+mechanical noises, with subtitles in English and German.
 
 ## Languages
 

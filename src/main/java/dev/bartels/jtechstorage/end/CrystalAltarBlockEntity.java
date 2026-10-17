@@ -16,6 +16,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModAdvancements;
 import dev.bartels.jtechstorage.entity.AmethystSpider;
 
@@ -69,7 +70,7 @@ public class CrystalAltarBlockEntity extends BlockEntity {
 		level.addFreshEntity(spider);
 
 		level.playSound(null, worldPosition, SoundEvents.END_PORTAL_SPAWN, SoundSource.HOSTILE, 1.5f, 1.4f);
-		level.playSound(null, worldPosition, SoundEvents.SPIDER_AMBIENT, SoundSource.HOSTILE, 3.0f, 0.4f);
+		level.playSound(null, worldPosition, ModSounds.SPIDER_AWAKEN, SoundSource.HOSTILE, 4.0f, 1.0f);
 		level.sendParticles(ParticleTypes.REVERSE_PORTAL, x, y + 2, z, 120, 2.0, 3.0, 2.0, 0.2);
 		level.sendParticles(ParticleTypes.END_ROD, x, y + 4, z, 40, 1.0, 4.0, 1.0, 0.05);
 

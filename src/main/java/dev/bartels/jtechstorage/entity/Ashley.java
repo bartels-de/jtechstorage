@@ -27,6 +27,7 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 
 /**
@@ -81,7 +82,7 @@ public class Ashley extends NetworkHelperMob {
 		setStatus("jtechstorage.ashley.status.kicked", kicks);
 		Vec3 away = position().subtract(peter.position()).normalize().scale(0.45);
 		push(away.x, 0.3, away.z);
-		playSound(SoundEvents.SLIME_SQUISH, 1.0f, 0.8f);
+		playSound(ModSounds.ASHLEY_KICKED, 1.0f, 0.95f + random.nextFloat() * 0.1f);
 		playSound(SoundEvents.PANDA_SNEEZE, 0.6f, 1.3f);
 
 		if (level() instanceof ServerLevel level) {
@@ -120,7 +121,7 @@ public class Ashley extends NetworkHelperMob {
 		if (random.nextInt(900) == 0) {
 			level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY() + 0.6, getZ(), 4, 0.2, 0.1, 0.2, 0.02);
 			level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.6, getZ(), 10, 0.3, 0.2, 0.3, 0.05);
-			playSound(SoundEvents.PANDA_SNEEZE, 1.0f, 1.0f);
+			playSound(ModSounds.ASHLEY_SNEEZE, 1.0f, 0.95f + random.nextFloat() * 0.1f);
 		}
 
 		if (--sayCooldown <= 0) {
@@ -141,7 +142,7 @@ public class Ashley extends NetworkHelperMob {
 	protected InteractionResult interactWith(Player player, InteractionHand hand) {
 		if (player.getItemInHand(hand).isEmpty() && player.isSecondaryUseActive()) {
 			player.getInventory().placeItemBackInInventory(createPackedItem(ModContent.ASHLEY_ITEM, player), Prediction.SERVER_ONLY);
-			playSound(SoundEvents.PANDA_SNEEZE, 1.0f, 1.2f);
+			playSound(ModSounds.ASHLEY_SNEEZE, 1.0f, 1.1f);
 			discard();
 			return InteractionResult.SUCCESS;
 		}
@@ -197,5 +198,10 @@ public class Ashley extends NetworkHelperMob {
 				getNavigation().moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1.0);
 			}
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.ASHLEY_AMBIENT;
 	}
 }

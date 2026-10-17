@@ -1,0 +1,295 @@
+{
+  "sprite.ambient": {
+    "subtitle": "subtitles.jtechstorage.sprite.ambient",
+    "sounds": [
+      "jtechstorage:sprite/ambient1",
+      "jtechstorage:sprite/ambient2",
+      "jtechstorage:sprite/ambient3"
+    ]
+  },
+  "sprite.work": {
+    "subtitle": "subtitles.jtechstorage.sprite.work",
+    "sounds": [
+      "jtechstorage:sprite/work1",
+      "jtechstorage:sprite/work2",
+      "jtechstorage:sprite/work3"
+    ]
+  },
+  "moth.ambient": {
+    "subtitle": "subtitles.jtechstorage.moth.ambient",
+    "sounds": [
+      "jtechstorage:moth/ambient1",
+      "jtechstorage:moth/ambient2",
+      "jtechstorage:moth/ambient3"
+    ]
+  },
+  "moth.alarm": {
+    "subtitle": "subtitles.jtechstorage.moth.alarm",
+    "sounds": [
+      "jtechstorage:moth/alarm1",
+      "jtechstorage:moth/alarm2"
+    ]
+  },
+  "griffin.ambient": {
+    "subtitle": "subtitles.jtechstorage.griffin.ambient",
+    "sounds": [
+      "jtechstorage:griffin/ambient1",
+      "jtechstorage:griffin/ambient2",
+      "jtechstorage:griffin/ambient3"
+    ]
+  },
+  "griffin.unload": {
+    "subtitle": "subtitles.jtechstorage.griffin.unload",
+    "sounds": [
+      "jtechstorage:griffin/unload1",
+      "jtechstorage:griffin/unload2"
+    ]
+  },
+  "beetle.ambient": {
+    "subtitle": "subtitles.jtechstorage.beetle.ambient",
+    "sounds": [
+      "jtechstorage:beetle/ambient1",
+      "jtechstorage:beetle/ambient2",
+      "jtechstorage:beetle/ambient3"
+    ]
+  },
+  "beetle.charge": {
+    "subtitle": "subtitles.jtechstorage.beetle.charge",
+    "sounds": [
+      "jtechstorage:beetle/charge1",
+      "jtechstorage:beetle/charge2"
+    ]
+  },
+  "chel.ambient": {
+    "subtitle": "subtitles.jtechstorage.chel.ambient",
+    "sounds": [
+      "jtechstorage:chel/ambient1",
+      "jtechstorage:chel/ambient2",
+      "jtechstorage:chel/ambient3",
+      "jtechstorage:chel/ambient4"
+    ]
+  },
+  "chel.craft": {
+    "subtitle": "subtitles.jtechstorage.chel.craft",
+    "sounds": [
+      "jtechstorage:chel/craft1",
+      "jtechstorage:chel/craft2",
+      "jtechstorage:chel/craft3"
+    ]
+  },
+  "chel.laugh": {
+    "subtitle": "subtitles.jtechstorage.chel.laugh",
+    "sounds": [
+      "jtechstorage:chel/laugh1",
+      "jtechstorage:chel/laugh2"
+    ]
+  },
+  "peter.ambient": {
+    "subtitle": "subtitles.jtechstorage.peter.ambient",
+    "sounds": [
+      "jtechstorage:peter/ambient1",
+      "jtechstorage:peter/ambient2",
+      "jtechstorage:peter/ambient3"
+    ]
+  },
+  "peter.attack": {
+    "subtitle": "subtitles.jtechstorage.peter.attack",
+    "sounds": [
+      "jtechstorage:peter/attack1",
+      "jtechstorage:peter/attack2",
+      "jtechstorage:peter/attack3"
+    ]
+  },
+  "peter.transform": {
+    "subtitle": "subtitles.jtechstorage.peter.transform",
+    "sounds": [
+      "jtechstorage:peter/transform1"
+    ]
+  },
+  "ashley.ambient": {
+    "subtitle": "subtitles.jtechstorage.ashley.ambient",
+    "sounds": [
+      "jtechstorage:ashley/ambient1",
+      "jtechstorage:ashley/ambient2",
+      "jtechstorage:ashley/ambient3"
+    ]
+  },
+  "ashley.sneeze": {
+    "subtitle": "subtitles.jtechstorage.ashley.sneeze",
+    "sounds": [
+      "jtechstorage:ashley/sneeze1",
+      "jtechstorage:ashley/sneeze2",
+      "jtechstorage:ashley/sneeze3"
+    ]
+  },
+  "ashley.kicked": {
+    "subtitle": "subtitles.jtechstorage.ashley.kicked",
+    "sounds": [
+      "jtechstorage:ashley/kicked1",
+      "jtechstorage:ashley/kicked2"
+    ]
+  },
+  "phoenix.ambient": {
+    "subtitle": "subtitles.jtechstorage.phoenix.ambient",
+    "sounds": [
+      "jtechstorage:phoenix/ambient1",
+      "jtechstorage:phoenix/ambient2",
+      "jtechstorage:phoenix/ambient3"
+    ]
+  },
+  "phoenix.depart": {
+    "subtitle": "subtitles.jtechstorage.phoenix.depart",
+    "sounds": [
+      "jtechstorage:phoenix/depart1",
+      "jtechstorage:phoenix/depart2"
+    ]
+  },
+  "amethyst_phoenix.ambient": {
+    "subtitle": "subtitles.jtechstorage.amethyst_phoenix.ambient",
+    "sounds": [
+      "jtechstorage:amethyst_phoenix/ambient1",
+      "jtechstorage:amethyst_phoenix/ambient2",
+      "jtechstorage:amethyst_phoenix/ambient3"
+    ]
+  },
+  "amethyst_phoenix.depart": {
+    "subtitle": "subtitles.jtechstorage.amethyst_phoenix.depart",
+    "sounds": [
+      "jtechstorage:amethyst_phoenix/depart1",
+      "jtechstorage:amethyst_phoenix/depart2"
+    ]
+  },
+  "amethyst_phoenix.evolve": {
+    "subtitle": "subtitles.jtechstorage.amethyst_phoenix.evolve",
+    "sounds": [
+      "jtechstorage:amethyst_phoenix/evolve1"
+    ]
+  },
+  "fox.ambient": {
+    "subtitle": "subtitles.jtechstorage.fox.ambient",
+    "sounds": [
+      "jtechstorage:fox/ambient1",
+      "jtechstorage:fox/ambient2",
+      "jtechstorage:fox/ambient3"
+    ]
+  },
+  "fox.dig": {
+    "subtitle": "subtitles.jtechstorage.fox.dig",
+    "sounds": [
+      "jtechstorage:fox/dig1",
+      "jtechstorage:fox/dig2",
+      "jtechstorage:fox/dig3"
+    ]
+  },
+  "fox.found": {
+    "subtitle": "subtitles.jtechstorage.fox.found",
+    "sounds": [
+      "jtechstorage:fox/found1",
+      "jtechstorage:fox/found2"
+    ]
+  },
+  "robot.ambient": {
+    "subtitle": "subtitles.jtechstorage.robot.ambient",
+    "sounds": [
+      "jtechstorage:robot/ambient1",
+      "jtechstorage:robot/ambient2"
+    ]
+  },
+  "robot.hurt": {
+    "subtitle": "subtitles.jtechstorage.robot.hurt",
+    "sounds": [
+      "jtechstorage:robot/hurt1",
+      "jtechstorage:robot/hurt2",
+      "jtechstorage:robot/hurt3"
+    ]
+  },
+  "robot.death": {
+    "subtitle": "subtitles.jtechstorage.robot.death",
+    "sounds": [
+      "jtechstorage:robot/death1"
+    ]
+  },
+  "robot.step": {
+    "subtitle": "subtitles.jtechstorage.robot.step",
+    "sounds": [
+      "jtechstorage:robot/step1",
+      "jtechstorage:robot/step2",
+      "jtechstorage:robot/step3"
+    ]
+  },
+  "robot.awaken": {
+    "subtitle": "subtitles.jtechstorage.robot.awaken",
+    "sounds": [
+      "jtechstorage:robot/awaken1"
+    ]
+  },
+  "robot.laser_charge": {
+    "subtitle": "subtitles.jtechstorage.robot.laser_charge",
+    "sounds": [
+      "jtechstorage:robot/laser_charge1"
+    ]
+  },
+  "robot.laser": {
+    "subtitle": "subtitles.jtechstorage.robot.laser",
+    "sounds": [
+      "jtechstorage:robot/laser1",
+      "jtechstorage:robot/laser2"
+    ]
+  },
+  "robot.slam": {
+    "subtitle": "subtitles.jtechstorage.robot.slam",
+    "sounds": [
+      "jtechstorage:robot/slam1",
+      "jtechstorage:robot/slam2"
+    ]
+  },
+  "spider.ambient": {
+    "subtitle": "subtitles.jtechstorage.spider.ambient",
+    "sounds": [
+      "jtechstorage:spider/ambient1",
+      "jtechstorage:spider/ambient2",
+      "jtechstorage:spider/ambient3"
+    ]
+  },
+  "spider.hurt": {
+    "subtitle": "subtitles.jtechstorage.spider.hurt",
+    "sounds": [
+      "jtechstorage:spider/hurt1",
+      "jtechstorage:spider/hurt2",
+      "jtechstorage:spider/hurt3"
+    ]
+  },
+  "spider.death": {
+    "subtitle": "subtitles.jtechstorage.spider.death",
+    "sounds": [
+      "jtechstorage:spider/death1"
+    ]
+  },
+  "spider.step": {
+    "subtitle": "subtitles.jtechstorage.spider.step",
+    "sounds": [
+      "jtechstorage:spider/step1",
+      "jtechstorage:spider/step2",
+      "jtechstorage:spider/step3"
+    ]
+  },
+  "spider.shriek": {
+    "subtitle": "subtitles.jtechstorage.spider.shriek",
+    "sounds": [
+      "jtechstorage:spider/shriek1"
+    ]
+  },
+  "spider.web": {
+    "subtitle": "subtitles.jtechstorage.spider.web",
+    "sounds": [
+      "jtechstorage:spider/web1",
+      "jtechstorage:spider/web2"
+    ]
+  },
+  "spider.awaken": {
+    "subtitle": "subtitles.jtechstorage.spider.awaken",
+    "sounds": [
+      "jtechstorage:spider/awaken1"
+    ]
+  }
+}

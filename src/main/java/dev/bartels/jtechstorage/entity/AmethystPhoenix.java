@@ -43,6 +43,8 @@ import net.minecraft.world.phys.Vec3;
 
 import net.fabricmc.fabric.api.menu.v1.ExtendedMenuProvider;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.menu.AmethystPhoenixMenu;
 
@@ -60,7 +62,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	public static final int STATE_FLYING = 1;
 	public static final int STATE_RESTING = 2;
 	/** Reisegeschwindigkeit ohne Last (Blöcke pro Tick). */
-	private static final double BASE_SPEED = 0.6;
+	private static final double BASE_SPEED = ModConfig.get().helpers.amethystPhoenixBlocksPerSecond / 20.0;
 	private static final double CRUISE_HEIGHT = 18.0;
 
 	private static final EntityDataAccessor<Integer> DATA_STATE = SynchedEntityData.defineId(AmethystPhoenix.class, EntityDataSerializers.INT);
@@ -238,8 +240,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	private void takeOff() {
 		setState(STATE_FLYING);
 		cruiseY = getY();
-		playSound(SoundEvents.ENDER_DRAGON_FLAP, 1.0f, 1.2f);
-		playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.0f, 0.9f);
+		playSound(ModSounds.AMETHYST_PHOENIX_DEPART, 1.5f, 1.0f);
 	}
 
 	/** Abflug von der Haltestelle, an der er gerade rastet. */
@@ -607,7 +608,7 @@ public class AmethystPhoenix extends NetworkHelperMob {
 		level.sendParticles(ParticleTypes.END_ROD, grown.getX(), grown.getY() + 1, grown.getZ(), 40, 1.0, 1.0, 1.0, 0.1);
 		level.sendParticles(ParticleTypes.WITCH, grown.getX(), grown.getY() + 1, grown.getZ(), 40, 1.0, 1.0, 1.0, 0.1);
 		grown.playSound(SoundEvents.TOTEM_USE, 1.0f, 1.2f);
-		grown.playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.5f, 0.7f);
+		grown.playSound(ModSounds.AMETHYST_PHOENIX_EVOLVE, 2.0f, 1.0f);
 		player.sendSystemMessage(Component.translatable("jtechstorage.amethyst_phoenix.evolved").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
 
 		if (player instanceof ServerPlayer serverPlayer) {
@@ -716,5 +717,10 @@ public class AmethystPhoenix extends NetworkHelperMob {
 	/** Für Statusanzeigen. */
 	public List<Component> routeLines() {
 		return List.of(stopName(0), stopName(1));
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.AMETHYST_PHOENIX_AMBIENT;
 	}
 }

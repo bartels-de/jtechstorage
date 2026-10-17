@@ -3,6 +3,23 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.22.0]
+
+### Added
+- **Custom sounds** for all helpers and both bosses (40 sound events, 93 synthesized variants, subtitles in English
+  and German):
+  - helpers have their own ambient sounds (quiet, every ~15 s, silent while resting) and work sounds, such as the
+    sprite sorting, Chel hammering and giggling, Ashley sneezing, the fox digging and finding a book, and phoenix
+    take-offs
+  - the Amethyst Robot and the Great Amethyst Spider got new ambient, hurt, death, step and attack sounds (laser
+    charge and shot, fist slam, resonance shriek, crystal web, awakening)
+- **Server config** `config/jtechstorage.json` with comments: network ranges and capacities, boss health, armor,
+  damage multiplier and core chance, and helper speeds and radii. Clients receive the server's values for upgrade
+  tooltips and the handbook.
+
+### Changed
+- Upgrade tooltips and the handbook's upgrade page show the configured values.
+
 ## [0.21.1]
 
 ### Changed

@@ -39,12 +39,14 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 
 /**
  * Peter Chel Parker – Chels Heldenform (entsteht, wenn man Chel einen Netherstern gibt).
  * Er bleibt in der Basis (Zuhause = Ort der Verwandlung bzw. des Absetzens), patrouilliert dort und
- * zerschmettert jedes Monster im Umkreis von {@value #GUARD_RADIUS} Blöcken mit seinem Kristall-Kriegshammer –
+ * zerschmettert jedes Monster im Umkreis von {@link #GUARD_RADIUS} Blöcken mit seinem Kristall-Kriegshammer –
  * inklusive Schockwelle, die auch Monster in der Nähe trifft. Fliegende Monster holt er mit Kristallwürfen herunter.
  * Spieler und Tiere greift er nie an. Er kann verletzt werden: zum Heilen läuft er zu Ashley und tritt sie, bis er
  * wieder volles Leben hat. Fällt sein Leben auf 0, wird er wieder zu Chel.
@@ -56,7 +58,7 @@ import dev.bartels.jtechstorage.ModContent;
  * </ul>
  */
 public class PeterChelParker extends NetworkHelperMob {
-	public static final int GUARD_RADIUS = 16;
+	public static final int GUARD_RADIUS = ModConfig.get().helpers.peterGuardRadius;
 	public static final int ATTACK_ANIMATION = 12;
 	private static final int HERO_LINES = 10;
 	private static final double SHOCKWAVE_RADIUS = 3.5;
@@ -186,8 +188,7 @@ public class PeterChelParker extends NetworkHelperMob {
 		level.sendParticles(ParticleTypes.EXPLOSION, center.getX(), center.getY() + 0.2, center.getZ(), 1, 0, 0, 0, 0);
 		level.sendParticles(ParticleTypes.WITCH, center.getX(), center.getY() + 0.3, center.getZ(), 30, 1.2, 0.2, 1.2, 0.05);
 		level.sendParticles(ParticleTypes.END_ROD, center.getX(), center.getY() + 0.5, center.getZ(), 15, 0.8, 0.4, 0.8, 0.1);
-		playSound(SoundEvents.ANVIL_LAND, 0.7f, 0.6f);
-		playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.2f, 0.7f);
+		playSound(ModSounds.PETER_ATTACK, 1.2f, 0.9f + random.nextFloat() * 0.2f);
 
 		for (LivingEntity other : level.getEntitiesOfClass(LivingEntity.class, center.getBoundingBox().inflate(SHOCKWAVE_RADIUS),
 				entity -> entity != center && entity instanceof Enemy && entity.isAlive())) {
@@ -506,5 +507,10 @@ public class PeterChelParker extends NetworkHelperMob {
 				setStatus("jtechstorage.peter.status.returning");
 			}
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.PETER_AMBIENT;
 	}
 }

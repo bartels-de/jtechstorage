@@ -33,6 +33,8 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.block.StorageTerminalBlockEntity;
 import dev.bartels.jtechstorage.network.StorageNetwork;
@@ -49,15 +51,15 @@ import dev.bartels.jtechstorage.network.StorageNetwork;
  * </ul>
  */
 public class AmethystSprite extends NetworkHelperMob {
-	private static final int IDLE_DELAY = 50;
+	private static final int IDLE_DELAY = Math.max(1, (int) Math.round(ModConfig.get().helpers.spritePauseSeconds * 20.0));
 	/** Grundtempo (bewusst gemächlich – mit Resonanz wird er deutlich schneller). */
 	private static final double FLY_SPEED = 1.0;
 	private static final int LEG_TIMEOUT = 600;
 	private static final double REACH_SQR = 2.5 * 2.5;
 	private static final double PICKUP_SQR = 1.6 * 1.6;
-	public static final int COLLECT_RADIUS = 12;
+	public static final int COLLECT_RADIUS = ModConfig.get().helpers.spriteCollectRadius;
 	/** Abgestellte Rucksäcke in diesem Umkreis werden geleert. */
-	public static final int BACKPACK_RADIUS = 10;
+	public static final int BACKPACK_RADIUS = ModConfig.get().helpers.spriteBackpackRadius;
 
 	public AmethystSprite(EntityType<? extends AmethystSprite> type, Level level) {
 		super(type, level);
@@ -315,7 +317,7 @@ public class AmethystSprite extends NetworkHelperMob {
 
 			if (carried.isEmpty()) {
 				setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
-				playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.8f, 1.6f);
+				playSound(ModSounds.SPRITE_WORK, 0.7f, 0.95f + random.nextFloat() * 0.1f);
 				((ServerLevel) level()).sendParticles(ParticleTypes.WITCH, targetPos.getX() + 0.5, targetPos.getY() + 1.1,
 						targetPos.getZ() + 0.5, 6, 0.25, 0.1, 0.25, 0.01);
 				phase = Phase.IDLE;
@@ -369,7 +371,7 @@ public class AmethystSprite extends NetworkHelperMob {
 			setStatus("jtechstorage.sprite.status.delivering", taken.getHoverName());
 		}
 
-		/** Abgestellter Rucksack mit Inhalt im Umkreis von {@value #BACKPACK_RADIUS} Blöcken (um Wichtel oder Terminal). */
+		/** Abgestellter Rucksack mit Inhalt im Umkreis von {@link #BACKPACK_RADIUS} Blöcken (um Wichtel oder Terminal). */
 		private @Nullable BlockPos findBackpack() {
 			BlockPos best = null;
 			double bestDistance = Double.MAX_VALUE;
@@ -459,7 +461,7 @@ public class AmethystSprite extends NetworkHelperMob {
 
 			ItemStack rest = terminal.buildNetwork().insert(carried.copy());
 			setItemInHand(InteractionHand.MAIN_HAND, rest);
-			playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.7f, 1.8f);
+			playSound(ModSounds.SPRITE_WORK, 0.6f, 1.1f);
 			((ServerLevel) level()).sendParticles(ParticleTypes.WITCH, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5,
 					6, 0.25, 0.1, 0.25, 0.01);
 			phase = Phase.IDLE;
@@ -487,7 +489,7 @@ public class AmethystSprite extends NetworkHelperMob {
 
 			if (moved > 0) {
 				playSound(SoundEvents.BUNDLE_INSERT, 0.8f, 1.2f);
-				playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.6f, 1.9f);
+				playSound(ModSounds.SPRITE_WORK, 0.5f, 1.2f);
 				((ServerLevel) level()).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 1.1,
 						pos.getZ() + 0.5, 8, 0.3, 0.1, 0.3, 0.0);
 			}
@@ -582,5 +584,10 @@ public class AmethystSprite extends NetworkHelperMob {
 		}
 
 		setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.SPRITE_AMBIENT;
 	}
 }

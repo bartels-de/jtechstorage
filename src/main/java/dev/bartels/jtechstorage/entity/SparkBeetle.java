@@ -28,6 +28,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModAdvancements;
 import dev.bartels.jtechstorage.ModContent;
 import dev.bartels.jtechstorage.block.StorageTerminalBlockEntity;
@@ -45,7 +47,7 @@ import dev.bartels.jtechstorage.block.StorageTerminalBlockEntity;
 public class SparkBeetle extends NetworkHelperMob {
 	/** Der Käfer muss so nah am Terminal sein, um es aufzuladen. */
 	public static final int CHARGE_DISTANCE = 8;
-	private static final int BASE_CHARGE = 2;
+	private static final int BASE_CHARGE = ModConfig.get().network.beetleChargePerSecond;
 	private static final EntityDataAccessor<Boolean> DATA_CHARGING = SynchedEntityData.defineId(SparkBeetle.class,
 			EntityDataSerializers.BOOLEAN);
 
@@ -114,7 +116,7 @@ public class SparkBeetle extends NetworkHelperMob {
 			boolean full = terminal.addResonance(boost);
 			held.consume(1, player);
 			sparks(12);
-			playSound(SoundEvents.AMETHYST_BLOCK_RESONATE, 1.0f, 1.8f);
+			playSound(ModSounds.BEETLE_CHARGE, 1.0f, 1.0f);
 			showCharge(player, terminal);
 
 			if (full && player instanceof ServerPlayer serverPlayer) {
@@ -220,5 +222,10 @@ public class SparkBeetle extends NetworkHelperMob {
 				getNavigation().moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1.0);
 			}
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.BEETLE_AMBIENT;
 	}
 }

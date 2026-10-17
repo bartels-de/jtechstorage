@@ -35,6 +35,8 @@ public class JTechStorage implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		ModConfig.load();
+		ModSounds.init();
 		ModContent.init();
 		dev.bartels.jtechstorage.end.EndContent.init();
 		dev.bartels.jtechstorage.enchant.ModEnchantments.init();
@@ -51,6 +53,9 @@ public class JTechStorage implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(NestActionPayload.TYPE, NestActionPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.DoubleJumpPayload.TYPE, dev.bartels.jtechstorage.net.DoubleJumpPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.PhoenixDepartPayload.TYPE, dev.bartels.jtechstorage.net.PhoenixDepartPayload.STREAM_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.ConfigSyncPayload.TYPE, dev.bartels.jtechstorage.net.ConfigSyncPayload.STREAM_CODEC);
+		net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents.JOIN.register((handler, sender, server) ->
+				sender.sendPacket(new dev.bartels.jtechstorage.net.ConfigSyncPayload(ModConfig.toNetworkJson())));
 
 		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.PhoenixDepartPayload.TYPE, (payload, context) -> {
 			net.minecraft.server.level.ServerPlayer player = context.player();

@@ -35,11 +35,13 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
+import dev.bartels.jtechstorage.ModConfig;
+import dev.bartels.jtechstorage.ModSounds;
 import dev.bartels.jtechstorage.ModContent;
 
 /**
  * Wächter-Falter (früher Sammel-Falter – das Einsammeln macht jetzt der Wichtel): nachtaktiv. Er kreist nachts über
- * seinem Zuhause, lässt Monster im Umkreis von {@value #WATCH_RADIUS} Blöcken leuchten (auch durch Wände sichtbar),
+ * seinem Zuhause, lässt Monster im Umkreis von {@link #WATCH_RADIUS} Blöcken leuchten (auch durch Wände sichtbar),
  * warnt seinen Besitzer und meldet die Monster an Peter Chel Parker. Tagsüber schläft er.
  *
  * <ul>
@@ -48,7 +50,7 @@ import dev.bartels.jtechstorage.ModContent;
  * </ul>
  */
 public class CollectorMoth extends NetworkHelperMob {
-	public static final int WATCH_RADIUS = 24;
+	public static final int WATCH_RADIUS = ModConfig.get().helpers.mothWatchRadius;
 	private static final int ALARM_COOLDOWN = 600;
 
 	private @Nullable BlockPos home;
@@ -166,11 +168,11 @@ public class CollectorMoth extends NetworkHelperMob {
 	/** Warnt den Besitzer (Glocke + Meldung), wenn neue Monster auftauchen. */
 	private void alarm(ServerLevel level, int count) {
 		alarmCooldown = ALARM_COOLDOWN;
-		playSound(SoundEvents.BELL_BLOCK, 0.8f, 1.6f);
+		playSound(ModSounds.MOTH_ALARM, 1.0f, 1.0f);
 
 		if (owner != null && level.getPlayerByUUID(owner) instanceof ServerPlayer player && player.distanceToSqr(this) < 96 * 96) {
 			player.sendOverlayMessage(Component.translatable("jtechstorage.moth.alarm", getDisplayName(), count));
-			player.level().playSound(null, player.blockPosition(), SoundEvents.BELL_BLOCK, net.minecraft.sounds.SoundSource.NEUTRAL, 0.6f, 1.8f);
+			player.level().playSound(null, player.blockPosition(), ModSounds.MOTH_ALARM, net.minecraft.sounds.SoundSource.NEUTRAL, 0.5f, 1.2f);
 		}
 
 		teamBroadcast(dev.bartels.jtechstorage.block.StorageTerminalBlockEntity.Channel.GUARD,
@@ -236,5 +238,10 @@ public class CollectorMoth extends NetworkHelperMob {
 			double y = home.getY() + 4.0 + random.nextDouble() * 2.0;
 			getNavigation().moveTo(x, y, z, 0.8 * speedFactor());
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
+		return ModSounds.MOTH_AMBIENT;
 	}
 }
