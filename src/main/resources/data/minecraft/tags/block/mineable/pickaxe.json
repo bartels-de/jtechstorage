@@ -4,6 +4,7 @@
     "jtechstorage:crafting_terminal",
     "jtechstorage:team_terminal",
     "jtechstorage:trade_terminal",
-    "jtechstorage:phoenix_stop"
+    "jtechstorage:phoenix_stop",
+    "jtechstorage:signal_lantern"
   ]
 }

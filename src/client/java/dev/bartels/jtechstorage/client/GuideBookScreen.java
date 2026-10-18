@@ -206,6 +206,15 @@ public class GuideBookScreen extends Screen {
 		info("phoenix");
 		info("amethyst_phoenix");
 		info("phoenix_stops");
+		info("signal_lantern");
+
+		chapter(Items.AMETHYST_CLUSTER, "storm");
+		info("storm");
+
+		chapter(dev.bartels.jtechstorage.wolf.WolfContent.CRYSTAL_WOLF_ITEM, "wolves");
+		info("crystal_wolf");
+		info("moon_wolf");
+		info("helper_home");
 
 		chapter(ModContent.LEATHER_BACKPACK, "backpacks");
 		info("backpack");
@@ -243,6 +252,14 @@ public class GuideBookScreen extends Screen {
 				Items.STICK, Items.AMETHYST_BLOCK, Items.STICK, Items.HAY_BLOCK, Items.BARREL, Items.HAY_BLOCK, Items.STICK, Items.STICK, Items.STICK);
 		crafting(ModContent.PHOENIX_STOP_ITEM, "jtechstorage.guide.recipe.phoenix_stop",
 				null, Items.AMETHYST_SHARD, null, Items.GOLD_INGOT, Items.LODESTONE, Items.GOLD_INGOT, Items.POLISHED_DEEPSLATE, Items.POLISHED_DEEPSLATE, Items.POLISHED_DEEPSLATE);
+		crafting(dev.bartels.jtechstorage.wolf.WolfContent.WOLF_BASKET_ITEM, "jtechstorage.guide.recipe.wolf_basket",
+				Items.STICK, null, Items.STICK, Items.WHEAT, Items.WOOL.white(), Items.WHEAT, Items.WHEAT, Items.AMETHYST_SHARD, Items.WHEAT);
+		crafting(dev.bartels.jtechstorage.wolf.WolfContent.HELPER_BED_ITEM, "jtechstorage.guide.recipe.helper_bed",
+				Items.AMETHYST_SHARD, null, null, Items.WOOL.white(), Items.WOOL.white(), Items.GOLD_NUGGET, Items.OAK_PLANKS, Items.OAK_PLANKS, Items.OAK_PLANKS);
+		crafting(dev.bartels.jtechstorage.wolf.WolfContent.AMETHYST_BONE, "jtechstorage.guide.recipe.amethyst_bone",
+				Items.GLOWSTONE_DUST, Items.AMETHYST_SHARD, Items.GLOWSTONE_DUST, Items.AMETHYST_SHARD, Items.BONE, Items.AMETHYST_SHARD, Items.GLOWSTONE_DUST, Items.AMETHYST_SHARD, Items.GLOWSTONE_DUST);
+		crafting(dev.bartels.jtechstorage.storm.StormContent.SIGNAL_LANTERN_ITEM, "jtechstorage.guide.recipe.signal_lantern",
+				null, Items.GOLD_NUGGET, null, Items.POLISHED_DEEPSLATE, Items.AMETHYST_SHARD, Items.POLISHED_DEEPSLATE, Items.POLISHED_DEEPSLATE, Items.REDSTONE, Items.POLISHED_DEEPSLATE);
 
 		chapter(ModContent.STORAGE_KEY, "recipes_tools");
 		crafting(ModContent.STORAGE_KEY, "jtechstorage.guide.recipe.storage_key",
@@ -339,15 +356,21 @@ public class GuideBookScreen extends Screen {
 		creature(ModContent.ASHLEY, "ashley");
 		creature(ModContent.AMETHYST_FOX, "fox");
 		creature(ModContent.PHOENIX, "phoenix");
+		creature(dev.bartels.jtechstorage.wolf.WolfContent.CRYSTAL_WOLF, "crystal_wolf");
 
 		chapter(ModContent.DRAGON_HEART, "evolutions");
 		creature(ModContent.PETER_CHEL_PARKER, "peter");
 		creature(ModContent.CHELDROGAN, "cheldrogan");
 		creature(ModContent.AMETHYST_PHOENIX, "amethyst_phoenix");
+		creature(dev.bartels.jtechstorage.wolf.WolfContent.MOON_WOLF, "moon_wolf");
 
 		chapter(ModContent.AMETHYST_DRAUGHT, "bosses");
 		creature(ModContent.AMETHYST_ROBOT, "boss");
 		creature(EndContent.AMETHYST_SPIDER, "spider");
+
+		chapter(Items.AMETHYST_CLUSTER, "storm_creatures");
+		creature(dev.bartels.jtechstorage.storm.StormContent.CRYSTAL_SHARDLING, "shardling");
+		creature(dev.bartels.jtechstorage.storm.StormContent.STORM_HERALD, "herald");
 
 		chapter(ModContent.GUIDE_BOOK, "others");
 		creature(ModContent.JBARTELS_HOLOGRAM, "jbartels");
@@ -368,14 +391,16 @@ public class GuideBookScreen extends Screen {
 
 		chapter(ModContent.STORAGE_TERMINAL_ITEM, "lexicon_blocks");
 		lexicon(ModContent.STORAGE_TERMINAL_ITEM, ModContent.CRAFTING_TERMINAL_ITEM, ModContent.TEAM_TERMINAL_ITEM,
-				ModContent.TRADE_TERMINAL_ITEM, ModContent.PHOENIX_NEST_ITEM, ModContent.PHOENIX_STOP_ITEM, EndContent.CRYSTAL_ALTAR_ITEM);
+				ModContent.TRADE_TERMINAL_ITEM, ModContent.PHOENIX_NEST_ITEM, ModContent.PHOENIX_STOP_ITEM,
+				dev.bartels.jtechstorage.storm.StormContent.SIGNAL_LANTERN_ITEM, dev.bartels.jtechstorage.wolf.WolfContent.WOLF_BASKET_ITEM,
+				dev.bartels.jtechstorage.wolf.WolfContent.HELPER_BED_ITEM, EndContent.CRYSTAL_ALTAR_ITEM);
 
 		chapter(ModContent.STORAGE_KEY, "lexicon_tools");
 		lexicon(ModContent.STORAGE_KEY, ModContent.WIRELESS_TERMINAL, ModContent.FLIGHT_PLAN, ModContent.LEATHER_BACKPACK,
 				ModContent.AMETHYST_DRAUGHT, EndContent.LAIR_COMPASS, EndContent.CRYSTAL_COCOON);
 
 		chapter(ModContent.AMETHYST_CORE, "lexicon_materials");
-		lexicon(ModContent.AMETHYST_CORE, ModContent.WIRELESS_CORE, ModContent.DRAGON_HEART, EndContent.CRYSTAL_OBSIDIAN,
+		lexicon(ModContent.AMETHYST_CORE, dev.bartels.jtechstorage.wolf.WolfContent.AMETHYST_BONE, ModContent.WIRELESS_CORE, ModContent.DRAGON_HEART, EndContent.CRYSTAL_OBSIDIAN,
 				EndContent.AMETHYST_OBSIDIAN_UPGRADE);
 
 		chapter(ModContent.DIAMOND_RANGE_UPGRADE, "lexicon_upgrades");
@@ -417,6 +442,7 @@ public class GuideBookScreen extends Screen {
 
 		chapter(Items.AMETHYST_CLUSTER, "chronicle_legend");
 		info("legend");
+		info("storm_legend");
 
 		chapter(ModContent.AMETHYST_DRAUGHT, "chronicle_bosses");
 		info("boss");

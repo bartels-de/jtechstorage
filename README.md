@@ -131,26 +131,36 @@ drops from the Amethyst Robot.
 | **Spark Beetle** | Charges the terminal with resonance. Feed it redstone or glowstone for a boost. |
 | **Chel** | Chaotic auto-crafter. Keeps up to 8 items in stock using crafting recipes, and tells a joke for a diamond. |
 | **Peter Chel Parker** | Chel fed a nether star. Base protector who fights every monster within 16 blocks. |
-| **Cheldrogan** | Peter fed a Dragon Heart. A rideable amethyst dragon (see below). |
+| **Cheldrogan** | Peter fed a Dragon Heart. A rideable, hovering crystal serpent dragon (see below). |
 | **Ashley** | A grubby ash creature. Peter heals by kicking her, which she does not appreciate. |
 | **Phoenix** | Mail carrier that lives in a Phoenix Nest (see below). |
 | **Amethyst Phoenix** | Large travel and cargo phoenix (see below). |
 | **Amethyst Fox** | Digs up books with crystal enchantments (see below). |
+| **Crystal Wolf** | A tamed wolf fed an Amethyst Core. Guards the base, herds animals, brings monster loot into storage; stronger in a pack. |
+| **Moon Wolf** | The alpha. Appears at full moon, won over with an Amethyst Bone; leads the pack, scents structures, howls in the storm. |
 
 Helpers can be dyed and wear hats (pumpkin, flowers, cake, candle and more; extendable via the
 `jtechstorage:helper_hats` item tag). At night they rest unless the terminal has resonance.
+Helpers sleep in a **Helper Bed** (wolves in a **Wolf Basket**) within 16 blocks of the terminal. Each one reserves its own bed; if none is free, it lies down on the ground. Each helper has its own sleep pose; Peter and the Amethyst Phoenix only doze and Cheldrogan coils up at night (visual only) and stay
+on duty.
 
 ### Cheldrogan
 
 Craft a **Dragon Heart** (dragon's breath, Crystal Obsidian, amethyst blocks, a nether star and an Amethyst Obsidian
-Upgrade) and right-click Peter Chel Parker with it. He rises as **Cheldrogan**, a four-block amethyst dragon standing on
-two legs, with a crystal crown, a glowing core in his golden chest plate, huge wings and a crystal hammer on his tail.
+Upgrade) and right-click Peter Chel Parker with it. He rises as **Cheldrogan**, a hovering crystal serpent dragon: a
+long, wingless body of amethyst scales with golden belly plates and crystal spines, a glowing mane, branching crystal
+antlers, long whiskers, a crystal flame at the tail tip and a resonance pearl floating in front of him. He always hovers
+and slithers through the air; at night he coils up on the ground.
 
-- **Riding:** right-click to mount. He walks on the ground; press jump to take off, then he flies where you look and jump
-  rises. **Left click** = claw strike, **R** = crystal breath (a cone of crystal fire with a short cooldown; the key can
-  be changed in the controls).
-- **Guarding:** without a rider he guards the base like Peter, uses his crystal breath on targets he cannot reach and
-  heals at Ashley. If you dismount far away from his base, that spot becomes his new base.
+- **Riding:** right-click to mount. Press jump to take off, then he flies where you look and jump rises.
+  - **Left click** = **tail sweep**: he spins once around himself and his tail hurls everything nearby away.
+  - **R** = **crystal breath**: a beam that follows your gaze. Where it hits, resonance crystals grow from the ground and
+    encase monsters for a few seconds (the crystals vanish on their own and drop nothing).
+  - **V** = **crystal shard rain**: he rears up and amethyst shards rain down on the spot you aim at.
+  - Breath and shard rain have short cooldowns (configurable); both keys can be changed in the controls.
+- **Guarding:** without a rider he guards the base like Peter: shard rain on groups or distant monsters, tail sweep up
+  close, crystal breath at range and against targets he cannot reach. He heals at Ashley. If you dismount far away from
+  his base, that spot becomes his new base.
 - At 0 health the Dragon Heart burns out and he turns back into Peter.
 
 ### Phoenix mail
@@ -177,15 +187,26 @@ Right-click a phoenix with an **Amethyst Obsidian Upgrade** to evolve it into a 
 - **Up to four chests** (27 slots each). More chests and more cargo make it slower.
 - Sit mode stops all movement. The inventory key while riding opens its menu; packing it up keeps chests, cargo and route.
 
+### Resonance Storm
+
+Sometimes the resonance rings false. A **Resonance Storm** gathers over a Storage Terminal (for now started with
+`/jtechstorage storm start`, a natural trigger follows later):
+
+- the network is disturbed while it rages: half range, helpers at half speed, resonance drains fast
+- three waves of **Crystal Shardlings** march on the terminal; the last wave brings the **Storm Herald**
+- defeat the herald to end the storm. Peter Chel Parker, Cheldrogan and the Watch Moths fight alongside you
+
+The **Signal Lantern** lights up and emits a redstone signal while an Amethyst Phoenix rests at a stop within 8 blocks.
+
 ### Bosses and the End
 
 - **Amethyst Robot:** summoned with a **Resonance Igniter**. A huge mech with crystal fist, laser cannon, stomp and dash
   attacks, and an overload phase below 50 %. It always drops iron upgrades and has a 30 % chance to drop an Amethyst Core
-  or Wireless Core.
+  or Wireless Core. Without a target it powers down into standby.
 - **Crystal Lair:** a floating arena in the outer End. Find it with the **Lair Compass**. Your first visit awakens the
   **Great Amethyst Spider** (600 HP) with poison bites, leaps, crystal webs, spike lines, a resonance shriek and
   spiderlings. Summon it again at the altar with a **Crystal Cocoon**. Each kill drops exactly **one Amethyst Obsidian
-  Upgrade**.
+  Upgrade**. Without a target it lurks low with its eyes half closed.
 
 ### Amethyst Obsidian gear
 

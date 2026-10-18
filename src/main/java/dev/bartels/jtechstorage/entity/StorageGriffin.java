@@ -324,4 +324,10 @@ public class StorageGriffin extends NetworkHelperMob implements net.minecraft.wo
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
 		return ModSounds.GRIFFIN_AMBIENT;
 	}
+
+	/** Zu groß bzw. hat einen eigenen Schlafplatz – kein Helferbett. */
+	@Override
+	protected int bedKind() {
+		return 0;
+	}
 }

@@ -81,6 +81,7 @@ public final class ModConfig {
 		public double cheldroganHealth = 250.0;
 		public double cheldroganDamage = 24.0;
 		public double cheldroganBreathCooldownSeconds = 4.0;
+		public double cheldroganRainCooldownSeconds = 10.0;
 		public double phoenixMailBlocksPerSecond = 32.0;
 		public double amethystPhoenixBlocksPerSecond = 12.0;
 	}
@@ -224,6 +225,7 @@ public final class ModConfig {
 		h.cheldroganHealth = clamp(h.cheldroganHealth, 1.0, 100000.0);
 		h.cheldroganDamage = clamp(h.cheldroganDamage, 0.0, 10000.0);
 		h.cheldroganBreathCooldownSeconds = clamp(h.cheldroganBreathCooldownSeconds, 0.5, 600.0);
+		h.cheldroganRainCooldownSeconds = clamp(h.cheldroganRainCooldownSeconds, 1.0, 600.0);
 		h.phoenixMailBlocksPerSecond = clamp(h.phoenixMailBlocksPerSecond, 1.0, 10000.0);
 		h.amethystPhoenixBlocksPerSecond = clamp(h.amethystPhoenixBlocksPerSecond, 1.0, 100.0);
 	}
@@ -289,8 +291,9 @@ public final class ModConfig {
 				new Entry("mothWatchRadius", h.mothWatchRadius, "Watch Moth: radius for glowing monsters / Wach-Radius"),
 				new Entry("peterGuardRadius", h.peterGuardRadius, "Peter Chel Parker (and Cheldrogan): guard radius / Schutz-Radius"),
 				new Entry("cheldroganHealth", h.cheldroganHealth, "Cheldrogan: health (0 = turns back into Peter) / Leben"),
-				new Entry("cheldroganDamage", h.cheldroganDamage, "Cheldrogan: claw damage / Klauenschaden"),
+				new Entry("cheldroganDamage", h.cheldroganDamage, "Cheldrogan: tail sweep damage / Schwanzhieb-Schaden"),
 				new Entry("cheldroganBreathCooldownSeconds", h.cheldroganBreathCooldownSeconds, "Cheldrogan: crystal breath cooldown when ridden / Odem-Abklingzeit"),
+				new Entry("cheldroganRainCooldownSeconds", h.cheldroganRainCooldownSeconds, "Cheldrogan: shard rain cooldown when ridden / Splitter-Regen-Abklingzeit"),
 				new Entry("phoenixMailBlocksPerSecond", h.phoenixMailBlocksPerSecond, "Phoenix mail: flight speed for parcel delivery time"),
 				new Entry("amethystPhoenixBlocksPerSecond", h.amethystPhoenixBlocksPerSecond, "Amethyst Phoenix: travel speed without cargo")), true);
 

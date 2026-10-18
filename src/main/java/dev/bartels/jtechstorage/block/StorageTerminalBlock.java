@@ -80,6 +80,11 @@ public class StorageTerminalBlock extends HorizontalDirectionalBlock implements 
 		if (!level.isClientSide() && level.getBlockEntity(pos) instanceof StorageTerminalBlockEntity terminal) {
 			if (terminal.canAccess(player)) {
 				player.openMenu(terminal);
+
+				if (terminal.isDisturbed()) {
+					player.sendOverlayMessage(net.minecraft.network.chat.Component.translatable("jtechstorage.terminal.storm")
+							.withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+				}
 			} else {
 				player.sendOverlayMessage(Component.translatable("jtechstorage.message.not_owner", terminal.getOwnerName()));
 			}

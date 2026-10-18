@@ -391,7 +391,7 @@ public class AmethystRobot extends Monster {
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent getAmbientSound() {
-		return ModSounds.ROBOT_AMBIENT;
+		return getTarget() == null && getAnim() == ANIM_NONE ? ModSounds.ROBOT_IDLE : ModSounds.ROBOT_AMBIENT;
 	}
 
 	@Override
@@ -671,5 +671,12 @@ public class AmethystRobot extends Monster {
 				charging = Math.min(charging, 5);
 			}
 		}
+	}
+
+	/** Ziel-Status für den Client (Ruhe-/Lauerpose nur ohne Ziel). */
+	@Override
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		setAggressive(getTarget() != null);
 	}
 }

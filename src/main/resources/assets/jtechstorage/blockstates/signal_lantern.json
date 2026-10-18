@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "jtechstorage:block/signal_lantern"
+    },
+    "lit=true": {
+      "model": "jtechstorage:block/signal_lantern_on"
+    }
+  }
+}

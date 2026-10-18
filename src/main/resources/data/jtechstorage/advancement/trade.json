@@ -1,5 +1,5 @@
 {
-  "parent": "jtechstorage:root",
+  "parent": "jtechstorage:friend",
   "criteria": {
     "granted": {
       "trigger": "minecraft:impossible"

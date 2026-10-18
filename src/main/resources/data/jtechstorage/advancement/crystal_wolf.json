@@ -1,0 +1,24 @@
+{
+  "parent": "jtechstorage:sprite",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:crystal_wolf"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.crystal_wolf.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.crystal_wolf.description"
+    }
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

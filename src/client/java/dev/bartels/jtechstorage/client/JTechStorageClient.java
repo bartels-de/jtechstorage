@@ -52,6 +52,8 @@ public class JTechStorageClient implements ClientModInitializer {
 			net.minecraft.client.KeyMapping.Category.register(dev.bartels.jtechstorage.JTechStorage.id("main"));
 	public static final net.minecraft.client.KeyMapping DRAGON_BREATH_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
 			new net.minecraft.client.KeyMapping("key.jtechstorage.dragon_breath", com.mojang.blaze3d.platform.InputConstants.KEY_R, KEY_CATEGORY));
+	public static final net.minecraft.client.KeyMapping DRAGON_RAIN_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
+			new net.minecraft.client.KeyMapping("key.jtechstorage.dragon_rain", com.mojang.blaze3d.platform.InputConstants.KEY_V, KEY_CATEGORY));
 
 	private static boolean jumpWasDown;
 	private static boolean airJumpArmed;
@@ -86,10 +88,28 @@ public class JTechStorageClient implements ClientModInitializer {
 		EntityRenderers.register(ModContent.AMETHYST_PHOENIX, dev.bartels.jtechstorage.client.entity.AmethystPhoenixRenderer::new);
 		MenuScreens.register(ModContent.AMETHYST_PHOENIX_MENU, AmethystPhoenixScreen::new);
 		MenuScreens.register(ModContent.PHOENIX_STOP_MENU, PhoenixStopScreen::new);
+		// Wölfe (v0.26)
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalWolfModel.LAYER,
+				dev.bartels.jtechstorage.client.entity.CrystalWolfModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.wolf.WolfContent.CRYSTAL_WOLF,
+				dev.bartels.jtechstorage.client.entity.CrystalWolfRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.MoonWolfModel.LAYER,
+				dev.bartels.jtechstorage.client.entity.MoonWolfModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.wolf.WolfContent.MOON_WOLF,
+				dev.bartels.jtechstorage.client.entity.MoonWolfRenderer::new);
+		// Resonanz-Sturm (v0.25)
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalShardlingModel.LAYER,
+				dev.bartels.jtechstorage.client.entity.CrystalShardlingModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.storm.StormContent.CRYSTAL_SHARDLING,
+				dev.bartels.jtechstorage.client.entity.CrystalShardlingRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.StormHeraldModel.LAYER,
+				dev.bartels.jtechstorage.client.entity.StormHeraldModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.storm.StormContent.STORM_HERALD,
+				dev.bartels.jtechstorage.client.entity.StormHeraldRenderer::new);
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CheldroganModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CheldroganModel::createBodyLayer);
 		EntityRenderers.register(ModContent.CHELDROGAN, dev.bartels.jtechstorage.client.entity.CheldroganRenderer::new);
-		// Cheldrogan reiten: Linksklick = Klauenhieb, Taste (Standard R) = Kristall-Odem.
+		// Cheldrogan reiten: Linksklick = Schwanzhieb, Taste (Standard R) = Kristall-Odem, Taste (Standard V) = Splitter-Regen.
 		// START_CLIENT_TICK läuft vor der Vanilla-Tastenverarbeitung – die Klicks werden hier verbraucht.
 		net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.START_CLIENT_TICK.register(client -> {
 			if (client.player == null || !(client.player.getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan dragon)
@@ -103,6 +123,10 @@ public class JTechStorageClient implements ClientModInitializer {
 
 			while (DRAGON_BREATH_KEY.consumeClick()) {
 				ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.DragonActionPayload(dev.bartels.jtechstorage.entity.Cheldrogan.ACTION_BREATH));
+			}
+
+			while (DRAGON_RAIN_KEY.consumeClick()) {
+				ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.DragonActionPayload(dev.bartels.jtechstorage.entity.Cheldrogan.ACTION_RAIN));
 			}
 		});
 		// Tooltips: kurze Beschreibung, mit gedrückter Shift-Taste die Bedienung (Schlüssel tooltip.jtechstorage.<id>.N / .controls.N)

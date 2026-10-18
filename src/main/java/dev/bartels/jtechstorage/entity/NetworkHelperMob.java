@@ -198,8 +198,86 @@ public abstract class NetworkHelperMob extends PathfinderMob {
 		}
 	}
 
-	/** Blockiert alle Bewegungs-Ziele, solange Feierabend ist. */
+	/**
+	 * Welcher Schlafplatz passt zu diesem Helfer? (v0.26) 0 = keiner (schläft, wo er ist), 1 = Helferbett, 2 = Wolfskorb.
+	 * Große oder fliegende Helfer überschreiben das mit 0.
+	 */
+	protected int bedKind() {
+		return dev.bartels.jtechstorage.block.HelperBedBlock.KIND_BED;
+	}
+
+	/** Bett, das dieser Helfer für die Nacht reserviert hat (nur im Speicher, wird beim Aufwachen freigegeben). */
+	private @Nullable BlockPos claimedBed;
+
+	/**
+	 * Freier Schlafplatz der passenden Art in der Nähe (um das Terminal bzw. den Helfer), oder null. Betten, die schon
+	 * ein anderer Helfer reserviert hat oder auf denen einer liegt, zählen nicht – so sucht sich jeder sein eigenes.
+	 */
+	protected @Nullable BlockPos findBed() {
+		int kind = bedKind();
+
+		if (kind == 0) {
+			return null;
+		}
+
+		BlockPos center = terminalPos != null && terminalPos.distSqr(blockPosition()) < 48 * 48 ? terminalPos : blockPosition();
+		java.util.Set<BlockPos> taken = takenBeds(center);
+		BlockPos best = null;
+		double bestDist = Double.MAX_VALUE;
+
+		for (BlockPos pos : BlockPos.betweenClosed(center.offset(-BED_SEARCH, -6, -BED_SEARCH), center.offset(BED_SEARCH, 6, BED_SEARCH))) {
+			BlockState state = level().getBlockState(pos);
+
+			if (!(state.getBlock() instanceof dev.bartels.jtechstorage.block.HelperBedBlock bed) || bed.kind() != kind) {
+				continue;
+			}
+
+			double dist = pos.distSqr(blockPosition());
+
+			if (dist < bestDist && !taken.contains(pos)) {
+				bestDist = dist;
+				best = pos.immutable();
+			}
+		}
+
+		return best;
+	}
+
+	/** Betten im Suchbereich, die andere Helfer reserviert haben oder auf denen gerade jemand schläft. */
+	private java.util.Set<BlockPos> takenBeds(BlockPos center) {
+		java.util.Set<BlockPos> taken = new java.util.HashSet<>();
+		net.minecraft.world.phys.AABB area = new net.minecraft.world.phys.AABB(center).inflate(BED_SEARCH + 32, 16, BED_SEARCH + 32);
+
+		for (NetworkHelperMob other : level().getEntitiesOfClass(NetworkHelperMob.class, area, other -> other != this && other.isAlive())) {
+			if (other.claimedBed != null) {
+				taken.add(other.claimedBed);
+			}
+
+			if (other.isResting()) {
+				taken.add(BlockPos.containing(other.getX(), other.getY() + 0.1, other.getZ()));
+			}
+		}
+
+		return taken;
+	}
+
+	private static final int BED_SEARCH = 16;
+
+	/** Höhe der Liegefläche über der Blockunterkante (Helferbett 8 px, Wolfskorb 3 px). */
+	private static double bedHeight(int kind) {
+		return kind == dev.bartels.jtechstorage.block.HelperBedBlock.KIND_BASKET ? 3.0 / 16.0 : 8.0 / 16.0;
+	}
+
+	/**
+	 * Blockiert alle Bewegungs-Ziele, solange Feierabend ist – läuft vorher zu seinem Schlafplatz (Bett/Korb).
+	 * Klappt der Weg nicht (eigene Flug-/Schwebesteuerung, Hindernisse), springt er nach einer Weile direkt hinein.
+	 */
 	private class RestGoal extends Goal {
+		private @Nullable BlockPos bed;
+		private int walkTicks;
+		private int retry;
+		private boolean settled;
+
 		RestGoal() {
 			setFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK, Goal.Flag.JUMP));
 		}
@@ -210,13 +288,102 @@ public abstract class NetworkHelperMob extends PathfinderMob {
 		}
 
 		@Override
+		public boolean requiresUpdateEveryTick() {
+			return true;
+		}
+
+		@Override
 		public void start() {
 			getNavigation().stop();
+			bed = null;
+			claimedBed = null;
+			settled = false;
+			retry = 0;
 		}
 
 		@Override
 		public void tick() {
+			if (isHologram() || isPassenger()) {
+				return;
+			}
+
+			if (bed == null || !(level().getBlockState(bed).getBlock() instanceof dev.bartels.jtechstorage.block.HelperBedBlock)) {
+				bed = null;
+				claimedBed = null;
+				settled = false;
+				getNavigation().stop();
+
+				if (--retry <= 0) {
+					// kein freies Bett: legt sich, wo er ist, auf den Boden – schaut ab und zu, ob eins frei wird
+					retry = 200;
+					bed = findBed();
+					claimedBed = bed;
+					walkTicks = 20 * 15;
+				}
+				return;
+			}
+
+			double tx = bed.getX() + 0.5;
+			double ty = bed.getY() + bedHeight(bedKind());
+			double tz = bed.getZ() + 0.5;
+			double dx = getX() - tx;
+			double dz = getZ() - tz;
+			double horizontal = dx * dx + dz * dz;
+
+			if (settled) {
+				getNavigation().stop();
+
+				if (horizontal > 0.25 || Math.abs(getY() - ty) > 0.6) {
+					settled = false;   // weggeschubst – noch einmal hin
+					walkTicks = 20 * 10;
+				}
+				return;
+			}
+
+			if (horizontal < 0.35 && Math.abs(getY() - ty) < 0.8) {
+				settle(tx, ty, tz);
+				return;
+			}
+
+			if (--walkTicks <= 0) {
+				// Weg klappt nicht: direkt ins Bett hüpfen (nur aus der Nähe)
+				if (horizontal < 32 * 32 && level() instanceof ServerLevel server) {
+					server.sendParticles(ParticleTypes.WITCH, getX(), getY() + 0.4, getZ(), 10, 0.3, 0.3, 0.3, 0.02);
+					settle(tx, ty, tz);
+					server.sendParticles(ParticleTypes.WITCH, tx, ty + 0.4, tz, 10, 0.3, 0.3, 0.3, 0.02);
+				} else {
+					bed = null;
+					claimedBed = null;
+				}
+				return;
+			}
+
+			if (tickCount % 10 == 0 || getNavigation().isDone()) {
+				boolean path = getNavigation().moveTo(tx, bed.getY(), tz, 1.0);
+
+				if (!path) {
+					getMoveControl().setWantedPosition(tx, ty, tz, 1.0);
+				}
+			}
+
+			// letzte Schritte: Navigation stoppt oft knapp davor – direkt hinsteuern
+			if (horizontal < 2.5 * 2.5) {
+				getMoveControl().setWantedPosition(tx, ty, tz, 0.8);
+			}
+		}
+
+		private void settle(double x, double y, double z) {
 			getNavigation().stop();
+			snapTo(x, y, z, getYRot(), getXRot());
+			setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
+			settled = true;
+		}
+
+		@Override
+		public void stop() {
+			bed = null;
+			claimedBed = null;
+			settled = false;
 		}
 	}
 

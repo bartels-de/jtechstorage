@@ -1,0 +1,31 @@
+{
+  "parent": "jtechstorage:amethyst_phoenix",
+  "criteria": {
+    "lantern": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "jtechstorage:signal_lantern"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:signal_lantern"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.signal_lantern.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.signal_lantern.description"
+    }
+  },
+  "requirements": [
+    [
+      "lantern"
+    ]
+  ]
+}

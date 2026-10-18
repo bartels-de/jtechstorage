@@ -1,0 +1,34 @@
+{
+  "parent": "jtechstorage:sprite",
+  "criteria": {
+    "bed": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "jtechstorage:helper_bed",
+              "jtechstorage:wolf_basket"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:helper_bed"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.helper_home.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.helper_home.description"
+    }
+  },
+  "requirements": [
+    [
+      "bed"
+    ]
+  ]
+}

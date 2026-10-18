@@ -9,4 +9,6 @@ public class PeterChelParkerRenderState extends LivingEntityRenderState {
 	public boolean hologram;
 	/** Fortschritt des Hammerschlags 0..1 (0 = kein Angriff). */
 	public float attackProgress;
+	/** Nachtwache: döst auf den Hammer gestützt. */
+	public boolean dozing;
 }

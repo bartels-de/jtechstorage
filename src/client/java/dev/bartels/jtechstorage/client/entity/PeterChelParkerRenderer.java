@@ -17,7 +17,7 @@ public class PeterChelParkerRenderer extends MobRenderer<PeterChelParker, PeterC
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/peter_chel_parker.png");
 	private static final Identifier ACCENT = JTechStorage.id("textures/entity/peter_chel_parker_accent.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/peter_chel_parker_glow.png"));
-	private static final float SCALE = 1.15f;
+	private static final float SCALE = 0.54f;   // Modell in doppelter Detaildichte
 
 	public PeterChelParkerRenderer(EntityRendererProvider.Context context) {
 		super(context, new PeterChelParkerModel(context.bakeLayer(PeterChelParkerModel.LAYER)), 0.7f);
@@ -69,6 +69,9 @@ public class PeterChelParkerRenderer extends MobRenderer<PeterChelParker, PeterC
 		}
 		int ticks = hero.getAttackTicks();
 		state.attackProgress = ticks > 0 ? 1.0f - (ticks - partialTick) / PeterChelParker.ATTACK_ANIMATION : 0.0f;
+		long time = Math.floorMod(hero.level().getDefaultClockTime(), 24000L);
+		state.dozing = !state.hologram && ticks == 0 && !hero.isAggressive() && state.walkAnimationSpeed < 0.02f
+				&& time >= 13000L && time <= 23000L && !hero.isPassenger();
 	}
 
 	@Override

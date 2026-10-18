@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": "minecraft:glowstone_dust",
+    "A": "minecraft:amethyst_shard",
+    "B": "minecraft:bone"
+  },
+  "pattern": [
+    "GAG",
+    "ABA",
+    "GAG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:amethyst_bone"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "parent": "jtechstorage:root",
+  "parent": "jtechstorage:first_link",
   "criteria": {
     "range": {
       "trigger": "minecraft:inventory_changed",

@@ -9,4 +9,6 @@ public class AmethystSpiderRenderState extends LivingEntityRenderState {
 	public boolean enraged;
 	public boolean leaping;
 	public boolean hologram;
+	/** Lauern: kein Ziel, geduckt. */
+	public boolean lurking;
 }

@@ -394,6 +394,10 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 
 	@Override
 	public void aiStep() {
+		if (!isHologram() && isFlying() && tickCount % 30 == 0) {
+			playSound(ModSounds.AMETHYST_PHOENIX_FLAP, 0.9f, 0.9f + random.nextFloat() * 0.15f);
+		}
+
 		if (level() instanceof ServerLevel level && !isHologram()) {
 			serverMovement(level);
 		}
@@ -533,7 +537,8 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 	protected Vec3 getPassengerAttachmentPoint(Entity passenger, EntityDimensions dimensions, float scale) {
 		int index = Math.max(0, getPassengers().indexOf(passenger));
 		double z = index == 0 ? 0.25 : -0.5;
-		return new Vec3(0.0, dimensions.height() * 0.85, z).yRot(-getYRot() * Mth.DEG_TO_RAD);
+		double drop = isSitting() || isNightRest() ? 0.62 : 0.0;   // sitzt/schläft er, liegt der Bauch am Boden
+		return new Vec3(0.0, dimensions.height() * 0.85 - drop, z).yRot(-getYRot() * Mth.DEG_TO_RAD);
 	}
 
 	@Override
@@ -877,6 +882,18 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
-		return ModSounds.AMETHYST_PHOENIX_AMBIENT;
+		return isNightRest() ? ModSounds.AMETHYST_PHOENIX_SLEEP : ModSounds.AMETHYST_PHOENIX_AMBIENT;
+	}
+
+	/** Nachts am Boden (Haltestelle, Horst oder sitzend): schläft mit dem Kopf im Rückengefieder – rein optisch. */
+	public boolean isNightRest() {
+		long time = Math.floorMod(level().getDefaultClockTime(), 24000L);
+		return !isHologram() && getState() != STATE_FLYING && onGround() && time >= 13000L && time <= 23000L;
+	}
+
+	/** Zu groß bzw. hat einen eigenen Schlafplatz – kein Helferbett. */
+	@Override
+	protected int bedKind() {
+		return 0;
 	}
 }

@@ -17,7 +17,7 @@ public class AmethystPhoenixRenderer extends MobRenderer<AmethystPhoenix, Amethy
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/amethyst_phoenix.png");
 	private static final Identifier ACCENT = JTechStorage.id("textures/entity/amethyst_phoenix_accent.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/amethyst_phoenix_glow.png"));
-	private static final float SCALE = 1.25f;
+	private static final float SCALE = 0.625f;   // Modell in doppelter Detaildichte
 
 	public AmethystPhoenixRenderer(EntityRendererProvider.Context context) {
 		super(context, new AmethystPhoenixModel(context.bakeLayer(AmethystPhoenixModel.LAYER)), 1.3f);
@@ -57,6 +57,7 @@ public class AmethystPhoenixRenderer extends MobRenderer<AmethystPhoenix, Amethy
 		state.flying = phoenix.isFlying() || (!phoenix.onGround() && !phoenix.isSitting());
 		state.chests = phoenix.getChests();
 		state.speed = 1.0f - 0.12f * state.chests;
+		state.sleeping = !state.flying && phoenix.isNightRest();
 	}
 
 	@Override
@@ -71,7 +72,7 @@ public class AmethystPhoenixRenderer extends MobRenderer<AmethystPhoenix, Amethy
 
 	@Override
 	protected void scale(AmethystPhoenixRenderState state, PoseStack poseStack) {
-		float scale = state.hologram ? 0.75f : SCALE;
+		float scale = state.hologram ? 0.375f : SCALE;
 		poseStack.scale(scale, scale, scale);
 	}
 }

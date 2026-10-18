@@ -545,4 +545,10 @@ public class Phoenix extends NetworkHelperMob {
 		long time = Math.floorMod(level().getDefaultClockTime(), 24000L);
 		return onGround() && !busy() && time >= 13000L && time <= 23000L ? ModSounds.PHOENIX_SLEEP : ModSounds.PHOENIX_AMBIENT;
 	}
+
+	/** Zu groß bzw. hat einen eigenen Schlafplatz – kein Helferbett. */
+	@Override
+	protected int bedKind() {
+		return 0;
+	}
 }

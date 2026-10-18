@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/helper_bed"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/helper_bed",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/helper_bed",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/helper_bed",
+      "y": 270
+    }
+  }
+}

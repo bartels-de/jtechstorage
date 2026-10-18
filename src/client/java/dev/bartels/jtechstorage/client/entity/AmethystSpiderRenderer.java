@@ -15,8 +15,8 @@ import dev.bartels.jtechstorage.entity.AmethystSpider;
 public class AmethystSpiderRenderer extends MobRenderer<AmethystSpider, AmethystSpiderRenderState, AmethystSpiderModel> {
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/amethyst_spider.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/amethyst_spider_glow.png"));
-	private static final float SCALE = 1.7f;
-	private static final float HOLOGRAM_SCALE = 0.5f;
+	private static final float SCALE = 0.85f;   // Modell in doppelter Detaildichte
+	private static final float HOLOGRAM_SCALE = 0.25f;
 
 	public AmethystSpiderRenderer(EntityRendererProvider.Context context) {
 		super(context, new AmethystSpiderModel(context.bakeLayer(AmethystSpiderModel.LAYER)), 2.4f);
@@ -59,6 +59,7 @@ public class AmethystSpiderRenderer extends MobRenderer<AmethystSpider, Amethyst
 		state.enraged = spider.isEnraged();
 		state.leaping = spider.isLeaping();
 		state.hologram = spider.isHologram();
+		state.lurking = !state.hologram && state.anim == 0 && !state.leaping && !spider.isAggressive() && state.walkAnimationSpeed < 0.02f;
 	}
 
 	@Override

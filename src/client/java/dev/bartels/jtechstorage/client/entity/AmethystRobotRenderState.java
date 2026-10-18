@@ -8,4 +8,6 @@ public class AmethystRobotRenderState extends LivingEntityRenderState {
 	public float progress;
 	public boolean enraged;
 	public boolean hologram;
+	/** Ruhemodus: kein Ziel, heruntergefahren. */
+	public boolean idle;
 }

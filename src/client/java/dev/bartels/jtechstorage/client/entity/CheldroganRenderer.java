@@ -17,11 +17,11 @@ public class CheldroganRenderer extends MobRenderer<Cheldrogan, CheldroganRender
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/cheldrogan.png");
 	private static final Identifier ACCENT = JTechStorage.id("textures/entity/cheldrogan_accent.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/cheldrogan_glow.png"));
-	public static final float SCALE = 1.05f;
-	private static final float HOLOGRAM_SCALE = 0.4f;
+	public static final float SCALE = 0.6f;   // Modell in doppelter Detaildichte
+	private static final float HOLOGRAM_SCALE = 0.25f;
 
 	public CheldroganRenderer(EntityRendererProvider.Context context) {
-		super(context, new CheldroganModel(context.bakeLayer(CheldroganModel.LAYER)), 1.4f);
+		super(context, new CheldroganModel(context.bakeLayer(CheldroganModel.LAYER)), 1.1f);
 		addLayer(new AccentLayer<>(this, ACCENT, state -> state.accent));
 		addLayer(new HelperHatLayer<>(this));
 		addLayer(new EyesLayer<>(this) {
@@ -64,11 +64,16 @@ public class CheldroganRenderer extends MobRenderer<Cheldrogan, CheldroganRender
 		super.extractRenderState(dragon, state, partialTick);
 		state.hologram = dragon.isHologram();
 		state.accent = state.hologram ? -1 : dragon.getAccentColor();
-		int attack = dragon.getAttackTicks();
-		state.attackProgress = attack > 0 ? 1.0f - (attack - partialTick) / Cheldrogan.ATTACK_ANIMATION : 0.0f;
+		int sweep = dragon.getSweepTicks();
+		state.sweepProgress = sweep > 0 ? 1.0f - (sweep - partialTick) / Cheldrogan.SWEEP_TICKS : 0.0f;
 		int breath = dragon.getBreathTicks();
 		state.breathProgress = breath > 0 ? 1.0f - (breath - partialTick) / Cheldrogan.BREATH_TICKS : 0.0f;
+		int rain = dragon.getRainTicks();
+		state.rainProgress = rain > 0 ? 1.0f - (rain - partialTick) / Cheldrogan.RAIN_TICKS : 0.0f;
 		state.flyAmount = dragon.getFlyAmount(partialTick);
+		long time = Math.floorMod(dragon.level().getDefaultClockTime(), 24000L);
+		state.resting = !state.hologram && sweep == 0 && breath == 0 && rain == 0 && state.flyAmount <= 0.0f && !dragon.isAggressive()
+				&& state.walkAnimationSpeed < 0.02f && time >= 13000L && time <= 23000L && !dragon.isVehicle();
 	}
 
 	@Override

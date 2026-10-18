@@ -1,5 +1,5 @@
 {
-  "parent": "jtechstorage:first_link",
+  "parent": "jtechstorage:sprite",
   "criteria": {
     "granted": {
       "trigger": "minecraft:impossible"

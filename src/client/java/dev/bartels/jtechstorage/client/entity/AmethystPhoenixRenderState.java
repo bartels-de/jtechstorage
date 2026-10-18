@@ -10,4 +10,6 @@ public class AmethystPhoenixRenderState extends LivingEntityRenderState {
 	public int chests;
 	/** Tempo-Faktor 0..1 – schwer beladen schlägt er langsamer mit den Flügeln. */
 	public float speed = 1.0f;
+	/** Schläft nachts am Boden. */
+	public boolean sleeping;
 }

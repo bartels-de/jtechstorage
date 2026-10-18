@@ -1,5 +1,5 @@
 {
-  "parent": "jtechstorage:first_link",
+  "parent": "jtechstorage:sort_rule",
   "criteria": {
     "granted": {
       "trigger": "minecraft:impossible"
