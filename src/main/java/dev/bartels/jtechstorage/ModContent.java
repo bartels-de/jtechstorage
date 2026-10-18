@@ -270,12 +270,18 @@ public final class ModContent {
 	public static final ResourceKey<EntityType<?>> CHELDROGAN_KEY = ResourceKey.create(Registries.ENTITY_TYPE, JTechStorage.id("cheldrogan"));
 	public static final EntityType<dev.bartels.jtechstorage.entity.Cheldrogan> CHELDROGAN = EntityType.Builder
 			.of(dev.bartels.jtechstorage.entity.Cheldrogan::new, MobCategory.MISC)
-			.sized(2.0f, 4.0f)
+			.sized(2.2f, 2.6f)
 			.fireImmune()
 			.clientTrackingRange(12)
 			.build(CHELDROGAN_KEY);
 	public static final Item CHELDROGAN_ITEM = item("cheldrogan", p -> new HelperSpawnItem(() -> CHELDROGAN, p),
 			new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant());
+	/** Resonanzkristall: wächst beim Kristall-Odem aus dem Boden und schließt Monster kurz ein (kein Item, keine Drops). */
+	public static final ResourceKey<Block> RESONANCE_CRYSTAL_KEY = ResourceKey.create(Registries.BLOCK, JTechStorage.id("resonance_crystal"));
+	public static final Block RESONANCE_CRYSTAL = new dev.bartels.jtechstorage.block.ResonanceCrystalBlock(BlockBehaviour.Properties.of()
+			.mapColor(net.minecraft.world.level.material.MapColor.COLOR_PURPLE).strength(0.8f).noLootTable().noOcclusion()
+			.sound(net.minecraft.world.level.block.SoundType.AMETHYST_CLUSTER).lightLevel(state -> 7)
+			.pushReaction(net.minecraft.world.level.material.PushReaction.POPPED).setId(RESONANCE_CRYSTAL_KEY));
 	/** Drachenherz: verwandelt Peter Chel Parker in Cheldrogan. */
 	public static final Item DRAGON_HEART = item("dragon_heart", Item::new,
 			new Item.Properties().stacksTo(16).rarity(Rarity.EPIC).fireResistant()
@@ -475,6 +481,7 @@ public final class ModContent {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, PETER_CHEL_PARKER_KEY, PETER_CHEL_PARKER);
 		FabricDefaultAttributeRegistry.register(PETER_CHEL_PARKER, PeterChelParker.createAttributes());
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, CHELDROGAN_KEY, CHELDROGAN);
+		Registry.register(BuiltInRegistries.BLOCK, RESONANCE_CRYSTAL_KEY, RESONANCE_CRYSTAL);
 		FabricDefaultAttributeRegistry.register(CHELDROGAN, dev.bartels.jtechstorage.entity.Cheldrogan.createAttributes());
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, CRYSTAL_PALADIN_KEY, CRYSTAL_PALADIN);
 		FabricDefaultAttributeRegistry.register(CRYSTAL_PALADIN, CrystalPaladin.createAttributes());
@@ -494,6 +501,8 @@ public final class ModContent {
 						.displayItems((parameters, output) -> {
 							CREATIVE_ORDER.forEach(output::accept);
 							dev.bartels.jtechstorage.end.EndContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.storm.StormContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.wolf.WolfContent.creativeItems().forEach(output::accept);
 						})
 						.build());
 	}

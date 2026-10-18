@@ -39,6 +39,8 @@ public class JTechStorage implements ModInitializer {
 		ModSounds.init();
 		ModContent.init();
 		dev.bartels.jtechstorage.end.EndContent.init();
+		dev.bartels.jtechstorage.storm.StormContent.init();
+		dev.bartels.jtechstorage.wolf.WolfContent.init();
 		dev.bartels.jtechstorage.enchant.ModEnchantments.init();
 
 		PayloadTypeRegistry.clientboundPlay().registerLarge(TerminalContentsPayload.TYPE,
@@ -79,7 +81,7 @@ public class JTechStorage implements ModInitializer {
 				dragon.riderAction(context.player(), payload.action());
 			}
 		});
-		// Auf Cheldrogan: Linksklick ist der Klauenhieb – kein Abbauen und kein Schlagen mit der Hand
+		// Auf Cheldrogan: Linksklick ist der Schwanzhieb – kein Abbauen und kein Schlagen mit der Hand
 		net.fabricmc.fabric.api.event.player.AttackBlockCallback.EVENT.register((player, world, hand, pos, direction) ->
 				player.getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan ? net.minecraft.world.InteractionResult.FAIL : net.minecraft.world.InteractionResult.PASS);
 		net.fabricmc.fabric.api.event.player.AttackEntityCallback.EVENT.register((player, world, hand, entity, hit) ->

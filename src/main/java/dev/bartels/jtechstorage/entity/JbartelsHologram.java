@@ -12,7 +12,6 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -123,7 +122,7 @@ public class JbartelsHologram extends PathfinderMob {
 		level.addFreshEntity(hologram);
 		hologram.enterStep(0);
 		level.sendParticles(ParticleTypes.END_ROD, pos.x, player.getY() + 1.0, pos.z, 40, 0.4, 1.0, 0.4, 0.05);
-		hologram.playSound(SoundEvents.BEACON_ACTIVATE, 0.8f, 1.6f);
+		hologram.playSound(dev.bartels.jtechstorage.ModSounds.JBARTELS_APPEAR, 0.9f, 1.0f);
 	}
 
 	private @Nullable ServerPlayer viewerPlayer() {
@@ -186,7 +185,7 @@ public class JbartelsHologram extends PathfinderMob {
 					.append(Component.translatable("jtechstorage.tutorial.step." + step).withStyle(ChatFormatting.WHITE)));
 		}
 
-		playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 0.8f, 1.4f + random.nextFloat() * 0.3f);
+		playSound(dev.bartels.jtechstorage.ModSounds.JBARTELS_TALK, 0.8f, 0.95f + random.nextFloat() * 0.1f);
 	}
 
 	private void finish(boolean completed) {
@@ -205,7 +204,7 @@ public class JbartelsHologram extends PathfinderMob {
 			level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 1.0, getZ(), 30, 0.4, 1.0, 0.4, 0.05);
 		}
 
-		playSound(SoundEvents.BEACON_DEACTIVATE, 0.8f, 1.6f);
+		playSound(dev.bartels.jtechstorage.ModSounds.JBARTELS_VANISH, 0.9f, 1.0f);
 		discard();
 	}
 

@@ -84,6 +84,7 @@ public class Ashley extends NetworkHelperMob {
 		push(away.x, 0.3, away.z);
 		playSound(ModSounds.ASHLEY_KICKED, 1.0f, 0.95f + random.nextFloat() * 0.1f);
 		playSound(SoundEvents.PANDA_SNEEZE, 0.6f, 1.3f);
+		playAction();
 
 		if (level() instanceof ServerLevel level) {
 			level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.5, getZ(), 12, 0.3, 0.3, 0.3, 0.02);
@@ -122,6 +123,7 @@ public class Ashley extends NetworkHelperMob {
 			level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, getX(), getY() + 0.6, getZ(), 4, 0.2, 0.1, 0.2, 0.02);
 			level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.6, getZ(), 10, 0.3, 0.2, 0.3, 0.05);
 			playSound(ModSounds.ASHLEY_SNEEZE, 1.0f, 0.95f + random.nextFloat() * 0.1f);
+			playAction();
 		}
 
 		if (--sayCooldown <= 0) {
@@ -198,6 +200,16 @@ public class Ashley extends NetworkHelperMob {
 				getNavigation().moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 1.0);
 			}
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.ASHLEY_SLEEP;
+	}
+
+	@Override
+	protected void playStepSound(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+		playSound(dev.bartels.jtechstorage.ModSounds.ASHLEY_STEP, 0.35f, 0.9f + random.nextFloat() * 0.2f);
 	}
 
 	@Override

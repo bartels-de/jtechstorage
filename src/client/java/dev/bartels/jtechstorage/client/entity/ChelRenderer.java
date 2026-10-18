@@ -69,4 +69,10 @@ public class ChelRenderer extends MobRenderer<Chel, ChelRenderState, ChelModel> 
 		state.resting = chel.isResting();
 		state.crafting = chel.getCraftingTicks() > 0;
 	}
+
+	/** Modell ist in doppelter Detaildichte gebaut. */
+	@Override
+	protected void scale(ChelRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);
+	}
 }

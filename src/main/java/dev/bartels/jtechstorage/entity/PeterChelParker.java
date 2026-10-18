@@ -563,6 +563,25 @@ public class PeterChelParker extends NetworkHelperMob {
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
-		return ModSounds.PETER_AMBIENT;
+		return isNightGuard() ? ModSounds.PETER_DOZE : ModSounds.PETER_AMBIENT;
+	}
+
+	/** Nachtwache: nachts, ohne Ziel und im Stillstand döst er auf seinen Hammer gestützt (rein optisch, er bleibt wachsam). */
+	public boolean isNightGuard() {
+		long time = Math.floorMod(level().getDefaultClockTime(), 24000L);
+		return !isHologram() && time >= 13000L && time <= 23000L && !isAggressive() && getAttackTicks() == 0
+				&& getDeltaMovement().horizontalDistanceSqr() < 1.0E-4 && !isVehicle() && !isPassenger();
+	}
+
+	@Override
+	protected void playStepSound(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+		playSound(ModSounds.PETER_STEP, 0.5f, 0.9f + random.nextFloat() * 0.2f);
+	}
+
+	/** Ziel-Status für den Client (Ruhe-/Lauerpose nur ohne Ziel). */
+	@Override
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		setAggressive(getTarget() != null);
 	}
 }

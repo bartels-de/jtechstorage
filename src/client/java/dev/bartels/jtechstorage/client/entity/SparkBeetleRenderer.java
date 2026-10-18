@@ -75,4 +75,10 @@ public class SparkBeetleRenderer extends MobRenderer<SparkBeetle, SparkBeetleRen
 	protected int getBlockLightLevel(SparkBeetle beetle, BlockPos pos) {
 		return Math.max(10, super.getBlockLightLevel(beetle, pos));
 	}
+
+	/** Modell ist in doppelter Detaildichte gebaut. */
+	@Override
+	protected void scale(SparkBeetleRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);
+	}
 }

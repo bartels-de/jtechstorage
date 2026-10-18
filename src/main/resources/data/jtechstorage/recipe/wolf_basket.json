@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "W": "minecraft:wheat",
+    "S": "minecraft:stick",
+    "C": "#minecraft:wool",
+    "A": "minecraft:amethyst_shard"
+  },
+  "pattern": [
+    "S S",
+    "WCW",
+    "WAW"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:wolf_basket"
+  }
+}

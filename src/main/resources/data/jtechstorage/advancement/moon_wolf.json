@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:crystal_wolf",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:moon_wolf"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.moon_wolf.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.moon_wolf.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

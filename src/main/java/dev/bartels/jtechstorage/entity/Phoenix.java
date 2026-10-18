@@ -188,6 +188,11 @@ public class Phoenix extends NetworkHelperMob {
 			return;
 		}
 
+		// Flügelschlag im Flug (nicht unterwegs/unsichtbar)
+		if (!onGround() && !isAway() && tickCount % 12 == 0) {
+			playSound(ModSounds.PHOENIX_FLAP, 0.4f, 0.95f + random.nextFloat() * 0.15f);
+		}
+
 		if (isMessenger()) {
 			messengerTick(level);
 			return;
@@ -376,6 +381,14 @@ public class Phoenix extends NetworkHelperMob {
 			return InteractionResult.SUCCESS;
 		}
 
+		// Rechtsklick mit leerer Hand: das Post-Menü seines Horsts öffnen
+		if (held.isEmpty() && hand == InteractionHand.MAIN_HAND && player instanceof net.minecraft.server.level.ServerPlayer serverPlayer
+				&& nest != null && level().isLoaded(nest)
+				&& level().getBlockEntity(nest) instanceof dev.bartels.jtechstorage.block.PhoenixNestBlockEntity home
+				&& dev.bartels.jtechstorage.block.PhoenixNestBlock.openFor(serverPlayer, home)) {
+			return InteractionResult.SUCCESS;
+		}
+
 		return super.interactWith(player, hand);
 	}
 
@@ -528,6 +541,14 @@ public class Phoenix extends NetworkHelperMob {
 
 	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
-		return ModSounds.PHOENIX_AMBIENT;
+		// nachts im Horst: leises Glimmen statt Trällern
+		long time = Math.floorMod(level().getDefaultClockTime(), 24000L);
+		return onGround() && !busy() && time >= 13000L && time <= 23000L ? ModSounds.PHOENIX_SLEEP : ModSounds.PHOENIX_AMBIENT;
+	}
+
+	/** Zu groß bzw. hat einen eigenen Schlafplatz – kein Helferbett. */
+	@Override
+	protected int bedKind() {
+		return 0;
 	}
 }

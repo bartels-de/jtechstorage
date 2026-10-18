@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "P": "#minecraft:planks",
+    "C": "#minecraft:wool",
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:gold_nugget"
+  },
+  "pattern": [
+    "A  ",
+    "CCG",
+    "PPP"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:helper_bed"
+  }
+}

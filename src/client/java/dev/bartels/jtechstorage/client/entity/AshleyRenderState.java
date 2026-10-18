@@ -9,4 +9,6 @@ public class AshleyRenderState extends LivingEntityRenderState {
 	public boolean hologram;
 	/** Feierabend (schläft). */
 	public boolean resting;
+	/** Aktions-Animation (0–1): Arbeiten, Alarm oder Niesen. */
+	public float action;
 }

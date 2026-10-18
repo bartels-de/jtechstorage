@@ -559,7 +559,7 @@ public class AmethystSpider extends Monster {
 
 	@Override
 	protected @Nullable SoundEvent getAmbientSound() {
-		return ModSounds.SPIDER_AMBIENT;
+		return getTarget() == null && getAnim() == ANIM_NONE ? ModSounds.SPIDER_LURK : ModSounds.SPIDER_AMBIENT;
 	}
 
 	@Override
@@ -787,5 +787,12 @@ public class AmethystSpider extends Monster {
 		private double reach(LivingEntity target) {
 			return getBbWidth() / 2.0 + target.getBbWidth() / 2.0 + 1.6;
 		}
+	}
+
+	/** Ziel-Status für den Client (Ruhe-/Lauerpose nur ohne Ziel). */
+	@Override
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		setAggressive(getTarget() != null);
 	}
 }

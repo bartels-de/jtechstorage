@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "G": "minecraft:gold_nugget",
+    "D": "minecraft:polished_deepslate",
+    "A": "minecraft:amethyst_shard",
+    "R": "minecraft:redstone"
+  },
+  "pattern": [
+    " G ",
+    "DAD",
+    "DRD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:signal_lantern"
+  }
+}

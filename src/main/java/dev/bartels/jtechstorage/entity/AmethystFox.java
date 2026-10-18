@@ -331,6 +331,11 @@ public class AmethystFox extends NetworkHelperMob {
 	}
 
 	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.FOX_SLEEP;
+	}
+
+	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
 		return ModSounds.FOX_AMBIENT;
 	}

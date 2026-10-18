@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "jtechstorage:block/resonance_crystal",
+    "particle": "jtechstorage:block/resonance_crystal"
+  }
+}

@@ -56,6 +56,18 @@ public class PhoenixNestBlock extends LinkedPanelBlock {
 		return StorageTerminalBlockEntity.Permission.SETTINGS;
 	}
 
+	/** Öffnet das Horst-Menü von außen (z. B. per Rechtsklick auf den Phönix). Gibt false zurück, wenn es nicht geht. */
+	public static boolean openFor(ServerPlayer player, PhoenixNestBlockEntity nest) {
+		StorageTerminalBlockEntity terminal = nest.getLink() == null ? null : nest.terminal();
+
+		if (terminal == null || !(nest.getBlockState().getBlock() instanceof PhoenixNestBlock block)) {
+			return false;
+		}
+
+		block.open(player, nest, terminal);
+		return true;
+	}
+
 	@Override
 	protected void open(ServerPlayer player, LinkedPanelBlockEntity panel, StorageTerminalBlockEntity terminal) {
 		if (!(panel instanceof PhoenixNestBlockEntity nest)) {

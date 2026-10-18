@@ -1,5 +1,5 @@
 {
-  "parent": "jtechstorage:root",
+  "parent": "jtechstorage:crafting_terminal",
   "criteria": {
     "has": {
       "trigger": "minecraft:inventory_changed",

@@ -452,7 +452,14 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 
 	public int getRange() {
 		int range = UpgradeItem.valueOf(upgrades.getItem(RANGE_SLOT), UpgradeItem.Kind.RANGE, ModContent.BASE_RANGE);
-		return isCharged() ? range + RESONANCE_RANGE_BONUS : range;
+		range = isCharged() ? range + RESONANCE_RANGE_BONUS : range;
+		// Resonanz-Sturm: das Netzwerk ist gestört, die Reichweite halbiert
+		return isDisturbed() ? Math.max(4, range / 2) : range;
+	}
+
+	/** Stört gerade ein Resonanz-Sturm dieses Netzwerk? (nur auf dem Server bekannt) */
+	public boolean isDisturbed() {
+		return dev.bartels.jtechstorage.storm.ResonanceStorm.isDisturbed(level, worldPosition);
 	}
 
 	// ------------------------------------------------------------------
@@ -476,7 +483,8 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 
 	/** Tempo-Faktor für Helfer-Mobs dieses Netzwerks. */
 	public float helperSpeedFactor() {
-		return isCharged() ? RESONANCE_HELPER_SPEED : 1.0f;
+		float factor = isCharged() ? RESONANCE_HELPER_SPEED : 1.0f;
+		return isDisturbed() ? factor * 0.5f : factor;   // Resonanz-Sturm: Helfer arbeiten halb so schnell
 	}
 
 	/** Fügt Resonanz hinzu (z. B. vom Blitz-Käfer). @return true, wenn der Speicher jetzt voll ist. */
@@ -511,8 +519,9 @@ public class StorageTerminalBlockEntity extends BlockEntity implements ExtendedM
 			}
 		}
 
+		// Resonanz entlädt sich (1 pro Sekunde) – im Sturm saugen die Kristall-Wesen 5 pro Sekunde ab
 		if (terminal.resonance > 0 && level.getGameTime() % 20 == 0) {
-			terminal.resonance--;
+			terminal.resonance = Math.max(0, terminal.resonance - (terminal.isDisturbed() ? 5 : 1));
 			terminal.setChanged();
 		}
 

@@ -9,4 +9,6 @@ public class PhoenixRenderState extends LivingEntityRenderState {
 	public boolean flying;
 	/** Ist gerade unterwegs (unsichtbar). */
 	public boolean away;
+	/** Nachts sitzend: schläft (nur Optik, der Phönix arbeitet trotzdem). */
+	public boolean resting;
 }

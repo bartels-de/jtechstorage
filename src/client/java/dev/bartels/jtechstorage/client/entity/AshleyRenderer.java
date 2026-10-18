@@ -67,5 +67,12 @@ public class AshleyRenderer extends MobRenderer<Ashley, AshleyRenderState, Ashle
 			state.accent = -1;
 		}
 		state.resting = ashley.isResting();
+		state.action = ashley.getActionAmount(partialTick);
+	}
+
+	/** Modell ist in doppelter Detaildichte gebaut. */
+	@Override
+	protected void scale(AshleyRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);
 	}
 }

@@ -10,4 +10,6 @@ public class CollectorMothRenderState extends ArmedEntityRenderState {
 	/** Feierabend (schläft). */
 	public boolean resting;
 	public boolean carrying;
+	/** Aktions-Animation (0–1): Arbeiten, Alarm oder Niesen. */
+	public float action;
 }

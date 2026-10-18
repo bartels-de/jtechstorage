@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/wolf_basket"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/wolf_basket",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/wolf_basket",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/wolf_basket",
+      "y": 270
+    }
+  }
+}

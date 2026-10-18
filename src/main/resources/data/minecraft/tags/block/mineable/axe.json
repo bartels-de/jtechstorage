@@ -1,5 +1,7 @@
 {
   "values": [
-    "jtechstorage:phoenix_nest"
+    "jtechstorage:phoenix_nest",
+    "jtechstorage:helper_bed",
+    "jtechstorage:wolf_basket"
   ]
 }

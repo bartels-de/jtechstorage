@@ -47,6 +47,7 @@ public class JbartelsHologramRenderer extends MobRenderer<JbartelsHologram, Jbar
 	public void extractRenderState(JbartelsHologram hologram, JbartelsHologramRenderState state, float partialTick) {
 		super.extractRenderState(hologram, state, partialTick);
 		ArmedEntityRenderState.extractArmedEntityRenderState(hologram, state, itemModelResolver, partialTick);
+		state.standby = hologram.level().getNearestPlayer(hologram, 8.0) == null;
 		state.bubble.clear();
 		String text = Component.translatable("jtechstorage.tutorial.step." + hologram.getStep()).getString();
 		StringBuilder line = new StringBuilder();
@@ -90,5 +91,10 @@ public class JbartelsHologramRenderer extends MobRenderer<JbartelsHologram, Jbar
 	@Override
 	protected int getModelTint(JbartelsHologramRenderState state) {
 		return HologramRendering.tint(state.ageInTicks) | 0x00FFFFFF;
+	}
+
+	@Override
+	protected void scale(JbartelsHologramRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);   // Modell in doppelter Detaildichte
 	}
 }

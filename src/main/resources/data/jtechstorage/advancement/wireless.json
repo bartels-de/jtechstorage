@@ -1,5 +1,5 @@
 {
-  "parent": "jtechstorage:root",
+  "parent": "jtechstorage:max_upgrade",
   "criteria": {
     "wireless": {
       "trigger": "minecraft:inventory_changed",

@@ -225,6 +225,16 @@ public class SparkBeetle extends NetworkHelperMob {
 	}
 
 	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.BEETLE_SLEEP;
+	}
+
+	@Override
+	protected void playStepSound(net.minecraft.core.BlockPos pos, net.minecraft.world.level.block.state.BlockState state) {
+		playSound(dev.bartels.jtechstorage.ModSounds.BEETLE_STEP, 0.35f, 0.9f + random.nextFloat() * 0.2f);
+	}
+
+	@Override
 	protected net.minecraft.sounds.SoundEvent helperAmbientSound() {
 		return ModSounds.BEETLE_AMBIENT;
 	}

@@ -71,6 +71,7 @@ public class CollectorMothRenderer extends MobRenderer<CollectorMoth, CollectorM
 			state.accent = -1;
 		}
 		state.resting = moth.isResting();
+		state.action = moth.getActionAmount(partialTick);
 		ArmedEntityRenderState.extractArmedEntityRenderState(moth, state, itemModelResolver, partialTick);
 		state.carrying = !moth.getMainHandItem().isEmpty();
 	}
@@ -78,5 +79,11 @@ public class CollectorMothRenderer extends MobRenderer<CollectorMoth, CollectorM
 	@Override
 	protected int getBlockLightLevel(CollectorMoth moth, BlockPos pos) {
 		return Math.max(8, super.getBlockLightLevel(moth, pos));
+	}
+
+	/** Modell ist in doppelter Detaildichte gebaut. */
+	@Override
+	protected void scale(CollectorMothRenderState state, PoseStack poseStack) {
+		poseStack.scale(0.5f, 0.5f, 0.5f);
 	}
 }

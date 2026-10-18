@@ -16,8 +16,8 @@ import dev.bartels.jtechstorage.entity.AmethystRobot;
 public class AmethystRobotRenderer extends MobRenderer<AmethystRobot, AmethystRobotRenderState, AmethystRobotModel> {
 	private static final Identifier TEXTURE = JTechStorage.id("textures/entity/amethyst_robot.png");
 	private static final RenderType GLOW = RenderTypes.eyes(JTechStorage.id("textures/entity/amethyst_robot_glow.png"));
-	private static final float SCALE = 2.2f;
-	private static final float HOLOGRAM_SCALE = 0.45f;
+	private static final float SCALE = 1.1f;   // Modell in doppelter Detaildichte
+	private static final float HOLOGRAM_SCALE = 0.225f;
 
 	public AmethystRobotRenderer(EntityRendererProvider.Context context) {
 		super(context, new AmethystRobotModel(context.bakeLayer(AmethystRobotModel.LAYER)), 2.0f);
@@ -66,6 +66,7 @@ public class AmethystRobotRenderer extends MobRenderer<AmethystRobot, AmethystRo
 		state.progress = state.anim == 0 ? 0.0f : Math.clamp(1.0f - (dino.getAnimTicks() - partialTick) / total, 0.0f, 1.0f);
 		state.enraged = dino.isEnraged();
 		state.hologram = dino.isHologram();
+		state.idle = !state.hologram && state.anim == 0 && !dino.isAggressive() && state.walkAnimationSpeed < 0.02f;
 	}
 
 	@Override

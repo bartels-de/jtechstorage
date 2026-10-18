@@ -169,6 +169,7 @@ public class CollectorMoth extends NetworkHelperMob {
 	private void alarm(ServerLevel level, int count) {
 		alarmCooldown = ALARM_COOLDOWN;
 		playSound(ModSounds.MOTH_ALARM, 1.0f, 1.0f);
+		playAction();
 
 		if (owner != null && level.getPlayerByUUID(owner) instanceof ServerPlayer player && player.distanceToSqr(this) < 96 * 96) {
 			player.sendOverlayMessage(Component.translatable("jtechstorage.moth.alarm", getDisplayName(), count));
@@ -238,6 +239,11 @@ public class CollectorMoth extends NetworkHelperMob {
 			double y = home.getY() + 4.0 + random.nextDouble() * 2.0;
 			getNavigation().moveTo(x, y, z, 0.8 * speedFactor());
 		}
+	}
+
+	@Override
+	protected net.minecraft.sounds.SoundEvent helperSleepSound() {
+		return dev.bartels.jtechstorage.ModSounds.MOTH_SLEEP;
 	}
 
 	@Override

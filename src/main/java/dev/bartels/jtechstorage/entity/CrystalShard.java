@@ -21,6 +21,7 @@ import dev.bartels.jtechstorage.ModContent;
 /** Kristallwurf von Peter Chel Parker gegen fliegende Monster. Trifft nur Monster. */
 public class CrystalShard extends ThrowableItemProjectile {
 	public static final float DAMAGE = 10.0f;
+	private float damage = DAMAGE;
 
 	public CrystalShard(EntityType<? extends CrystalShard> type, Level level) {
 		super(type, level);
@@ -28,6 +29,12 @@ public class CrystalShard extends ThrowableItemProjectile {
 
 	public CrystalShard(Level level, LivingEntity thrower) {
 		super(ModContent.CRYSTAL_SHARD, thrower, level, new ItemStack(Items.AMETHYST_SHARD));
+	}
+
+	/** Schaden pro Treffer (Splitter-Regen von Cheldrogan: weniger als Peters Wurf). */
+	public CrystalShard withDamage(float damage) {
+		this.damage = damage;
+		return this;
 	}
 
 	@Override
@@ -47,7 +54,7 @@ public class CrystalShard extends ThrowableItemProjectile {
 
 		if (target instanceof Enemy && level() instanceof ServerLevel level) {
 			Entity owner = getOwner();
-			target.hurtServer(level, damageSources().thrown(this, owner), DAMAGE);
+			target.hurtServer(level, damageSources().thrown(this, owner), damage);
 		}
 	}
 

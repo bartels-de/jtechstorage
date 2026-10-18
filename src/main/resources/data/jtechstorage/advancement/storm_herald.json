@@ -1,0 +1,34 @@
+{
+  "parent": "jtechstorage:storm_survived",
+  "criteria": {
+    "kill": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "jtechstorage:storm_herald"
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:lightning_rod"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.storm_herald.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.storm_herald.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "kill"
+    ]
+  ]
+}
