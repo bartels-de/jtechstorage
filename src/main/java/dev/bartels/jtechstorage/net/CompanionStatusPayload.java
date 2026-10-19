@@ -21,13 +21,14 @@ import dev.bartels.jtechstorage.companion.CompanionTalents;
  * @param specialCooldown verbleibende Abklingzeit des Spezialangriffs (v0.25.3), specialCooldownMax volle Abklingzeit
  * @param look     Aussehen (v0.25.4, siehe CompanionLooks), glow Leuchtfarbe (-1 = Standard), kills besiegte Monster
  * @param bond     Bindungspunkte (v0.26.0), favorite Item-ID des Lieblingsessens heute
+ * @param decoy    Rabe: Abklingzeit des Krähen-Doppelgängers in Ticks (0 = bereit, -1 = keine Raben-Fähigkeit) (v0.26.4)
  */
 public record CompanionStatusPayload(boolean present, boolean loaded, String species, String name, int stage, int level, int xp,
 		float health, float maxHealth, int stance, int flags, int treatTicks, int special, int specialMax, float damage, float armor,
-		int attackTicks, int distance, int timer, int specialCooldown, int specialCooldownMax, int[] talents, int look, int glow, int kills, int bond, String favorite) implements CustomPacketPayload {
+		int attackTicks, int distance, int timer, int specialCooldown, int specialCooldownMax, int[] talents, int look, int glow, int kills, int bond, int decoy, String favorite) implements CustomPacketPayload {
 	public static final Type<CompanionStatusPayload> TYPE = new Type<>(JTechStorage.id("companion_status"));
 	public static final CompanionStatusPayload NONE = new CompanionStatusPayload(false, false, "", "", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-			new int[CompanionTalents.COUNT], dev.bartels.jtechstorage.companion.CompanionLooks.DEFAULT, -1, 0, 0, "");
+			new int[CompanionTalents.COUNT], dev.bartels.jtechstorage.companion.CompanionLooks.DEFAULT, -1, 0, 0, -1, "");
 	public static final StreamCodec<RegistryFriendlyByteBuf, CompanionStatusPayload> STREAM_CODEC = StreamCodec.ofMember(CompanionStatusPayload::write,
 			CompanionStatusPayload::read);
 
@@ -62,6 +63,7 @@ public record CompanionStatusPayload(boolean present, boolean loaded, String spe
 		buf.writeInt(glow);
 		buf.writeVarInt(kills);
 		buf.writeVarInt(bond);
+		buf.writeInt(decoy);
 		buf.writeUtf(favorite);
 	}
 
@@ -69,13 +71,13 @@ public record CompanionStatusPayload(boolean present, boolean loaded, String spe
 		CompanionStatusPayload p = new CompanionStatusPayload(buf.readBoolean(), buf.readBoolean(), buf.readUtf(), buf.readUtf(), buf.readVarInt(),
 				buf.readVarInt(), buf.readVarInt(), buf.readFloat(), buf.readFloat(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt(),
 				buf.readVarInt(), buf.readVarInt(), buf.readFloat(), buf.readFloat(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarInt(), buf.readVarIntArray(),
-				buf.readVarInt(), buf.readInt(), buf.readVarInt(), buf.readVarInt(), buf.readUtf());
+				buf.readVarInt(), buf.readInt(), buf.readVarInt(), buf.readVarInt(), buf.readInt(), buf.readUtf());
 		return p.talents.length == CompanionTalents.COUNT ? p : p.withTalents(new int[CompanionTalents.COUNT]);
 	}
 
 	private CompanionStatusPayload withTalents(int[] ranks) {
 		return new CompanionStatusPayload(present, loaded, species, name, stage, level, xp, health, maxHealth, stance, flags, treatTicks, special,
-				specialMax, damage, armor, attackTicks, distance, timer, specialCooldown, specialCooldownMax, ranks, look, glow, kills, bond, favorite);
+				specialMax, damage, armor, attackTicks, distance, timer, specialCooldown, specialCooldownMax, ranks, look, glow, kills, bond, decoy, favorite);
 	}
 
 	@Override

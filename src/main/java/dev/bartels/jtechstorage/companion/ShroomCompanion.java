@@ -108,6 +108,32 @@ public class ShroomCompanion extends Companion {
 		return getStage() >= 2;
 	}
 
+	/** v0.26.1: der Pilz kämpft nur noch aus der Ferne – er schleudert Sporen-Geschosse. */
+	@Override
+	protected boolean isRanged() {
+		return true;
+	}
+
+	@Override
+	protected double rangedRange() {
+		return getStage() == 3 ? 12.0 : 10.0;
+	}
+
+	@Override
+	protected void rangedEffect(ServerLevel level, LivingEntity target) {
+		net.minecraft.world.phys.Vec3 from = getEyePosition();
+		net.minecraft.world.phys.Vec3 to = target.position().add(0, target.getBbHeight() * 0.6, 0);
+		net.minecraft.world.phys.Vec3 step = to.subtract(from);
+		int n = Math.max(4, (int) (step.length() / 0.35));
+
+		for (int k = 1; k <= n; k++) {
+			net.minecraft.world.phys.Vec3 at = from.add(step.scale(k / (double) n));
+			level.sendParticles(k % 3 == 0 ? SPORE_GREEN : SPORE, at.x, at.y, at.z, 1, 0.03, 0.03, 0.03, 0.0);
+		}
+
+		level.sendParticles(SPORE, to.x, to.y, to.z, 10, 0.25, 0.25, 0.25, 0.02);
+	}
+
 	/** Pflanzen der Basis (Cache, alle 30 s neu gesucht). */
 	private final List<net.minecraft.core.BlockPos> crops = new ArrayList<>();
 	private int cropScan;

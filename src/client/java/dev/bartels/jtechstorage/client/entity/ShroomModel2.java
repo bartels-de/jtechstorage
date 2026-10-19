@@ -187,12 +187,13 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> implements C
 		body.yRot += yaw * 0.3f;
 		cap.yRot += yaw * 0.2f;
 
-		// Kopfnuss: mit dem Hut voran
+		// Sporenwurf (v0.26.1, nur Fernkampf): Arm mit Stab bzw. Hand nach vorn schleudern, der Hut nickt mit
 		if (state.attack > 0.0f) {
 			float a = Mth.sin(state.attack * Mth.PI);
-			body.xRot += 0.45f * a;
-			cap.xRot += 0.25f * a;
-			body.z -= 1.5f * a;
+			rArm.xRot -= 2.1f * a;
+			rArm.zRot -= 0.25f * a;
+			cap.xRot += 0.2f * a;
+			body.xRot += 0.12f * a;
 		}
 
 		// Heilen: Arme hoch, hüpft vor Freude, der Hut leuchtet (Partikel)

@@ -218,13 +218,13 @@ a totem and more; he also buys calcite, smooth basalt, glow berries and echo sha
 he climbs five levels like a villager and unlocks two new random offers per level. His stock refills every 10 minutes.
 Once you accept a companion from him or trade with him he settles in his geode for good; keepers now also appear for
 players who already have a companion. You can only have one companion. All companions fight at your
-side: the mantis at full strength, the raven with 50 % and the shroom with 25 % of its damage.
+side: the mantis at full strength, the raven with 70 % and the shroom with 25 % of its damage.
 
 | Companion | Role |
 | --- | --- |
 | **Shadow Mantis** | The strongest fighter: attacks what you attack or what attacks you, and monsters near you. Stage 3 hits everything around the target. In your base it fights 50 % harder, and when told to stay there it stands guard and defends the base on its own. |
-| **Amethyst Shroom** | Heals you with glowing spores – automatically or on key press (**H** heals, **Shift + H** switches mode), with a cooldown of 30 / 20 / 15 s. Sits on your shoulder at stage 1 and fights from stage 2. Stage 2 also heals your pets and companions and makes crops in your base grow faster; stage 3 heals all players nearby, cures poison, saves you at low health and lets you fly in your base. |
-| **Night Raven** | Collects items around you into its bag (9 / 18 / 27 slots) and flies them to your Storage Terminal (link it with a bound Storage Key). Sits on your shoulder at stage 1 and flies off to fight. Send it on **exploration trips** for copper and iron, later gold and emeralds, at stage 3 diamonds. |
+| **Amethyst Shroom** | Heals you with glowing spores – automatically or on key press (**H** heals, **Shift + H** switches mode), with a cooldown of 30 / 20 / 15 s. Sits on your shoulder at stage 1 and fights from stage 2 – only from a distance, with spore bolts. Stage 2 also heals your pets and companions and makes crops in your base grow faster; stage 3 heals all players nearby, cures poison, saves you at low health and lets you fly in your base. |
+| **Night Raven** | Collects items around you into its bag (9 / 18 / 27 slots) and flies them to your Storage Terminal (link it with a bound Storage Key). Sits on your shoulder at stage 1 and flies off to fight. Send it on **exploration trips** for copper and iron, later gold and emeralds, at stage 3 diamonds. Passive: dodges hits by bursting into crows, scout crows mark monsters and warn of creepers, a guardian crow intercepts projectiles aimed at you, and the *Crow Double* saves you from a deadly hit with a shadow decoy. |
 
 - **Follows you everywhere**, also through portals and after you respawn. Right-click or the **G** key toggles
   **follow / stay**. `/jtechstorage companion call` brings it to you.

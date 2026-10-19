@@ -132,6 +132,7 @@ public class JTechStorageClient implements ClientModInitializer {
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.RAVEN, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "raven", 0.4f, new float[] {1.3f, 1.5f, 2.0f},
 				java.util.List.<java.util.function.Supplier<net.minecraft.client.model.EntityModel<dev.bartels.jtechstorage.client.entity.CompanionRenderState>>>of(() -> new dev.bartels.jtechstorage.client.entity.RavenModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel1.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.RavenModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel2.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.RavenModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel3.LAYER)))));
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.SWARM_RAVEN, dev.bartels.jtechstorage.client.entity.SwarmRavenRenderer::new);
+		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.CROW_DECOY, dev.bartels.jtechstorage.client.entity.CrowDecoyRenderer::new);
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.GEODE_KEEPER, dev.bartels.jtechstorage.client.entity.GeodeKeeperRenderer::new);
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CheldroganModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CheldroganModel::createBodyLayer);

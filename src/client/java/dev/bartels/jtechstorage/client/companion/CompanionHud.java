@@ -97,6 +97,13 @@ public final class CompanionHud {
 			lx += font.width(treat) + 5;
 		}
 
+		// Krähen-Doppelgänger (v0.26.4): ✧ violett = bereit, sonst Minuten bis bereit
+		if (s.species().equals("raven") && s.decoy() >= 0) {
+			String decoy = s.decoy() == 0 ? "✧" : "✧" + (s.decoy() + 1199) / 1200 + "m";
+			g.text(font, decoy, lx, ly, s.decoy() == 0 ? 0xFFC890FF : 0xFF8A8A96, true);
+			lx += font.width(decoy) + 5;
+		}
+
 		int barX = Math.max(lx, x + W - 34);
 		int barW = x + W - 3 - barX;
 
