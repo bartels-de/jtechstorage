@@ -59,6 +59,10 @@ public final class CompanionContent {
 	/** Schattenrabe aus dem Rabenschwarm (v0.25.3). */
 	public static final EntityType<SwarmRaven> SWARM_RAVEN = EntityType.Builder.of(SwarmRaven::new, MobCategory.MISC)
 			.sized(0.5f, 0.5f).noSave().clientTrackingRange(8).updateInterval(1).build(SWARM_RAVEN_KEY);
+	public static final ResourceKey<EntityType<?>> CROW_DECOY_KEY = key("crow_decoy");
+	/** Krähen-Abbild des Spielers (v0.26.4, Krähen-Doppelgänger des Nachtraben). */
+	public static final EntityType<CrowDecoy> CROW_DECOY = EntityType.Builder.of(CrowDecoy::new, MobCategory.MISC)
+			.sized(0.6f, 1.8f).noSave().clientTrackingRange(10).build(CROW_DECOY_KEY);
 	public static final ResourceKey<EntityType<?>> GEODE_KEEPER_KEY = key("geode_keeper");
 	public static final EntityType<GeodeKeeper> GEODE_KEEPER = EntityType.Builder.of(GeodeKeeper::new, MobCategory.MISC)
 			.sized(0.7f, 2.0f).clientTrackingRange(10).build(GEODE_KEEPER_KEY);
@@ -89,16 +93,23 @@ public final class CompanionContent {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, SHROOM_KEY, SHROOM);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, RAVEN_KEY, RAVEN);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, SWARM_RAVEN_KEY, SWARM_RAVEN);
+		Registry.register(BuiltInRegistries.ENTITY_TYPE, CROW_DECOY_KEY, CROW_DECOY);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, GEODE_KEEPER_KEY, GEODE_KEEPER);
 		FabricDefaultAttributeRegistry.register(MANTIS, MantisCompanion.createAttributes());
 		FabricDefaultAttributeRegistry.register(SHROOM, ShroomCompanion.createAttributes());
 		FabricDefaultAttributeRegistry.register(RAVEN, RavenCompanion.createAttributes());
 		FabricDefaultAttributeRegistry.register(SWARM_RAVEN, SwarmRaven.createAttributes());
+		FabricDefaultAttributeRegistry.register(CROW_DECOY, CrowDecoy.createAttributes());
 		// Pilz-Talent „Zweites Leben“: rettet den Besitzer einmal alle 10 Minuten vor dem Tod
 		net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) ->
 				!(entity instanceof ServerPlayer player && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)
-						&& find(player.level().getServer(), player.getUUID()) instanceof ShroomCompanion shroom && shroom.trySecondLife(player)));
+						&& (find(player.level().getServer(), player.getUUID()) instanceof ShroomCompanion shroom && shroom.trySecondLife(player)
+						|| find(player.level().getServer(), player.getUUID()) instanceof RavenCompanion raven && raven.tryDecoy(player))));
 		FabricDefaultAttributeRegistry.register(GEODE_KEEPER, GeodeKeeper.createAttributes());
+		// Schutzkrähe (v0.26.3): der Rabe fängt manchmal Geschosse ab, die seinen Besitzer treffen würden
+		net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.ALLOW_DAMAGE.register((entity, source, amount) ->
+				!(entity instanceof ServerPlayer player && source.is(net.minecraft.tags.DamageTypeTags.IS_PROJECTILE)
+						&& find(player.level().getServer(), player.getUUID()) instanceof RavenCompanion raven && raven.interceptFor(player, source)));
 
 		// Durch Portale, beim Wiederbeleben und wenn er zu weit weg ist: der Begleiter kommt mit
 		ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> bringOrFetch(player, false));
@@ -423,7 +434,7 @@ public final class CompanionContent {
 
 			if (c == null) {
 				status = new dev.bartels.jtechstorage.net.CompanionStatusPayload(true, false, "", "", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						new int[CompanionTalents.COUNT], CompanionLooks.DEFAULT, -1, 0, 0, "");
+						new int[CompanionTalents.COUNT], CompanionLooks.DEFAULT, -1, 0, 0, -1, "");
 			} else {
 				boolean sameLevel = c.level() == player.level();
 				int flags = (c.isOrderedToSit() ? 1 : 0) | (c.isExhausted() ? 2 : 0) | (!sameLevel ? 32 : 0) | (c.isInBase() ? 64 : 0)
@@ -452,7 +463,7 @@ public final class CompanionContent {
 						(float) c.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE),
 						(float) c.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR), c.effectiveAttackInterval(),
 						sameLevel ? (int) Math.sqrt(c.distanceToSqr(player)) : -1, timer, c.specialCooldown(), c.specialCooldownMax(), c.talentRanks(),
-						c.getLook(), c.getGlowColor(), c.getKills(), c.getBond(),
+						c.getLook(), c.getGlowColor(), c.getKills(), c.getBond(), c instanceof RavenCompanion r ? r.decoyCooldown() : -1,
 						net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(c.favoriteFood()).toString());
 			}
 		}

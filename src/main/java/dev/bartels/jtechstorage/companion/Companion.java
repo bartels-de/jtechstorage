@@ -121,7 +121,7 @@ public abstract class Companion extends TamableAnimal {
 	/** Grundschaden der Mantis je Stufe – Rabe kämpft mit 50 %, Pilz mit 25 % davon (v0.25.2). */
 	public static final double[] MANTIS_DAMAGE = {4, 7, 11};
 
-	/** Anteil am Mantis-Schaden: Mantis 1.0, Rabe 0.5, Pilz 0.25. */
+	/** Anteil am Mantis-Schaden: Mantis 1.0, Rabe 0.7 (v0.26.2), Pilz 0.25. */
 	protected abstract double combatShare();
 
 	/** Schaden auf der aktuellen Stufe. */
@@ -690,6 +690,7 @@ public abstract class Companion extends TamableAnimal {
 		registerCompanionGoals();
 		// Kämpfen können alle Begleiter (Mantis am stärksten, Rabe halb so stark, Pilz ein Viertel)
 		goalSelector.addGoal(5, new CompanionMeleeGoal());
+		goalSelector.addGoal(5, new CompanionRangedGoal());
 		// Haltung (v0.26): aggressiv = alles, defensiv = nur verteidigen, passiv = gar nicht
 		targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal(this) {
 			@Override
@@ -754,17 +755,99 @@ public abstract class Companion extends TamableAnimal {
 
 		@Override
 		public boolean canUse() {
-			return !isVehicle() && canFight() && super.canUse();
+			return !isVehicle() && canFight() && !isRanged() && super.canUse();
 		}
 
 		@Override
 		public boolean canContinueToUse() {
-			return !isVehicle() && super.canContinueToUse();
+			return !isVehicle() && !isRanged() && super.canContinueToUse();
 		}
 
 		@Override
 		protected boolean canPerformAttack(LivingEntity target) {
 			return attackCooldown <= 0 && super.canPerformAttack(target);
+		}
+	}
+
+	/** Kämpft nur aus der Ferne (v0.26.1: Pilz)? */
+	protected boolean isRanged() {
+		return false;
+	}
+
+	/** Reichweite des Fernangriffs in Blöcken. */
+	protected double rangedRange() {
+		return 10.0;
+	}
+
+	/** Effekt des Fernangriffs (Partikelspur o. Ä.), vor dem Treffer. */
+	protected void rangedEffect(ServerLevel level, LivingEntity target) {
+	}
+
+	/** Fernkampf (v0.26.1): hält Abstand, braucht freie Sicht und trifft aus bis zu {@link #rangedRange()} Blöcken. */
+	private class CompanionRangedGoal extends Goal {
+		private int repath;
+
+		CompanionRangedGoal() {
+			setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			return isRanged() && !isVehicle() && canFight() && getTarget() != null && getTarget().isAlive();
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return canUse();
+		}
+
+		@Override
+		public void stop() {
+			getNavigation().stop();
+		}
+
+		@Override
+		public boolean requiresUpdateEveryTick() {
+			return true;
+		}
+
+		@Override
+		public void tick() {
+			LivingEntity target = getTarget();
+
+			if (target == null || !(level() instanceof ServerLevel level)) {
+				return;
+			}
+
+			getLookControl().setLookAt(target, 30.0f, 30.0f);
+			double dist = distanceTo(target);
+			boolean sees = getSensing().hasLineOfSight(target);
+			double range = rangedRange();
+
+			if (dist > range * 0.85 || !sees) {
+				if (--repath <= 0) {
+					repath = 10;
+					getNavigation().moveTo(target, 1.15);
+				}
+			} else if (dist < 3.5) {
+				// zu nah: zurückweichen
+				if (--repath <= 0) {
+					repath = 10;
+					Vec3 away = net.minecraft.world.entity.ai.util.DefaultRandomPos.getPosAway(Companion.this, 8, 4, target.position());
+
+					if (away != null) {
+						getNavigation().moveTo(away.x, away.y, away.z, 1.3);
+					}
+				}
+			} else {
+				getNavigation().stop();
+				repath = 0;
+			}
+
+			if (sees && dist <= range && attackCooldown <= 0) {
+				rangedEffect(level, target);
+				doHurtTarget(level, target);
+			}
 		}
 	}
 

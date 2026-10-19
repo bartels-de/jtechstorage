@@ -42,10 +42,11 @@ The keeper trades **like a villager**, using the normal trading screen.
 | | Shadow Mantis | Amethyst Shroom | Night Raven |
 |---|---|---|---|
 | Role | fighter | healer | carrier |
-| Damage (of the mantis) | 100 % | 25 % | 50 % |
-| Attacks every | 1.3 s | 2.0 s | 1.6 s |
-| Health (stage 1 / 2 / 3) | 20 / 40 / 70 | 20 / 30 / 45 | 16 / 24 / 36 |
-| Damage (stage 1 / 2 / 3) | 4 / 7 / 11 | 1 / 1.75 / 2.75 | 2 / 3.5 / 5.5 |
+| Damage (of the mantis) | 100 % | 25 % | 70 % |
+| Attacks every | 1.3 s | 2.0 s | 1.1 s |
+| Health (stage 1 / 2 / 3) | 20 / 40 / 70 | 20 / 30 / 45 | 18 / 32 / 50 |
+| Armor (stage 1 / 2 / 3) | 0 / 4 / 8 | 0 / 0 / 0 | 0 / 2 / 4 |
+| Damage (stage 1 / 2 / 3) | 4 / 7 / 11 | 1 / 1.75 / 2.75 | 2.8 / 4.9 / 7.7 |
 | Stage 1 | walks with you | sits on your shoulder, does not fight | sits on your shoulder, flies off to fight |
 | In your base | +50 % damage, can stand guard | crops grow faster (stage 2+), you can fly (stage 3) | – |
 | Extra | – | – | exploration trips |
@@ -73,7 +74,8 @@ A mushroom on two legs with glowing spots on its cap. It heals you when you are 
 
 - **Stage 1:** it sits on your **right shoulder** and does not fight yet (it still heals). Tell it to stay and it jumps
   down and sits.
-- **Fights from stage 2** with headbutts.
+- **Fights from stage 2, only from a distance:** it keeps away from monsters and hurls spore bolts (up to 10 blocks,
+  12 at stage 3).
 - **Faster crops (stage 2+):** while it is in [your base](#your-base), crops, stems, berry bushes, cocoa, nether wart,
   saplings, sugar cane, cactus and bamboo there grow about **3× as fast** (stage 3: about 4–5×). Green spores show where it
   helps.
@@ -113,6 +115,14 @@ horns, a crystal crest and a saddle.
   The first find always comes from its own stage, and finds of its own stage are the most common.
 - **Riding (stage 3):** right-click to mount. It flies where you look for as long as you like; Space rises, Sneak
   dismounts.
+- **Passive abilities** – always active, stronger with every level:
+
+  | Ability | Effect | Level 1 → 100 |
+  |---|---|---|
+  | **Crow Scatter** | when hit, it sometimes bursts into a swarm of crows, takes no damage and reassembles a few blocks away (at most every 3 s) | 10 % → 35 % |
+  | **Scout Crows** | three small shadow crows circle you, make monsters around you glow for 6 s and caw a warning when a creeper is behind you | every 30 s → 20 s, radius 12 → 22 blocks |
+  | **Guardian Crow** | a crow throws itself in front of arrows and other projectiles aimed at you (at most every 2 s, within 24 blocks of the raven) | 15 % → 35 % |
+  | **Crow Double** | a hit that would kill you makes you burst into crows instead: a dark violet shadow decoy of you stays for 6 s and draws all monsters within 16 blocks, you reappear 5–8 blocks away with 4 hearts, invisible and with Resistance II for 3 s (raven within 32 blocks; not against the void or `/kill`) | every 10 min → 6 min |
 
 ## Your base
 
@@ -399,6 +409,8 @@ A small display in the top left corner shows your companion at a glance:
 - follow / stay / guard / on your shoulder / away / exploring / exhausted, the stance and the remaining treat time,
 - the shroom's heal cooldown, the raven's bag fill, or the mantis' flight stamina while you ride it,
 - the distance (or "other dimension") when it is far away.
+
+For the Night Raven the HUD also shows ✧ – violet when the *Crow Double* is ready, otherwise the minutes until it is.
 
 Switch it off with the *HUD* button in the companion menu (saved per player).
 

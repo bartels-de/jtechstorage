@@ -94,7 +94,7 @@ public class CompanionScreen extends Screen {
 
 		if (tab == 0) {
 			int bw = (W - 16 - 8) / 3;
-			int by = top + 182;
+			int by = top + 188;
 			list.add(new Btn(left + 8, by, bw, 16, Component.translatable(s.flag(0) ? "jtechstorage.companion.btn.follow" : "jtechstorage.companion.btn.stay"),
 					!s.flag(5), () -> CompanionClient.send(CompanionActionPayload.STAY, 0), Component.translatable("jtechstorage.companion.btn.stay.tip")));
 			list.add(new Btn(left + 12 + bw, by, bw, 16, Component.translatable("jtechstorage.companion.stance." + s.stance()), true,
@@ -242,7 +242,7 @@ public class CompanionScreen extends Screen {
 
 		int bx = x;
 		int by = y + 55;
-		GuiTheme.sunken(g, bx, by, w, 57);
+		GuiTheme.sunken(g, bx, by, w, 67);
 		int it = GuiTheme.onColor(GuiTheme.slot());
 		List<Component> lines = new ArrayList<>();
 		lines.add(Component.translatable("jtechstorage.companion.menu.stats", fmt(s.damage()), fmt(s.armor())));
@@ -266,6 +266,8 @@ public class CompanionScreen extends Screen {
 				lines.add(s.timer() > 0 ? Component.translatable("jtechstorage.companion.menu.exploring", (s.timer() + 1199) / 1200)
 						: s.timer() < 0 ? Component.translatable("jtechstorage.companion.menu.explore_cooldown", (-s.timer() + 1199) / 1200)
 						: Component.translatable("jtechstorage.companion.menu.explore_ready"));
+				lines.add(s.decoy() > 0 ? Component.translatable("jtechstorage.companion.menu.decoy_cooldown", (s.decoy() + 1199) / 1200)
+						: Component.translatable("jtechstorage.companion.menu.decoy_ready"));
 			}
 			case "mantis" -> {
 				if (s.stage() == 3) {
@@ -280,11 +282,11 @@ public class CompanionScreen extends Screen {
 			lines.add(Component.translatable("jtechstorage.companion.menu.treat", (s.treatTicks() + 1199) / 1200).withStyle(ChatFormatting.GOLD));
 		}
 
-		for (int i = 0; i < Math.min(5, lines.size()); i++) {
-			GuiTheme.label(g, font, lines.get(i), bx + 4, by + 4 + i * 10, w - 8, i == 4 || lines.get(i).getStyle().getColor() != null ? 0xFFFFD27A : it);
+		for (int i = 0; i < Math.min(6, lines.size()); i++) {
+			GuiTheme.label(g, font, lines.get(i), bx + 4, by + 4 + i * 10, w - 8, lines.get(i).getStyle().getColor() != null ? 0xFFFFD27A : it);
 		}
 
-		bondSection(g, s, left + 8, top + 157, W - 16, mouseX, mouseY);
+		bondSection(g, s, left + 8, top + 166, W - 16, mouseX, mouseY);
 		Component hint = Component.translatable("jtechstorage.companion.menu.hint");
 		GuiTheme.label(g, font, hint, left + 8, top + H - 13, W - 16, GuiTheme.subtle());
 	}

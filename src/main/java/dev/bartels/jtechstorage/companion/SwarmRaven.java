@@ -31,6 +31,8 @@ public class SwarmRaven extends Mob {
 	private boolean struck;
 	private double angle;
 	private int away;
+	/** Späherkrähe (v0.26.3): kreist nur um den Besitzer und löst sich auf. */
+	private boolean scout;
 
 	public SwarmRaven(EntityType<? extends SwarmRaven> type, Level level) {
 		super(type, level);
@@ -61,6 +63,24 @@ public class SwarmRaven extends Mob {
 		level.sendParticles(ParticleTypes.LARGE_SMOKE, start.x, start.y, start.z, 8, 0.2, 0.2, 0.2, 0.02);
 	}
 
+	/** Späherkrähe: kreist 3 Sekunden um den Besitzer und verschwindet in Rauch. */
+	public static void scout(ServerLevel level, Companion summoner, LivingEntity owner, double angle) {
+		SwarmRaven raven = CompanionContent.SWARM_RAVEN.create(level, net.minecraft.world.entity.EntitySpawnReason.EVENT);
+
+		if (raven == null) {
+			return;
+		}
+
+		raven.summoner = summoner;
+		raven.target = owner;
+		raven.scout = true;
+		raven.angle = angle;
+		Vec3 start = summoner.position().add(0, 1.0, 0);
+		raven.snapTo(start.x, start.y, start.z, 0.0f, 0.0f);
+		level.addFreshEntity(raven);
+		level.sendParticles(ParticleTypes.SMOKE, start.x, start.y, start.z, 6, 0.2, 0.2, 0.2, 0.02);
+	}
+
 	@Override
 	public void tick() {
 		super.tick();
@@ -70,6 +90,19 @@ public class SwarmRaven extends Mob {
 		}
 
 		age++;
+
+		if (scout) {
+			if (target == null || !target.isAlive() || age > 70) {
+				vanish(level);
+				return;
+			}
+
+			angle += 0.18;
+			double radius = 3.0 + Math.sin(age * 0.1) * 0.6;
+			Vec3 circle = target.position().add(Math.cos(angle) * radius, 3.0 + Math.sin(age * 0.2) * 0.4, Math.sin(angle) * radius);
+			move(position().add(circle.subtract(position()).scale(0.3)));
+			return;
+		}
 
 		if (target == null || summoner == null || age > 100) {
 			vanish(level);
