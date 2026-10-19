@@ -397,7 +397,7 @@ public class ShroomCompanion extends Companion {
 
 	private void healTarget(ServerLevel level, LivingEntity target, float instant, int stage) {
 		if (instant > 0) {
-			target.heal(instant * (1.0f + 0.15f * talent("strong_spores")));
+			target.heal(instant * (1.0f + 0.15f * talent("strong_spores")) * (1.0f + 0.1f * equipmentTier()));   // Amulett: +10 % je Material
 		}
 
 		target.addEffect(new MobEffectInstance(MobEffects.REGENERATION, stage == 1 ? 120 : stage == 2 ? 160 : 120, stage == 3 ? 1 : 0));
@@ -567,6 +567,15 @@ public class ShroomCompanion extends Companion {
 	protected void tickSpecialEffects(ServerLevel level) {
 		if (veilTicks > 0) {
 			veilTicks--;
+
+			// im Sporennebel verlieren Monster dich und ihn ständig aus den Augen (v0.25.5)
+			if (veilTicks % 2 == 0) {
+				calmAttackers(level, this, 48.0);
+
+				if (getOwner() instanceof Player owner && owner.level() == level) {
+					calmAttackers(level, owner, 48.0);
+				}
+			}
 		}
 
 		if (bloomTicks > 0) {
@@ -588,6 +597,11 @@ public class ShroomCompanion extends Companion {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected boolean isHidden() {
+		return veilTicks > 0;
 	}
 
 	/** Für die Anzeige: läuft gerade der Sporenschleier? */

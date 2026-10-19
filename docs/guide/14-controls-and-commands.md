@@ -54,6 +54,7 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 | Right-click | follow / stay (mantis in your base: stand guard); at stage 3 mount (mantis, raven) |
 | G / companion menu | the same for a companion on your shoulder, which can't be clicked |
 | Companion menu → *Explore* | send the Night Raven on an exploration trip |
+| Companion menu → *Look* | coloring, body parts, glow color and equipment ([Customization](07-companions.md#customization)) |
 | Shift + right-click | companion menu (mantis, shroom) or bag (raven) |
 | Right-click with a Resonance Treat | double experience, speed, healing |
 | Right-click the raven with a bound Storage Key | link it to the terminal / send it off right away |

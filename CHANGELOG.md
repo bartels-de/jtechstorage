@@ -3,17 +3,30 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
-## [0.25.3]
+## [0.26.0]
+
+Everything since 0.25.0 is about companions: a home base, special attacks, customization with visible equipment, and a
+bond that grows with every meal, pat and game of fetch.
 
 ### Added
+- **Your base:** the 3 × 3 chunks around a Storage Terminal you placed count as your base for companions.
+  - **Shadow Mantis:** fights 50 % harder in your base. Tell it to stay while it is in your base and it **stands guard**
+    instead of sitting down: it patrols around the terminal and attacks monsters within 24 blocks, even while you are
+    away.
+  - **Amethyst Shroom:** from stage 2, crops, stems, berry bushes, cocoa, nether wart, saplings, sugar cane, cactus and
+    bamboo in your base grow about 3× as fast (stage 3: about 4–5×). At stage 3 you can **fly like in creative mode** in
+    your base while your shroom is with you; leaving the base ends the flight with Slow Falling.
+- **Night Raven exploration trips:** *Explore* in the companion menu sends the raven off for 4 minutes; it brings back
+  3 / 4 / 5 finds by stage – copper and iron, then gold, emeralds, lapis and redstone, then diamonds, ender pearls and
+  rarities – and rests for 5 minutes afterwards.
 - **Special attacks:** a new *Special* branch in every talent tree with three special attacks, of which you can learn
   **only one** (from stage 2). Trigger it in combat with the **B** key (changeable) or the *Special* button in the menu;
   it targets the monster you look at. The HUD shows its cooldown as a small bar under the companion icon.
   - Shadow Mantis: **Paralyzing Sting** (leap, 150 % damage, 5 s stun, 30 s poison), **Blade Storm** (three spinning
     slashes against everything within 4 blocks), **Execution** (leap, 250 % damage, doubled below 35 % health).
-  - Amethyst Shroom: **Spore Veil** (you and the shroom invisible for 60 s, monsters lose track, its cooldowns halved and
-    running twice as fast), **Life Bloom** (10 s healing circle), **Paralysis Cloud** (damage, Slowness, Weakness and
-    Poison around the target).
+  - Amethyst Shroom: **Spore Veil** (you and the shroom invisible for 60 s, monsters lose track of you, its cooldowns
+    halved and running twice as fast), **Life Bloom** (10 s healing circle), **Paralysis Cloud** (damage, Slowness,
+    Weakness and Poison around the target).
   - Night Raven: **Raven Swarm** (five shadow ravens circle above the target and dive at it, each hitting for 150 %),
     **Shadow Dive** (300 % damage, Blindness, knockback), **Terror Cry** (monsters within 10 blocks back off, lose their
     target and are slowed, weakened and glowing).
@@ -22,39 +35,61 @@ All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 - **A master talent at the end of every branch** (stage 3): mantis *Bloodlust*, *Crystal Skin*, *Predator*; shroom
   *Second Life* (saves you from death once every 10 minutes), *Mushroom Skin*, *Spore Field*; raven *Treasure Hunter*,
   *Raven Call*, *Night Wings*.
-
-### Changed
-- Talent points: **one every 4 levels, up to 30** (was one every 5 levels, up to 20). Learned talents are kept.
-- The talent tab shows four branches with five talents each; the companion menu is a little taller.
-- *Lucky Find* and *Swift Delivery* also improve the raven's exploration trips.
-
-## [0.25.2]
-
-### Changed
-- The stage 3 **Amethyst Shroom** carries a **leather backpack** instead of the moss cape: flap, side pocket, bedroll and
-  straps with golden buckles, and a glowing healing potion sticking out at the top. The pack bobs and the potion sways
-  while it walks.
-
-## [0.25.1]
-
-### Added
-- **Your base:** the 3 × 3 chunks around a Storage Terminal you placed count as your base for companions.
-- **Shadow Mantis:** fights 50 % harder in your base. Tell it to stay while it is in your base and it **stands guard**
-  instead of sitting down: it patrols around the terminal and attacks monsters within 24 blocks, even while you are away.
-- **Amethyst Shroom:** from stage 2, crops, stems, berry bushes, cocoa, nether wart, saplings, sugar cane, cactus and
-  bamboo in your base grow about 3× as fast (stage 3: about 4–5×). At stage 3 you can **fly like in creative mode** in
-  your base while your shroom is with you; leaving the base ends the flight with Slow Falling.
-- **Night Raven exploration trips:** *Explore* in the companion menu sends the raven off for 4 minutes; it brings back
-  3 / 4 / 5 finds by stage – copper and iron, then gold, emeralds, lapis and redstone, then diamonds, ender pearls and
-  rarities – and rests for 5 minutes afterwards. *Swift Delivery* shortens the trip, *Lucky Find* adds a find.
-- Menu and HUD show whether the companion is in your base, on your shoulder, guarding or exploring.
+- **Companion customization:** a new **Look** tab in the companion menu with a large live portrait. Everything is
+  unlocked by your companion's progress:
+  - **Coloring:** Amethyst, Frost (level 20), Ember (defeat 200 monsters), Jade (level 50), Gold (stage 3 and level 100),
+    Soulbond (bond *Soulmate*).
+  - **Swappable body parts:** mantis horns (swept / crown / sickles), raven tail (fan / long / forked), shroom cap
+    (tiered / witch hat / flat) – second form from level 30, third from level 60. At stage 3 also the mantis wings
+    (crystal / leather / none), the raven crest (crystal / feathers / none) and the shroom's back (backpack / cape /
+    nothing).
+  - **Glow color:** any color from a color bar, plus default and white (from level 10) and pink (bond *Soulmate*).
+- **Companion equipment** with three visible slots – **collar**, **amulet** and **armor** – in iron (level 10), gold
+  (level 25), diamond (level 45, stage 2), netherite (level 70) and amethyst obsidian (level 100, stage 3). The bonus
+  always comes from the best unlocked material, the look is free to choose (or hidden):
+  - collar +10 / 20 / 30 / 40 / 50 % health,
+  - armor +2 / 4 / 6 / 8 / 10 armor (plus toughness from netherite),
+  - amulet: mantis +5–25 % damage, shroom +10–50 % healing, raven +1–5 blocks collection radius.
+- **Bond:** your companion grows closer to you – the bond never decreases. Five stages: Stranger, Familiar (100),
+  Friend (300), Partner (600) and Soulmate (1000).
+  - **Feed** it the food of its kind: mantis raw meat and fish, shroom berries, mushrooms and bone meal, raven seeds and
+    gold nuggets. Its **favorite food of the day** (shown in the menu) gives +25 once a day, other food +3 up to five
+    times a day.
+  - **Pet** it with the *Pet* button in the menu: +5, once per minute, ten times a day.
+  - **Play fetch:** throw a stick or an amethyst shard (Q) – it runs or flies after it and brings it back: +10, ten
+    times a day.
+  - **Gestures:** *Happy Hop* (Familiar), *Nuzzle* (Friend) and a gesture of its own (Partner) – mantis *Blade Salute*,
+    shroom *Shroom Dance*, raven *Bow*. It shows them when it is happy; the *Look* tab plays them on click.
+  - **Soulmate** unlocks the rosé **Soulbond** coloring, the pink glow color and a soft pink **aura** (can be switched
+    off in the *Look* tab).
+- Menu and HUD show whether the companion is in your base, on your shoulder, guarding or exploring, plus its bond stage
+  and today's favorite food.
+- Companions count the monsters they defeat. New config option `companions.equipment` (equipment gives stats).
+- **Call** also works when the companion is in an unloaded area: it is fetched from its last known position. The same
+  happens after you respawn far away or teleport.
+- In-game handbook: new pages *Look and equipment* and *Bond*.
 
 ### Changed
 - **Stage 1 shroom and raven sit on your shoulder** (shroom right, raven left). The shroom no longer fights at stage 1 and
   only starts with stage 2; the raven flies off to fight and returns to your shoulder afterwards.
+- The stage 3 **Amethyst Shroom** carries a **leather backpack** instead of the moss cape: flap, side pocket, bedroll and
+  straps with golden buckles, and a glowing healing potion sticking out at the top.
+- Talent points: **one every 4 levels, up to 30** (was one every 5 levels, up to 20). Learned talents are kept. The
+  talent tab shows four branches with five talents each.
+- *Lucky Find* and *Swift Delivery* also improve the raven's exploration trips.
+- Companions only join you on solid ground: while you fly over the void or high in the air they wait until you have
+  landed. They take no fall damage and land on safe ground when rescued from the void.
+- The companion menu has three tabs (Overview, Talents, Look) and is a little taller. Companion models and textures were
+  rebuilt to hold all variants.
 
 ### Fixed
-- A raven that was away while the world was saved stays invisible after loading.
+- Monsters kept attacking an exhausted companion, and every hit restarted its exhaustion. Exhausted companions are now
+  ignored by monsters and take no further damage until they recover.
+- After dying and respawning far away, the companion stayed behind.
+- *Call* did not work when the companion was out of render distance or in an unloaded chunk.
+- While you flew, the companion was teleported into the air next to you and fell into the void (End) or took fall damage.
+- The Night Raven's wings now spread properly in flight and flap around the body.
+- A raven that was away while the world was saved stayed invisible after loading.
 
 ## [0.25.0]
 

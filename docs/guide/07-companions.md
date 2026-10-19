@@ -141,7 +141,11 @@ your base.
 - **Right-click** or the **G** key (up to 48 blocks away) toggles **follow / stay**. At stage 3, right-click on the mantis
   or raven mounts it instead, so use G. A companion on your shoulder can't be clicked – use G or the menu.
 - The Shadow Mantis stands **guard** instead of sitting when you tell it to stay inside your base.
-- `/jtechstorage companion call` – or *Call* in the menu – brings it to you, even from another dimension.
+- `/jtechstorage companion call` – or *Call* in the menu – brings it to you, even from another dimension or from chunks
+  that are no longer loaded (it is fetched from its last position, which can take a moment).
+- It only joins you where there is solid ground. While you fly over the void or high in the air it waits and comes as
+  soon as you have landed. Companions take no fall damage.
+- An **exhausted** companion is ignored by monsters until it has recovered.
 - `/jtechstorage companion release confirm` releases it for good.
 
 ## Companion menu
@@ -163,6 +167,62 @@ Press **K** (or Shift + right-click the mantis or shroom) to open the menu. It w
 | Aggressive | attacks what you attack, what attacks you, and every monster near you (default) |
 | Defensive | only defends you and itself |
 | Passive | does not fight at all |
+
+**Look tab** – see [Customization](#customization).
+
+## Customization
+
+The **Look** tab of the companion menu changes how your companion looks. A large live portrait shows every change right
+away. Use the arrows to switch; locked options are skipped and the tooltip lists every option with its requirement.
+
+| Option | Choices | Unlock |
+|---|---|---|
+| Coloring | Amethyst · Frost · Ember · Jade · Gold · Soulbond | Frost level 20, Ember 200 defeated monsters, Jade level 50, Gold stage 3 + level 100, Soulbond bond *Soulmate* |
+| Horns (mantis) · Tail (raven) · Cap (shroom) | swept / crown / sickles · fan / long / forked · tiered / witch hat / flat | 2nd form level 30, 3rd form level 60 |
+| Wings (mantis) · Crest (raven) · Back (shroom) | crystal / leather / none · crystal / feathers / none · backpack / cape / nothing | stage 3 |
+| Glow color | any color from the color bar, default, white, Soul Pink | level 10 (Soul Pink: bond *Soulmate*) |
+
+### Equipment
+
+Three visible slots: **collar**, **amulet** and **armor**. Each can show any unlocked material, *Automatic* (the best
+one) or nothing. The **bonus always comes from the best unlocked material**, no matter what you show.
+
+| Material | Unlock | Collar | Armor | Amulet: mantis / shroom / raven |
+|---|---|---|---|---|
+| Iron | level 10 | +10 % health | +2 armor | +5 % damage / +10 % healing / +1 block collection radius |
+| Gold | level 25 | +20 % | +4 | +10 % / +20 % / +2 |
+| Diamond | level 45, stage 2 | +30 % | +6 | +15 % / +30 % / +3 |
+| Netherite | level 70 | +40 % | +8, toughness 2 | +20 % / +40 % / +4 |
+| Amethyst Obsidian | level 100, stage 3 | +50 % | +10, toughness 3 | +25 % / +50 % / +5 |
+
+Server owners can turn the bonuses off with `companions.equipment` in the [configuration](15-configuration.md); the
+equipment is then only cosmetic.
+
+## Bond
+
+Your companion grows closer to you the more time you spend with it. The bond **never decreases**.
+
+| Stage | Points | Unlocks |
+|---|---|---|
+| Stranger | 0 | – |
+| Familiar | 100 | gesture *Happy Hop* |
+| Friend | 300 | gesture *Nuzzle* (on your shoulder it rubs its cheek against you) |
+| Partner | 600 | its own gesture: mantis *Blade Salute*, shroom *Shroom Dance*, raven *Bow* |
+| Soulmate | 1000 | coloring **Soulbond**, glow color **Soul Pink** and a pink **aura** (switch it off in the *Look* tab) |
+
+How to build it:
+
+| Action | Bond | Limit |
+|---|---|---|
+| Feed its **favorite food of the day** (see the menu) | +25 | once a day |
+| Feed other food of its kind | +3 | five times a day |
+| **Pet** it (button in the menu, up to 8 blocks away) | +5 | once per minute, ten times a day |
+| **Play fetch**: throw a stick or an amethyst shard with Q near it | +10 | ten times a day |
+
+Food: mantis – raw beef, porkchop, mutton, chicken, rabbit, cod, salmon; shroom – sweet berries, glow berries, bone
+meal, brown and red mushrooms; raven – wheat, pumpkin, melon and beetroot seeds, gold nuggets. Feeding also heals it a
+little. A happy companion shows its gestures by itself; the *Look* tab plays any unlocked gesture on click. The menu
+shows the bond stage with a progress bar, the HUD shows it as ❤ next to the level.
 
 ## Talent tree
 

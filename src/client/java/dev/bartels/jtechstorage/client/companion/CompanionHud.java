@@ -71,7 +71,7 @@ public final class CompanionHud {
 			g.fill(x + 3, y + 24, x + 3 + (int) (18 * frac), y + 25, ready ? 0xFFFFD27A : 0xFF8D6ACC);
 		}
 
-		String level = "Lv " + s.level();
+		String level = "\u2764" + dev.bartels.jtechstorage.companion.CompanionBond.stage(s.bond()) + "  Lv " + s.level();   // Bindungsstufe (v0.26.0)
 		int nameW = W - 28 - font.width(level) - 4;
 		g.text(font, dev.bartels.jtechstorage.client.gui.GuiTheme.fit(font, CompanionClient.name(s).getString(), nameW), x + 26, y + 3, 0xFFFFFFFF, true);
 		g.text(font, level, x + W - 3 - font.width(level), y + 3, 0xFFE0C8FF, true);

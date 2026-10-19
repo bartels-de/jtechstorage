@@ -34,9 +34,18 @@ public class CompanionData extends SavedData {
 		).apply(i, Entry::new));
 	}
 
+	/** Letzte bekannte Position des Begleiters (v0.25.5) und ob er dabei folgte – zum Holen aus ungeladenen Chunks. */
+	public record Last(net.minecraft.core.GlobalPos pos, boolean follows) {
+		static final Codec<Last> CODEC = RecordCodecBuilder.create(i -> i.group(
+				net.minecraft.core.GlobalPos.CODEC.fieldOf("pos").forGetter(Last::pos),
+				Codec.BOOL.fieldOf("follows").forGetter(Last::follows)
+		).apply(i, Last::new));
+	}
+
 	public static final Codec<CompanionData> CODEC = RecordCodecBuilder.create(i -> i.group(
 			Entry.CODEC.listOf().fieldOf("companions").forGetter(data -> List.copyOf(data.byOwner.values())),
-			Codec.LONG.listOf().fieldOf("geodes").forGetter(data -> List.copyOf(data.geodes))
+			Codec.LONG.listOf().fieldOf("geodes").forGetter(data -> List.copyOf(data.geodes)),
+			Codec.unboundedMap(UUIDUtil.STRING_CODEC, Last.CODEC).optionalFieldOf("last", Map.of()).forGetter(data -> Map.copyOf(data.last))
 	).apply(i, CompanionData::new));
 
 	public static final SavedDataType<CompanionData> TYPE = new SavedDataType<>(JTechStorage.id("companions"),
@@ -44,16 +53,35 @@ public class CompanionData extends SavedData {
 
 	private final Map<UUID, Entry> byOwner = new HashMap<>();
 	private final Set<Long> geodes = new HashSet<>();
+	private final Map<UUID, Last> last = new HashMap<>();
 
 	public CompanionData() {
 	}
 
-	private CompanionData(List<Entry> entries, List<Long> geodeList) {
+	private CompanionData(List<Entry> entries, List<Long> geodeList, Map<UUID, Last> lastMap) {
 		for (Entry entry : entries) {
 			byOwner.put(entry.owner(), entry);
 		}
 
 		geodes.addAll(geodeList);
+		last.putAll(lastMap);
+	}
+
+	public @Nullable Last last(UUID owner) {
+		return last.get(owner);
+	}
+
+	/** Merkt die Position (nur bei Chunk- oder Zustandswechsel als geändert markiert). */
+	public void setLast(UUID owner, net.minecraft.core.GlobalPos pos, boolean follows) {
+		Last old = last.get(owner);
+
+		if (old == null || old.follows() != follows || !old.pos().dimension().equals(pos.dimension())
+				|| (old.pos().pos().getX() >> 4) != (pos.pos().getX() >> 4) || (old.pos().pos().getZ() >> 4) != (pos.pos().getZ() >> 4)) {
+			last.put(owner, new Last(pos, follows));
+			setDirty();
+		} else {
+			last.put(owner, new Last(pos, follows));
+		}
 	}
 
 	public static CompanionData get(MinecraftServer server) {
@@ -99,6 +127,8 @@ public class CompanionData extends SavedData {
 	}
 
 	public void forgetOwner(UUID owner) {
+		last.remove(owner);
+
 		if (byOwner.remove(owner) != null) {
 			setDirty();
 		}

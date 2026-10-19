@@ -306,6 +306,12 @@ public class MantisCompanion extends Companion {
 	}
 
 	/** Blutrausch: jeder Sieg macht sie 5 s lang schneller (bis 3-fach). */
+	/** Amulett (v0.25.4): +5 % Schaden je Material. */
+	@Override
+	protected double amuletDamage(int tier) {
+		return 0.05 * tier;
+	}
+
 	@Override
 	protected void onKill(ServerLevel level, LivingEntity target) {
 		if (talent("bloodlust") > 0) {

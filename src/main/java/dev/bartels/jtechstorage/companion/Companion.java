@@ -60,6 +60,25 @@ public abstract class Companion extends TamableAnimal {
 	private static final EntityDataAccessor<Integer> DATA_ACTION = SynchedEntityData.defineId(Companion.class, EntityDataSerializers.INT);
 	/** Sitzt auf der Schulter des Besitzers (v0.25.1: Pilz und Rabe auf Stufe 1). */
 	private static final EntityDataAccessor<Boolean> DATA_SHOULDER = SynchedEntityData.defineId(Companion.class, EntityDataSerializers.BOOLEAN);
+	/** Aussehen (v0.25.4): gepackt, siehe {@link CompanionLooks}, und Leuchtfarbe (-1 = Standard). */
+	private static final EntityDataAccessor<Integer> DATA_LOOK = SynchedEntityData.defineId(Companion.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> DATA_GLOW = SynchedEntityData.defineId(Companion.class, EntityDataSerializers.INT);
+	/** Besiegte Monster (schaltet den Glut-Skin frei). */
+	private int kills;
+	/** Bindung (v0.26.0): Punkte (synchronisiert) und Geste ((Zähler << 2) | Geste, damit dieselbe Geste erneut startet). */
+	private static final EntityDataAccessor<Integer> DATA_BOND = SynchedEntityData.defineId(Companion.class, EntityDataSerializers.INT);
+	private static final EntityDataAccessor<Integer> DATA_GESTURE = SynchedEntityData.defineId(Companion.class, EntityDataSerializers.INT);
+	private long bondDay = -1;
+	private int fedToday;
+	private boolean favoriteToday;
+	private int petsToday;
+	private int playsToday;
+	private long lastPet = -100000;
+	/** Client: Start der laufenden Geste. */
+	private int gestureStart = -1000;
+	private int gesture;
+	/** Holt gerade ein geworfenes Spielzeug. */
+	private boolean fetching;
 
 	private int exhausted;
 	/** Resonanz-Leckerli (v0.25.3): doppelte Erfahrung, solange > 0 (Ticks). */
@@ -120,6 +139,344 @@ public abstract class Companion extends TamableAnimal {
 		builder.define(DATA_ATTACK, 0);
 		builder.define(DATA_ACTION, 0);
 		builder.define(DATA_SHOULDER, false);
+		builder.define(DATA_LOOK, CompanionLooks.DEFAULT);
+		builder.define(DATA_GLOW, CompanionLooks.GLOW_DEFAULT);
+		builder.define(DATA_BOND, 0);
+		builder.define(DATA_GESTURE, 0);
+	}
+
+	// ------------------------------------------------------------------
+	// Bindung (v0.26.0): Füttern, Streicheln, Spielen → Gesten, Skin, Aura
+	// ------------------------------------------------------------------
+
+	public int getBond() {
+		return entityData.get(DATA_BOND);
+	}
+
+	public int bondStage() {
+		return CompanionBond.stage(getBond());
+	}
+
+	private long today() {
+		return Math.floorDiv(level().getDefaultClockTime(), 24000L);
+	}
+
+	/** Neuer Tag: Tageszähler zurücksetzen. */
+	private void rollBondDay() {
+		long day = today();
+
+		if (day != bondDay) {
+			bondDay = day;
+			fedToday = 0;
+			favoriteToday = false;
+			petsToday = 0;
+			playsToday = 0;
+		}
+	}
+
+	public net.minecraft.world.item.Item favoriteFood() {
+		return CompanionBond.favorite(species(), today(), getUUID());
+	}
+
+	private void addBond(int amount) {
+		int old = getBond();
+		int now = Math.min(CompanionBond.MAX, old + amount);
+		entityData.set(DATA_BOND, now);
+		int stage = CompanionBond.stage(now);
+
+		if (stage > CompanionBond.stage(old) && level() instanceof ServerLevel server) {
+			server.sendParticles(ParticleTypes.HEART, getX(), getY() + getBbHeight() + 0.3, getZ(), 12, 0.5, 0.3, 0.5, 0.0);
+			playSound(ModSounds.COMPANION_LEVEL, 1.0f, 1.3f);
+
+			if (getOwner() instanceof ServerPlayer owner) {
+				owner.sendSystemMessage(Component.translatable("jtechstorage.bond.stage_up", getDisplayName(),
+						Component.translatable("jtechstorage.bond.stage." + CompanionBond.STAGE_KEYS[stage])).withStyle(ChatFormatting.LIGHT_PURPLE));
+				owner.sendSystemMessage(Component.translatable("jtechstorage.bond.unlock." + stage,
+						Component.translatable("jtechstorage.gesture." + CompanionBond.gestureKey(species(), Math.min(stage, 3)))).withStyle(ChatFormatting.GRAY));
+			}
+		}
+	}
+
+	private void hearts(int count) {
+		if (level() instanceof ServerLevel server) {
+			server.sendParticles(ParticleTypes.HEART, getX(), getY() + getBbHeight() + 0.2, getZ(), count, 0.3, 0.2, 0.3, 0.0);
+		}
+	}
+
+	/** Spielt eine Geste ab (Server → alle Clients). */
+	public void playGesture(int which) {
+		int counter = (entityData.get(DATA_GESTURE) >> 2) + 1;
+		entityData.set(DATA_GESTURE, (counter << 2) | (which & 3));
+	}
+
+	/** Die beste Freuden-Geste, die er schon kann (0 = noch keine). */
+	private int happyGesture(boolean cuddle) {
+		int stage = bondStage();
+		return cuddle && stage >= 2 ? CompanionBond.NUZZLE : stage >= 1 ? CompanionBond.JOY : 0;
+	}
+
+	/** Geste aus dem Menü. */
+	public void requestGesture(ServerPlayer player, int which) {
+		if (which < 1 || which > 3 || bondStage() < which || isExhausted()) {
+			return;
+		}
+
+		playGesture(which);
+	}
+
+	/** Füttern mit dem Futter seiner Art: Lieblingsessen +25 (einmal am Tag), sonst +3 (fünfmal am Tag). */
+	private void feed(Player player, ItemStack held) {
+		rollBondDay();
+		boolean favorite = held.is(favoriteFood()) && !favoriteToday;
+
+		if (!favorite && fedToday >= CompanionBond.FOOD_PER_DAY) {
+			player.sendOverlayMessage(Component.translatable("jtechstorage.bond.full", getDisplayName()).withStyle(ChatFormatting.GRAY));
+			return;
+		}
+
+		net.minecraft.world.item.Item food = held.getItem();
+		held.consume(1, player);
+		heal(2.0f);
+		playSound(net.minecraft.sounds.SoundEvents.GENERIC_EAT.value(), 0.8f, 1.2f);
+
+		if (level() instanceof ServerLevel server) {
+			server.sendParticles(new net.minecraft.core.particles.ItemParticleOption(net.minecraft.core.particles.ParticleTypes.ITEM,
+					food),
+					getX(), getY() + getBbHeight() * 0.8, getZ(), 8, 0.2, 0.2, 0.2, 0.05);
+		}
+
+		if (favorite) {
+			favoriteToday = true;
+			addBond(CompanionBond.FAVORITE);
+			hearts(6);
+			player.sendOverlayMessage(Component.translatable("jtechstorage.bond.favorite", getDisplayName()).withStyle(ChatFormatting.LIGHT_PURPLE));
+		} else {
+			fedToday++;
+			addBond(CompanionBond.FOOD);
+			hearts(2);
+		}
+
+		int g = happyGesture(false);
+
+		if (g > 0) {
+			playGesture(g);
+		}
+	}
+
+	/** Streicheln (Menü): +5, einmal pro Minute, zehnmal am Tag. */
+	public void pet(ServerPlayer player) {
+		if (player.level() != level() || !isOnShoulder() && distanceToSqr(player) > 8 * 8) {
+			player.sendOverlayMessage(Component.translatable("jtechstorage.bond.too_far", getDisplayName()).withStyle(ChatFormatting.GRAY));
+			return;
+		}
+
+		rollBondDay();
+		long now = level().getGameTime();
+
+		if (now - lastPet < CompanionBond.PET_COOLDOWN) {
+			player.sendOverlayMessage(Component.translatable("jtechstorage.bond.pet_wait", getDisplayName(),
+					(CompanionBond.PET_COOLDOWN - (now - lastPet) + 19) / 20).withStyle(ChatFormatting.GRAY));
+			return;
+		}
+
+		lastPet = now;
+		getNavigation().stop();
+		getLookControl().setLookAt(player);
+		hearts(4);
+		playSound(ModSounds.COMPANION_COMMAND, 0.6f, 1.4f);
+
+		if (petsToday < CompanionBond.PETS_PER_DAY) {
+			petsToday++;
+			addBond(CompanionBond.PET);
+		}
+
+		int g = happyGesture(true);
+
+		if (g > 0) {
+			playGesture(g);
+		}
+	}
+
+	/** Client: laufende Geste (0 = keine) und ihr Fortschritt 0..1. */
+	public int gestureId(float partialTick) {
+		return gestureProgress(partialTick) < 1.0f ? gesture : 0;
+	}
+
+	public float gestureProgress(float partialTick) {
+		return Math.clamp((tickCount - gestureStart + partialTick) / CompanionBond.GESTURE_TICKS, 0.0f, 1.0f);
+	}
+
+	/** Spielt gerade mit dem Spieler (holt ein Spielzeug). */
+	public boolean isFetching() {
+		return fetching;
+	}
+
+	/** Holen-Spiel: wirft der Besitzer einen Stock oder eine Amethyst-Scherbe, bringt er sie zurück (+10, zehnmal am Tag). */
+	private class FetchGoal extends Goal {
+		private net.minecraft.world.entity.item.@org.jspecify.annotations.Nullable ItemEntity toy;
+		private ItemStack carried = ItemStack.EMPTY;
+		private int timeout;
+
+		FetchGoal() {
+			setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			if ((tickCount + getId()) % 10 != 0 || !isActive() || getTarget() != null || isVehicle() || !(getOwner() instanceof Player owner)
+					|| owner.level() != level()) {
+				return false;
+			}
+
+			for (net.minecraft.world.entity.item.ItemEntity item : level().getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+					owner.getBoundingBox().inflate(16.0), e -> e.getOwner() == owner && e.getAge() < 300 && CompanionBond.isToy(e.getItem()))) {
+				toy = item;
+				return true;
+			}
+
+			return false;
+		}
+
+		@Override
+		public void start() {
+			fetching = true;
+			timeout = 400;
+			carried = ItemStack.EMPTY;
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return timeout > 0 && !isExhausted() && getTarget() == null && getOwner() instanceof Player owner && owner.level() == level()
+					&& (!carried.isEmpty() || toy != null && toy.isAlive());
+		}
+
+		@Override
+		public void tick() {
+			timeout--;
+
+			if (!(getOwner() instanceof Player owner)) {
+				return;
+			}
+
+			if (carried.isEmpty() && toy != null) {
+				getLookControl().setLookAt(toy);
+
+				if (timeout % 10 == 0) {
+					getNavigation().moveTo(toy, 1.4);
+				}
+
+				if (distanceToSqr(toy) < 2.0 * 2.0) {
+					carried = toy.getItem().copy();
+					toy.discard();
+					toy = null;
+					playSound(net.minecraft.sounds.SoundEvents.ITEM_PICKUP, 0.6f, 1.2f);
+					getNavigation().stop();
+				}
+
+				return;
+			}
+
+			getLookControl().setLookAt(owner);
+
+			if (timeout % 10 == 0) {
+				getNavigation().moveTo(owner, 1.4);
+			}
+
+			if (distanceToSqr(owner) < 2.5 * 2.5) {
+				if (!owner.getInventory().add(carried) && level() instanceof ServerLevel server) {
+					owner.spawnAtLocation(server, carried);
+				}
+
+				carried = ItemStack.EMPTY;
+				rollBondDay();
+				hearts(3);
+				playSound(ModSounds.COMPANION_COMMAND, 0.6f, 1.6f);
+
+				if (playsToday < CompanionBond.PLAYS_PER_DAY) {
+					playsToday++;
+					addBond(CompanionBond.PLAY);
+				}
+
+				int g = happyGesture(false);
+
+				if (g > 0) {
+					playGesture(g);
+				}
+
+				timeout = 0;
+			}
+		}
+
+		@Override
+		public void stop() {
+			fetching = false;
+			toy = null;
+			getNavigation().stop();
+
+			if (!carried.isEmpty() && level() instanceof ServerLevel server) {
+				spawnAtLocation(server, carried);
+			}
+
+			carried = ItemStack.EMPTY;
+		}
+	}
+
+	// ------------------------------------------------------------------
+	// Aussehen (v0.25.4)
+	// ------------------------------------------------------------------
+
+	public int getLook() {
+		return entityData.get(DATA_LOOK);
+	}
+
+	public int getGlowColor() {
+		return entityData.get(DATA_GLOW);
+	}
+
+	public int getKills() {
+		return kills;
+	}
+
+	/** Ein Feld des Aussehens setzen (aus dem Menü) – nur, was freigeschaltet ist. */
+	public void setLook(ServerPlayer player, int field, int value) {
+		if (!CompanionLooks.valid(field, value)) {
+			return;
+		}
+
+		Component missing = CompanionLooks.requirement(field, value, getLevel(), getStage(), kills, getBond());
+
+		if (missing != null) {
+			player.sendOverlayMessage(Component.translatable("jtechstorage.look.locked", missing).withStyle(ChatFormatting.RED));
+			return;
+		}
+
+		entityData.set(DATA_LOOK, CompanionLooks.with(getLook(), field, value));
+	}
+
+	/** Leuchtfarbe setzen (RGB, -1 = Standard). */
+	public void setGlowColor(ServerPlayer player, int rgb) {
+		Component missing = CompanionLooks.glowRequirement(getLevel());
+
+		if (missing != null && rgb != CompanionLooks.GLOW_DEFAULT) {
+			player.sendOverlayMessage(Component.translatable("jtechstorage.look.locked", missing).withStyle(ChatFormatting.RED));
+			return;
+		}
+
+		entityData.set(DATA_GLOW, rgb < 0 ? CompanionLooks.GLOW_DEFAULT : rgb & 0xFFFFFF);
+	}
+
+	/** Stufe der Ausrüstung 0–5 (bestes freigeschaltetes Material) – bestimmt die Boni von Halsband, Amulett und Panzerung. */
+	public int equipmentTier() {
+		return ModConfig.get().companions.equipment ? CompanionLooks.bestMaterial(getLevel(), getStage()) : 0;
+	}
+
+	@Override
+	public boolean killedEntity(ServerLevel level, LivingEntity entity, DamageSource source) {
+		if (entity instanceof net.minecraft.world.entity.monster.Enemy) {
+			kills++;
+		}
+
+		return super.killedEntity(level, entity, source);
 	}
 
 	// ------------------------------------------------------------------
@@ -190,6 +547,10 @@ public abstract class Companion extends TamableAnimal {
 		int newLevel = getLevel();
 
 		if (newLevel > oldLevel && level() instanceof ServerLevel server) {
+			if (CompanionLooks.bestMaterial(newLevel, getStage()) != CompanionLooks.bestMaterial(oldLevel, getStage())) {
+				applyTalents();                          // neues Ausrüstungs-Material freigeschaltet
+			}
+
 			server.sendParticles(ParticleTypes.HAPPY_VILLAGER, getX(), getY() + getBbHeight(), getZ(), 6, 0.3, 0.2, 0.3, 0.0);
 			playSound(ModSounds.COMPANION_LEVEL, 0.6f, 1.0f + Math.min(0.6f, newLevel * 0.005f));
 
@@ -234,6 +595,12 @@ public abstract class Companion extends TamableAnimal {
 	@Override
 	public void onSyncedDataUpdated(EntityDataAccessor<?> accessor) {
 		super.onSyncedDataUpdated(accessor);
+
+		if (ready && DATA_GESTURE.equals(accessor) && level().isClientSide()) {
+			int value = entityData.get(DATA_GESTURE);
+			gesture = value & 3;
+			gestureStart = value == 0 ? -1000 : tickCount;
+		}
 
 		if (ready && DATA_XP.equals(accessor)) {
 			if (level().isClientSide()) {
@@ -356,6 +723,7 @@ public abstract class Companion extends TamableAnimal {
 			}
 		});
 		goalSelector.addGoal(6, new GuardPatrolGoal());
+		goalSelector.addGoal(6, new FetchGoal());
 		goalSelector.addGoal(7, new FollowOwnerGoal(this, 1.25, 6.0f, 2.5f) {
 			@Override
 			public boolean canUse() {
@@ -597,7 +965,7 @@ public abstract class Companion extends TamableAnimal {
 
 	/** Möchte er gerade auf die Schulter? (Rabe: nicht im Kampf und nicht unterwegs) */
 	protected boolean wantsShoulder(Player owner) {
-		return shoulderStage() && !isOrderedToSit() && !isVehicle() && getTarget() == null && owner.level() == level() && owner.isAlive()
+		return shoulderStage() && !fetching && !isOrderedToSit() && !isVehicle() && getTarget() == null && owner.level() == level() && owner.isAlive()
 				&& !owner.isSpectator() && !owner.isSleeping();
 	}
 
@@ -659,6 +1027,64 @@ public abstract class Companion extends TamableAnimal {
 	@Override
 	public boolean isPushable() {
 		return !isOnShoulder() && super.isPushable();
+	}
+
+	/** Auf der Schulter schiebt er niemanden – sonst würde er (vor allem im Client) seinen Besitzer wegdrücken. */
+	@Override
+	protected void pushEntities() {
+		if (!isOnShoulder()) {
+			super.pushEntities();
+		}
+	}
+
+	@Override
+	protected void doPush(Entity entity) {
+		if (!isOnShoulder()) {
+			super.doPush(entity);
+		}
+	}
+
+	@Override
+	public void tick() {
+		if (level().isClientSide()) {
+			noPhysics = isOnShoulder();       // im Client ist noPhysics sonst nicht gesetzt
+
+			// Seelenverwandt (v0.26.0): sanfte rosa Aura, im Aussehen-Tab abschaltbar
+			if (bondStage() >= 4 && CompanionLooks.get(getLook(), CompanionLooks.AURA) == 0 && !isInvisible() && random.nextInt(6) == 0) {
+				level().addParticle(new net.minecraft.core.particles.DustParticleOptions(random.nextBoolean() ? 0xFF8AC0 : 0xFFC4DC, 0.7f),
+						getRandomX(0.7), getY() + random.nextDouble() * getBbHeight(), getRandomZ(0.7), 0.0, 0.01, 0.0);
+
+				if (random.nextInt(40) == 0) {
+					level().addParticle(ParticleTypes.HEART, getRandomX(0.5), getY() + getBbHeight() + 0.2, getRandomZ(0.5), 0.0, 0.02, 0.0);
+				}
+			}
+		}
+
+		super.tick();
+	}
+
+	/** Erschöpft (oder versteckt) ist er für Monster kein Ziel (v0.25.5). */
+	@Override
+	public boolean canBeSeenAsEnemy() {
+		return !isExhausted() && !isHidden() && super.canBeSeenAsEnemy();
+	}
+
+	/** Pilz: während des Sporenschleiers unsichtbar für Monster. */
+	protected boolean isHidden() {
+		return false;
+	}
+
+	/** Monster, die {@code entity} angreifen, lassen von ihm ab. */
+	public static void calmAttackers(ServerLevel level, LivingEntity entity, double radius) {
+		for (net.minecraft.world.entity.Mob mob : level.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, entity.getBoundingBox().inflate(radius),
+				m -> m.getTarget() == entity)) {
+			mob.setTarget(null);
+			mob.getBrain().eraseMemory(net.minecraft.world.entity.ai.memory.MemoryModuleType.ATTACK_TARGET);
+
+			if (mob.getLastHurtByMob() == entity) {
+				mob.setLastHurtByMob(null);
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------
@@ -962,7 +1388,38 @@ public abstract class Companion extends TamableAnimal {
 		talentModifier(Attributes.ARMOR, armorBonus(), net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE);
 		talentModifier(Attributes.MAX_HEALTH, healthBonus(), net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 		talentModifier(Attributes.MOVEMENT_SPEED, speedBonus(), net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+		// Ausrüstung (v0.25.4): Halsband +10 % Leben je Material, Panzerung +2 Rüstung (+ Härte ab Netherit), Amulett je Art
+		int tier = equipmentTier();
+		equipModifier(EQUIP_HEALTH_ID, Attributes.MAX_HEALTH, 0.1 * tier, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
+		equipModifier(EQUIP_ARMOR_ID, Attributes.ARMOR, 2.0 * tier, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE);
+		equipModifier(EQUIP_ARMOR_ID, Attributes.ARMOR_TOUGHNESS, tier >= 5 ? 3.0 : tier == 4 ? 2.0 : 0.0,
+				net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_VALUE);
+		equipModifier(EQUIP_DAMAGE_ID, Attributes.ATTACK_DAMAGE, amuletDamage(tier), net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation.ADD_MULTIPLIED_BASE);
 		setHealth(Math.max(1.0f, Math.min(getMaxHealth(), getMaxHealth() * ratio)));
+	}
+
+	private static final net.minecraft.resources.Identifier EQUIP_HEALTH_ID = dev.bartels.jtechstorage.JTechStorage.id("companion_collar");
+	private static final net.minecraft.resources.Identifier EQUIP_ARMOR_ID = dev.bartels.jtechstorage.JTechStorage.id("companion_armor");
+	private static final net.minecraft.resources.Identifier EQUIP_DAMAGE_ID = dev.bartels.jtechstorage.JTechStorage.id("companion_amulet");
+
+	/** Amulett: zusätzlicher Schaden (Mantis +5 % je Material), die anderen Arten haben eigene Amulett-Boni. */
+	protected double amuletDamage(int tier) {
+		return 0.0;
+	}
+
+	private void equipModifier(net.minecraft.resources.Identifier id, net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute,
+			double amount, net.minecraft.world.entity.ai.attributes.AttributeModifier.Operation operation) {
+		AttributeInstance instance = getAttribute(attribute);
+
+		if (instance == null) {
+			return;
+		}
+
+		if (amount == 0) {
+			instance.removeModifier(id);
+		} else {
+			instance.addOrUpdateTransientModifier(new net.minecraft.world.entity.ai.attributes.AttributeModifier(id, amount, operation));
+		}
 	}
 
 	private void talentModifier(net.minecraft.core.Holder<net.minecraft.world.entity.ai.attributes.Attribute> attribute, double amount,
@@ -1104,6 +1561,16 @@ public abstract class Companion extends TamableAnimal {
 		tickShoulder();
 		tickSpecial((ServerLevel) level());
 
+		if (tickCount % 5 == 0 && (isExhausted() || isHidden())) {
+			calmAttackers((ServerLevel) level(), this, 32.0);
+		}
+
+		// letzte bekannte Position merken: so lässt er sich auch aus ungeladenen Chunks holen (v0.25.5)
+		if ((tickCount + getId()) % 40 == 0 && getOwnerReference() != null) {
+			CompanionData.get(((ServerLevel) level()).getServer()).setLast(getOwnerReference().getUUID(),
+					net.minecraft.core.GlobalPos.of(level().dimension(), blockPosition()), !isOrderedToSit());
+		}
+
 		if (xpBoost > 0) {
 			xpBoost--;
 
@@ -1147,6 +1614,19 @@ public abstract class Companion extends TamableAnimal {
 			return false;      // Spieler (auch der Besitzer) und befreundete Tiere verletzen ihn nicht
 		}
 
+		if (source.is(net.minecraft.tags.DamageTypeTags.IS_FALL) || source.is(DamageTypes.IN_WALL) || source.is(DamageTypes.FLY_INTO_WALL)) {
+			return false;      // Fallschaden und Ersticken nach einem Sprung zum Besitzer gibt es nicht (v0.25.5)
+		}
+
+		if (isExhausted() && !source.is(DamageTypes.GENERIC_KILL) && !source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
+			// erschöpft: Monster lassen von ihm ab, er nimmt keinen weiteren Schaden (sonst würde er nie wieder munter)
+			if (attacker instanceof net.minecraft.world.entity.Mob mob && mob.getTarget() == this) {
+				mob.setTarget(null);
+			}
+
+			return false;
+		}
+
 		if (source.is(DamageTypes.FELL_OUT_OF_WORLD)) {
 			// ins Leere gefallen: erschöpft zurück zum Besitzer (oder zum Weltspawn) statt zu sterben
 			setHealth(Math.min(getHealth(), 2.0f));
@@ -1185,8 +1665,13 @@ public abstract class Companion extends TamableAnimal {
 		setDeltaMovement(net.minecraft.world.phys.Vec3.ZERO);
 		fallDistance = 0;
 
-		if (getOwner() instanceof ServerPlayer owner && owner.level() == level && owner.getY() > level.getMinY()) {
-			snapTo(owner.getX(), owner.getY(), owner.getZ(), getYRot(), 0.0f);
+		Vec3 spot = getOwner() instanceof ServerPlayer owner && owner.level() == level ? CompanionContent.safeSpot(level, owner, this) : null;
+
+		if (spot != null) {
+			snapTo(spot.x, spot.y, spot.z, getYRot(), 0.0f);
+		} else if (level.dimension() == net.minecraft.world.level.Level.END) {
+			// über dem Nichts: auf die Hauptinsel, der Besitzer holt ihn später ab
+			snapTo(0.5, level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, 0, 0), 0.5, getYRot(), 0.0f);
 		} else {
 			net.minecraft.core.BlockPos spawn = level.getRespawnData().pos();
 			snapTo(spawn.getX() + 0.5, level.getHeight(net.minecraft.world.level.levelgen.Heightmap.Types.MOTION_BLOCKING, spawn.getX(), spawn.getZ()),
@@ -1263,6 +1748,14 @@ public abstract class Companion extends TamableAnimal {
 		if (held.is(CompanionContent.RESONANCE_TREAT)) {
 			if (!level().isClientSide()) {
 				feedTreat(player, held);
+			}
+
+			return InteractionResult.SUCCESS;
+		}
+
+		if (CompanionBond.isFood(species(), held)) {
+			if (!level().isClientSide()) {
+				feed(player, held);
 			}
 
 			return InteractionResult.SUCCESS;
@@ -1475,6 +1968,16 @@ public abstract class Companion extends TamableAnimal {
 		output.putIntArray("Talents", talents.clone());
 		output.putInt("Stance", stance);
 		output.putInt("SpecialCooldown", specialCooldown);
+		output.putInt("Look", getLook());
+		output.putInt("GlowColor", getGlowColor());
+		output.putInt("Kills", kills);
+		output.putInt("Bond", getBond());
+		output.putLong("BondDay", bondDay);
+		output.putInt("BondFed", fedToday);
+		output.putBoolean("BondFavorite", favoriteToday);
+		output.putInt("BondPets", petsToday);
+		output.putInt("BondPlays", playsToday);
+		output.putLong("BondLastPet", lastPet);
 	}
 
 	@Override
@@ -1487,6 +1990,16 @@ public abstract class Companion extends TamableAnimal {
 		int[] saved = CompanionTalents.migrate(species(), input.getIntArray("Talents").orElse(new int[0]));
 		System.arraycopy(saved, 0, talents, 0, talents.length);
 		specialCooldown = input.getIntOr("SpecialCooldown", 0);
+		entityData.set(DATA_LOOK, input.getIntOr("Look", CompanionLooks.DEFAULT));
+		entityData.set(DATA_GLOW, input.getIntOr("GlowColor", CompanionLooks.GLOW_DEFAULT));
+		kills = input.getIntOr("Kills", 0);
+		entityData.set(DATA_BOND, Math.clamp(input.getIntOr("Bond", 0), 0, CompanionBond.MAX));
+		bondDay = input.getLongOr("BondDay", -1L);
+		fedToday = input.getIntOr("BondFed", 0);
+		favoriteToday = input.getBooleanOr("BondFavorite", false);
+		petsToday = input.getIntOr("BondPets", 0);
+		playsToday = input.getIntOr("BondPlays", 0);
+		lastPet = input.getLongOr("BondLastPet", -100000L);
 
 		stance = Math.floorMod(input.getIntOr("Stance", STANCE_AGGRESSIVE), 3);
 		float health = input.getFloatOr("Health", getHealth());

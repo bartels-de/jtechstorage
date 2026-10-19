@@ -101,8 +101,8 @@ public final class CompanionContent {
 		FabricDefaultAttributeRegistry.register(GEODE_KEEPER, GeodeKeeper.createAttributes());
 
 		// Durch Portale, beim Wiederbeleben und wenn er zu weit weg ist: der Begleiter kommt mit
-		ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> bring(player, false));
-		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> bring(newPlayer, false));
+		ServerEntityLevelChangeEvents.AFTER_PLAYER_CHANGE_LEVEL.register((player, origin, destination) -> bringOrFetch(player, false));
+		ServerPlayerEvents.AFTER_RESPAWN.register((oldPlayer, newPlayer, alive) -> bringOrFetch(newPlayer, false));
 		ServerTickEvents.END_SERVER_TICK.register(CompanionContent::tick);
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> registerCommand(dispatcher));
 	}
@@ -137,16 +137,121 @@ public final class CompanionContent {
 		return null;
 	}
 
-	/** Holt den Begleiter zum Spieler, wenn er folgt und weit weg oder in einer anderen Dimension ist. */
-	private static void bring(ServerPlayer player, boolean evenIfStaying) {
+	/**
+	 * Sicherer Platz für den Begleiter beim Spieler (v0.25.5): fester Boden unter oder neben ihm, genug Platz. Fliegt der
+	 * Spieler über dem Nichts (oder hoch in der Luft ohne Boden in 48 Blöcken), gibt es keinen – dann wartet der Begleiter.
+	 */
+	public static @Nullable Vec3 safeSpot(ServerLevel level, net.minecraft.world.entity.player.Player player, Companion companion) {
+		BlockPos base = player.blockPosition();
+		int[][] offsets = {{0, 0}, {1, 0}, {-1, 0}, {0, 1}, {0, -1}, {2, 1}, {-2, -1}, {1, -2}, {-1, 2}};
+
+		for (int[] o : offsets) {
+			BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos(base.getX() + o[0], base.getY() + 1, base.getZ() + o[1]);
+
+			for (int dy = 0; dy < 50 && pos.getY() > level.getMinY(); dy++, pos.move(0, -1, 0)) {
+				BlockPos below = pos.below();
+				net.minecraft.world.level.block.state.BlockState ground = level.getBlockState(below);
+
+				if (!ground.isFaceSturdy(level, below, net.minecraft.core.Direction.UP) && !ground.is(net.minecraft.world.level.block.Blocks.FARMLAND)
+						&& !ground.is(net.minecraft.world.level.block.Blocks.DIRT_PATH)) {
+					if (!ground.getCollisionShape(level, below).isEmpty() || !level.getFluidState(below).isEmpty()) {
+						break;     // Zaun, Laub, Wasser …: hier nicht, nächste Spalte
+					}
+
+					continue;
+				}
+
+				Vec3 at = new Vec3(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
+
+				if (level.noCollision(companion, companion.getDimensions(companion.getPose()).makeBoundingBox(at)) && level.getFluidState(pos).isEmpty()) {
+					return at;
+				}
+
+				break;
+			}
+		}
+
+		return null;
+	}
+
+	/** Holt ihn – oder lädt erst seinen Chunk, wenn er gerade nicht geladen ist. */
+	private static void bringOrFetch(ServerPlayer player, boolean evenIfStaying) {
+		if (find(player.level().getServer(), player.getUUID()) == null) {
+			fetch(player, evenIfStaying);
+		} else if (!bring(player, evenIfStaying)) {
+			FETCH.put(player.getUUID(), new int[] {FETCH_TICKS, evenIfStaying ? 1 : 0});     // später nochmal (kein Boden)
+		}
+	}
+
+	private static final int FETCH_TICKS = 20 * 60;
+	/** Spieler → {verbleibende Ticks, rufen (1) oder nur holen, wenn er folgt (0)}. */
+	private static final java.util.Map<UUID, int[]> FETCH = new java.util.HashMap<>();
+
+	/** Ungeladener Begleiter: Chunk an seiner letzten Position laden und ihn holen, sobald er da ist (v0.25.5). */
+	private static boolean fetch(ServerPlayer player, boolean evenIfStaying) {
+		CompanionData.Last last = CompanionData.get(player.level().getServer()).last(player.getUUID());
+
+		if (last == null) {
+			return false;
+		}
+
+		FETCH.put(player.getUUID(), new int[] {FETCH_TICKS, evenIfStaying ? 1 : 0});
+		return true;
+	}
+
+	private static void tickFetch(MinecraftServer server) {
+		var it = FETCH.entrySet().iterator();
+
+		while (it.hasNext()) {
+			var entry = it.next();
+			int[] state = entry.getValue();
+			ServerPlayer player = server.getPlayerList().getPlayer(entry.getKey());
+
+			if (player == null || --state[0] <= 0) {
+				if (player != null && state[1] == 1) {
+					player.sendOverlayMessage(Component.translatable("jtechstorage.companion.fetch_failed").withStyle(ChatFormatting.GRAY));
+				}
+
+				it.remove();
+				continue;
+			}
+
+			if (!player.isAlive() || state[0] % 10 != 0) {
+				continue;
+			}
+
+			Companion companion = find(server, player.getUUID());
+
+			if (companion != null) {
+				if (companion.isOrderedToSit() && state[1] == 0 || bring(player, state[1] == 1)) {
+					it.remove();
+				}
+
+				continue;
+			}
+
+			CompanionData.Last last = CompanionData.get(server).last(player.getUUID());
+			ServerLevel level = last == null ? null : server.getLevel(last.pos().dimension());
+
+			if (level == null) {
+				it.remove();
+				continue;
+			}
+
+			level.getChunkSource().addTicketWithRadius(net.minecraft.server.level.TicketType.ENDER_PEARL, net.minecraft.world.level.ChunkPos.containing(last.pos().pos()), 2);
+		}
+	}
+
+	/** Holt den Begleiter zum Spieler, wenn er folgt und weit weg oder in einer anderen Dimension ist. false = kein sicherer Platz. */
+	private static boolean bring(ServerPlayer player, boolean evenIfStaying) {
 		if (player.isSpectator() || !player.isAlive()) {
-			return;
+			return false;
 		}
 
 		Companion companion = find(player.level().getServer(), player.getUUID());
 
 		if (companion == null || companion.isOrderedToSit() && !evenIfStaying) {
-			return;
+			return companion != null;
 		}
 
 		if (evenIfStaying) {
@@ -157,16 +262,22 @@ public final class CompanionContent {
 		ServerLevel target = player.level();
 
 		if (companion.level() == target && companion.distanceToSqr(player) < FAR * FAR && !evenIfStaying) {
-			return;
+			return true;
 		}
 
-		Vec3 pos = player.position();
+		Vec3 pos = companion.isOnShoulder() ? player.position() : safeSpot(target, player, companion);
+
+		if (pos == null) {
+			return false;     // fliegt über dem Nichts / kein Boden: später, wenn er gelandet ist
+		}
 
 		if (companion.level() == target) {
 			companion.snapTo(pos.x, pos.y, pos.z, player.getYRot(), 0.0f);
 			companion.getNavigation().stop();
+			companion.setDeltaMovement(Vec3.ZERO);
+			companion.fallDistance = 0;
 			companion.setPortalCooldown();
-			return;
+			return true;
 		}
 
 		Entity moved = companion.teleport(new TeleportTransition(target, pos, Vec3.ZERO, player.getYRot(), 0.0f, TeleportTransition.DO_NOTHING));
@@ -175,6 +286,8 @@ public final class CompanionContent {
 			moved.setPortalCooldown();
 			CompanionData.get(target.getServer()).updateCompanion(player.getUUID(), moved.getUUID());
 		}
+
+		return moved != null;
 	}
 
 	// ------------------------------------------------------------------
@@ -212,6 +325,10 @@ public final class CompanionContent {
 					}
 				}
 				case dev.bartels.jtechstorage.net.CompanionActionPayload.SPECIAL -> companion.useSpecial(player, false);
+				case dev.bartels.jtechstorage.net.CompanionActionPayload.LOOK -> companion.setLook(player, arg >> 8, arg & 0xFF);
+				case dev.bartels.jtechstorage.net.CompanionActionPayload.GLOW -> companion.setGlowColor(player, arg);
+				case dev.bartels.jtechstorage.net.CompanionActionPayload.PET -> companion.pet(player);
+				case dev.bartels.jtechstorage.net.CompanionActionPayload.GESTURE -> companion.requestGesture(player, arg);
 				default -> {
 				}
 			}
@@ -306,7 +423,7 @@ public final class CompanionContent {
 
 			if (c == null) {
 				status = new dev.bartels.jtechstorage.net.CompanionStatusPayload(true, false, "", "", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-						new int[CompanionTalents.COUNT]);
+						new int[CompanionTalents.COUNT], CompanionLooks.DEFAULT, -1, 0, 0, "");
 			} else {
 				boolean sameLevel = c.level() == player.level();
 				int flags = (c.isOrderedToSit() ? 1 : 0) | (c.isExhausted() ? 2 : 0) | (!sameLevel ? 32 : 0) | (c.isInBase() ? 64 : 0)
@@ -334,7 +451,9 @@ public final class CompanionContent {
 						c.getHealth(), c.getMaxHealth(), c.getStance(), flags, c.getXpBoostTicks(), special, specialMax,
 						(float) c.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE),
 						(float) c.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR), c.effectiveAttackInterval(),
-						sameLevel ? (int) Math.sqrt(c.distanceToSqr(player)) : -1, timer, c.specialCooldown(), c.specialCooldownMax(), c.talentRanks());
+						sameLevel ? (int) Math.sqrt(c.distanceToSqr(player)) : -1, timer, c.specialCooldown(), c.specialCooldownMax(), c.talentRanks(),
+						c.getLook(), c.getGlowColor(), c.getKills(), c.getBond(),
+						net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(c.favoriteFood()).toString());
 			}
 		}
 
@@ -377,12 +496,22 @@ public final class CompanionContent {
 	private static void tick(MinecraftServer server) {
 		int tick = server.getTickCount();
 		Companion.tickStunned();
+		tickFetch(server);
 
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			int slot = Math.floorMod(player.getUUID().hashCode(), 200);
 
-			if ((tick + slot) % 40 == 0) {
-				bring(player, false);
+			if ((tick + slot) % 40 == 0 && !FETCH.containsKey(player.getUUID())) {
+				if (find(server, player.getUUID()) != null) {
+					bring(player, false);
+				} else if ((tick + slot) % 200 == 0) {
+					// nicht geladen, folgte aber zuletzt (Tod, Teleport, Login weit weg): Chunk laden und holen
+					CompanionData.Last last = CompanionData.get(server).last(player.getUUID());
+
+					if (last != null && last.follows()) {
+						fetch(player, false);
+					}
+				}
 			}
 
 			if ((tick + slot) % 200 == 0) {
@@ -581,12 +710,22 @@ public final class CompanionContent {
 		Companion companion = find(player.level().getServer(), player.getUUID());
 
 		if (companion == null) {
+			if (CompanionData.get(player.level().getServer()).hasCompanion(player.getUUID()) && fetch(player, true)) {
+				source.sendSuccess(() -> Component.translatable("jtechstorage.companion.fetching").withStyle(ChatFormatting.LIGHT_PURPLE), false);
+				return 1;
+			}
+
 			source.sendFailure(Component.translatable(CompanionData.get(player.level().getServer()).hasCompanion(player.getUUID())
 					? "jtechstorage.companion.call_unloaded" : "jtechstorage.companion.none"));
 			return 0;
 		}
 
-		bring(player, true);
+		if (!bring(player, true)) {
+			FETCH.put(player.getUUID(), new int[] {FETCH_TICKS, 1});
+			source.sendSuccess(() -> Component.translatable("jtechstorage.companion.no_ground").withStyle(ChatFormatting.GRAY), false);
+			return 1;
+		}
+
 		source.sendSuccess(() -> Component.translatable("jtechstorage.companion.called").withStyle(ChatFormatting.LIGHT_PURPLE), false);
 		return 1;
 	}

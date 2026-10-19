@@ -238,6 +238,13 @@ side: the mantis at full strength, the raven with 50 % and the shroom with 25 % 
   (5 s stun, 30 s poison), *Blade Storm* or *Execution*; shroom *Spore Veil* (60 s invisibility, faster cooldowns),
   *Life Bloom* or *Paralysis Cloud*; raven *Raven Swarm* (five diving shadow ravens), *Shadow Dive* or *Terror Cry*.
   *Mastery* makes it stronger, *Instinct* fires it on its own in danger.
+- **Bond:** feed its favorite food of the day, pet it and play fetch with a stick or an amethyst shard. Five bond
+  stages unlock gestures (Happy Hop, Nuzzle and one of its own), and Soulmate unlocks the Soulbond coloring, a pink glow
+  and an aura. The bond never decreases.
+- **Customization** (*Look* tab in the menu): colorings (Frost, Ember, Jade, Gold), swappable horns / tail / cap and, at
+  stage 3, wings / crest / back, a freely chosen glow color, and **visible equipment** – collar (+health), amulet
+  (+damage, +healing or +collection radius) and armor (+armor) from iron to amethyst obsidian. All unlocked by level,
+  stage and defeated monsters.
 - **HUD** in the top left: name, level, health, experience, follow / stay, stance, treat time and the shroom's cooldown,
   the raven's bag or the mantis' flight stamina while riding. It can be switched off in the menu.
 - **Riding at stage 3:** the mantis carries you on the ground and flies briefly while you hold Space (about 4 seconds,
@@ -344,7 +351,7 @@ On first start the mod creates `config/jtechstorage.json` (JSON with comments). 
 - **Helpers:** the Amethyst Fox's dig interval and feeding limit, Chel's crafting speed, the Amethyst Sprite's pause
   and radii, watch and guard radii, and phoenix speeds.
 - **Companions:** levels for stage 2 and 3, the share of collected XP that goes to the companion, the chance for a
-  Geode Keeper per geode and the search radius.
+  Geode Keeper per geode, the search radius and whether companion equipment gives stats.
 
 Changes apply after a restart. Delete a line (or the whole file) to restore its default. On a server, the server's
 file counts; clients receive its values for tooltips and the handbook.

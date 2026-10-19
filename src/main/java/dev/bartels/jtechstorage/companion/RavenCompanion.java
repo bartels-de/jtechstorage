@@ -537,7 +537,7 @@ public class RavenCompanion extends Companion {
 
 	/** Items in der Nähe einsammeln – nicht die, die der Besitzer gerade selbst weggeworfen hat. */
 	private void collectItems(ServerLevel level) {
-		double radius = RADIUS[getStage() - 1] + 1.5 * talent("keen_eye");
+		double radius = RADIUS[getStage() - 1] + 1.5 * talent("keen_eye") + equipmentTier();   // Amulett: +1 Block je Material
 		LivingEntity owner = getOwner();
 		boolean took = false;
 
