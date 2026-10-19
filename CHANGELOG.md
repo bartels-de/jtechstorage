@@ -3,11 +3,22 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.27.1]
+
+### Added
+- **Guide for GitHub** in [`docs/guide`](docs/guide/README.md): one page per topic (storage network, teams, helpers,
+  Cheldrogan, phoenix, companions, Resonance Storm, bosses, enchantments, backpacks, books, controls and commands),
+  plus a recipe page with item pictures and a configuration page, both generated from the mod's own files.
+
+### Fixed
+- In-game handbook: the Resonance Storm page no longer says it can only be started by command, and the Geode Keeper page
+  mentions trading and that he stays after you accept.
+
 ## [0.27.0]
 
 ### Added
 - **The Geode Keeper trades** like a villager (vanilla trading screen): amethyst shards for Resonance Treats, experience
-  bottles, tinted glass, amethyst buds, name tags, Amethyst Draughts, a spyglass, Amethyst Cores, Wireless Cores,
+  bottles, tinted glass, amethyst buds, name tags, Resonance Igniters, a spyglass, Amethyst Cores, Wireless Cores,
   budding amethyst, a Totem of Undying and an Ender Range Upgrade; he buys calcite, smooth basalt, glow berries, echo
   shards and emeralds for shards. Five levels with villager XP thresholds, two new random offers per level, stock
   refills every 10 minutes, trades give experience orbs.

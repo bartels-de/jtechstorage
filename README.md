@@ -40,6 +40,11 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
 - 🔊 **Own sounds and a server config.** Synthesized crystal sounds for every creature, and a commented config file for
   ranges, bosses and helper speeds.
 
+## 📖 Guide
+
+The full guide lives in [`docs/guide`](docs/guide/README.md): every block, item, helper, companion and boss, all
+recipes with pictures, every key and command and every config option – one page per topic.
+
 ## Installation
 
 1. Install [Fabric Loader](https://fabricmc.net/use/) **0.19.5+** for Minecraft **26.3**.
