@@ -97,6 +97,21 @@ public final class CompanionClient {
 		};
 	}
 
+	/** Zustand als Sprachschlüssel (v0.25.1 mit Erkundung, Wache und Schulter). */
+	public static String modeKey(CompanionStatusPayload s) {
+		return s.flag(1) ? "jtechstorage.companion.hud.exhausted" : s.flag(7) ? "jtechstorage.companion.hud.exploring"
+				: s.flag(3) ? "jtechstorage.companion.hud.away" : s.flag(8) ? "jtechstorage.companion.hud.guard"
+				: s.flag(0) ? "jtechstorage.companion.hud.stay" : s.flag(9) ? "jtechstorage.companion.hud.shoulder" : "jtechstorage.companion.hud.follow";
+	}
+
+	public static String modeSymbol(CompanionStatusPayload s) {
+		return s.flag(1) ? "✖" : s.flag(7) ? "⌖" : s.flag(3) ? "✉" : s.flag(8) ? "⚔" : s.flag(0) ? "■" : s.flag(9) ? "♦" : "»";
+	}
+
+	public static int modeColor(CompanionStatusPayload s) {
+		return s.flag(1) ? 0xFFFF8080 : s.flag(7) || s.flag(3) ? 0xFFC8B0FF : s.flag(8) ? 0xFFFF9C6A : s.flag(0) ? 0xFFFFD27A : 0xFFB8F0B8;
+	}
+
 	public static String stanceSymbol(int stance) {
 		return stance == Companion.STANCE_AGGRESSIVE ? "⚔" : stance == Companion.STANCE_DEFENSIVE ? "◆" : "☮";
 	}

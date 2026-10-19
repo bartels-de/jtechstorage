@@ -27,7 +27,7 @@ import dev.bartels.jtechstorage.net.CompanionStatusPayload;
  */
 public class CompanionScreen extends Screen {
 	private static final int W = 256;
-	private static final int H = 222;
+	private static final int H = 240;
 	private static final int NODE = 22;
 
 	private int tab;
@@ -103,16 +103,33 @@ public class CompanionScreen extends Screen {
 							: "jtechstorage.companion.btn.heal_manual"), true, () -> CompanionClient.send(CompanionActionPayload.HEAL_MODE, 0),
 							Component.translatable("jtechstorage.companion.btn.heal_mode.tip")));
 				}
-				case "raven" -> list.add(new Btn(left + 8, by2, bw, 16, Component.translatable("jtechstorage.companion.btn.bag"), !s.flag(3) && !s.flag(5),
-						() -> {
-							CompanionClient.send(CompanionActionPayload.BAG, 0);
-						}, Component.translatable("jtechstorage.companion.btn.bag.tip")));
+				case "raven" -> {
+					list.add(new Btn(left + 8, by2, bw, 16, Component.translatable("jtechstorage.companion.btn.bag"), !s.flag(3) && !s.flag(5),
+							() -> CompanionClient.send(CompanionActionPayload.BAG, 0), Component.translatable("jtechstorage.companion.btn.bag.tip")));
+					list.add(new Btn(left + 12 + bw, by2, bw, 16, Component.translatable("jtechstorage.companion.btn.explore"),
+							!s.flag(3) && !s.flag(1) && s.timer() == 0, () -> CompanionClient.send(CompanionActionPayload.EXPLORE, 0),
+							Component.translatable("jtechstorage.companion.btn.explore.tip")));
+				}
 				default -> {
 				}
 			}
 
+			// Spezialangriff (v0.25.3)
+			int special = CompanionTalents.chosenSpecial(s.talents());
+
+			if (special >= 0) {
+				String id = CompanionTalents.tree(s.species()).get(CompanionTalents.SPECIAL + special).id();
+				Component label = s.specialCooldown() > 0
+						? Component.translatable("jtechstorage.companion.btn.special_cd", (s.specialCooldown() + 19) / 20)
+						: Component.translatable("jtechstorage.talent." + id);
+				list.add(new Btn(left + 16 + 2 * bw, by2, bw, 16, label, s.specialCooldown() == 0 && !s.flag(1),
+						() -> CompanionClient.send(CompanionActionPayload.SPECIAL, 0),
+						Component.translatable("jtechstorage.companion.btn.special.tip", Component.translatable("jtechstorage.talent." + id),
+								Component.translatable("jtechstorage.talent." + id + ".desc"))));
+			}
+
 			boolean hud = GuiSettings.get().companionHud;
-			list.add(new Btn(left + 16 + 2 * bw, by2, bw, 16, Component.translatable(hud ? "jtechstorage.companion.btn.hud_on" : "jtechstorage.companion.btn.hud_off"),
+			list.add(new Btn(left + 16 + 2 * bw, by2 + 20, bw, 16, Component.translatable(hud ? "jtechstorage.companion.btn.hud_on" : "jtechstorage.companion.btn.hud_off"),
 					true, () -> {
 						GuiSettings.get().companionHud = !GuiSettings.get().companionHud;
 						GuiSettings.get().save();
@@ -233,16 +250,26 @@ public class CompanionScreen extends Screen {
 		List<Component> lines = new ArrayList<>();
 		lines.add(Component.translatable("jtechstorage.companion.menu.stats", fmt(s.damage()), fmt(s.armor())));
 		lines.add(Component.translatable("jtechstorage.companion.menu.attack", String.format(java.util.Locale.ROOT, "%.1f", s.attackTicks() / 20.0)));
-		Component mode = Component.translatable(s.flag(1) ? "jtechstorage.companion.hud.exhausted" : s.flag(3) ? "jtechstorage.companion.hud.away"
-				: s.flag(0) ? "jtechstorage.companion.hud.stay" : "jtechstorage.companion.hud.follow");
-		lines.add(Component.translatable("jtechstorage.companion.menu.mode", mode, Component.translatable("jtechstorage.companion.stance." + s.stance())));
+		net.minecraft.network.chat.MutableComponent mode = Component.translatable("jtechstorage.companion.menu.mode",
+				Component.translatable(CompanionClient.modeKey(s)), Component.translatable("jtechstorage.companion.stance." + s.stance()));
+
+		if (s.flag(6)) {
+			mode.append(Component.translatable(s.species().equals("mantis") ? "jtechstorage.companion.menu.base_mantis" : "jtechstorage.companion.menu.base"));
+		}
+
+		lines.add(mode);
 
 		switch (s.species()) {
 			case "shroom" -> lines.add(s.special() > 0
 					? Component.translatable("jtechstorage.companion.menu.heal_cooldown", (s.special() + 19) / 20)
 					: Component.translatable(s.flag(2) ? "jtechstorage.companion.menu.heal_ready_auto" : "jtechstorage.companion.menu.heal_ready_manual"));
-			case "raven" -> lines.add(Component.translatable(s.flag(4) ? "jtechstorage.companion.menu.bag" : "jtechstorage.companion.menu.bag_no_terminal",
-					s.special(), s.specialMax()));
+			case "raven" -> {
+				lines.add(Component.translatable(s.flag(4) ? "jtechstorage.companion.menu.bag" : "jtechstorage.companion.menu.bag_no_terminal",
+						s.special(), s.specialMax()));
+				lines.add(s.timer() > 0 ? Component.translatable("jtechstorage.companion.menu.exploring", (s.timer() + 1199) / 1200)
+						: s.timer() < 0 ? Component.translatable("jtechstorage.companion.menu.explore_cooldown", (-s.timer() + 1199) / 1200)
+						: Component.translatable("jtechstorage.companion.menu.explore_ready"));
+			}
 			case "mantis" -> {
 				if (s.stage() == 3) {
 					lines.add(Component.translatable("jtechstorage.companion.menu.flight", String.format(java.util.Locale.ROOT, "%.1f", s.specialMax() / 20.0)));
@@ -273,12 +300,12 @@ public class CompanionScreen extends Screen {
 	// ------------------------------------------------------------------
 
 	private int nodeX(int branch) {
-		int cw = (W - 16) / 3;
+		int cw = (W - 16) / CompanionTalents.BRANCHES;
 		return left + 8 + branch * cw + (cw - NODE) / 2;
 	}
 
 	private int nodeY(int n) {
-		return top + 56 + n * 30;
+		return top + 54 + n * 27;
 	}
 
 	private void talents(GuiGraphicsExtractor g, CompanionStatusPayload s, int mouseX, int mouseY) {
@@ -287,13 +314,14 @@ public class CompanionScreen extends Screen {
 		int spent = CompanionTalents.spent(ranks);
 		int points = CompanionTalents.points(s.level());
 		Component free = Component.translatable("jtechstorage.talent.points", points - spent, points);
-		g.text(font, free, left + 8, top + 178, points - spent > 0 ? GuiTheme.good() : GuiTheme.subtle(), false);
+		g.text(font, free, left + 8, top + 192, points - spent > 0 ? GuiTheme.good() : GuiTheme.subtle(), false);
 
 		if (points < CompanionTalents.MAX_POINTS) {
 			Component next = Component.translatable("jtechstorage.talent.next_point", (points + 1) * CompanionTalents.LEVELS_PER_POINT);
-			g.text(font, next, left + W - 8 - font.width(next), top + 178, GuiTheme.subtle(), false);
+			g.text(font, next, left + W - 8 - font.width(next), top + 192, GuiTheme.subtle(), false);
 		}
-		int cw = (W - 16) / 3;
+		int cw = (W - 16) / CompanionTalents.BRANCHES;
+		int chosen = CompanionTalents.chosenSpecial(ranks);
 		int hover = -1;
 
 		for (int b = 0; b < CompanionTalents.BRANCHES; b++) {
@@ -307,12 +335,15 @@ public class CompanionScreen extends Screen {
 				int nx = nodeX(b);
 				int ny = nodeY(n);
 
-				if (n > 0) {
-					g.fill(nx + NODE / 2 - 1, ny - 8, nx + NODE / 2 + 1, ny, ranks[index - 1] > 0 ? GuiTheme.accent() : 0xFF555560);
+				boolean specialRow = CompanionTalents.isSpecial(index);
+				boolean prevDone = index == CompanionTalents.MASTERY ? chosen >= 0 : n > 0 && ranks[index - 1] > 0;
+
+				if (n > 0 && !specialRow) {
+					g.fill(nx + NODE / 2 - 1, ny - 5, nx + NODE / 2 + 1, ny, prevDone ? GuiTheme.accent() : 0xFF555560);
 				}
 
 				boolean stageLocked = s.stage() < talent.minStage();
-				boolean prevLocked = n > 0 && ranks[index - 1] == 0;
+				boolean prevLocked = specialRow ? chosen >= 0 && ranks[index] == 0 : n > 0 && !prevDone;
 				boolean learnable = CompanionTalents.blocker(s.species(), ranks, index, s.stage(), s.level()) == null;
 				boolean over = mouseX >= nx && mouseX < nx + NODE && mouseY >= ny && mouseY < ny + NODE;
 				GuiTheme.sunken(g, nx, ny, NODE, NODE);
@@ -350,7 +381,7 @@ public class CompanionScreen extends Screen {
 		}
 
 		Component cost = Component.translatable("jtechstorage.talent.reset_hint");
-		GuiTheme.label(g, font, cost, left + 8, top + H - 18, W - 16 - 100, GuiTheme.subtle());
+		GuiTheme.label(g, font, cost, left + 8, top + H - 17, W - 16 - 100, GuiTheme.subtle());
 
 		if (hover >= 0) {
 			g.setComponentTooltipForNextFrame(font, tooltip(s, tree, ranks, hover), mouseX, mouseY);
@@ -370,6 +401,10 @@ public class CompanionScreen extends Screen {
 				return true;
 			});
 			lines.add(Component.literal(text.toString()).withStyle(ChatFormatting.WHITE));
+		}
+
+		if (CompanionTalents.isSpecial(index)) {
+			lines.add(Component.translatable("jtechstorage.talent.special_hint").withStyle(ChatFormatting.GOLD));
 		}
 
 		String blocker = CompanionTalents.blocker(s.species(), ranks, index, s.stage(), s.level());

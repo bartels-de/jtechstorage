@@ -7,6 +7,7 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 | Key | Action | Page |
 |---|---|---|
 | **K** | open the companion menu | [Companions](07-companions.md#companion-menu) |
+| **B** | companion: special attack | [Companions](07-companions.md#special-attacks) |
 | **G** | companion: follow / stay (up to 48 blocks away) | [Companions](07-companions.md#following-staying-and-calling) |
 | **H** | Amethyst Shroom: heal now | [Companions](07-companions.md#amethyst-shroom) |
 | **Shift + H** | Amethyst Shroom: automatic healing ↔ on key | [Companions](07-companions.md#amethyst-shroom) |
@@ -50,7 +51,9 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 
 | Action | Effect |
 |---|---|
-| Right-click | follow / stay; at stage 3 mount (mantis, raven) |
+| Right-click | follow / stay (mantis in your base: stand guard); at stage 3 mount (mantis, raven) |
+| G / companion menu | the same for a companion on your shoulder, which can't be clicked |
+| Companion menu → *Explore* | send the Night Raven on an exploration trip |
 | Shift + right-click | companion menu (mantis, shroom) or bag (raven) |
 | Right-click with a Resonance Treat | double experience, speed, healing |
 | Right-click the raven with a bound Storage Key | link it to the terminal / send it off right away |

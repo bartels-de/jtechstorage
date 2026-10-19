@@ -7,6 +7,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.GlobalPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import java.util.ArrayList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -56,6 +58,12 @@ public class RavenCompanion extends Companion {
 	private int awayTicks;
 	private int deliverPhase;
 	private int departCooldown;
+	/** Erkundungstour (v0.25.1): verbleibende Ticks bzw. Abklingzeit danach. */
+	private int exploreTicks;
+	private int exploreCooldown;
+	/** Nach einem Kampf noch kurz in der Luft, bevor er auf die Schulter zurückkehrt. */
+	private int shoulderDelay;
+	public static final int EXPLORE_COOLDOWN = 20 * 60 * 5;
 
 	public RavenCompanion(EntityType<? extends RavenCompanion> type, Level level) {
 		super(type, level);
@@ -227,6 +235,11 @@ public class RavenCompanion extends Companion {
 			target.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, 60, 0), this);
 		}
 
+		// Rabenruf: ruft manchmal einen Schattenraben dazu
+		if (talent("raven_call") > 0 && random.nextDouble() < 0.15 && target.isAlive()) {
+			SwarmRaven.summon(level, this, target, (float) getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE), 8);
+		}
+
 		// Schattenschwarm: Schattenkrähen fallen über die Monster rund um das Ziel her
 		if (talent("shadow_swarm") > 0 && random.nextDouble() < 0.2) {
 			level.sendParticles(ParticleTypes.LARGE_SMOKE, target.getX(), target.getY() + 1.0, target.getZ(), 20, 1.5, 0.6, 1.5, 0.02);
@@ -252,6 +265,11 @@ public class RavenCompanion extends Companion {
 				&& !owner.getAbilities().flying && !owner.hasEffect(net.minecraft.world.effect.MobEffects.SLOW_FALLING)) {
 			owner.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOW_FALLING, 60, 0));
 			level.sendParticles(ParticleTypes.WHITE_ASH, owner.getX(), owner.getY() + 1.0, owner.getZ(), 15, 0.4, 0.5, 0.4, 0.02);
+		}
+
+		// Nachtschwingen: Nachtsicht, solange es um dich dunkel ist
+		if (talent("night_wings") > 0 && tickCount % 100 == 0 && level.getMaxLocalRawBrightness(owner.blockPosition()) < 8) {
+			owner.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.NIGHT_VISION, 20 * 15, 0, true, false, true));
 		}
 
 		if (talent("night_eye") > 0 && tickCount % 200 == 0) {
@@ -289,7 +307,177 @@ public class RavenCompanion extends Companion {
 	}
 
 	public boolean isAway() {
-		return level().isClientSide() ? entityData.get(DATA_AWAY) : awayTicks > 0 || deliverPhase > 0;
+		return level().isClientSide() ? entityData.get(DATA_AWAY) : awayTicks > 0 || deliverPhase > 0 || exploreTicks > 0;
+	}
+
+	public boolean isExploring() {
+		return exploreTicks > 0;
+	}
+
+	/** Für Menü und HUD: verbleibende Erkundung (> 0) oder Abklingzeit (< 0). */
+	public int exploreTimer() {
+		return exploreTicks > 0 ? exploreTicks : -exploreCooldown;
+	}
+
+	// ------------------------------------------------------------------
+	// Schulter (Stufe 1)
+	// ------------------------------------------------------------------
+
+	@Override
+	protected boolean shoulderStage() {
+		return getStage() == 1;
+	}
+
+	@Override
+	protected boolean wantsShoulder(Player owner) {
+		return !isAway() && shoulderDelay == 0 && super.wantsShoulder(owner);
+	}
+
+	@Override
+	public int shoulderSide() {
+		return -1;
+	}
+
+	// ------------------------------------------------------------------
+	// Erkundungstour (v0.25.1): fliegt los und bringt Fundstücke mit – je Stufe wertvollere
+	// ------------------------------------------------------------------
+
+	private record Find(net.minecraft.world.item.Item item, int min, int max, int weight) {
+	}
+
+	private static final java.util.List<java.util.List<Find>> FINDS = java.util.List.of(
+			java.util.List.of(
+					new Find(net.minecraft.world.item.Items.RAW_COPPER, 3, 8, 10), new Find(net.minecraft.world.item.Items.COPPER_INGOT, 2, 6, 8),
+					new Find(net.minecraft.world.item.Items.RAW_IRON, 2, 5, 8), new Find(net.minecraft.world.item.Items.IRON_INGOT, 1, 4, 6),
+					new Find(net.minecraft.world.item.Items.IRON_NUGGET, 4, 12, 6), new Find(net.minecraft.world.item.Items.COAL, 4, 10, 8),
+					new Find(net.minecraft.world.item.Items.FLINT, 2, 5, 4), new Find(net.minecraft.world.item.Items.FEATHER, 2, 6, 4),
+					new Find(net.minecraft.world.item.Items.STRING, 2, 5, 4), new Find(net.minecraft.world.item.Items.AMETHYST_SHARD, 2, 6, 5),
+					new Find(net.minecraft.world.item.Items.SWEET_BERRIES, 3, 8, 3)),
+			java.util.List.of(
+					new Find(net.minecraft.world.item.Items.RAW_GOLD, 2, 5, 8), new Find(net.minecraft.world.item.Items.GOLD_INGOT, 1, 4, 6),
+					new Find(net.minecraft.world.item.Items.GOLD_NUGGET, 4, 12, 5), new Find(net.minecraft.world.item.Items.EMERALD, 1, 3, 6),
+					new Find(net.minecraft.world.item.Items.LAPIS_LAZULI, 4, 10, 6), new Find(net.minecraft.world.item.Items.REDSTONE, 4, 10, 6),
+					new Find(net.minecraft.world.item.Items.GLOW_BERRIES, 2, 6, 3), new Find(net.minecraft.world.item.Items.NAME_TAG, 1, 1, 1),
+					new Find(net.minecraft.world.item.Items.SADDLE, 1, 1, 1)),
+			java.util.List.of(
+					new Find(net.minecraft.world.item.Items.DIAMOND, 1, 2, 6), new Find(net.minecraft.world.item.Items.EMERALD, 2, 5, 4),
+					new Find(net.minecraft.world.item.Items.OBSIDIAN, 2, 4, 3), new Find(net.minecraft.world.item.Items.ENDER_PEARL, 1, 3, 4),
+					new Find(net.minecraft.world.item.Items.EXPERIENCE_BOTTLE, 2, 5, 3), new Find(net.minecraft.world.item.Items.GOLDEN_APPLE, 1, 1, 2),
+					new Find(net.minecraft.world.item.Items.ECHO_SHARD, 1, 1, 1)));
+
+	/** Dauer einer Tour in Ticks (Talent Schnelle Lieferung: kürzer). */
+	public int exploreDuration() {
+		return (int) (20 * 60 * 4 * (1.0 - 0.25 * talent("swift_delivery")));
+	}
+
+	/** Aus dem Menü: auf Erkundung schicken. */
+	public void explore(ServerPlayer player) {
+		if (!(level() instanceof ServerLevel level)) {
+			return;
+		}
+
+		String problem = isExhausted() ? "jtechstorage.raven.explore.exhausted" : isAway() ? "jtechstorage.raven.explore.away"
+				: isVehicle() ? "jtechstorage.raven.explore.ridden" : exploreCooldown > 0 ? "jtechstorage.raven.explore.cooldown" : null;
+
+		if (problem != null) {
+			player.sendOverlayMessage(Component.translatable(problem, getDisplayName(), (exploreCooldown + 1199) / 1200).withStyle(ChatFormatting.GRAY));
+			return;
+		}
+
+		exploreTicks = exploreDuration();
+		setTarget(null);
+		level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.4, getZ(), 8, 0.2, 0.2, 0.2, 0.02);
+		level.sendParticles(ParticleTypes.WITCH, getX(), getY() + 0.4, getZ(), 15, 0.3, 0.3, 0.3, 0.05);
+		playSound(ModSounds.RAVEN_DEPART, 1.0f, 0.9f);
+		setInvisible(true);
+		entityData.set(DATA_AWAY, true);
+		getNavigation().stop();
+		player.sendOverlayMessage(Component.translatable("jtechstorage.raven.explore.start", getDisplayName(), (exploreTicks + 1199) / 1200)
+				.withStyle(ChatFormatting.LIGHT_PURPLE));
+	}
+
+	private Find roll(int tier, boolean currentOnly) {
+		int stage = getStage();
+		java.util.List<Find> pool = new ArrayList<>();
+		java.util.List<Integer> weights = new ArrayList<>();
+
+		for (int t = currentOnly ? tier : 1; t <= tier; t++) {
+			int factor = t == stage ? 4 : t == stage - 1 ? 2 : 1;     // die eigene Stufe zählt am meisten
+
+			for (Find find : FINDS.get(t - 1)) {
+				pool.add(find);
+				weights.add(find.weight() * factor);
+			}
+		}
+
+		int total = weights.stream().mapToInt(Integer::intValue).sum();
+		int pick = random.nextInt(total);
+
+		for (int i = 0; i < pool.size(); i++) {
+			pick -= weights.get(i);
+
+			if (pick < 0) {
+				return pool.get(i);
+			}
+		}
+
+		return pool.get(0);
+	}
+
+	private void finishExplore(ServerLevel level) {
+		int stage = getStage();
+		int rolls = 2 + stage + talent("lucky_find");
+		java.util.List<ItemStack> found = new ArrayList<>();
+
+		for (int i = 0; i < rolls; i++) {
+			// Schatzsucher: manchmal ein Fund aus der nächsten Stufe, auf Stufe 3 selten Netheritschrott
+			if (talent("treasure_hunter") > 0 && stage == 3 && random.nextDouble() < 0.1) {
+				found.add(new ItemStack(net.minecraft.world.item.Items.NETHERITE_SCRAP));
+				continue;
+			}
+
+			int tier = talent("treasure_hunter") > 0 && stage < 3 && random.nextDouble() < 0.25 ? stage + 1 : stage;
+			Find find = roll(tier, i == 0 || tier > stage);      // der erste Fund ist immer aus der eigenen Stufe
+			found.add(new ItemStack(find.item(), find.min() + random.nextInt(find.max() - find.min() + 1)));
+		}
+
+		int count = 0;
+		LivingEntity owner = getOwner();
+
+		for (ItemStack stack : found) {
+			count += stack.getCount();
+			ItemStack rest = addToBag(stack);
+
+			if (!rest.isEmpty()) {
+				if (owner instanceof ServerPlayer player && player.level() == level) {
+					if (!player.getInventory().add(rest)) {
+						player.spawnAtLocation(level, rest);
+					}
+				} else {
+					spawnAtLocation(level, rest);
+				}
+			}
+		}
+
+		exploreCooldown = talent("treasure_hunter") > 0 ? EXPLORE_COOLDOWN * 3 / 5 : EXPLORE_COOLDOWN;
+		setInvisible(false);
+		entityData.set(DATA_AWAY, false);
+
+		if (owner instanceof ServerPlayer player && player.level() == level) {
+			Vec3 at = player.position().add(player.getLookAngle().multiply(1, 0, 1).normalize().scale(-1.5)).add(0, 1.2, 0);
+			snapTo(at.x, at.y, at.z, getYRot(), getXRot());
+			MutableComponent list = Component.empty();
+
+			for (int i = 0; i < found.size(); i++) {
+				list.append(Component.literal((i > 0 ? ", " : "") + found.get(i).getCount() + "× ")).append(found.get(i).getHoverName());
+			}
+
+			player.sendSystemMessage(Component.translatable("jtechstorage.raven.explore.back", getDisplayName(), list).withStyle(ChatFormatting.LIGHT_PURPLE));
+		}
+
+		level.sendParticles(ParticleTypes.WITCH, getX(), getY() + 0.4, getZ(), 15, 0.3, 0.3, 0.3, 0.05);
+		playSound(ModSounds.RAVEN_RETURN, 1.0f, 1.1f);
+		triggerAction();
 	}
 
 	@Override
@@ -313,7 +501,21 @@ public class RavenCompanion extends Companion {
 			departCooldown--;
 		}
 
+		if (exploreCooldown > 0 && exploreTicks == 0) {
+			exploreCooldown--;
+		}
+
+		if (getTarget() != null) {
+			shoulderDelay = 30;
+		} else if (shoulderDelay > 0) {
+			shoulderDelay--;
+		}
+
 		if (isAway()) {
+			if (!isInvisible()) {
+				setInvisible(true);     // nach dem Laden: unterwegs bleibt er unsichtbar
+			}
+
 			tickAway(level);
 			return;
 		}
@@ -442,6 +644,14 @@ public class RavenCompanion extends Companion {
 		// bleibt unsichtbar beim Besitzer, damit er geladen bleibt
 		if (tickCount % 20 == 0 && getOwner() instanceof ServerPlayer owner && owner.level() == level) {
 			snapTo(owner.getX(), owner.getY() + 5.0, owner.getZ(), getYRot(), getXRot());
+		}
+
+		if (exploreTicks > 0) {
+			if (--exploreTicks == 0) {
+				finishExplore(level);
+			}
+
+			return;
 		}
 
 		if (awayTicks > 0) {
@@ -611,6 +821,8 @@ public class RavenCompanion extends Companion {
 		}
 
 		output.putInt("Away", awayTicks + deliverPhase);
+		output.putInt("Explore", exploreTicks);
+		output.putInt("ExploreCooldown", exploreCooldown);
 	}
 
 	@Override
@@ -619,6 +831,12 @@ public class RavenCompanion extends Companion {
 		ContainerHelper.loadAllItems(input.childOrEmpty("RavenBag"), bag.getItems());
 		terminal = input.read("Terminal", GlobalPos.CODEC).orElse(null);
 		int away = input.getIntOr("Away", 0);
+		exploreTicks = input.getIntOr("Explore", 0);
+		exploreCooldown = input.getIntOr("ExploreCooldown", 0);
+
+		if (exploreTicks > 0) {
+			entityData.set(DATA_AWAY, true);
+		}
 
 		if (away > 0) {
 			awayTicks = 0;
@@ -705,6 +923,98 @@ public class RavenCompanion extends Companion {
 		public void clearContent() {
 			for (int i = 0; i < size; i++) {
 				bag.setItem(i, ItemStack.EMPTY);
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------
+	// v0.25.3: Spezialangriffe
+	// ------------------------------------------------------------------
+
+	@Override
+	protected int specialBaseCooldown(int which) {
+		return switch (which) {
+			case 0 -> 20 * 90;       // Rabenschwarm
+			case 1 -> 20 * 40;       // Schattensturz
+			default -> 20 * 90;      // Schreckensruf
+		};
+	}
+
+	@Override
+	protected boolean specialNeedsTarget(int which) {
+		return which != 2;
+	}
+
+	@Override
+	protected boolean canUseSpecialNow() {
+		return !isAway() && !isVehicle();
+	}
+
+	@Override
+	protected boolean performSpecial(ServerLevel level, int which, @Nullable LivingEntity target) {
+		float power = specialPower();
+		float base = (float) getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE);
+
+		switch (which) {
+			case 0 -> {
+				// Rabenschwarm: fünf Schattenraben stürzen sich nacheinander auf das Ziel
+				if (target == null) {
+					return false;
+				}
+
+				for (int i = 0; i < 5; i++) {
+					SwarmRaven.summon(level, this, target, base * 1.5f * power, 8 + i * 5);
+				}
+
+				playSound(ModSounds.RAVEN_DEPART, 1.5f, 0.6f);
+				level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.5, getZ(), 15, 0.4, 0.4, 0.4, 0.05);
+				setTarget(target);
+				return true;
+			}
+			case 1 -> {
+				// Schattensturz: er selbst stürzt sich auf das Ziel – dreifacher Schaden, Blindheit, Rückstoß
+				if (target == null || target.distanceToSqr(this) > 24 * 24) {
+					return false;
+				}
+
+				Vec3 dir = position().subtract(target.position()).multiply(1, 0, 1);
+				Vec3 at = target.position().add(dir.lengthSqr() > 0.01 ? dir.normalize().scale(1.2) : new Vec3(1.2, 0, 0)).add(0, target.getBbHeight(), 0);
+
+				if (distanceToSqr(target) > 3.0 * 3.0 && !hasLineOfSight(target) || !leapTo(level, at) && distanceToSqr(target) > 3.0 * 3.0) {
+					return false;
+				}
+
+				shoulderDelay = 60;
+				level.sendParticles(ParticleTypes.LARGE_SMOKE, getX(), getY() + 0.5, getZ(), 12, 0.3, 0.3, 0.3, 0.05);
+				target.hurtServer(level, damageSources().mobAttack(this), base * 3.0f * power);
+				target.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.BLINDNESS, 100, 0), this);
+				Vec3 push = target.position().subtract(position()).multiply(1, 0, 1).normalize().scale(0.8);
+				target.push(push.x, 0.3, push.z);
+				level.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 15, 0.3, 0.3, 0.3, 0.2);
+				playSound(ModSounds.RAVEN_ATTACK, 1.3f, 0.6f);
+				setTarget(target);
+				return true;
+			}
+			default -> {
+				// Schreckensruf: Monster in 10 Blöcken weichen zurück, werden langsam, schwach und sichtbar
+				level.sendParticles(ParticleTypes.SONIC_BOOM, getX(), getY() + 0.6, getZ(), 1, 0, 0, 0, 0);
+				playSound(ModSounds.RAVEN_AMBIENT, 2.0f, 0.5f);
+				int duration = (int) (160 * power);
+
+				for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(10.0),
+						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOWNESS, duration, 1), this);
+					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, duration, 0), this);
+					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, duration, 0), this);
+					Vec3 push = enemy.position().subtract(position()).multiply(1, 0, 1).normalize().scale(1.0);
+					enemy.push(push.x, 0.35, push.z);
+
+					if (enemy instanceof net.minecraft.world.entity.Mob mob) {
+						mob.setTarget(null);
+					}
+				}
+
+				return true;
 			}
 		}
 	}

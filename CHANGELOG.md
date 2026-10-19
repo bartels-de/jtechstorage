@@ -3,6 +3,59 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.25.3]
+
+### Added
+- **Special attacks:** a new *Special* branch in every talent tree with three special attacks, of which you can learn
+  **only one** (from stage 2). Trigger it in combat with the **B** key (changeable) or the *Special* button in the menu;
+  it targets the monster you look at. The HUD shows its cooldown as a small bar under the companion icon.
+  - Shadow Mantis: **Paralyzing Sting** (leap, 150 % damage, 5 s stun, 30 s poison), **Blade Storm** (three spinning
+    slashes against everything within 4 blocks), **Execution** (leap, 250 % damage, doubled below 35 % health).
+  - Amethyst Shroom: **Spore Veil** (you and the shroom invisible for 60 s, monsters lose track, its cooldowns halved and
+    running twice as fast), **Life Bloom** (10 s healing circle), **Paralysis Cloud** (damage, Slowness, Weakness and
+    Poison around the target).
+  - Night Raven: **Raven Swarm** (five shadow ravens circle above the target and dive at it, each hitting for 150 %),
+    **Shadow Dive** (300 % damage, Blindness, knockback), **Terror Cry** (monsters within 10 blocks back off, lose their
+    target and are slowed, weakened and glowing).
+  - **Mastery** (+25 % power and −20 % cooldown per rank) and **Instinct** (uses the special attack on its own when you
+    drop below 30 % health or 3 monsters surround you).
+- **A master talent at the end of every branch** (stage 3): mantis *Bloodlust*, *Crystal Skin*, *Predator*; shroom
+  *Second Life* (saves you from death once every 10 minutes), *Mushroom Skin*, *Spore Field*; raven *Treasure Hunter*,
+  *Raven Call*, *Night Wings*.
+
+### Changed
+- Talent points: **one every 4 levels, up to 30** (was one every 5 levels, up to 20). Learned talents are kept.
+- The talent tab shows four branches with five talents each; the companion menu is a little taller.
+- *Lucky Find* and *Swift Delivery* also improve the raven's exploration trips.
+
+## [0.25.2]
+
+### Changed
+- The stage 3 **Amethyst Shroom** carries a **leather backpack** instead of the moss cape: flap, side pocket, bedroll and
+  straps with golden buckles, and a glowing healing potion sticking out at the top. The pack bobs and the potion sways
+  while it walks.
+
+## [0.25.1]
+
+### Added
+- **Your base:** the 3 × 3 chunks around a Storage Terminal you placed count as your base for companions.
+- **Shadow Mantis:** fights 50 % harder in your base. Tell it to stay while it is in your base and it **stands guard**
+  instead of sitting down: it patrols around the terminal and attacks monsters within 24 blocks, even while you are away.
+- **Amethyst Shroom:** from stage 2, crops, stems, berry bushes, cocoa, nether wart, saplings, sugar cane, cactus and
+  bamboo in your base grow about 3× as fast (stage 3: about 4–5×). At stage 3 you can **fly like in creative mode** in
+  your base while your shroom is with you; leaving the base ends the flight with Slow Falling.
+- **Night Raven exploration trips:** *Explore* in the companion menu sends the raven off for 4 minutes; it brings back
+  3 / 4 / 5 finds by stage – copper and iron, then gold, emeralds, lapis and redstone, then diamonds, ender pearls and
+  rarities – and rests for 5 minutes afterwards. *Swift Delivery* shortens the trip, *Lucky Find* adds a find.
+- Menu and HUD show whether the companion is in your base, on your shoulder, guarding or exploring.
+
+### Changed
+- **Stage 1 shroom and raven sit on your shoulder** (shroom right, raven left). The shroom no longer fights at stage 1 and
+  only starts with stage 2; the raven flies off to fight and returns to your shoulder afterwards.
+
+### Fixed
+- A raven that was away while the world was saved stays invisible after loading.
+
 ## [0.25.0]
 
 ### Added

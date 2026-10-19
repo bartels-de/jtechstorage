@@ -77,13 +77,43 @@ public class CompanionRenderer<T extends Companion> extends MobRenderer<T, Compa
 		return new CompanionRenderState();
 	}
 
+	/** Auf der Schulter des Spielers, aus dessen Sicht (erste Person): nicht zeichnen, sonst verdeckt er die Sicht. */
+	@Override
+	public boolean shouldRender(T companion, net.minecraft.client.renderer.culling.Frustum frustum, double x, double y, double z, float partialTick) {
+		net.minecraft.client.Minecraft mc = net.minecraft.client.Minecraft.getInstance();
+
+		if (companion.isOnShoulder() && companion.getOwner() == mc.getCameraEntity() && mc.options.getCameraType().isFirstPerson()) {
+			return false;
+		}
+
+		return companion.isOnShoulder() || super.shouldRender(companion, frustum, x, y, z, partialTick);
+	}
+
+	@Override
+	public net.minecraft.world.phys.Vec3 getRenderOffset(CompanionRenderState state) {
+		return state.shoulder ? state.shoulderOffset : super.getRenderOffset(state);
+	}
+
 	@Override
 	public void extractRenderState(T companion, CompanionRenderState state, float partialTick) {
 		super.extractRenderState(companion, state, partialTick);
 		state.stage = companion.getStage();
-		state.sitting = companion.isInSittingPose();
+		state.shoulder = false;
+
+		if (companion.isOnShoulder() && companion.getOwner() instanceof net.minecraft.world.entity.LivingEntity owner) {
+			// genau auf der (interpolierten) Schulter des Besitzers – unabhängig von der Netzwerk-Verzögerung des Begleiters
+			float bodyYaw = net.minecraft.util.Mth.rotLerp(partialTick, owner.yBodyRotO, owner.yBodyRot);
+			net.minecraft.world.phys.Vec3 target = Companion.shoulderPos(owner, owner.getPosition(partialTick), bodyYaw, companion.shoulderSide());
+			state.shoulder = true;
+			state.shoulderOffset = target.subtract(state.x, state.y, state.z);
+			state.bodyRot = bodyYaw;
+			state.yRot = net.minecraft.util.Mth.wrapDegrees(net.minecraft.util.Mth.rotLerp(partialTick, owner.yHeadRotO, owner.yHeadRot) - bodyYaw) * 0.5f;
+			state.shadowRadius = 0.0f;
+		}
+
+		state.sitting = companion.isInSittingPose() || state.shoulder;
 		state.exhausted = companion.isExhausted();
-		state.flying = (companion instanceof RavenCompanion raven && raven.isFlying() && !state.sitting)
+		state.flying = (companion instanceof RavenCompanion raven && raven.isFlying() && !state.sitting && !state.shoulder)
 				|| (companion instanceof dev.bartels.jtechstorage.companion.MantisCompanion && companion.isVehicle() && !companion.onGround());
 		int attack = companion.getAttackTicks();
 		state.attack = attack > 0 ? 1.0f - (attack - partialTick) / Companion.ATTACK_TICKS : 0.0f;
@@ -93,12 +123,16 @@ public class CompanionRenderer<T extends Companion> extends MobRenderer<T, Compa
 
 	@Override
 	protected float getShadowRadius(CompanionRenderState state) {
+		if (state.shoulder) {
+			return 0.0f;
+		}
+
 		return shadow * (state.stage == 1 ? 0.6f : state.stage == 2 ? 0.85f : 1.1f) * stageScale[index(state)];
 	}
 
 	@Override
 	protected void scale(CompanionRenderState state, PoseStack poseStack) {
-		float scale = SCALE * stageScale[index(state)];
+		float scale = SCALE * stageScale[index(state)] * (state.shoulder ? 0.7f : 1.0f);   // auf der Schulter etwas kleiner
 		poseStack.scale(scale, scale, scale);
 	}
 }

@@ -55,6 +55,10 @@ public final class CompanionContent {
 	public static final ResourceKey<EntityType<?>> RAVEN_KEY = key("raven");
 	public static final EntityType<RavenCompanion> RAVEN = EntityType.Builder.of(RavenCompanion::new, MobCategory.CREATURE)
 			.sized(0.55f, 0.75f).clientTrackingRange(10).build(RAVEN_KEY);
+	public static final ResourceKey<EntityType<?>> SWARM_RAVEN_KEY = key("swarm_raven");
+	/** Schattenrabe aus dem Rabenschwarm (v0.25.3). */
+	public static final EntityType<SwarmRaven> SWARM_RAVEN = EntityType.Builder.of(SwarmRaven::new, MobCategory.MISC)
+			.sized(0.5f, 0.5f).noSave().clientTrackingRange(8).updateInterval(1).build(SWARM_RAVEN_KEY);
 	public static final ResourceKey<EntityType<?>> GEODE_KEEPER_KEY = key("geode_keeper");
 	public static final EntityType<GeodeKeeper> GEODE_KEEPER = EntityType.Builder.of(GeodeKeeper::new, MobCategory.MISC)
 			.sized(0.7f, 2.0f).clientTrackingRange(10).build(GEODE_KEEPER_KEY);
@@ -84,10 +88,16 @@ public final class CompanionContent {
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, MANTIS_KEY, MANTIS);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, SHROOM_KEY, SHROOM);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, RAVEN_KEY, RAVEN);
+		Registry.register(BuiltInRegistries.ENTITY_TYPE, SWARM_RAVEN_KEY, SWARM_RAVEN);
 		Registry.register(BuiltInRegistries.ENTITY_TYPE, GEODE_KEEPER_KEY, GEODE_KEEPER);
 		FabricDefaultAttributeRegistry.register(MANTIS, MantisCompanion.createAttributes());
 		FabricDefaultAttributeRegistry.register(SHROOM, ShroomCompanion.createAttributes());
 		FabricDefaultAttributeRegistry.register(RAVEN, RavenCompanion.createAttributes());
+		FabricDefaultAttributeRegistry.register(SWARM_RAVEN, SwarmRaven.createAttributes());
+		// Pilz-Talent „Zweites Leben“: rettet den Besitzer einmal alle 10 Minuten vor dem Tod
+		net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents.ALLOW_DEATH.register((entity, source, amount) ->
+				!(entity instanceof ServerPlayer player && !source.is(net.minecraft.tags.DamageTypeTags.BYPASSES_INVULNERABILITY)
+						&& find(player.level().getServer(), player.getUUID()) instanceof ShroomCompanion shroom && shroom.trySecondLife(player)));
 		FabricDefaultAttributeRegistry.register(GEODE_KEEPER, GeodeKeeper.createAttributes());
 
 		// Durch Portale, beim Wiederbeleben und wenn er zu weit weg ist: der Begleiter kommt mit
@@ -196,6 +206,12 @@ public final class CompanionContent {
 						raven.openBag(player);
 					}
 				}
+				case dev.bartels.jtechstorage.net.CompanionActionPayload.EXPLORE -> {
+					if (companion instanceof RavenCompanion raven) {
+						raven.explore(player);
+					}
+				}
+				case dev.bartels.jtechstorage.net.CompanionActionPayload.SPECIAL -> companion.useSpecial(player, false);
 				default -> {
 				}
 			}
@@ -232,6 +248,49 @@ public final class CompanionContent {
 	}
 
 	// ------------------------------------------------------------------
+	// Pilz Stufe 3 (v0.25.1): Kreativ-Flug in der eigenen Basis (3×3 Chunks um ein eigenes Terminal)
+	// ------------------------------------------------------------------
+
+	public static final String FLIGHT_TAG = "jtechstorage.shroom_flight";
+
+	private static void shroomFlight(ServerPlayer player) {
+		boolean has = player.entityTags().contains(FLIGHT_TAG);
+		boolean other = player.isCreative() || player.isSpectator();
+		boolean allowed = false;
+
+		if (!other && player.isAlive()) {
+			Companion companion = has || CompanionData.get(player.level().getServer()).hasCompanion(player.getUUID())
+					? find(player.level().getServer(), player.getUUID()) : null;
+			allowed = companion instanceof ShroomCompanion shroom && shroom.getStage() == 3 && !shroom.isExhausted()
+					&& shroom.level() == player.level() && shroom.distanceToSqr(player) < 48 * 48
+					&& Companion.ownTerminalAround(player.level(), player.blockPosition(), player.getUUID()) != null;
+		}
+
+		if (allowed && has && !player.getAbilities().mayfly) {
+			player.getAbilities().mayfly = true;      // z. B. nach einem Spielmodus-Wechsel wieder erlauben
+			player.onUpdateAbilities();
+		} else if (allowed && !has) {
+			player.addTag(FLIGHT_TAG);
+			player.getAbilities().mayfly = true;
+			player.onUpdateAbilities();
+			player.sendOverlayMessage(Component.translatable("jtechstorage.shroom.flight_on").withStyle(ChatFormatting.LIGHT_PURPLE));
+		} else if (!allowed && has) {
+			player.removeTag(FLIGHT_TAG);
+
+			if (!other) {
+				if (player.getAbilities().flying) {
+					player.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOW_FALLING, 20 * 10, 0));
+				}
+
+				player.getAbilities().mayfly = false;
+				player.getAbilities().flying = false;
+				player.onUpdateAbilities();
+				player.sendOverlayMessage(Component.translatable("jtechstorage.shroom.flight_off").withStyle(ChatFormatting.GRAY));
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------
 	// Zustand für HUD und Menü (v0.26)
 	// ------------------------------------------------------------------
 
@@ -246,13 +305,15 @@ public final class CompanionContent {
 			Companion c = find(server, player.getUUID());
 
 			if (c == null) {
-				status = new dev.bartels.jtechstorage.net.CompanionStatusPayload(true, false, "", "", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+				status = new dev.bartels.jtechstorage.net.CompanionStatusPayload(true, false, "", "", 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 						new int[CompanionTalents.COUNT]);
 			} else {
 				boolean sameLevel = c.level() == player.level();
-				int flags = (c.isOrderedToSit() ? 1 : 0) | (c.isExhausted() ? 2 : 0) | (!sameLevel ? 32 : 0);
+				int flags = (c.isOrderedToSit() ? 1 : 0) | (c.isExhausted() ? 2 : 0) | (!sameLevel ? 32 : 0) | (c.isInBase() ? 64 : 0)
+						| (c.isGuarding() ? 256 : 0) | (c.isOnShoulder() ? 512 : 0) | (player.entityTags().contains(FLIGHT_TAG) ? 1024 : 0);
 				int special = 0;
 				int specialMax = 0;
+				int timer = 0;
 
 				if (c instanceof ShroomCompanion shroom) {
 					flags |= shroom.isAutoHeal() ? 4 : 0;
@@ -262,9 +323,10 @@ public final class CompanionContent {
 					special = mantis.getFlightEnergy();
 					specialMax = mantis.maxFlight();
 				} else if (c instanceof RavenCompanion raven) {
-					flags |= (raven.isAway() ? 8 : 0) | (raven.hasTerminal() ? 16 : 0);
+					flags |= (raven.isAway() ? 8 : 0) | (raven.hasTerminal() ? 16 : 0) | (raven.isExploring() ? 128 : 0);
 					special = raven.bagUsed();
 					specialMax = raven.capacity();
+					timer = raven.exploreTimer();
 				}
 
 				String name = c.hasCustomName() && c.getCustomName() != null ? c.getCustomName().getString() : "";
@@ -272,7 +334,7 @@ public final class CompanionContent {
 						c.getHealth(), c.getMaxHealth(), c.getStance(), flags, c.getXpBoostTicks(), special, specialMax,
 						(float) c.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE),
 						(float) c.getAttributeValue(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR), c.effectiveAttackInterval(),
-						sameLevel ? (int) Math.sqrt(c.distanceToSqr(player)) : -1, c.talentRanks());
+						sameLevel ? (int) Math.sqrt(c.distanceToSqr(player)) : -1, timer, c.specialCooldown(), c.specialCooldownMax(), c.talentRanks());
 			}
 		}
 
@@ -314,6 +376,7 @@ public final class CompanionContent {
 
 	private static void tick(MinecraftServer server) {
 		int tick = server.getTickCount();
+		Companion.tickStunned();
 
 		for (ServerPlayer player : server.getPlayerList().getPlayers()) {
 			int slot = Math.floorMod(player.getUUID().hashCode(), 200);
@@ -324,6 +387,10 @@ public final class CompanionContent {
 
 			if ((tick + slot) % 200 == 0) {
 				scanForGeode(player);
+			}
+
+			if ((tick + slot) % 10 == 0) {
+				shroomFlight(player);
 			}
 
 			if ((tick + slot) % 10 == 0 && net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking.canSend(player,

@@ -63,6 +63,14 @@ public final class CompanionHud {
 		g.text(font, symbol, x + 12 - font.width(symbol) / 2, y + 8, 0xFFFFFFFF, true);
 		g.text(font, String.valueOf(s.stage()), x + 17, y + 14, 0xFFFFE0A0, true);
 
+		// Spezialangriff (v0.25.3): kleiner Balken unter dem Symbol – golden, wenn bereit
+		if (dev.bartels.jtechstorage.companion.CompanionTalents.chosenSpecial(s.talents()) >= 0) {
+			boolean ready = s.specialCooldown() == 0;
+			float frac = ready || s.specialCooldownMax() <= 0 ? 1.0f : Math.clamp(1.0f - s.specialCooldown() / (float) s.specialCooldownMax(), 0.0f, 1.0f);
+			g.fill(x + 2, y + 23, x + 22, y + 26, 0xFF000000);
+			g.fill(x + 3, y + 24, x + 3 + (int) (18 * frac), y + 25, ready ? 0xFFFFD27A : 0xFF8D6ACC);
+		}
+
 		String level = "Lv " + s.level();
 		int nameW = W - 28 - font.width(level) - 4;
 		g.text(font, dev.bartels.jtechstorage.client.gui.GuiTheme.fit(font, CompanionClient.name(s).getString(), nameW), x + 26, y + 3, 0xFFFFFFFF, true);
@@ -73,25 +81,9 @@ public final class CompanionHud {
 		// Zeile unten: Modus, Haltung, Leckerli, Besonderes
 		int lx = x + 4;
 		int ly = y + 28;
-		String mode;
-		int modeColor;
-
-		if (s.flag(1)) {
-			mode = "✖";
-			modeColor = 0xFFFF8080;
-		} else if (s.flag(3)) {
-			mode = "✉";
-			modeColor = 0xFFC8B0FF;
-		} else if (s.flag(0)) {
-			mode = "■";
-			modeColor = 0xFFFFD27A;
-		} else {
-			mode = "»";
-			modeColor = 0xFFB8F0B8;
-		}
-
-		Component modeText = Component.translatable(s.flag(1) ? "jtechstorage.companion.hud.exhausted" : s.flag(3) ? "jtechstorage.companion.hud.away"
-				: s.flag(0) ? "jtechstorage.companion.hud.stay" : "jtechstorage.companion.hud.follow");
+		String mode = CompanionClient.modeSymbol(s);
+		int modeColor = CompanionClient.modeColor(s);
+		Component modeText = Component.translatable(CompanionClient.modeKey(s));
 		String modeLine = mode + " " + modeText.getString();
 		g.text(font, modeLine, lx, ly, modeColor, true);
 		lx += font.width(modeLine) + 5;

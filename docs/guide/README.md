@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.25** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.25.3** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 
@@ -49,6 +49,9 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | send items to a friend | [Phoenix mail](06-phoenix.md#phoenix-mail) |
 | fly myself and cargo between places | [Amethyst Phoenix](06-phoenix.md#amethyst-phoenix) |
 | find a companion | [Companions → Geode Keeper](07-companions.md#the-geode-keeper) |
+| fly in my base / grow crops faster | [Companions → Amethyst Shroom](07-companions.md#amethyst-shroom) |
+| let my companion guard the base | [Companions → Shadow Mantis](07-companions.md#shadow-mantis) |
+| get ores without mining | [Companions → Night Raven](07-companions.md#night-raven) (exploration trips) |
 | spend talent points | [Companions → Talent tree](07-companions.md#talent-tree) |
 | know why a storm hit my base | [Resonance Storm → When does it start?](08-resonance-storm.md#when-does-it-start) |
 | get gear stronger than netherite | [Amethyst Obsidian gear](09-bosses-and-end.md#amethyst-obsidian-gear) |

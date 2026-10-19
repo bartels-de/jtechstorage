@@ -31,7 +31,8 @@ public class ShroomModel3 extends EntityModel<CompanionRenderState> {
 	private final ModelPart ring;
 	private final ModelPart mini0;
 	private final ModelPart mini1;
-	private final ModelPart cape;
+	private final ModelPart pack;
+	private final ModelPart potion;
 	private final ModelPart staff;
 
 	public ShroomModel3(ModelPart root) {
@@ -46,7 +47,8 @@ public class ShroomModel3 extends EntityModel<CompanionRenderState> {
 		this.ring = root.getChild("shroom").getChild("body").getChild("ring");
 		this.mini0 = root.getChild("shroom").getChild("body").getChild("mini0");
 		this.mini1 = root.getChild("shroom").getChild("body").getChild("mini1");
-		this.cape = root.getChild("shroom").getChild("body").getChild("cape");
+		this.pack = root.getChild("shroom").getChild("body").getChild("pack");
+		this.potion = root.getChild("shroom").getChild("body").getChild("pack").getChild("potion");
 		this.staff = root.getChild("shroom").getChild("body").getChild("r_arm").getChild("staff");
 	}
 
@@ -61,62 +63,78 @@ public class ShroomModel3 extends EntityModel<CompanionRenderState> {
 		PartDefinition p3 = p2.addOrReplaceChild("cap", CubeListBuilder.create()
 				.texOffs(0, 0).addBox(-14.0f, -7.0f, -14.0f, 28.0f, 7.0f, 28.0f, new CubeDeformation(0.0f))
 				.texOffs(160, 0).addBox(-10.0f, -11.0f, -10.0f, 20.0f, 4.0f, 20.0f, new CubeDeformation(0.0f))
-				.texOffs(102, 35).addBox(-5.0f, -14.0f, -5.0f, 10.0f, 3.0f, 10.0f, new CubeDeformation(0.0f)),
+				.texOffs(108, 35).addBox(-5.0f, -14.0f, -5.0f, 10.0f, 3.0f, 10.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(0.0f, -15.0f, 0.0f, 0.0f, 0.0f, 0.12f));
 		p3.addOrReplaceChild("crystal0", CubeListBuilder.create()
-				.texOffs(178, 35).addBox(-1.5f, -9.0f, -1.5f, 3.0f, 9.0f, 3.0f, new CubeDeformation(0.0f)),
+				.texOffs(184, 35).addBox(-1.5f, -9.0f, -1.5f, 3.0f, 9.0f, 3.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(-6.0f, -10.0f, -4.0f, -0.2f, 0.0f, -0.35f));
 		p3.addOrReplaceChild("crystal1", CubeListBuilder.create()
-				.texOffs(32, 52).addBox(-1.5f, -6.0f, -1.5f, 3.0f, 6.0f, 3.0f, new CubeDeformation(0.0f)),
+				.texOffs(80, 53).addBox(-1.5f, -6.0f, -1.5f, 3.0f, 6.0f, 3.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(7.0f, -10.0f, -2.0f, 0.1f, 0.0f, 0.45f));
 		p3.addOrReplaceChild("crystal2", CubeListBuilder.create()
-				.texOffs(88, 52).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				.texOffs(184, 53).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(2.0f, -6.0f, 8.0f, 0.5f, 0.0f, 0.1f));
 		p3.addOrReplaceChild("crystal3", CubeListBuilder.create()
-				.texOffs(32, 52).addBox(-1.5f, -6.0f, -1.5f, 3.0f, 6.0f, 3.0f, new CubeDeformation(0.0f)),
+				.texOffs(80, 53).addBox(-1.5f, -6.0f, -1.5f, 3.0f, 6.0f, 3.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(-8.0f, -6.0f, 7.0f, 0.4f, 0.0f, -0.5f));
 		p3.addOrReplaceChild("crystal4", CubeListBuilder.create()
-				.texOffs(88, 52).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				.texOffs(184, 53).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(11.0f, -6.0f, 6.0f, 0.2f, 0.0f, 0.7f));
 		p3.addOrReplaceChild("crystal5", CubeListBuilder.create()
-				.texOffs(178, 35).addBox(-1.5f, -9.0f, -1.5f, 3.0f, 9.0f, 3.0f, new CubeDeformation(0.0f)),
+				.texOffs(184, 35).addBox(-1.5f, -9.0f, -1.5f, 3.0f, 9.0f, 3.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(1.0f, -10.0f, -1.0f, -0.05f, 0.0f, 0.05f));
 		p2.addOrReplaceChild("r_leg", CubeListBuilder.create()
-				.texOffs(190, 35).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 6.0f, 5.0f, new CubeDeformation(0.0f))
-				.texOffs(210, 35).addBox(-3.0f, 6.0f, -5.0f, 6.0f, 2.0f, 8.0f, new CubeDeformation(0.0f))
-				.texOffs(76, 52).addBox(-3.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f))
-				.texOffs(76, 52).addBox(1.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)),
+				.texOffs(234, 35).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 6.0f, 5.0f, new CubeDeformation(0.0f))
+				.texOffs(20, 53).addBox(-3.0f, 6.0f, -5.0f, 6.0f, 2.0f, 8.0f, new CubeDeformation(0.0f))
+				.texOffs(172, 53).addBox(-3.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(172, 53).addBox(1.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)),
 				PartPose.offset(-3.5f, 0.0f, 0.0f));
 		p2.addOrReplaceChild("l_leg", CubeListBuilder.create()
-				.texOffs(190, 35).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 6.0f, 5.0f, new CubeDeformation(0.0f))
-				.texOffs(210, 35).addBox(-3.0f, 6.0f, -5.0f, 6.0f, 2.0f, 8.0f, new CubeDeformation(0.0f))
-				.texOffs(76, 52).addBox(-3.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f))
-				.texOffs(76, 52).addBox(1.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)),
+				.texOffs(234, 35).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 6.0f, 5.0f, new CubeDeformation(0.0f))
+				.texOffs(20, 53).addBox(-3.0f, 6.0f, -5.0f, 6.0f, 2.0f, 8.0f, new CubeDeformation(0.0f))
+				.texOffs(172, 53).addBox(-3.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(172, 53).addBox(1.5f, 6.5f, -1.0f, 2.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)),
 				PartPose.offset(3.5f, 0.0f, 0.0f));
 		p2.addOrReplaceChild("ring", CubeListBuilder.create()
-				.texOffs(0, 35).addBox(-7.5f, 0.0f, -7.5f, 15.0f, 2.0f, 15.0f, new CubeDeformation(0.0f)),
+				.texOffs(34, 35).addBox(-7.5f, 0.0f, -7.5f, 15.0f, 2.0f, 15.0f, new CubeDeformation(0.0f)),
 				PartPose.offset(0.0f, -4.59f, 0.0f));
 		PartDefinition p13 = p2.addOrReplaceChild("r_arm", CubeListBuilder.create()
-				.texOffs(142, 35).addBox(-3.0f, 0.0f, -1.5f, 3.0f, 10.0f, 3.0f, new CubeDeformation(0.0f)),
+				.texOffs(148, 35).addBox(-3.0f, 0.0f, -1.5f, 3.0f, 10.0f, 3.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(-6.0f, -9.35f, 0.0f, -0.9f, 0.0f, 0.25f));
 		p13.addOrReplaceChild("staff", CubeListBuilder.create()
-				.texOffs(60, 35).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 14.0f, 2.0f, new CubeDeformation(0.0f))
-				.texOffs(154, 35).addBox(-3.0f, -11.0f, -3.0f, 6.0f, 6.0f, 6.0f, new CubeDeformation(0.0f)),
+				.texOffs(94, 35).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 14.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(160, 35).addBox(-3.0f, -11.0f, -3.0f, 6.0f, 6.0f, 6.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(-1.5f, 9.0f, -1.0f, 0.9f, 0.0f, 0.0f));
 		p2.addOrReplaceChild("l_arm", CubeListBuilder.create()
-				.texOffs(142, 35).addBox(0.0f, 0.0f, -1.5f, 3.0f, 10.0f, 3.0f, new CubeDeformation(0.0f)),
+				.texOffs(148, 35).addBox(0.0f, 0.0f, -1.5f, 3.0f, 10.0f, 3.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(6.0f, -9.35f, 0.0f, 0.1f, 0.0f, -0.35f));
 		p2.addOrReplaceChild("mini0", CubeListBuilder.create()
-				.texOffs(68, 52).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f))
-				.texOffs(44, 52).addBox(-3.0f, -7.0f, -3.0f, 6.0f, 2.0f, 6.0f, new CubeDeformation(0.0f)),
+				.texOffs(134, 53).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(92, 53).addBox(-3.0f, -7.0f, -3.0f, 6.0f, 2.0f, 6.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(5.0f, -4.25f, 5.0f, 0.3f, 0.0f, 0.6f));
 		p2.addOrReplaceChild("mini1", CubeListBuilder.create()
-				.texOffs(68, 52).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f))
-				.texOffs(44, 52).addBox(-3.0f, -7.0f, -3.0f, 6.0f, 2.0f, 6.0f, new CubeDeformation(0.0f)),
+				.texOffs(134, 53).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(92, 53).addBox(-3.0f, -7.0f, -3.0f, 6.0f, 2.0f, 6.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(-5.0f, -2.55f, 4.0f, 0.4f, 0.0f, -0.7f));
-		p2.addOrReplaceChild("cape", CubeListBuilder.create()
-				.texOffs(68, 35).addBox(-8.0f, 0.0f, 0.0f, 16.0f, 14.0f, 1.0f, new CubeDeformation(0.0f)),
-				PartPose.offsetAndRotation(0.0f, -9.54f, 6.5f, 0.12f, 0.0f, 0.0f));
+		PartDefinition p18 = p2.addOrReplaceChild("pack", CubeListBuilder.create()
+				.texOffs(0, 35).addBox(-5.5f, 0.0f, 0.0f, 11.0f, 12.0f, 6.0f, new CubeDeformation(0.0f))
+				.texOffs(196, 35).addBox(-6.0f, -0.5f, -0.5f, 12.0f, 4.0f, 7.0f, new CubeDeformation(0.0f))
+				.texOffs(116, 53).addBox(-3.5f, 5.4f, 5.5f, 7.0f, 5.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(142, 53).addBox(-6.0f, 11.0f, 1.5f, 12.0f, 3.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -13.6f, 5.5f, 0.06f, 0.0f, 0.0f));
+		p18.addOrReplaceChild("potion", CubeListBuilder.create()
+				.texOffs(0, 53).addBox(-2.5f, -6.0f, -2.5f, 5.0f, 6.0f, 5.0f, new CubeDeformation(0.0f))
+				.texOffs(204, 53).addBox(-1.0f, -8.0f, -1.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(192, 53).addBox(-1.5f, -9.5f, -1.5f, 3.0f, 2.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(2.5f, 1.5f, 4.5f, -0.95f, 0.0f, 0.25f));
+		p2.addOrReplaceChild("strap0", CubeListBuilder.create()
+				.texOffs(102, 35).addBox(0.0f, 0.0f, 0.0f, 2.0f, 13.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(212, 53).addBox(0.0f, 6.0f, -0.5f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(-4.0f, -13.6f, -6.6f));
+		p2.addOrReplaceChild("strap1", CubeListBuilder.create()
+				.texOffs(102, 35).addBox(0.0f, 0.0f, 0.0f, 2.0f, 13.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(212, 53).addBox(0.0f, 6.0f, -0.5f, 2.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(2.0f, -13.6f, -6.6f));
 		return LayerDefinition.create(mesh, 256, 128);
 	}
 
@@ -146,7 +164,8 @@ public class ShroomModel3 extends EntityModel<CompanionRenderState> {
 		lArm.xRot += swing * 0.6f;
 		rArm.zRot += Mth.sin(age * 0.07f) * 0.05f;
 		lArm.zRot -= Mth.sin(age * 0.07f) * 0.05f;
-		cape.xRot += speed * 0.35f + Mth.sin(age * 0.09f) * 0.04f;
+		pack.xRot += Math.abs(Mth.sin(pos * 0.6f)) * 0.08f * speed;          // Rucksack wippt beim Laufen
+		potion.zRot += Mth.sin(age * 0.11f) * 0.06f + Mth.sin(pos * 0.6f) * 0.1f * speed;
 
 		// Ruhig atmen: der Hut hebt und senkt sich
 		cap.y += Mth.sin(age * 0.08f) * 0.35f;
@@ -175,7 +194,7 @@ public class ShroomModel3 extends EntityModel<CompanionRenderState> {
 	private void poseSit(float k) {
 		rLeg.xRot += k * -1.450f;
 		lLeg.xRot += k * -1.450f;
-		body.y += k * 4.140f;
+		body.y += k * 4.500f;
 	}
 
 	private void poseTired(float k) {

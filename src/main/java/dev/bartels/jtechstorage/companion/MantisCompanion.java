@@ -84,6 +84,18 @@ public class MantisCompanion extends Companion {
 		return 26;
 	}
 
+	/** In der eigenen Basis kämpft sie um die Hälfte stärker (v0.25.1). */
+	@Override
+	protected double baseDamageBonus() {
+		return 0.5;
+	}
+
+	/** „Bleiben“ in der Basis = Wache: verteidigt die Basis auch ohne dich. */
+	@Override
+	protected boolean canGuardBase() {
+		return true;
+	}
+
 	// ------------------------------------------------------------------
 	// Talente (v0.26): Klinge, Panzer, Jagd
 	// ------------------------------------------------------------------
@@ -96,10 +108,6 @@ public class MantisCompanion extends Companion {
 		return 0.08 * talent("sharp_blades");
 	}
 
-	@Override
-	protected double intervalFactor() {
-		return 1.0 - 0.08 * talent("quick_strike");
-	}
 
 	@Override
 	protected double critChance() {
@@ -281,5 +289,170 @@ public class MantisCompanion extends Companion {
 		}
 
 		return hit;
+	}
+
+	// ------------------------------------------------------------------
+	// v0.25.3: Meister-Talente und Spezialangriffe
+	// ------------------------------------------------------------------
+
+	private int bloodlustTicks;
+	private int bloodlustStacks;
+	private int stormTicks;
+
+	@Override
+	protected double intervalFactor() {
+		double factor = 1.0 - 0.08 * talent("quick_strike");
+		return bloodlustTicks > 0 ? factor * (1.0 - 0.15 * bloodlustStacks) : factor;
+	}
+
+	/** Blutrausch: jeder Sieg macht sie 5 s lang schneller (bis 3-fach). */
+	@Override
+	protected void onKill(ServerLevel level, LivingEntity target) {
+		if (talent("bloodlust") > 0) {
+			bloodlustStacks = Math.min(3, bloodlustStacks + 1);
+			bloodlustTicks = 100;
+			level.sendParticles(ParticleTypes.ANGRY_VILLAGER, getX(), getY() + getBbHeight(), getZ(), 2, 0.2, 0.1, 0.2, 0.0);
+		}
+	}
+
+	/** Raubtier: +30 % Schaden gegen Ziele unter halbem Leben. */
+	@Override
+	protected double bonusDamageAgainst(LivingEntity target) {
+		return talent("predator") > 0 && target.getHealth() < target.getMaxHealth() * 0.5f ? 0.3 : 0.0;
+	}
+
+	/** Kristallhaut: 20 % Chance, einen Treffer ganz abzuwehren. */
+	@Override
+	protected boolean blockDamage(ServerLevel level, net.minecraft.world.damagesource.DamageSource source) {
+		return talent("crystal_skin") > 0 && random.nextFloat() < 0.2f;
+	}
+
+	@Override
+	protected int specialBaseCooldown(int which) {
+		return switch (which) {
+			case 0 -> 20 * 60;       // Lähmender Stich
+			case 1 -> 20 * 45;       // Klingensturm
+			default -> 20 * 40;      // Hinrichtung
+		};
+	}
+
+	@Override
+	protected boolean specialNeedsTarget(int which) {
+		return which != 1;
+	}
+
+	@Override
+	protected boolean canUseSpecialNow() {
+		return !isVehicle();
+	}
+
+	/** Springt zum Ziel (für Stich und Hinrichtung); false = kein Platz neben dem Ziel und zu weit weg. */
+	private boolean lungeAt(ServerLevel level, LivingEntity target) {
+		if (distanceToSqr(target) > 3.5 * 3.5) {
+			Vec3 dir = position().subtract(target.position()).multiply(1, 0, 1);
+			Vec3 at = target.position().add(dir.lengthSqr() > 0.01 ? dir.normalize().scale(1.4) : new Vec3(1.4, 0, 0));
+			level.sendParticles(ParticleTypes.PORTAL, getX(), getY() + 0.5, getZ(), 20, 0.3, 0.4, 0.3, 0.2);
+
+			if (!leapTo(level, new Vec3(at.x, target.getY(), at.z))) {
+				return false;
+			}
+		}
+
+		lookAt(target, 360.0f, 360.0f);
+		setTarget(target);
+		return true;
+	}
+
+	@Override
+	protected boolean performSpecial(ServerLevel level, int which, net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity target) {
+		float power = specialPower();
+		float base = (float) getAttributeValue(Attributes.ATTACK_DAMAGE);
+
+		switch (which) {
+			case 0 -> {
+				// Lähmender Stich: 5 s betäubt, 30 s Gift
+				if (target == null || target.distanceToSqr(this) > 20 * 20) {
+					return false;
+				}
+
+				if (!lungeAt(level, target)) {
+					return false;
+				}
+
+				target.hurtServer(level, damageSources().mobAttack(this), base * 1.5f * power);
+				Companion.stun(level, target, (int) (100 * power));
+				target.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.POISON, 20 * 30, power > 1.2f ? 1 : 0), this);
+				level.sendParticles(ParticleTypes.ITEM_SLIME, target.getX(), target.getY() + target.getBbHeight() * 0.6, target.getZ(), 20, 0.3, 0.3, 0.3, 0.1);
+				playSound(ModSounds.MANTIS_ATTACK, 1.2f, 0.6f);
+				return true;
+			}
+			case 1 -> {
+				// Klingensturm: drei Wirbel, jeder trifft alles in 4 Blöcken
+				stormTicks = 30;
+				playSound(ModSounds.MANTIS_ATTACK, 1.2f, 1.4f);
+				return true;
+			}
+			default -> {
+				// Hinrichtung: Sprung + gewaltiger Hieb, gegen geschwächte Ziele doppelt
+				if (target == null || target.distanceToSqr(this) > 20 * 20) {
+					return false;
+				}
+
+				if (!lungeAt(level, target)) {
+					return false;
+				}
+
+				float damage = base * 2.5f * power * (target.getHealth() < target.getMaxHealth() * 0.35f ? 2.0f : 1.0f);
+				target.hurtServer(level, damageSources().mobAttack(this), damage);
+				level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 3, 0.3, 0.2, 0.3, 0);
+				level.sendParticles(ParticleTypes.ENCHANTED_HIT, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 25, 0.3, 0.4, 0.3, 0.2);
+				playSound(ModSounds.MANTIS_ATTACK, 1.3f, 0.5f);
+				return true;
+			}
+		}
+	}
+
+	@Override
+	protected void tickSpecialEffects(ServerLevel level) {
+		if (bloodlustTicks > 0 && --bloodlustTicks == 0) {
+			bloodlustStacks = 0;
+		}
+
+		if (stormTicks > 0 && isExhausted()) {
+			stormTicks = 0;
+		}
+
+		if (stormTicks > 0) {
+			stormTicks--;
+			setYRot(getYRot() + 36.0f);
+			yBodyRot = getYRot();
+
+			if (stormTicks % 10 == 0) {
+				float damage = (float) getAttributeValue(Attributes.ATTACK_DAMAGE) * specialPower();
+				triggerAttack();
+				level.sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY() + 0.8, getZ(), 6, 1.6, 0.2, 1.6, 0.0);
+
+				for (LivingEntity other : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0),
+						e -> e instanceof Enemy && e.isAlive())) {
+					other.hurtServer(level, damageSources().mobAttack(this), damage);
+					Vec3 push = other.position().subtract(position()).normalize().scale(0.6);
+					other.push(push.x, 0.25, push.z);
+				}
+
+				playSound(ModSounds.MANTIS_ATTACK, 0.9f, 1.2f + random.nextFloat() * 0.4f);
+			}
+		}
+	}
+
+	@Override
+	protected void addAdditionalSaveData(net.minecraft.world.level.storage.ValueOutput output) {
+		super.addAdditionalSaveData(output);
+		output.putInt("Unbreakable", unbreakableCooldown);
+	}
+
+	@Override
+	protected void readAdditionalSaveData(net.minecraft.world.level.storage.ValueInput input) {
+		super.readAdditionalSaveData(input);
+		unbreakableCooldown = input.getIntOr("Unbreakable", 0);
 	}
 }
