@@ -9,6 +9,7 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 - [Storage network](#storage-network)
 - [Helpers and their homes](#helpers-and-their-homes)
 - [Phoenix mail and travel](#phoenix-mail-and-travel)
+- [Farm tools](#farm-tools)
 - [Bosses and the End](#bosses-and-the-end)
 - [Amethyst Obsidian gear](#amethyst-obsidian-gear)
 - [Backpacks](#backpacks)
@@ -341,6 +342,55 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 </table>
 
 </td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/signal_lantern.png" width="40" height="40" alt="Signal Lantern" title="Signal Lantern"><br><sub>Signal Lantern</sub></td></tr></table>
+
+## Farm tools
+
+### Amethyst Hopper
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"></td><td align="center" width="72"><sub>Amethyst Shard</sub></td></tr>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Hopper</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/amethyst_hopper.png" width="40" height="40" alt="Amethyst Hopper" title="Amethyst Hopper"><br><sub>Amethyst Hopper</sub></td></tr></table>
+
+### Crystal Pusher
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><sub>Dropper</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_pusher.png" width="40" height="40" alt="Crystal Pusher" title="Crystal Pusher"><br><sub>Crystal Pusher</sub></td></tr></table>
+
+### Farm Monitor
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Glass Pane</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><sub>Observer</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/farm_monitor.png" width="40" height="40" alt="Farm Monitor" title="Farm Monitor"><br><sub>Farm Monitor</sub></td></tr></table>
+
+### Chunk Loader
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><img src="../images/items/amethyst_core.png" width="32" height="32" alt="Amethyst Core" title="Amethyst Core"><br><sub>Amethyst Core</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
+<tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/chunk_loader.png" width="40" height="40" alt="Chunk Loader" title="Chunk Loader"><br><sub>Chunk Loader</sub></td></tr></table>
 
 ## Bosses and the End
 

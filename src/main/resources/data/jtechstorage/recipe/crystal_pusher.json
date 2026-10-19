@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:gold_ingot",
+    "D": "minecraft:dropper"
+  },
+  "pattern": [
+    " A ",
+    "GDA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_pusher"
+  }
+}

@@ -233,6 +233,11 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 		}
 	}
 
+	/** Position des Terminals (nur Server; v0.27.0 für die Farmen-Liste). */
+	public net.minecraft.core.@Nullable GlobalPos terminalPos() {
+		return terminal == null || terminal.getLevel() == null ? null : net.minecraft.core.GlobalPos.of(terminal.getLevel().dimension(), terminal.getBlockPos());
+	}
+
 	/** Statistik an den Client schicken (nur Server). */
 	public void sendStats(ServerPlayer player) {
 		if (terminal == null) {

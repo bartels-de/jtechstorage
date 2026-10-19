@@ -281,7 +281,7 @@ public class MantisCompanion extends Companion {
 			level.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + target.getBbHeight() * 0.5, target.getZ(), 1, 0, 0, 0, 0);
 
 			for (LivingEntity other : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(whirl ? 3.0 : 2.0),
-					e -> e != target && e instanceof Enemy && e.isAlive())) {
+					e -> e != target && Companion.hostile(e))) {
 				other.hurtServer(level, damageSources().mobAttack(this), damage);
 				Vec3 push = other.position().subtract(position()).normalize().scale(0.5);
 				other.push(push.x, 0.2, push.z);
@@ -439,7 +439,7 @@ public class MantisCompanion extends Companion {
 				level.sendParticles(ParticleTypes.SWEEP_ATTACK, getX(), getY() + 0.8, getZ(), 6, 1.6, 0.2, 1.6, 0.0);
 
 				for (LivingEntity other : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0),
-						e -> e instanceof Enemy && e.isAlive())) {
+						e -> Companion.hostile(e))) {
 					other.hurtServer(level, damageSources().mobAttack(this), damage);
 					Vec3 push = other.position().subtract(position()).normalize().scale(0.6);
 					other.push(push.x, 0.25, push.z);

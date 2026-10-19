@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "active=true": {
+      "model": "jtechstorage:block/chunk_loader_on"
+    },
+    "active=false": {
+      "model": "jtechstorage:block/chunk_loader_off"
+    }
+  }
+}

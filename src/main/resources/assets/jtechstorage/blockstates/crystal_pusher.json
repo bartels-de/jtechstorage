@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/crystal_pusher"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/crystal_pusher",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/crystal_pusher",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/crystal_pusher",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "jtechstorage:block/crystal_pusher",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "jtechstorage:block/crystal_pusher",
+      "x": 90
+    }
+  }
+}

@@ -121,7 +121,7 @@ public abstract class Companion extends TamableAnimal {
 	/** Grundschaden der Mantis je Stufe – Rabe kämpft mit 50 %, Pilz mit 25 % davon (v0.25.2). */
 	public static final double[] MANTIS_DAMAGE = {4, 7, 11};
 
-	/** Anteil am Mantis-Schaden: Mantis 1.0, Rabe 0.5, Pilz 0.25. */
+	/** Anteil am Mantis-Schaden: Mantis 1.0, Rabe 0.7 (v0.26.2), Pilz 0.25. */
 	protected abstract double combatShare();
 
 	/** Schaden auf der aktuellen Stufe. */
@@ -690,6 +690,7 @@ public abstract class Companion extends TamableAnimal {
 		registerCompanionGoals();
 		// Kämpfen können alle Begleiter (Mantis am stärksten, Rabe halb so stark, Pilz ein Viertel)
 		goalSelector.addGoal(5, new CompanionMeleeGoal());
+		goalSelector.addGoal(5, new CompanionRangedGoal());
 		// Haltung (v0.26): aggressiv = alles, defensiv = nur verteidigen, passiv = gar nicht
 		targetSelector.addGoal(1, new net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal(this) {
 			@Override
@@ -711,6 +712,7 @@ public abstract class Companion extends TamableAnimal {
 		}.setAlertOthers());
 		targetSelector.addGoal(4, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
 				(target, level) -> target instanceof net.minecraft.world.entity.monster.Enemy && !(target instanceof net.minecraft.world.entity.monster.Creeper)
+						&& !dev.bartels.jtechstorage.farm.FarmZones.isProtected(level, target.blockPosition())
 						&& (isActive() && nearOwner(target) || isGuarding() && nearBase(target))) {
 			@Override
 			public boolean canUse() {
@@ -754,17 +756,104 @@ public abstract class Companion extends TamableAnimal {
 
 		@Override
 		public boolean canUse() {
-			return !isVehicle() && canFight() && super.canUse();
+			return !isVehicle() && canFight() && !isRanged() && super.canUse();
 		}
 
 		@Override
 		public boolean canContinueToUse() {
-			return !isVehicle() && super.canContinueToUse();
+			return !isVehicle() && !isRanged() && super.canContinueToUse();
 		}
 
 		@Override
 		protected boolean canPerformAttack(LivingEntity target) {
 			return attackCooldown <= 0 && super.canPerformAttack(target);
+		}
+	}
+
+	/** Feindliches, lebendes Monster außerhalb der Schonzonen von Farm-Monitoren (v0.27.0) – für Flächenangriffe. */
+	public static boolean hostile(LivingEntity e) {
+		return e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && !dev.bartels.jtechstorage.farm.FarmZones.isProtected(e.level(), e.blockPosition());
+	}
+
+	/** Kämpft nur aus der Ferne (v0.26.1: Pilz)? */
+	protected boolean isRanged() {
+		return false;
+	}
+
+	/** Reichweite des Fernangriffs in Blöcken. */
+	protected double rangedRange() {
+		return 10.0;
+	}
+
+	/** Effekt des Fernangriffs (Partikelspur o. Ä.), vor dem Treffer. */
+	protected void rangedEffect(ServerLevel level, LivingEntity target) {
+	}
+
+	/** Fernkampf (v0.26.1): hält Abstand, braucht freie Sicht und trifft aus bis zu {@link #rangedRange()} Blöcken. */
+	private class CompanionRangedGoal extends Goal {
+		private int repath;
+
+		CompanionRangedGoal() {
+			setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			return isRanged() && !isVehicle() && canFight() && getTarget() != null && getTarget().isAlive();
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return canUse();
+		}
+
+		@Override
+		public void stop() {
+			getNavigation().stop();
+		}
+
+		@Override
+		public boolean requiresUpdateEveryTick() {
+			return true;
+		}
+
+		@Override
+		public void tick() {
+			LivingEntity target = getTarget();
+
+			if (target == null || !(level() instanceof ServerLevel level)) {
+				return;
+			}
+
+			getLookControl().setLookAt(target, 30.0f, 30.0f);
+			double dist = distanceTo(target);
+			boolean sees = getSensing().hasLineOfSight(target);
+			double range = rangedRange();
+
+			if (dist > range * 0.85 || !sees) {
+				if (--repath <= 0) {
+					repath = 10;
+					getNavigation().moveTo(target, 1.15);
+				}
+			} else if (dist < 3.5) {
+				// zu nah: zurückweichen
+				if (--repath <= 0) {
+					repath = 10;
+					Vec3 away = net.minecraft.world.entity.ai.util.DefaultRandomPos.getPosAway(Companion.this, 8, 4, target.position());
+
+					if (away != null) {
+						getNavigation().moveTo(away.x, away.y, away.z, 1.3);
+					}
+				}
+			} else {
+				getNavigation().stop();
+				repath = 0;
+			}
+
+			if (sees && dist <= range && attackCooldown <= 0) {
+				rangedEffect(level, target);
+				doHurtTarget(level, target);
+			}
 		}
 	}
 
@@ -1222,7 +1311,8 @@ public abstract class Companion extends TamableAnimal {
 	private boolean validSpecialTarget(LivingEntity e) {
 		return e.isAlive() && e != this && e != getOwner() && !(e instanceof Player) && !(e instanceof Companion)
 				&& (e instanceof net.minecraft.world.entity.monster.Enemy || e instanceof net.minecraft.world.entity.Mob mob && mob.getTarget() == getOwner())
-				&& !(e instanceof TamableAnimal pet && getOwner() != null && pet.isOwnedBy(getOwner()));
+				&& !(e instanceof TamableAnimal pet && getOwner() != null && pet.isOwnedBy(getOwner()))
+				&& !dev.bartels.jtechstorage.farm.FarmZones.isProtected(level(), e.blockPosition());
 	}
 
 	/** Abklingzeit, „Instinkt“ (automatisch bei Gefahr) und Nachwirkungen der Art. */
@@ -1237,7 +1327,7 @@ public abstract class Companion extends TamableAnimal {
 				&& getOwner() instanceof ServerPlayer owner && owner.level() == level && owner.distanceToSqr(this) < 24 * 24) {
 			boolean lowHealth = owner.getHealth() < owner.getMaxHealth() * 0.3f;
 			int enemies = level.getEntitiesOfClass(LivingEntity.class, owner.getBoundingBox().inflate(6.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive()).size();
+					e -> Companion.hostile(e)).size();
 
 			if (lowHealth && enemies > 0 || enemies >= 3) {
 				useSpecial(owner, true);
@@ -1701,7 +1791,8 @@ public abstract class Companion extends TamableAnimal {
 
 	@Override
 	public boolean canAttack(LivingEntity target) {
-		return canFight() && !(target instanceof Player) && !(target instanceof Companion) && super.canAttack(target);
+		return canFight() && !(target instanceof Player) && !(target instanceof Companion)
+				&& !dev.bartels.jtechstorage.farm.FarmZones.isProtected(level(), target.blockPosition()) && super.canAttack(target);
 	}
 
 	@Override

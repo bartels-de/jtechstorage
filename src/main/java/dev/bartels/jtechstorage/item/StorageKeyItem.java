@@ -71,6 +71,11 @@ public class StorageKeyItem extends LinkedTerminalItem {
 		Player player = context.getPlayer();
 		BlockPos pos = context.getClickedPos();
 
+		// Farm-Monitor (v0.27.0): mit dem Terminal des Schlüssels verbinden (erneut klicken trennt)
+		if (player != null && level.getBlockEntity(pos) instanceof dev.bartels.jtechstorage.farm.FarmMonitorBlockEntity monitor) {
+			return monitor.linkWithKey(player, context.getItemInHand());
+		}
+
 		if (player == null || !level.getBlockState(pos).is(ModContent.NETWORK_STORAGE)
 				|| !(level.getBlockEntity(pos) instanceof Container)) {
 			return InteractionResult.PASS;

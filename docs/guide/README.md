@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.26.0** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.27.1** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 
@@ -33,6 +33,7 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | 🛠️ | [Recipes](13-recipes.md) | Every recipe with pictures, plus items that have no recipe |
 | 🎮 | [Controls and commands](14-controls-and-commands.md) | All keys, mouse actions and commands on one page |
 | ⚙️ | [Configuration](15-configuration.md) | Every option of `config/jtechstorage.json` |
+| 🏭 | [Farm tools](16-farm-tools.md) | Amethyst Hopper, Crystal Pusher, Farm Monitor (statistics, warnings, safe zone for companions), Chunk Loader |
 
 ## Quick answers
 
@@ -59,6 +60,10 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | get gear stronger than netherite | [Amethyst Obsidian gear](09-bosses-and-end.md#amethyst-obsidian-gear) |
 | get Double Jump or Sprint | [Crystal enchantments](10-crystal-enchantments.md) |
 | change ranges, boss health or storm rules | [Configuration](15-configuration.md) |
+| see what my iron farm produces / get warned when it stops | [Farm tools → Farm Monitor](16-farm-tools.md#farm-monitor) |
+| stop my companion from killing the mobs in my farm | [Farm tools → Farm Monitor](16-farm-tools.md#farm-monitor) (safe zone) |
+| move items faster than a hopper, or upwards | [Farm tools](16-farm-tools.md) |
+| keep my farm running while I'm away | [Farm tools → Chunk Loader](16-farm-tools.md#chunk-loader) |
 
 ## Good to know
 

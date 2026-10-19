@@ -137,9 +137,13 @@ public class TerminalStatsScreen extends Screen {
 		List<Component> tooltip = null;
 
 		graphics.text(font, "✦", x + 8, y + 7, 0xFFE0B0FF, true);
-		GuiTheme.label(graphics, font, title, x + 20, y + 7, W - 70, text);
+		GuiTheme.label(graphics, font, title, x + 20, y + 7, W - 120, text);
 		boolean closeHover = over(W - 22, 4, 14, 12, mouseX, mouseY);
 		graphics.text(font, "×", x + W - 17, y + 6, closeHover ? GuiTheme.accentHover() : text, false);
+		// Farmen (v0.27.0)
+		boolean farmsHover = over(W - 96, 3, 70, 13, mouseX, mouseY);
+		GuiTheme.labeled(graphics, font, x + W - 96, y + 3, 70, 13, Component.translatable("jtechstorage.farms.open"),
+				farmsHover ? GuiTheme.accentHover() : GuiTheme.accent(), true);
 
 		// --- Füllstand ---------------------------------------------------
 		TerminalContentsPayload.NetworkInfo info = menu.getClientInfo();
@@ -308,6 +312,12 @@ public class TerminalStatsScreen extends Screen {
 		if (over(W - 22, 4, 14, 12, event.x(), event.y())) {
 			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
 			onClose();
+			return true;
+		}
+
+		if (over(W - 96, 3, 70, 13, event.x(), event.y())) {
+			minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f));
+			minecraft.setScreenAndShow(new dev.bartels.jtechstorage.client.farm.FarmsScreen(this, menu));
 			return true;
 		}
 

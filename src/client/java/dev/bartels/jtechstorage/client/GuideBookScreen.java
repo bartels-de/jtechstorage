@@ -196,6 +196,7 @@ public class GuideBookScreen extends Screen {
 		info("interface");
 		info("controls");
 		info("rest");
+		info("farm_tools");
 		info("cosmetics");
 
 		chapter(ModContent.TEAM_TERMINAL_ITEM, "team");

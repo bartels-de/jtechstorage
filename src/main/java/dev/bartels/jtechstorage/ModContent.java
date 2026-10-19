@@ -504,6 +504,7 @@ public final class ModContent {
 							dev.bartels.jtechstorage.storm.StormContent.creativeItems().forEach(output::accept);
 							dev.bartels.jtechstorage.wolf.WolfContent.creativeItems().forEach(output::accept);
 							dev.bartels.jtechstorage.companion.CompanionContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.farm.FarmContent.creativeItems().forEach(output::accept);
 						})
 						.build());
 	}

@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "facing=north,warn=false": {
+      "model": "jtechstorage:block/farm_monitor"
+    },
+    "facing=north,warn=true": {
+      "model": "jtechstorage:block/farm_monitor_warn"
+    },
+    "facing=east,warn=false": {
+      "model": "jtechstorage:block/farm_monitor",
+      "y": 90
+    },
+    "facing=east,warn=true": {
+      "model": "jtechstorage:block/farm_monitor_warn",
+      "y": 90
+    },
+    "facing=south,warn=false": {
+      "model": "jtechstorage:block/farm_monitor",
+      "y": 180
+    },
+    "facing=south,warn=true": {
+      "model": "jtechstorage:block/farm_monitor_warn",
+      "y": 180
+    },
+    "facing=west,warn=false": {
+      "model": "jtechstorage:block/farm_monitor",
+      "y": 270
+    },
+    "facing=west,warn=true": {
+      "model": "jtechstorage:block/farm_monitor_warn",
+      "y": 270
+    }
+  }
+}

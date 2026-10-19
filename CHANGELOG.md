@@ -3,6 +3,60 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.27.1]
+
+### Added
+- **Chunk Loader:** keeps its own chunk loaded at all times, also while you are offline. Runs on amethyst shards (1 per
+  hour, amethyst block = 4), can be fed by hoppers, switches off without fuel and messages its owner. Each player may have
+  25 active chunk loaders by default. Its window shows status, remaining time and the chunk borders on request.
+- Config section `farm`: `chunkLoadersPerPlayer`, `chunkLoaderMinutesPerShard`.
+
+## [0.27.0]
+
+### Added
+- **Farm tools** for your Minecraft farms (iron, gold, mob, crop farms …):
+  - **Amethyst Hopper:** works like a hopper (down or sideways, 5 slots, redstone lock, comparator) but moves **8 items
+    every 4 ticks** – 16 times as fast – and sucks in items in a 3 × 3 area above it.
+  - **Crystal Pusher:** pushes items from the container behind it into the container in front of it, in all six
+    directions (upwards too). Placed facing where you look, stopped by redstone, with a 9-slot filter (empty = all).
+  - **Farm Monitor:** placed against a farm's output chest it counts what arrives – items per hour, a chart of the last
+    hour, the most common items – and warns its owner when nothing arrives for 5 / 10 / 30 minutes or the chest is full
+    (screen turns red, chat message). A **safe zone** (8–32 blocks) keeps **companions from attacking the farm's mobs**,
+    even with special attacks. Linked with a Storage Key, the terminal lists all farms under **Statistics → Farms**.
+- New guide page *Farm tools* and a handbook page.
+
+## [0.26.4]
+
+### Added
+- **Crow Double** (Night Raven, passive): a hit that would kill you makes you burst into crows instead. A dark violet,
+  translucent shadow decoy with your own skin stays for 6 seconds and draws all monsters within 16 blocks, then dissolves
+  into smoke and crows. You reappear 5–8 blocks away with 4 hearts, invisible and with Resistance II for 3 seconds.
+  Once every 10 minutes (6 minutes at level 100), while the raven is within 32 blocks; it does not help against the void
+  or `/kill`. The menu and the HUD (✧) show when it is ready.
+
+## [0.26.3]
+
+### Added
+- **Night Raven passive abilities** – always active, stronger with every level:
+  - **Crow Scatter:** when hit, it sometimes bursts into a swarm of crows, takes no damage and reassembles a few blocks
+    away (10 % at level 1 up to 35 % at level 100, at most every 3 s).
+  - **Scout Crows:** every 30 s (down to 20 s) three small shadow crows circle you, make monsters within 12–22 blocks
+    glow for 6 s and caw a warning when a creeper is behind you.
+  - **Guardian Crow:** a crow throws itself in front of arrows and other projectiles aimed at you (15 % up to 35 %, at
+    most every 2 s, while the raven is within 24 blocks).
+
+## [0.26.2]
+
+### Changed
+- The **Night Raven** is a much stronger fighter: 70 % of the mantis' damage (was 50 %), quicker strikes (every 1.1 s
+  instead of 1.6 s), more health (18 / 32 / 50 instead of 16 / 24 / 36) and light armor (0 / 2 / 4).
+
+## [0.26.1]
+
+### Changed
+- The **Amethyst Shroom** now fights only from a distance: it keeps away from monsters and hurls spore bolts (up to 10
+  blocks, 12 at stage 3) instead of headbutting them.
+
 ## [0.26.0]
 
 Everything since 0.25.0 is about companions: a home base, special attacks, customization with visible equipment, and a

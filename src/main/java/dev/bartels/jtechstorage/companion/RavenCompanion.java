@@ -47,7 +47,9 @@ import dev.bartels.jtechstorage.network.StorageNetwork;
  * Shift + Rechtsklick: Tasche öffnen.
  */
 public class RavenCompanion extends Companion {
-	private static final double[] HEALTH = {16, 24, 36};
+	/** v0.26.2: kräftiger – mehr Leben, leichte Rüstung, 70 % des Mantis-Schadens, schnellere Schnabelhiebe. */
+	private static final double[] HEALTH = {18, 32, 50};
+	private static final double[] ARMOR = {0, 2, 4};
 	private static final double[] RADIUS = {3.0, 5.0, 8.0};
 	private static final int MAX_SLOTS = 27;
 
@@ -76,7 +78,8 @@ public class RavenCompanion extends Companion {
 				.add(Attributes.MAX_HEALTH, HEALTH[0])
 				.add(Attributes.MOVEMENT_SPEED, 0.25)
 				.add(Attributes.FLYING_SPEED, 0.5)
-				.add(Attributes.ATTACK_DAMAGE, MANTIS_DAMAGE[0] * 0.5)
+				.add(Attributes.ATTACK_DAMAGE, MANTIS_DAMAGE[0] * 0.7)
+				.add(Attributes.ARMOR, 0.0)
 				.add(Attributes.FOLLOW_RANGE, 24.0);
 	}
 
@@ -118,6 +121,7 @@ public class RavenCompanion extends Companion {
 	protected void applyStageAttributes(int stage) {
 		setMaxHealthKeepRatio(HEALTH[stage - 1]);
 		setBase(this, Attributes.FLYING_SPEED, 0.5 + stage * 0.1);
+		setBase(this, Attributes.ARMOR, ARMOR[stage - 1]);
 	}
 
 	@Override
@@ -146,7 +150,7 @@ public class RavenCompanion extends Companion {
 
 	@Override
 	protected int attackInterval() {
-		return 32;
+		return 22;
 	}
 
 	// ------------------------------------------------------------------
@@ -199,7 +203,7 @@ public class RavenCompanion extends Companion {
 
 	@Override
 	protected double combatShare() {
-		return 0.5;
+		return 0.7;
 	}
 
 	@Override
@@ -247,7 +251,7 @@ public class RavenCompanion extends Companion {
 			playSound(ModSounds.RAVEN_DEPART, 0.8f, 0.6f);
 
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(4.0),
-					e -> e != target && e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> e != target && Companion.hostile(e))) {
 				enemy.hurtServer(level, damageSources().indirectMagic(this, this), 3.0f);
 			}
 		}
@@ -274,7 +278,7 @@ public class RavenCompanion extends Companion {
 
 		if (talent("night_eye") > 0 && tickCount % 200 == 0) {
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, owner.getBoundingBox().inflate(16.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> Companion.hostile(e))) {
 				enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, 120, 0));
 			}
 		}
@@ -504,6 +508,8 @@ public class RavenCompanion extends Companion {
 		if (exploreCooldown > 0 && exploreTicks == 0) {
 			exploreCooldown--;
 		}
+
+		tickPassives(level);
 
 		if (getTarget() != null) {
 			shoulderDelay = 30;
@@ -755,7 +761,190 @@ public class RavenCompanion extends Companion {
 			return false;
 		}
 
+		if (crowScatter(level, source)) {
+			return false;
+		}
+
 		return super.hurtServer(level, source, amount);
+	}
+
+	// ------------------------------------------------------------------
+	// Passive Fähigkeiten (v0.26.3), immer aktiv, wachsen mit dem Level:
+	// Krähenzerfall (weicht aus), Späherkrähen (markieren Monster, warnen vor Creepern), Schutzkrähe (fängt Geschosse ab)
+	// ------------------------------------------------------------------
+
+	private int scatterCooldown;
+	/** Krähen-Doppelgänger (v0.26.4): Abklingzeit in Ticks. */
+	private int decoyCooldown;
+
+	public int decoyCooldown() {
+		return decoyCooldown;
+	}
+
+	/** Abklingzeit des Doppelgängers: 10 Minuten, auf Level 100 nur noch 6. */
+	private int decoyInterval() {
+		return 20 * 60 * 10 - (int) (20 * 60 * 4 * Math.min(100, getLevel()) / 100.0);
+	}
+
+	/**
+	 * Krähen-Doppelgänger: ein tödlicher Treffer lässt den Besitzer in Krähen zerfallen. Ein Schatten-Abbild bleibt stehen und
+	 * zieht die Monster auf sich, der Besitzer taucht 5–8 Blöcke weiter mit 4 Herzen, kurz unsichtbar und mit Resistenz auf.
+	 */
+	public boolean tryDecoy(ServerPlayer owner) {
+		if (decoyCooldown > 0 || isAway() || isExhausted() || owner.level() != level() || distanceToSqr(owner) > 32 * 32) {
+			return false;
+		}
+
+		ServerLevel level = (ServerLevel) level();
+		decoyCooldown = decoyInterval();
+		crowPuff(level, owner.getX(), owner.getY() + 1.0, owner.getZ());
+		level.playSound(null, owner.getX(), owner.getY() + 1, owner.getZ(), ModSounds.RAVEN_DEPART, net.minecraft.sounds.SoundSource.PLAYERS, 1.2f, 0.8f);
+		CrowDecoy.spawn(level, owner);
+
+		for (int k = 0; k < 5; k++) {
+			SwarmRaven.scout(level, this, owner, k * (Math.PI * 2 / 5));
+		}
+
+		owner.setHealth(8.0f);
+		owner.clearFire();
+		owner.fallDistance = 0;
+
+		for (int tries = 0; tries < 12; tries++) {
+			double angle = random.nextDouble() * Math.PI * 2;
+			double dist = 5.0 + random.nextDouble() * 3.0;
+
+			if (owner.randomTeleport(owner.getX() + Math.cos(angle) * dist, owner.getY() + 1, owner.getZ() + Math.sin(angle) * dist, false, state -> true)) {
+				break;
+			}
+		}
+
+		crowPuff(level, owner.getX(), owner.getY() + 1.0, owner.getZ());
+		owner.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.INVISIBILITY, 60, 0, false, false, true));
+		owner.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.RESISTANCE, 60, 1, false, true, true));
+		owner.sendSystemMessage(Component.translatable("jtechstorage.raven.decoy", getDisplayName()).withStyle(ChatFormatting.DARK_PURPLE));
+		return true;
+	}
+	private int scoutTimer = 200;
+	private int guardCooldown;
+
+	/** Chance, einem Treffer als Krähenschwarm auszuweichen: 10 % + 0,25 % je Level, höchstens 35 %. */
+	public double scatterChance() {
+		return Math.min(0.35, 0.10 + 0.0025 * getLevel());
+	}
+
+	/** Chance, ein Geschoss auf den Besitzer abzufangen: 15 % + 0,2 % je Level, höchstens 35 %. */
+	public double guardChance() {
+		return Math.min(0.35, 0.15 + 0.002 * getLevel());
+	}
+
+	/** Radius der Späherkrähen: 12 Blöcke + 1 je 10 Level, höchstens 24. */
+	public double scoutRadius() {
+		return Math.min(24.0, 12.0 + getLevel() / 10.0);
+	}
+
+	/** Zeit zwischen zwei Späherflügen: 30 s − 1 s je 10 Level, mindestens 15 s. */
+	private int scoutInterval() {
+		return 20 * Math.max(15, 30 - getLevel() / 10);
+	}
+
+	private void crowPuff(ServerLevel level, double x, double y, double z) {
+		level.sendParticles(net.minecraft.core.particles.ParticleTypes.LARGE_SMOKE, x, y, z, 14, 0.4, 0.4, 0.4, 0.03);
+		level.sendParticles(net.minecraft.core.particles.ParticleTypes.SQUID_INK, x, y, z, 10, 0.4, 0.4, 0.4, 0.05);
+		level.sendParticles(net.minecraft.core.particles.ParticleTypes.WITCH, x, y, z, 6, 0.3, 0.3, 0.3, 0.02);
+	}
+
+	/** Krähenzerfall: zerfällt in Krähen, weicht dem Treffer aus und setzt sich ein paar Blöcke weiter zusammen. */
+	private boolean crowScatter(ServerLevel level, DamageSource source) {
+		if (scatterCooldown > 0 || isExhausted() || isVehicle() || isOnShoulder() || source.getEntity() == null
+				|| source.is(net.minecraft.world.damagesource.DamageTypes.GENERIC_KILL) || random.nextDouble() >= scatterChance()) {
+			return false;
+		}
+
+		scatterCooldown = 60;
+		crowPuff(level, getX(), getY() + getBbHeight() * 0.5, getZ());
+		playSound(ModSounds.RAVEN_AMBIENT, 1.0f, 1.4f);
+
+		for (int tries = 0; tries < 8; tries++) {
+			double x = getX() + (random.nextDouble() - 0.5) * 8.0;
+			double z = getZ() + (random.nextDouble() - 0.5) * 8.0;
+
+			if (randomTeleport(x, getY() + random.nextInt(3), z, false, state -> true)) {
+				break;
+			}
+		}
+
+		crowPuff(level, getX(), getY() + getBbHeight() * 0.5, getZ());
+		return true;
+	}
+
+	/** Schutzkrähe: ein Geschoss, das den Besitzer treffen würde, wird manchmal abgefangen (aus dem Schadens-Ereignis). */
+	public boolean interceptFor(ServerPlayer owner, DamageSource source) {
+		if (guardCooldown > 0 || isAway() || isExhausted() || owner.level() != level() || distanceToSqr(owner) > 24 * 24
+				|| random.nextDouble() >= guardChance()) {
+			return false;
+		}
+
+		guardCooldown = 40;
+		ServerLevel level = (ServerLevel) level();
+		net.minecraft.world.entity.Entity projectile = source.getDirectEntity();
+		double x = projectile != null ? projectile.getX() : owner.getX();
+		double y = projectile != null ? projectile.getY() : owner.getY() + 1.2;
+		double z = projectile != null ? projectile.getZ() : owner.getZ();
+		crowPuff(level, x, y, z);
+		level.playSound(null, x, y, z, ModSounds.RAVEN_ATTACK, net.minecraft.sounds.SoundSource.NEUTRAL, 0.9f, 1.3f);
+
+		if (projectile != null && !(projectile instanceof Player)) {
+			projectile.discard();
+		}
+
+		owner.sendOverlayMessage(Component.translatable("jtechstorage.raven.guarded", getDisplayName()).withStyle(ChatFormatting.DARK_PURPLE));
+		return true;
+	}
+
+	/** Späherkrähen: kleine Schattenkrähen kreisen um den Besitzer, markieren Monster und warnen vor Creepern hinter ihm. */
+	private void tickPassives(ServerLevel level) {
+		if (scatterCooldown > 0) {
+			scatterCooldown--;
+		}
+
+		if (decoyCooldown > 0) {
+			decoyCooldown--;
+		}
+
+		if (guardCooldown > 0) {
+			guardCooldown--;
+		}
+
+		if (--scoutTimer > 0 || isAway() || isExhausted() || !(getOwner() instanceof ServerPlayer owner) || owner.level() != level
+				|| distanceToSqr(owner) > 32 * 32) {
+			return;
+		}
+
+		scoutTimer = scoutInterval();
+		double r = scoutRadius();
+		int found = 0;
+
+		for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, owner.getBoundingBox().inflate(r),
+				e -> Companion.hostile(e))) {
+			enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, 120, 0, false, false));
+			found++;
+
+			if (enemy instanceof net.minecraft.world.entity.monster.Creeper && enemy.distanceToSqr(owner) < 10 * 10) {
+				net.minecraft.world.phys.Vec3 look = owner.getViewVector(1.0f).multiply(1, 0, 1);
+				net.minecraft.world.phys.Vec3 to = enemy.position().subtract(owner.position()).multiply(1, 0, 1);
+
+				if (look.dot(to) < 0) {
+					owner.sendOverlayMessage(Component.translatable("jtechstorage.raven.creeper_behind", getDisplayName()).withStyle(ChatFormatting.RED));
+					level.playSound(null, owner.getX(), owner.getY() + 1, owner.getZ(), ModSounds.RAVEN_AMBIENT, net.minecraft.sounds.SoundSource.NEUTRAL, 1.2f, 1.6f);
+				}
+			}
+		}
+
+		if (found > 0) {
+			for (int k = 0; k < 3; k++) {
+				SwarmRaven.scout(level, this, owner, k * (Math.PI * 2 / 3));
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------
@@ -823,6 +1012,7 @@ public class RavenCompanion extends Companion {
 		output.putInt("Away", awayTicks + deliverPhase);
 		output.putInt("Explore", exploreTicks);
 		output.putInt("ExploreCooldown", exploreCooldown);
+		output.putInt("DecoyCooldown", decoyCooldown);
 	}
 
 	@Override
@@ -833,6 +1023,7 @@ public class RavenCompanion extends Companion {
 		int away = input.getIntOr("Away", 0);
 		exploreTicks = input.getIntOr("Explore", 0);
 		exploreCooldown = input.getIntOr("ExploreCooldown", 0);
+		decoyCooldown = input.getIntOr("DecoyCooldown", 0);
 
 		if (exploreTicks > 0) {
 			entityData.set(DATA_AWAY, true);
@@ -1002,7 +1193,7 @@ public class RavenCompanion extends Companion {
 				int duration = (int) (160 * power);
 
 				for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(10.0),
-						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+						e -> Companion.hostile(e))) {
 					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOWNESS, duration, 1), this);
 					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, duration, 0), this);
 					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, duration, 0), this);

@@ -108,6 +108,32 @@ public class ShroomCompanion extends Companion {
 		return getStage() >= 2;
 	}
 
+	/** v0.26.1: der Pilz kämpft nur noch aus der Ferne – er schleudert Sporen-Geschosse. */
+	@Override
+	protected boolean isRanged() {
+		return true;
+	}
+
+	@Override
+	protected double rangedRange() {
+		return getStage() == 3 ? 12.0 : 10.0;
+	}
+
+	@Override
+	protected void rangedEffect(ServerLevel level, LivingEntity target) {
+		net.minecraft.world.phys.Vec3 from = getEyePosition();
+		net.minecraft.world.phys.Vec3 to = target.position().add(0, target.getBbHeight() * 0.6, 0);
+		net.minecraft.world.phys.Vec3 step = to.subtract(from);
+		int n = Math.max(4, (int) (step.length() / 0.35));
+
+		for (int k = 1; k <= n; k++) {
+			net.minecraft.world.phys.Vec3 at = from.add(step.scale(k / (double) n));
+			level.sendParticles(k % 3 == 0 ? SPORE_GREEN : SPORE, at.x, at.y, at.z, 1, 0.03, 0.03, 0.03, 0.0);
+		}
+
+		level.sendParticles(SPORE, to.x, to.y, to.z, 10, 0.25, 0.25, 0.25, 0.02);
+	}
+
 	/** Pflanzen der Basis (Cache, alle 30 s neu gesucht). */
 	private final List<net.minecraft.core.BlockPos> crops = new ArrayList<>();
 	private int cropScan;
@@ -322,7 +348,7 @@ public class ShroomCompanion extends Companion {
 		// Giftwolke: Monster rundherum bekommen die giftige Seite der Sporen ab
 		if (talent("toxic_cloud") > 0) {
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(5.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> Companion.hostile(e))) {
 				enemy.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 1), this);
 				level.sendParticles(SPORE_GREEN, enemy.getX(), enemy.getY() + enemy.getBbHeight() * 0.5, enemy.getZ(), 10, 0.3, 0.4, 0.3, 0.02);
 			}
@@ -470,7 +496,7 @@ public class ShroomCompanion extends Companion {
 		// Sporenfeld: Monster rund um ihn werden alle 5 s vergiftet
 		if (talent("spore_field") > 0 && tickCount % 100 == 0 && getStage() >= 2) {
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> Companion.hostile(e))) {
 				enemy.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0), this);
 				level.sendParticles(SPORE_GREEN, enemy.getX(), enemy.getY() + enemy.getBbHeight() * 0.5, enemy.getZ(), 6, 0.3, 0.3, 0.3, 0.01);
 			}
@@ -550,7 +576,7 @@ public class ShroomCompanion extends Companion {
 				level.sendParticles(ParticleTypes.SNEEZE, at.x, at.y + 0.5, at.z, 30, 2.0, 0.6, 2.0, 0.01);
 
 				for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(at, at).inflate(5.0),
-						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+						e -> Companion.hostile(e))) {
 					enemy.hurtServer(level, damageSources().mobAttack(this), 4.0f * power);
 					enemy.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 160, 2), this);
 					enemy.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 160, 1), this);
