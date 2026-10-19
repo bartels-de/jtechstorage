@@ -56,6 +56,8 @@ public class JTechStorageClient implements ClientModInitializer {
 			new net.minecraft.client.KeyMapping("key.jtechstorage.companion_stay", com.mojang.blaze3d.platform.InputConstants.KEY_G, KEY_CATEGORY));
 	public static final net.minecraft.client.KeyMapping COMPANION_MENU_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
 			new net.minecraft.client.KeyMapping("key.jtechstorage.companion_menu", com.mojang.blaze3d.platform.InputConstants.KEY_K, KEY_CATEGORY));
+	public static final net.minecraft.client.KeyMapping COMPANION_SPECIAL_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
+			new net.minecraft.client.KeyMapping("key.jtechstorage.companion_special", com.mojang.blaze3d.platform.InputConstants.KEY_B, KEY_CATEGORY));
 	public static final net.minecraft.client.KeyMapping DRAGON_BREATH_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
 			new net.minecraft.client.KeyMapping("key.jtechstorage.dragon_breath", com.mojang.blaze3d.platform.InputConstants.KEY_R, KEY_CATEGORY));
 	public static final net.minecraft.client.KeyMapping DRAGON_RAIN_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
@@ -124,11 +126,12 @@ public class JTechStorageClient implements ClientModInitializer {
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.RavenModel3.LAYER, dev.bartels.jtechstorage.client.entity.RavenModel3::createBodyLayer);
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.GeodeKeeperModel.LAYER, dev.bartels.jtechstorage.client.entity.GeodeKeeperModel::createBodyLayer);
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.MANTIS, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "mantis", 0.6f, new float[] {1.0f, 1.0f, 1.2f},
-				java.util.List.of(new dev.bartels.jtechstorage.client.entity.MantisModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel1.LAYER)), new dev.bartels.jtechstorage.client.entity.MantisModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel2.LAYER)), new dev.bartels.jtechstorage.client.entity.MantisModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel3.LAYER)))));
+				java.util.List.<java.util.function.Supplier<net.minecraft.client.model.EntityModel<dev.bartels.jtechstorage.client.entity.CompanionRenderState>>>of(() -> new dev.bartels.jtechstorage.client.entity.MantisModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel1.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.MantisModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel2.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.MantisModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel3.LAYER)))));
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.SHROOM, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "shroom", 0.5f, new float[] {1.0f, 1.0f, 1.0f},
-				java.util.List.of(new dev.bartels.jtechstorage.client.entity.ShroomModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel1.LAYER)), new dev.bartels.jtechstorage.client.entity.ShroomModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel2.LAYER)), new dev.bartels.jtechstorage.client.entity.ShroomModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel3.LAYER)))));
+				java.util.List.<java.util.function.Supplier<net.minecraft.client.model.EntityModel<dev.bartels.jtechstorage.client.entity.CompanionRenderState>>>of(() -> new dev.bartels.jtechstorage.client.entity.ShroomModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel1.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.ShroomModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel2.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.ShroomModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel3.LAYER)))));
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.RAVEN, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "raven", 0.4f, new float[] {1.3f, 1.5f, 2.0f},
-				java.util.List.of(new dev.bartels.jtechstorage.client.entity.RavenModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel1.LAYER)), new dev.bartels.jtechstorage.client.entity.RavenModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel2.LAYER)), new dev.bartels.jtechstorage.client.entity.RavenModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel3.LAYER)))));
+				java.util.List.<java.util.function.Supplier<net.minecraft.client.model.EntityModel<dev.bartels.jtechstorage.client.entity.CompanionRenderState>>>of(() -> new dev.bartels.jtechstorage.client.entity.RavenModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel1.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.RavenModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel2.LAYER)), () -> new dev.bartels.jtechstorage.client.entity.RavenModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel3.LAYER)))));
+		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.SWARM_RAVEN, dev.bartels.jtechstorage.client.entity.SwarmRavenRenderer::new);
 		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.GEODE_KEEPER, dev.bartels.jtechstorage.client.entity.GeodeKeeperRenderer::new);
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CheldroganModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CheldroganModel::createBodyLayer);
@@ -139,6 +142,12 @@ public class JTechStorageClient implements ClientModInitializer {
 			while (COMPANION_STAY_KEY.consumeClick()) {
 				if (client.player != null) {
 					ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.CompanionActionPayload(2));
+				}
+			}
+
+			while (COMPANION_SPECIAL_KEY.consumeClick()) {
+				if (client.player != null) {
+					ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.CompanionActionPayload(dev.bartels.jtechstorage.net.CompanionActionPayload.SPECIAL));
 				}
 			}
 

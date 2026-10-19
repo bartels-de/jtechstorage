@@ -5,16 +5,29 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Talentbaum der Begleiter (v0.26): je Art drei Zweige mit je vier Talenten. Alle 5 Level gibt es einen Punkt (bis 20 bei
- * Level 100). Ein Talent braucht mindestens einen Punkt im Talent darüber und teils eine Stufe. Zurücksetzen kostet einen
- * Amethyst-Kern. Texte: {@code jtechstorage.talent.<id>} (Name) und {@code .desc} (Wirkung je Rang).
+ * Talentbaum der Begleiter (v0.25.3): je Art vier Zweige mit je fünf Talenten.
+ * <ul>
+ *     <li>Zweige 1–3: normale Talente; ein Talent braucht mindestens einen Punkt im Talent darüber, das fünfte ist ein
+ *     Meister-Talent ab Stufe 3.</li>
+ *     <li>Zweig 4 „Spezial“: drei Spezialangriffe, von denen man nur <b>einen</b> lernen kann (Taste, Standard B), dazu
+ *     „Meisterschaft“ (braucht einen Spezialangriff) und „Instinkt“ (braucht Meisterschaft).</li>
+ * </ul>
+ * Alle 4 Level gibt es einen Punkt (bis 30 bei Level 120). Zurücksetzen kostet einen Amethyst-Kern.
+ * Texte: {@code jtechstorage.talent.<id>} (Name) und {@code .desc} (Wirkung je Rang).
  */
 public final class CompanionTalents {
-	public static final int BRANCHES = 3;
-	public static final int PER_BRANCH = 4;
+	public static final int BRANCHES = 4;
+	public static final int PER_BRANCH = 5;
 	public static final int COUNT = BRANCHES * PER_BRANCH;
-	public static final int LEVELS_PER_POINT = 5;
-	public static final int MAX_POINTS = 20;
+	public static final int LEVELS_PER_POINT = 4;
+	public static final int MAX_POINTS = 30;
+	/** Index des ersten Spezialangriffs (Zweig 4); die drei Spezialangriffe liegen bei SPECIAL..SPECIAL+2. */
+	public static final int SPECIAL = 3 * PER_BRANCH;
+	public static final int MASTERY = SPECIAL + 3;
+	public static final int INSTINCT = SPECIAL + 4;
+	/** Altes Format (v0.25.0–0.25.2): 3 Zweige × 4 Talente. */
+	private static final int OLD_PER_BRANCH = 4;
+	private static final int OLD_COUNT = 12;
 
 	/** @param symbol kurzes Zeichen für das Symbol im Menü, color Farbe des Symbols */
 	public record Talent(String id, int max, int minStage, String symbol, int color) {
@@ -27,45 +40,69 @@ public final class CompanionTalents {
 	}
 
 	private static final Map<String, Tree> TREES = Map.of(
-			"mantis", new Tree(List.of("blade", "armor", "hunt"), List.of(
+			"mantis", new Tree(List.of("blade", "armor", "hunt", "special"), List.of(
 					new Talent("sharp_blades", 3, 1, "⚔", 0xFFB07CF0),
 					new Talent("quick_strike", 2, 1, "»", 0xFF7FD06A),
 					new Talent("precision", 2, 2, "✦", 0xFFE0B040),
 					new Talent("whirl_scythe", 1, 3, "☼", 0xFFC868FF),
+					new Talent("bloodlust", 1, 3, "♨", 0xFFE04848),
 					new Talent("chitin", 3, 1, "◆", 0xFF8C8CA8),
 					new Talent("crystal_plates", 2, 1, "▣", 0xFFB07CF0),
 					new Talent("thorns", 2, 2, "✶", 0xFFC0603A),
 					new Talent("unbreakable", 1, 3, "♥", 0xFFE04848),
+					new Talent("crystal_skin", 1, 3, "❖", 0xFFD4B4FF),
 					new Talent("swift_legs", 2, 1, "»", 0xFF6ACAD0),
 					new Talent("hunt_instinct", 2, 1, "◎", 0xFFE0B040),
 					new Talent("leap_attack", 1, 2, "↑", 0xFF7FD06A),
-					new Talent("crystal_flight", 2, 3, "✧", 0xFFC868FF))),
-			"shroom", new Tree(List.of("healing", "protection", "poison"), List.of(
+					new Talent("crystal_flight", 2, 3, "✧", 0xFFC868FF),
+					new Talent("predator", 1, 3, "☠", 0xFFC0603A),
+					new Talent("paralyzing_sting", 1, 2, "✹", 0xFF7FD06A),
+					new Talent("blade_storm", 1, 2, "✺", 0xFFC868FF),
+					new Talent("execution", 1, 2, "⚡", 0xFFE04848),
+					new Talent("mastery", 2, 3, "★", 0xFFFFD27A),
+					new Talent("instinct", 1, 3, "☯", 0xFFFFFFFF))),
+			"shroom", new Tree(List.of("healing", "protection", "poison", "special"), List.of(
 					new Talent("strong_spores", 3, 1, "♥", 0xFFE06890),
 					new Talent("fast_bloom", 2, 1, "»", 0xFF7FD06A),
 					new Talent("wide_spores", 2, 2, "◎", 0xFFD4B4FF),
 					new Talent("lifesaver", 1, 3, "✚", 0xFFFFE070),
+					new Talent("second_life", 1, 3, "❀", 0xFFFF9AC8),
 					new Talent("tough_stalk", 3, 1, "▮", 0xFFC8A070),
 					new Talent("spore_shield", 2, 1, "◆", 0xFFE0C040),
 					new Talent("calm_aura", 2, 2, "☁", 0xFF9CC8F0),
 					new Talent("purify", 1, 3, "✧", 0xFFFFFFFF),
+					new Talent("mushroom_skin", 1, 3, "▣", 0xFFB07CF0),
 					new Talent("toxic_spores", 3, 1, "☠", 0xFF7FD06A),
 					new Talent("spore_burst", 2, 1, "✶", 0xFFB07CF0),
 					new Talent("numbing_spores", 2, 2, "❄", 0xFF8CC8E0),
-					new Talent("toxic_cloud", 1, 3, "☣", 0xFF5AC040))),
-			"raven", new Tree(List.of("bag", "combat", "flight"), List.of(
+					new Talent("toxic_cloud", 1, 3, "☣", 0xFF5AC040),
+					new Talent("spore_field", 1, 3, "⁂", 0xFF9CF08A),
+					new Talent("spore_veil", 1, 2, "◌", 0xFFD4B4FF),
+					new Talent("life_bloom", 1, 2, "✿", 0xFFFF9AC8),
+					new Talent("paralysis_cloud", 1, 2, "☁", 0xFF7FD06A),
+					new Talent("mastery", 2, 3, "★", 0xFFFFD27A),
+					new Talent("instinct", 1, 3, "☯", 0xFFFFFFFF))),
+			"raven", new Tree(List.of("bag", "combat", "flight", "special"), List.of(
 					new Talent("keen_eye", 3, 1, "◎", 0xFFE0B040),
 					new Talent("eager_courier", 2, 1, "✉", 0xFFC8A070),
 					new Talent("swift_delivery", 2, 2, "»", 0xFF6ACAD0),
 					new Talent("lucky_find", 1, 3, "✦", 0xFFC868FF),
+					new Talent("treasure_hunter", 1, 3, "◈", 0xFFFFD27A),
 					new Talent("sharp_beak", 3, 1, "⚔", 0xFFB0B0C0),
 					new Talent("dive", 2, 1, "↓", 0xFF7FD06A),
 					new Talent("eye_peck", 2, 2, "◉", 0xFFE04848),
 					new Talent("shadow_swarm", 1, 3, "☾", 0xFF8D6ACC),
+					new Talent("raven_call", 1, 3, "♪", 0xFFC868FF),
 					new Talent("tailwind", 3, 1, "≈", 0xFF9CC8F0),
 					new Talent("feather_fall", 2, 1, "❦", 0xFFF0F0F0),
 					new Talent("night_eye", 1, 2, "◐", 0xFFE0C040),
-					new Talent("sky_lord", 2, 3, "♛", 0xFFC868FF))));
+					new Talent("sky_lord", 2, 3, "♛", 0xFFC868FF),
+					new Talent("night_wings", 1, 3, "☽", 0xFF8D6ACC),
+					new Talent("raven_swarm", 1, 2, "⁂", 0xFF8D6ACC),
+					new Talent("shadow_dive", 1, 2, "↯", 0xFFE04848),
+					new Talent("terror_cry", 1, 2, "!", 0xFFE0B040),
+					new Talent("mastery", 2, 3, "★", 0xFFFFD27A),
+					new Talent("instinct", 1, 3, "☯", 0xFFFFFFFF))));
 
 	private static final Map<String, Map<String, Integer>> INDEX = new HashMap<>();
 
@@ -95,6 +132,21 @@ public final class CompanionTalents {
 		return index == null ? -1 : index;
 	}
 
+	public static boolean isSpecial(int index) {
+		return index >= SPECIAL && index < SPECIAL + 3;
+	}
+
+	/** Gelernter Spezialangriff (0–2) oder -1. */
+	public static int chosenSpecial(int[] ranks) {
+		for (int i = 0; i < 3; i++) {
+			if (ranks.length > SPECIAL + i && ranks[SPECIAL + i] > 0) {
+				return i;
+			}
+		}
+
+		return -1;
+	}
+
 	/** Talentpunkte auf diesem Level. */
 	public static int points(int level) {
 		return Math.min(MAX_POINTS, level / LEVELS_PER_POINT);
@@ -110,9 +162,30 @@ public final class CompanionTalents {
 		return sum;
 	}
 
+	/** Gespeicherte Ränge ins aktuelle Format bringen (alte Saves: 3 × 4 Talente). */
+	public static int[] migrate(String species, int[] saved) {
+		int[] ranks = new int[COUNT];
+
+		if (saved.length == OLD_COUNT) {
+			for (int i = 0; i < OLD_COUNT; i++) {
+				ranks[(i / OLD_PER_BRANCH) * PER_BRANCH + i % OLD_PER_BRANCH] = saved[i];
+			}
+		} else {
+			System.arraycopy(saved, 0, ranks, 0, Math.min(saved.length, COUNT));
+		}
+
+		Tree tree = tree(species);
+
+		for (int i = 0; i < COUNT; i++) {
+			ranks[i] = Math.clamp(ranks[i], 0, tree.get(i).max());
+		}
+
+		return ranks;
+	}
+
 	/** Warum kann man dieses Talent nicht lernen? null = man kann. */
 	public static String blocker(String species, int[] ranks, int index, int stage, int level) {
-		if (index < 0 || index >= COUNT) {
+		if (index < 0 || index >= COUNT || ranks.length != COUNT) {
 			return "invalid";
 		}
 
@@ -126,7 +199,15 @@ public final class CompanionTalents {
 			return "stage";
 		}
 
-		if (index % PER_BRANCH > 0 && ranks[index - 1] == 0) {
+		if (isSpecial(index)) {
+			if (chosenSpecial(ranks) >= 0) {
+				return "special_taken";       // nur ein Spezialangriff
+			}
+		} else if (index == MASTERY) {
+			if (chosenSpecial(ranks) < 0) {
+				return "needs_special";
+			}
+		} else if (index % PER_BRANCH > 0 && ranks[index - 1] == 0) {
 			return "previous";
 		}
 

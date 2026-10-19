@@ -93,6 +93,8 @@ public final class ModConfig {
 		public double xpShare = 0.5;
 		public double keeperChance = 0.6;
 		public int keeperSearchRadius = 12;
+		/** Ausrüstung (v0.25.4): Halsband, Amulett und Panzerung geben Werte (sonst reine Kosmetik). */
+		public boolean equipment = true;
 	}
 
 	public Network network = new Network();
@@ -339,7 +341,8 @@ public final class ModConfig {
 				new Entry("stage3Level", c.stage3Level, "Companion level for stage 3 / Level fuer Stufe 3"),
 				new Entry("xpShare", c.xpShare, "Share of collected XP that goes to the companion (0.0-1.0) / XP-Anteil des Begleiters"),
 				new Entry("keeperChance", c.keeperChance, "Chance that a Geode Keeper lives in a newly found geode (0.0-1.0)"),
-				new Entry("keeperSearchRadius", c.keeperSearchRadius, "Radius around players in which geodes are noticed / Suchradius fuer Geoden")), false);
+				new Entry("keeperSearchRadius", c.keeperSearchRadius, "Radius around players in which geodes are noticed / Suchradius fuer Geoden"),
+				new Entry("equipment", c.equipment, "Companion equipment (collar, amulet, armor) gives stats / Ausruestung gibt Werte")), false);
 
 		Storm st = storm;
 		section(out, "storm", "Resonance Storm / Resonanz-Sturm", List.of(

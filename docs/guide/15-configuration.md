@@ -63,6 +63,7 @@ The interface settings (theme, accent color, terminal height, count size, compan
 | `xpShare` | 0.5 | Share of collected XP that goes to the companion (0.0-1.0) |
 | `keeperChance` | 0.6 | Chance that a Geode Keeper lives in a newly found geode (0.0-1.0) |
 | `keeperSearchRadius` | 12 | Radius around players in which geodes are noticed |
+| `equipment` | true | Companion equipment (collar, amulet, armor) gives stats |
 
 ## Resonance Storm (`storm`)
 

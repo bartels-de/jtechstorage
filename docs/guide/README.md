@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.25** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.26.0** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 
@@ -24,7 +24,7 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | 🧚 | [Helpers](04-helpers.md) | Sprite, Watch Moth, Griffin, Spark Beetle, Chel, Peter, Ashley, Fox, wolves, beds, cosmetics |
 | 🐉 | [Cheldrogan](05-cheldrogan.md) | The rideable crystal serpent dragon |
 | 🔥 | [Phoenix mail and travel](06-phoenix.md) | Phoenix Nest, parcels, Amethyst Phoenix, stops, flight plan, Signal Lantern |
-| 🦗 | [Companions](07-companions.md) | Geode Keeper and his trades, Shadow Mantis, Amethyst Shroom, Night Raven, menu, talents, HUD |
+| 🦗 | [Companions](07-companions.md) | Geode Keeper and his trades, Shadow Mantis, Amethyst Shroom, Night Raven, menu, talents, customization, bond, HUD |
 | ⛈️ | [Resonance Storm](08-resonance-storm.md) | When it starts, the waves, the Storm Herald, how to defend |
 | ⚔️ | [Bosses and the End](09-bosses-and-end.md) | Amethyst Robot, Crystal Lair, Great Amethyst Spider, Amethyst Obsidian gear |
 | 🦊 | [Crystal enchantments](10-crystal-enchantments.md) | The Amethyst Fox and its five enchantments |
@@ -49,7 +49,12 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | send items to a friend | [Phoenix mail](06-phoenix.md#phoenix-mail) |
 | fly myself and cargo between places | [Amethyst Phoenix](06-phoenix.md#amethyst-phoenix) |
 | find a companion | [Companions → Geode Keeper](07-companions.md#the-geode-keeper) |
+| fly in my base / grow crops faster | [Companions → Amethyst Shroom](07-companions.md#amethyst-shroom) |
+| let my companion guard the base | [Companions → Shadow Mantis](07-companions.md#shadow-mantis) |
+| get ores without mining | [Companions → Night Raven](07-companions.md#night-raven) (exploration trips) |
 | spend talent points | [Companions → Talent tree](07-companions.md#talent-tree) |
+| change my companion's look or give it armor | [Companions → Customization](07-companions.md#customization) |
+| bond with my companion (gestures, Soulbond skin) | [Companions → Bond](07-companions.md#bond) |
 | know why a storm hit my base | [Resonance Storm → When does it start?](08-resonance-storm.md#when-does-it-start) |
 | get gear stronger than netherite | [Amethyst Obsidian gear](09-bosses-and-end.md#amethyst-obsidian-gear) |
 | get Double Jump or Sprint | [Crystal enchantments](10-crystal-enchantments.md) |

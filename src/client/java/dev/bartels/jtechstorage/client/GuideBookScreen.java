@@ -222,6 +222,8 @@ public class GuideBookScreen extends Screen {
 		info("mantis");
 		info("shroom");
 		info("raven");
+		info("companion_look");
+		info("companion_bond");
 		shapeless(dev.bartels.jtechstorage.companion.CompanionContent.RESONANCE_TREAT, "jtechstorage.guide.recipe.resonance_treat",
 				Items.HONEY_BOTTLE, Items.AMETHYST_SHARD, Items.AMETHYST_SHARD);
 

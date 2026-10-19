@@ -222,22 +222,35 @@ side: the mantis at full strength, the raven with 50 % and the shroom with 25 % 
 
 | Companion | Role |
 | --- | --- |
-| **Shadow Mantis** | The strongest fighter: attacks what you attack or what attacks you, and monsters near you. Stage 3 hits everything around the target. |
-| **Amethyst Shroom** | Heals you with glowing spores – automatically or on key press (**H** heals, **Shift + H** switches mode), with a cooldown of 30 / 20 / 15 s. Stage 2 also heals your pets and companions, stage 3 heals all players nearby, cures poison and saves you at low health. |
-| **Night Raven** | Collects items around you into its bag (9 / 18 / 27 slots) and flies them to your Storage Terminal (link it with a bound Storage Key). |
+| **Shadow Mantis** | The strongest fighter: attacks what you attack or what attacks you, and monsters near you. Stage 3 hits everything around the target. In your base it fights 50 % harder, and when told to stay there it stands guard and defends the base on its own. |
+| **Amethyst Shroom** | Heals you with glowing spores – automatically or on key press (**H** heals, **Shift + H** switches mode), with a cooldown of 30 / 20 / 15 s. Sits on your shoulder at stage 1 and fights from stage 2. Stage 2 also heals your pets and companions and makes crops in your base grow faster; stage 3 heals all players nearby, cures poison, saves you at low health and lets you fly in your base. |
+| **Night Raven** | Collects items around you into its bag (9 / 18 / 27 slots) and flies them to your Storage Terminal (link it with a bound Storage Key). Sits on your shoulder at stage 1 and flies off to fight. Send it on **exploration trips** for copper and iron, later gold and emeralds, at stage 3 diamonds. |
 
 - **Follows you everywhere**, also through portals and after you respawn. Right-click or the **G** key toggles
   **follow / stay**. `/jtechstorage companion call` brings it to you.
 - **Companion menu** (**K** key or shift + right-click; the raven opens its bag on shift + right-click): level, health
   and stats with a live portrait, follow / stay, call, the shroom's heal mode, the raven's bag and the **stance** –
   *aggressive* (attacks everything hostile near you), *defensive* (only defends you and itself) or *passive*.
-- **Talent tree:** one talent point every 5 levels (up to 20). Each species has three branches with four talents –
-  mantis *Blade / Armor / Hunt*, shroom *Healing / Protection / Poison*, raven *Bag / Combat / Flight*. Deeper talents
-  need the one above and sometimes stage 2 or 3; resetting costs an Amethyst Core.
+- **Talent tree:** one talent point every 4 levels (up to 30). Each species has three branches with five talents –
+  mantis *Blade / Armor / Hunt*, shroom *Healing / Protection / Poison*, raven *Bag / Combat / Flight* – plus a
+  **Special** branch. Deeper talents need the one above and sometimes stage 2 or 3; resetting costs an Amethyst Core.
+- **Special attacks:** pick **one** of three per species and trigger it with the **B** key – mantis *Paralyzing Sting*
+  (5 s stun, 30 s poison), *Blade Storm* or *Execution*; shroom *Spore Veil* (60 s invisibility, faster cooldowns),
+  *Life Bloom* or *Paralysis Cloud*; raven *Raven Swarm* (five diving shadow ravens), *Shadow Dive* or *Terror Cry*.
+  *Mastery* makes it stronger, *Instinct* fires it on its own in danger.
+- **Bond:** feed its favorite food of the day, pet it and play fetch with a stick or an amethyst shard. Five bond
+  stages unlock gestures (Happy Hop, Nuzzle and one of its own), and Soulmate unlocks the Soulbond coloring, a pink glow
+  and an aura. The bond never decreases.
+- **Customization** (*Look* tab in the menu): colorings (Frost, Ember, Jade, Gold), swappable horns / tail / cap and, at
+  stage 3, wings / crest / back, a freely chosen glow color, and **visible equipment** – collar (+health), amulet
+  (+damage, +healing or +collection radius) and armor (+armor) from iron to amethyst obsidian. All unlocked by level,
+  stage and defeated monsters.
 - **HUD** in the top left: name, level, health, experience, follow / stay, stance, treat time and the shroom's cooldown,
   the raven's bag or the mantis' flight stamina while riding. It can be switched off in the menu.
 - **Riding at stage 3:** the mantis carries you on the ground and flies briefly while you hold Space (about 4 seconds,
   then it glides down and recharges); the grown raven carries you through the air for as long as you like.
+- **Your base** is the area of 3 × 3 chunks around a Storage Terminal you placed – the mantis guards it and fights
+  harder there, the shroom speeds up crops and lets you fly there.
 - **Grows with you:** half of every bit of experience you collect goes to your companion. It levels like a player and
   reaches **stage 2 at level 30** and **stage 3 at level 100**, each with a new look and stronger abilities.
 - It never dies. When it takes too much damage it is exhausted for a short while and recovers.
@@ -338,7 +351,7 @@ On first start the mod creates `config/jtechstorage.json` (JSON with comments). 
 - **Helpers:** the Amethyst Fox's dig interval and feeding limit, Chel's crafting speed, the Amethyst Sprite's pause
   and radii, watch and guard radii, and phoenix speeds.
 - **Companions:** levels for stage 2 and 3, the share of collected XP that goes to the companion, the chance for a
-  Geode Keeper per geode and the search radius.
+  Geode Keeper per geode, the search radius and whether companion equipment gives stats.
 
 Changes apply after a restart. Delete a line (or the whole file) to restore its default. On a server, the server's
 file counts; clients receive its values for tooltips and the handbook.

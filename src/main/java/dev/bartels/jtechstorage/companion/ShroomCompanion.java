@@ -94,6 +94,80 @@ public class ShroomCompanion extends Companion {
 		return 40;
 	}
 
+	// ------------------------------------------------------------------
+	// v0.25.1: Schulter (Stufe 1), Kampf erst ab Stufe 2, Wachstum in der Basis (ab Stufe 2)
+	// ------------------------------------------------------------------
+
+	@Override
+	protected boolean shoulderStage() {
+		return getStage() == 1;
+	}
+
+	@Override
+	protected boolean canFight() {
+		return getStage() >= 2;
+	}
+
+	/** Pflanzen der Basis (Cache, alle 30 s neu gesucht). */
+	private final List<net.minecraft.core.BlockPos> crops = new ArrayList<>();
+	private int cropScan;
+
+	private static boolean isCrop(net.minecraft.world.level.block.state.BlockState state) {
+		net.minecraft.world.level.block.Block block = state.getBlock();
+		return state.isRandomlyTicking() && (block instanceof net.minecraft.world.level.block.CropBlock
+				|| block instanceof net.minecraft.world.level.block.StemBlock || block instanceof net.minecraft.world.level.block.SweetBerryBushBlock
+				|| block instanceof net.minecraft.world.level.block.CocoaBlock || block instanceof net.minecraft.world.level.block.NetherWartBlock
+				|| block instanceof net.minecraft.world.level.block.SaplingBlock || block instanceof net.minecraft.world.level.block.SugarCaneBlock
+				|| block instanceof net.minecraft.world.level.block.CactusBlock || block instanceof net.minecraft.world.level.block.BambooStalkBlock
+				|| block instanceof net.minecraft.world.level.block.PitcherCropBlock);
+	}
+
+	/** Lässt die Pflanzen der Basis schneller wachsen: zusätzliche Zufalls-Ticks (Stufe 2 ≈ 3×, Stufe 3 ≈ 4,5× so schnell). */
+	private void growCrops(ServerLevel level) {
+		net.minecraft.core.BlockPos terminal = baseTerminal();
+
+		if (terminal == null || getStage() < 2 || isExhausted()) {
+			crops.clear();
+			return;
+		}
+
+		if (--cropScan <= 0 || crops.isEmpty() && cropScan % 5 == 0) {
+			cropScan = 30;
+			crops.clear();
+			int cx = terminal.getX() >> 4;
+			int cz = terminal.getZ() >> 4;
+			net.minecraft.core.BlockPos.MutableBlockPos pos = new net.minecraft.core.BlockPos.MutableBlockPos();
+
+			for (int x = (cx - 1) << 4; x < (cx + 2) << 4; x++) {
+				for (int z = (cz - 1) << 4; z < (cz + 2) << 4; z++) {
+					for (int y = terminal.getY() - 12; y <= terminal.getY() + 12; y++) {
+						pos.set(x, y, z);
+
+						if (level.isLoaded(pos) && isCrop(level.getBlockState(pos))) {
+							crops.add(pos.immutable());
+						}
+					}
+				}
+			}
+		}
+
+		double chance = getStage() == 2 ? 0.03 : 0.05;
+
+		for (net.minecraft.core.BlockPos pos : crops) {
+			if (random.nextDouble() < chance) {
+				net.minecraft.world.level.block.state.BlockState state = level.getBlockState(pos);
+
+				if (isCrop(state)) {
+					state.randomTick(level, pos, random);
+
+					if (random.nextInt(4) == 0) {
+						level.sendParticles(SPORE_GREEN, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, 3, 0.25, 0.2, 0.25, 0.0);
+					}
+				}
+			}
+		}
+	}
+
 	@Override
 	protected double combatShare() {
 		return 0.25;
@@ -170,13 +244,19 @@ public class ShroomCompanion extends Companion {
 			return;
 		}
 
-		if (cooldown > 0) {
-			cooldown--;
+		int ticks = veilTicks > 0 ? 2 : 1;      // Sporenschleier: Abklingzeiten laufen doppelt so schnell
+		cooldown = Math.max(0, cooldown - ticks);
+		emergencyCooldown = Math.max(0, emergencyCooldown - ticks);
+
+		if (secondLifeCooldown > 0) {
+			secondLifeCooldown--;
 		}
 
-		if (emergencyCooldown > 0) {
-			emergencyCooldown--;
+		if (tickCount % 20 == 0) {
+			growCrops(level);
 		}
+
+		capstones(level);
 
 		double range = healRange();
 
@@ -317,7 +397,7 @@ public class ShroomCompanion extends Companion {
 
 	private void healTarget(ServerLevel level, LivingEntity target, float instant, int stage) {
 		if (instant > 0) {
-			target.heal(instant * (1.0f + 0.15f * talent("strong_spores")));
+			target.heal(instant * (1.0f + 0.15f * talent("strong_spores")) * (1.0f + 0.1f * equipmentTier()));   // Amulett: +10 % je Material
 		}
 
 		target.addEffect(new MobEffectInstance(MobEffects.REGENERATION, stage == 1 ? 120 : stage == 2 ? 160 : 120, stage == 3 ? 1 : 0));
@@ -357,6 +437,7 @@ public class ShroomCompanion extends Companion {
 		super.addAdditionalSaveData(output);
 		output.putInt("HealCooldown", cooldown);
 		output.putBoolean("AutoHeal", autoHeal);
+		output.putInt("SecondLife", secondLifeCooldown);
 	}
 
 	@Override
@@ -364,5 +445,167 @@ public class ShroomCompanion extends Companion {
 		super.readAdditionalSaveData(input);
 		cooldown = input.getIntOr("HealCooldown", 0);
 		autoHeal = input.getBooleanOr("AutoHeal", true);
+		secondLifeCooldown = input.getIntOr("SecondLife", 0);
+	}
+
+	// ------------------------------------------------------------------
+	// v0.25.3: Meister-Talente und Spezialangriffe
+	// ------------------------------------------------------------------
+
+	private int veilTicks;
+	private int bloomTicks;
+	private net.minecraft.world.phys.Vec3 bloomCenter = net.minecraft.world.phys.Vec3.ZERO;
+	private int secondLifeCooldown;
+
+	private void capstones(ServerLevel level) {
+		if (isExhausted() || !(getOwner() instanceof net.minecraft.server.level.ServerPlayer owner) || owner.level() != level) {
+			return;
+		}
+
+		// Pilzhaut: Resistenz I für dich, solange er in der Nähe ist
+		if (talent("mushroom_skin") > 0 && tickCount % 40 == 0 && owner.distanceToSqr(this) < 12 * 12) {
+			owner.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 60, 0, true, false, true));
+		}
+
+		// Sporenfeld: Monster rund um ihn werden alle 5 s vergiftet
+		if (talent("spore_field") > 0 && tickCount % 100 == 0 && getStage() >= 2) {
+			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0),
+					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+				enemy.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0), this);
+				level.sendParticles(SPORE_GREEN, enemy.getX(), enemy.getY() + enemy.getBbHeight() * 0.5, enemy.getZ(), 6, 0.3, 0.3, 0.3, 0.01);
+			}
+		}
+	}
+
+	/** Zweites Leben: rettet dich einmal alle 10 Minuten vor dem Tod. */
+	public boolean trySecondLife(net.minecraft.server.level.ServerPlayer owner) {
+		if (talent("second_life") == 0 || secondLifeCooldown > 0 || isExhausted() || owner.level() != level() || owner.distanceToSqr(this) > 32 * 32
+				|| !(level() instanceof ServerLevel level)) {
+			return false;
+		}
+
+		secondLifeCooldown = 20 * 60 * 10;
+		owner.setHealth(8.0f);
+		owner.removeAllEffects();
+		owner.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 20 * 10, 1));
+		owner.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 20 * 10, 1));
+		level.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, owner.getX(), owner.getY() + 1.0, owner.getZ(), 40, 0.5, 0.8, 0.5, 0.3);
+		level.sendParticles(SPORE, owner.getX(), owner.getY() + 1.0, owner.getZ(), 30, 0.6, 0.8, 0.6, 0.05);
+		playSound(ModSounds.SHROOM_HEAL, 1.5f, 0.7f);
+		owner.sendSystemMessage(Component.translatable("jtechstorage.shroom.second_life", getDisplayName()).withStyle(ChatFormatting.LIGHT_PURPLE));
+		return true;
+	}
+
+	@Override
+	protected int specialBaseCooldown(int which) {
+		return switch (which) {
+			case 0 -> 20 * 180;      // Sporenschleier
+			case 1 -> 20 * 120;      // Lebensblüte
+			default -> 20 * 90;      // Lähmsporen-Wolke
+		};
+	}
+
+	@Override
+	protected boolean specialNeedsTarget(int which) {
+		return false;
+	}
+
+	@Override
+	protected boolean performSpecial(ServerLevel level, int which, net.minecraft.world.entity.@org.jspecify.annotations.Nullable LivingEntity target) {
+		float power = specialPower();
+		triggerAction();
+
+		switch (which) {
+			case 0 -> {
+				// Sporenschleier: 60 s unsichtbar (du und er), Abklingzeiten halbiert und laufen doppelt so schnell
+				veilTicks = 20 * 60;
+				cooldown /= 2;
+				emergencyCooldown /= 2;
+				addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, veilTicks, 0, false, false));
+
+				if (getOwner() instanceof Player owner) {
+					owner.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, veilTicks, 0, false, true));
+					level.sendParticles(SPORE, owner.getX(), owner.getY() + 1.0, owner.getZ(), 40, 0.6, 0.9, 0.6, 0.03);
+
+					for (net.minecraft.world.entity.Mob mob : level.getEntitiesOfClass(net.minecraft.world.entity.Mob.class, owner.getBoundingBox().inflate(24.0),
+							m -> m.getTarget() == owner || m.getTarget() == this)) {
+						mob.setTarget(null);     // verlieren dich im Sporennebel aus den Augen
+					}
+				}
+
+				playSound(ModSounds.SHROOM_HEAL, 1.2f, 0.6f);
+				return true;
+			}
+			case 1 -> {
+				// Lebensblüte: 10 s Heilkreis
+				bloomTicks = 200;
+				bloomCenter = position();
+				playSound(ModSounds.SHROOM_HEAL, 1.2f, 1.3f);
+				return true;
+			}
+			default -> {
+				// Lähmsporen-Wolke um das Ziel (oder um ihn)
+				net.minecraft.world.phys.Vec3 at = target != null ? target.position() : position();
+				level.sendParticles(SPORE_GREEN, at.x, at.y + 1.0, at.z, 80, 2.5, 1.0, 2.5, 0.02);
+				level.sendParticles(ParticleTypes.SNEEZE, at.x, at.y + 0.5, at.z, 30, 2.0, 0.6, 2.0, 0.01);
+
+				for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(at, at).inflate(5.0),
+						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					enemy.hurtServer(level, damageSources().mobAttack(this), 4.0f * power);
+					enemy.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 160, 2), this);
+					enemy.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 160, 1), this);
+					enemy.addEffect(new MobEffectInstance(MobEffects.POISON, 160, 0), this);
+				}
+
+				playSound(ModSounds.SHROOM_ATTACK, 1.2f, 0.7f);
+				return true;
+			}
+		}
+	}
+
+	@Override
+	protected void tickSpecialEffects(ServerLevel level) {
+		if (veilTicks > 0) {
+			veilTicks--;
+
+			// im Sporennebel verlieren Monster dich und ihn ständig aus den Augen (v0.25.5)
+			if (veilTicks % 2 == 0) {
+				calmAttackers(level, this, 48.0);
+
+				if (getOwner() instanceof Player owner && owner.level() == level) {
+					calmAttackers(level, owner, 48.0);
+				}
+			}
+		}
+
+		if (bloomTicks > 0) {
+			bloomTicks--;
+
+			if (bloomTicks % 5 == 0) {
+				level.sendParticles(SPORE_GREEN, bloomCenter.x, bloomCenter.y + 0.3, bloomCenter.z, 10, 3.0, 0.2, 3.0, 0.0);
+				level.sendParticles(SPORE, bloomCenter.x, bloomCenter.y + 1.0, bloomCenter.z, 6, 2.5, 0.8, 2.5, 0.01);
+			}
+
+			if (bloomTicks % 20 == 0 && getOwner() instanceof Player owner) {
+				for (LivingEntity friend : level.getEntitiesOfClass(LivingEntity.class,
+						new net.minecraft.world.phys.AABB(bloomCenter, bloomCenter).inflate(6.0, 3.0, 6.0),
+						e -> e.isAlive() && (e == owner || e instanceof Player || e instanceof Companion
+								|| e instanceof net.minecraft.world.entity.TamableAnimal pet && pet.isOwnedBy(owner)))) {
+					friend.heal(2.0f * specialPower());
+					friend.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 60, 0));
+					level.sendParticles(ParticleTypes.HEART, friend.getX(), friend.getY() + friend.getBbHeight() + 0.2, friend.getZ(), 1, 0.2, 0.1, 0.2, 0.0);
+				}
+			}
+		}
+	}
+
+	@Override
+	protected boolean isHidden() {
+		return veilTicks > 0;
+	}
+
+	/** Für die Anzeige: läuft gerade der Sporenschleier? */
+	public boolean isVeiled() {
+		return veilTicks > 0;
 	}
 }

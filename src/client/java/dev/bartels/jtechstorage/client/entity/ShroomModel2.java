@@ -18,7 +18,7 @@ import dev.bartels.jtechstorage.JTechStorage;
  * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
  * Erzeugt von scratchpad/shroom.py (Teile und Posen), Animation von Hand.
  */
-public class ShroomModel2 extends EntityModel<CompanionRenderState> {
+public class ShroomModel2 extends EntityModel<CompanionRenderState> implements CompanionLookModel {
 	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("shroom_2"), "main");
 
 	private final ModelPart shroom;
@@ -31,6 +31,13 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> {
 	private final ModelPart ring;
 	private final ModelPart mini0;
 	private final ModelPart mini1;
+	private final ModelPart capWitch;
+	private final ModelPart capFlat;
+	private final ModelPart collar;
+	private final ModelPart amulet;
+	private final ModelPart armorC;
+	private final ModelPart rShoulder;
+	private final ModelPart lShoulder;
 
 	public ShroomModel2(ModelPart root) {
 		super(root);
@@ -44,6 +51,13 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> {
 		this.ring = root.getChild("shroom").getChild("body").getChild("ring");
 		this.mini0 = root.getChild("shroom").getChild("body").getChild("mini0");
 		this.mini1 = root.getChild("shroom").getChild("body").getChild("mini1");
+		this.capWitch = root.getChild("shroom").getChild("body").getChild("cap_witch");
+		this.capFlat = root.getChild("shroom").getChild("body").getChild("cap_flat");
+		this.collar = root.getChild("shroom").getChild("body").getChild("collar");
+		this.amulet = root.getChild("shroom").getChild("body").getChild("amulet");
+		this.armorC = root.getChild("shroom").getChild("body").getChild("armor_c");
+		this.rShoulder = root.getChild("shroom").getChild("body").getChild("r_shoulder");
+		this.lShoulder = root.getChild("shroom").getChild("body").getChild("l_shoulder");
 	}
 
 	public static LayerDefinition createBodyLayer() {
@@ -83,12 +97,50 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> {
 				.texOffs(58, 28).addBox(-1.0f, -4.0f, -1.0f, 2.0f, 4.0f, 2.0f, new CubeDeformation(0.0f))
 				.texOffs(38, 28).addBox(-2.5f, -6.0f, -2.5f, 5.0f, 2.0f, 5.0f, new CubeDeformation(0.0f)),
 				PartPose.offsetAndRotation(-4.0f, -2.1f, 3.0f, 0.4f, 0.0f, -0.7f));
-		return LayerDefinition.create(mesh, 256, 128);
+		PartDefinition p11 = p2.addOrReplaceChild("cap_witch", CubeListBuilder.create()
+				.texOffs(0, 128).addBox(-9.0f, -4.0f, -9.0f, 18.0f, 4.0f, 18.0f, new CubeDeformation(0.0f))
+				.texOffs(72, 128).addBox(-5.0f, -10.0f, -5.0f, 10.0f, 6.0f, 10.0f, new CubeDeformation(0.0f))
+				.texOffs(112, 128).addBox(-2.0f, -15.0f, -2.0f, 4.0f, 5.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -12.0f, 0.0f, 0.0f, 0.0f, 0.06f));
+		p11.addOrReplaceChild("tip_witch", CubeListBuilder.create()
+				.texOffs(128, 128).addBox(-1.5f, -9.0f, -1.5f, 3.0f, 9.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -14.5f, 1.0f, -0.7f, 0.0f, 0.0f));
+		p2.addOrReplaceChild("cap_flat", CubeListBuilder.create()
+				.texOffs(140, 128).addBox(-14.0f, -3.0f, -14.0f, 28.0f, 3.0f, 28.0f, new CubeDeformation(0.0f))
+				.texOffs(0, 159).addBox(-6.0f, -5.0f, -6.0f, 12.0f, 2.0f, 12.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -12.0f, 0.0f, 0.0f, 0.0f, 0.06f));
+		p2.addOrReplaceChild("collar", CubeListBuilder.create()
+				.texOffs(48, 159).addBox(-6.0f, -11.5f, -6.0f, 12.0f, 2.0f, 12.0f, new CubeDeformation(0.0f)),
+				PartPose.ZERO);
+		p2.addOrReplaceChild("amulet", CubeListBuilder.create()
+				.texOffs(96, 159).addBox(-2.0f, 0.0f, 0.0f, 4.0f, 5.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(106, 159).addBox(-1.0f, 1.0f, -0.6f, 2.0f, 3.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -9.5f, -6.8f, 0.1f, 0.0f, 0.0f));
+		p2.addOrReplaceChild("armor_c", CubeListBuilder.create()
+				.texOffs(112, 159).addBox(-4.0f, -9.52f, -6.0f, 8.0f, 6.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.ZERO);
+		p2.addOrReplaceChild("r_shoulder", CubeListBuilder.create()
+				.texOffs(130, 159).addBox(-4.0f, 0.0f, -3.0f, 4.0f, 3.0f, 6.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.5f, -8.68f, 0.0f, 0.0f, 0.0f, 0.35f));
+		p2.addOrReplaceChild("l_shoulder", CubeListBuilder.create()
+				.texOffs(150, 159).addBox(0.0f, 0.0f, -3.0f, 4.0f, 3.0f, 6.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.5f, -8.68f, 0.0f, 0.0f, 0.0f, -0.35f));
+		return LayerDefinition.create(mesh, 256, 256);
 	}
 
 	@Override
 	public void setupAnim(CompanionRenderState state) {
 		super.setupAnim(state);
+		// Aussehen (v0.25.4): gewählte Körperteil-Varianten; Ausrüstung nur im eigenen Durchgang
+		cap.visible = state.part1 == 0;
+		capWitch.visible = state.part1 == 1;
+		capFlat.visible = state.part1 == 2;
+		collar.visible = pass == 0;
+		amulet.visible = pass == 1;
+		armorC.visible = pass == 2;
+		rShoulder.visible = pass == 2;
+		lShoulder.visible = pass == 2;
+
 		float age = state.ageInTicks;
 		float pos = state.walkAnimationPos;
 		float speed = Math.min(state.walkAnimationSpeed, 1.0f);
@@ -99,6 +151,21 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> {
 
 		if (state.exhausted) {
 			poseTired(1.0f);
+		}
+
+		// Bindungs-Gesten (v0.26.0): Freudensprung (zwei Hüpfer), Kuscheln, eigene Geste
+		if (state.gesture > 0) {
+			float p = state.gestureProgress;
+			float k = Mth.sin(p * Mth.PI);
+
+			if (state.gesture == 1) {
+				poseJoy(Math.abs(Mth.sin(p * Mth.TWO_PI)));
+			} else if (state.gesture == 2) {
+				poseNuzzle(Math.min(1.0f, k * 1.6f));
+			} else {
+				poseGesture(Math.min(1.0f, k * 1.6f));
+				body.yRot += Mth.sin(p * Mth.TWO_PI) * 0.9f * k;          // dreht sich im Tanz
+			}
 		}
 
 		// Watscheln: kurze Schritte, der Stiel schaukelt, der Hut wippt nach
@@ -135,6 +202,9 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> {
 			body.y -= Mth.abs(Mth.sin(state.action * Mth.PI * 3.0f)) * 2.0f * h;
 			cap.xRot -= 0.1f * h;
 		}
+		// Körperteil-Varianten bewegen sich wie das Original
+		CompanionLookModel.follow(cap, capWitch);
+		CompanionLookModel.follow(cap, capFlat);
 	}
 
 	private void poseSit(float k) {
@@ -158,5 +228,53 @@ public class ShroomModel2 extends EntityModel<CompanionRenderState> {
 		cap.xRot += k * -0.150f;
 	}
 
+	private void poseJoy(float k) {
+		body.y += k * -6.000f;
+		rArm.xRot += k * -1.600f;
+		rArm.zRot += k * 0.500f;
+		lArm.xRot += k * -2.400f;
+		lArm.zRot += k * -0.500f;
+		rLeg.xRot += k * 0.500f;
+		lLeg.xRot += k * -0.500f;
+		cap.y += k * -1.500f;
+	}
 
+	private void poseNuzzle(float k) {
+		body.zRot += k * 0.220f;
+		body.xRot += k * 0.150f;
+		cap.zRot += k * 0.180f;
+		rArm.xRot += k * -1.300f;
+		rArm.zRot += k * -0.600f;
+		lArm.xRot += k * -1.300f;
+		lArm.zRot += k * 0.600f;
+	}
+
+	private void poseGesture(float k) {
+		body.yRot += k * 0.700f;
+		body.zRot += k * -0.150f;
+		rArm.zRot += k * 1.400f;
+		lArm.zRot += k * -1.400f;
+		lArm.xRot += k * -0.400f;
+		rLeg.xRot += k * -0.900f;
+		cap.zRot += k * 0.200f;
+	}
+
+	/** Ausrüstungs-Durchgang: -1 = Grundmodell (Ausrüstung unsichtbar), 0–2 = nur dieser Platz wird gezeichnet. */
+	private int pass = -1;
+
+	@Override
+	public void equipmentPass(int slot) {
+		pass = slot;
+		java.util.List<java.util.List<ModelPart>> slots = java.util.List.of(java.util.List.of(collar), java.util.List.of(amulet), java.util.List.of(armorC, rShoulder, lShoulder));
+
+		for (ModelPart part : root().getAllParts()) {
+			part.skipDraw = true;
+		}
+
+		for (ModelPart part : slots.get(slot)) {
+			for (ModelPart child : part.getAllParts()) {
+				child.skipDraw = false;
+			}
+		}
+	}
 }
