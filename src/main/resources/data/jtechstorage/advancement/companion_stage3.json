@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:companion_stage2",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:amethyst_block"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.companion_stage3.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.companion_stage3.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

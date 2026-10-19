@@ -50,6 +50,12 @@ import dev.bartels.jtechstorage.net.TeamStatePayload;
 public class JTechStorageClient implements ClientModInitializer {
 	public static final net.minecraft.client.KeyMapping.Category KEY_CATEGORY =
 			net.minecraft.client.KeyMapping.Category.register(dev.bartels.jtechstorage.JTechStorage.id("main"));
+	public static final net.minecraft.client.KeyMapping COMPANION_HEAL_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
+			new net.minecraft.client.KeyMapping("key.jtechstorage.companion_heal", com.mojang.blaze3d.platform.InputConstants.KEY_H, KEY_CATEGORY));
+	public static final net.minecraft.client.KeyMapping COMPANION_STAY_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
+			new net.minecraft.client.KeyMapping("key.jtechstorage.companion_stay", com.mojang.blaze3d.platform.InputConstants.KEY_G, KEY_CATEGORY));
+	public static final net.minecraft.client.KeyMapping COMPANION_MENU_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
+			new net.minecraft.client.KeyMapping("key.jtechstorage.companion_menu", com.mojang.blaze3d.platform.InputConstants.KEY_K, KEY_CATEGORY));
 	public static final net.minecraft.client.KeyMapping DRAGON_BREATH_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
 			new net.minecraft.client.KeyMapping("key.jtechstorage.dragon_breath", com.mojang.blaze3d.platform.InputConstants.KEY_R, KEY_CATEGORY));
 	public static final net.minecraft.client.KeyMapping DRAGON_RAIN_KEY = net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper.registerKeyMapping(
@@ -106,9 +112,48 @@ public class JTechStorageClient implements ClientModInitializer {
 				dev.bartels.jtechstorage.client.entity.StormHeraldModel::createBodyLayer);
 		EntityRenderers.register(dev.bartels.jtechstorage.storm.StormContent.STORM_HERALD,
 				dev.bartels.jtechstorage.client.entity.StormHeraldRenderer::new);
+		// Begleiter (v0.25)
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.MantisModel1.LAYER, dev.bartels.jtechstorage.client.entity.MantisModel1::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.MantisModel2.LAYER, dev.bartels.jtechstorage.client.entity.MantisModel2::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.MantisModel3.LAYER, dev.bartels.jtechstorage.client.entity.MantisModel3::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.ShroomModel1.LAYER, dev.bartels.jtechstorage.client.entity.ShroomModel1::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.ShroomModel2.LAYER, dev.bartels.jtechstorage.client.entity.ShroomModel2::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.ShroomModel3.LAYER, dev.bartels.jtechstorage.client.entity.ShroomModel3::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.RavenModel1.LAYER, dev.bartels.jtechstorage.client.entity.RavenModel1::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.RavenModel2.LAYER, dev.bartels.jtechstorage.client.entity.RavenModel2::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.RavenModel3.LAYER, dev.bartels.jtechstorage.client.entity.RavenModel3::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.GeodeKeeperModel.LAYER, dev.bartels.jtechstorage.client.entity.GeodeKeeperModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.MANTIS, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "mantis", 0.6f, new float[] {1.0f, 1.0f, 1.2f},
+				java.util.List.of(new dev.bartels.jtechstorage.client.entity.MantisModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel1.LAYER)), new dev.bartels.jtechstorage.client.entity.MantisModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel2.LAYER)), new dev.bartels.jtechstorage.client.entity.MantisModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.MantisModel3.LAYER)))));
+		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.SHROOM, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "shroom", 0.5f, new float[] {1.0f, 1.0f, 1.0f},
+				java.util.List.of(new dev.bartels.jtechstorage.client.entity.ShroomModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel1.LAYER)), new dev.bartels.jtechstorage.client.entity.ShroomModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel2.LAYER)), new dev.bartels.jtechstorage.client.entity.ShroomModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.ShroomModel3.LAYER)))));
+		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.RAVEN, context -> new dev.bartels.jtechstorage.client.entity.CompanionRenderer<>(context, "raven", 0.4f, new float[] {1.3f, 1.5f, 2.0f},
+				java.util.List.of(new dev.bartels.jtechstorage.client.entity.RavenModel1(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel1.LAYER)), new dev.bartels.jtechstorage.client.entity.RavenModel2(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel2.LAYER)), new dev.bartels.jtechstorage.client.entity.RavenModel3(context.bakeLayer(dev.bartels.jtechstorage.client.entity.RavenModel3.LAYER)))));
+		EntityRenderers.register(dev.bartels.jtechstorage.companion.CompanionContent.GEODE_KEEPER, dev.bartels.jtechstorage.client.entity.GeodeKeeperRenderer::new);
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CheldroganModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CheldroganModel::createBodyLayer);
 		EntityRenderers.register(ModContent.CHELDROGAN, dev.bartels.jtechstorage.client.entity.CheldroganRenderer::new);
+		dev.bartels.jtechstorage.client.companion.CompanionClient.init();
+		// Begleiter (v0.25.2): Taste H = Pilz heilt jetzt, Shift + H = automatisch/Hotkey umschalten
+		net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.END_CLIENT_TICK.register(client -> {
+			while (COMPANION_STAY_KEY.consumeClick()) {
+				if (client.player != null) {
+					ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.CompanionActionPayload(2));
+				}
+			}
+
+			while (COMPANION_MENU_KEY.consumeClick()) {
+				if (client.player != null && client.gui.screen() == null) {
+					dev.bartels.jtechstorage.client.companion.CompanionClient.openFromKey(client);
+				}
+			}
+
+			while (COMPANION_HEAL_KEY.consumeClick()) {
+				if (client.player != null) {
+					ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.CompanionActionPayload(client.player.isShiftKeyDown() ? 1 : 0));
+				}
+			}
+		});
 		// Cheldrogan reiten: Linksklick = Schwanzhieb, Taste (Standard R) = Kristall-Odem, Taste (Standard V) = Splitter-Regen.
 		// START_CLIENT_TICK läuft vor der Vanilla-Tastenverarbeitung – die Klicks werden hier verbraucht.
 		net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents.START_CLIENT_TICK.register(client -> {

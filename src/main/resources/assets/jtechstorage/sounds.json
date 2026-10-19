@@ -736,5 +736,145 @@
       "jtechstorage:cheldrogan/crystal2",
       "jtechstorage:cheldrogan/crystal3"
     ]
+  },
+  "companion.level": {
+    "subtitle": "subtitles.jtechstorage.companion.level",
+    "sounds": [
+      "jtechstorage:companion/level1",
+      "jtechstorage:companion/level2"
+    ]
+  },
+  "companion.evolve": {
+    "subtitle": "subtitles.jtechstorage.companion.evolve",
+    "sounds": [
+      "jtechstorage:companion/evolve1"
+    ]
+  },
+  "companion.command": {
+    "subtitle": "subtitles.jtechstorage.companion.command",
+    "sounds": [
+      "jtechstorage:companion/command1",
+      "jtechstorage:companion/command2"
+    ]
+  },
+  "mantis.ambient": {
+    "subtitle": "subtitles.jtechstorage.mantis.ambient",
+    "sounds": [
+      "jtechstorage:mantis/ambient1",
+      "jtechstorage:mantis/ambient2",
+      "jtechstorage:mantis/ambient3"
+    ]
+  },
+  "mantis.hurt": {
+    "subtitle": "subtitles.jtechstorage.mantis.hurt",
+    "sounds": [
+      "jtechstorage:mantis/hurt1",
+      "jtechstorage:mantis/hurt2",
+      "jtechstorage:mantis/hurt3"
+    ]
+  },
+  "mantis.attack": {
+    "subtitle": "subtitles.jtechstorage.mantis.attack",
+    "sounds": [
+      "jtechstorage:mantis/attack1",
+      "jtechstorage:mantis/attack2",
+      "jtechstorage:mantis/attack3"
+    ]
+  },
+  "shroom.ambient": {
+    "subtitle": "subtitles.jtechstorage.shroom.ambient",
+    "sounds": [
+      "jtechstorage:shroom/ambient1",
+      "jtechstorage:shroom/ambient2",
+      "jtechstorage:shroom/ambient3"
+    ]
+  },
+  "shroom.hurt": {
+    "subtitle": "subtitles.jtechstorage.shroom.hurt",
+    "sounds": [
+      "jtechstorage:shroom/hurt1",
+      "jtechstorage:shroom/hurt2",
+      "jtechstorage:shroom/hurt3"
+    ]
+  },
+  "shroom.heal": {
+    "subtitle": "subtitles.jtechstorage.shroom.heal",
+    "sounds": [
+      "jtechstorage:shroom/heal1",
+      "jtechstorage:shroom/heal2"
+    ]
+  },
+  "raven.ambient": {
+    "subtitle": "subtitles.jtechstorage.raven.ambient",
+    "sounds": [
+      "jtechstorage:raven/ambient1",
+      "jtechstorage:raven/ambient2",
+      "jtechstorage:raven/ambient3"
+    ]
+  },
+  "raven.hurt": {
+    "subtitle": "subtitles.jtechstorage.raven.hurt",
+    "sounds": [
+      "jtechstorage:raven/hurt1",
+      "jtechstorage:raven/hurt2",
+      "jtechstorage:raven/hurt3"
+    ]
+  },
+  "raven.pickup": {
+    "subtitle": "subtitles.jtechstorage.raven.pickup",
+    "sounds": [
+      "jtechstorage:raven/pickup1",
+      "jtechstorage:raven/pickup2",
+      "jtechstorage:raven/pickup3"
+    ]
+  },
+  "raven.depart": {
+    "subtitle": "subtitles.jtechstorage.raven.depart",
+    "sounds": [
+      "jtechstorage:raven/depart1"
+    ]
+  },
+  "raven.return": {
+    "subtitle": "subtitles.jtechstorage.raven.return",
+    "sounds": [
+      "jtechstorage:raven/return1"
+    ]
+  },
+  "keeper.ambient": {
+    "subtitle": "subtitles.jtechstorage.keeper.ambient",
+    "sounds": [
+      "jtechstorage:keeper/ambient1",
+      "jtechstorage:keeper/ambient2",
+      "jtechstorage:keeper/ambient3"
+    ]
+  },
+  "keeper.greet": {
+    "subtitle": "subtitles.jtechstorage.keeper.greet",
+    "sounds": [
+      "jtechstorage:keeper/greet1",
+      "jtechstorage:keeper/greet2"
+    ]
+  },
+  "keeper.vanish": {
+    "subtitle": "subtitles.jtechstorage.keeper.vanish",
+    "sounds": [
+      "jtechstorage:keeper/vanish1"
+    ]
+  },
+  "raven.attack": {
+    "subtitle": "subtitles.jtechstorage.raven.attack",
+    "sounds": [
+      "jtechstorage:raven/attack1",
+      "jtechstorage:raven/attack2",
+      "jtechstorage:raven/attack3"
+    ]
+  },
+  "shroom.attack": {
+    "subtitle": "subtitles.jtechstorage.shroom.attack",
+    "sounds": [
+      "jtechstorage:shroom/attack1",
+      "jtechstorage:shroom/attack2",
+      "jtechstorage:shroom/attack3"
+    ]
   }
 }

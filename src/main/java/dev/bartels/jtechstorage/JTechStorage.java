@@ -41,6 +41,7 @@ public class JTechStorage implements ModInitializer {
 		dev.bartels.jtechstorage.end.EndContent.init();
 		dev.bartels.jtechstorage.storm.StormContent.init();
 		dev.bartels.jtechstorage.wolf.WolfContent.init();
+		dev.bartels.jtechstorage.companion.CompanionContent.init();
 		dev.bartels.jtechstorage.enchant.ModEnchantments.init();
 
 		PayloadTypeRegistry.clientboundPlay().registerLarge(TerminalContentsPayload.TYPE,
@@ -57,6 +58,8 @@ public class JTechStorage implements ModInitializer {
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.PhoenixDepartPayload.TYPE, dev.bartels.jtechstorage.net.PhoenixDepartPayload.STREAM_CODEC);
 		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.ConfigSyncPayload.TYPE, dev.bartels.jtechstorage.net.ConfigSyncPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.DragonActionPayload.TYPE, dev.bartels.jtechstorage.net.DragonActionPayload.STREAM_CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.CompanionActionPayload.TYPE, dev.bartels.jtechstorage.net.CompanionActionPayload.STREAM_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.CompanionStatusPayload.TYPE, dev.bartels.jtechstorage.net.CompanionStatusPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.PhoenixStopEditPayload.TYPE, dev.bartels.jtechstorage.net.PhoenixStopEditPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.FlightPlanEditPayload.TYPE, dev.bartels.jtechstorage.net.FlightPlanEditPayload.STREAM_CODEC);
 		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.PhoenixStopEditPayload.TYPE, (payload, context) -> {
@@ -76,6 +79,8 @@ public class JTechStorage implements ModInitializer {
 				dev.bartels.jtechstorage.item.FlightPlanItem.reorder(stack, payload.order());
 			}
 		});
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.CompanionActionPayload.TYPE,
+				(payload, context) -> dev.bartels.jtechstorage.companion.CompanionContent.hotkey(context.player(), payload.action(), payload.arg()));
 		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.DragonActionPayload.TYPE, (payload, context) -> {
 			if (context.player().getVehicle() instanceof dev.bartels.jtechstorage.entity.Cheldrogan dragon) {
 				dragon.riderAction(context.player(), payload.action());

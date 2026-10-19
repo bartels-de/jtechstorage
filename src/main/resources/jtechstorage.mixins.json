@@ -3,7 +3,8 @@
 	"package": "dev.bartels.jtechstorage.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"ItemEntityMixin"
+		"ItemEntityMixin",
+		"PlayerXpMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

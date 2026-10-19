@@ -76,6 +76,7 @@ public final class StormContent {
 		Registry.register(BuiltInRegistries.ITEM, SIGNAL_LANTERN_KEY.identifier(), SIGNAL_LANTERN_ITEM);
 
 		ServerTickEvents.END_LEVEL_TICK.register(ResonanceStorm::tickLevel);
+		ServerTickEvents.END_SERVER_TICK.register(StormContent::naturalStorms);
 		ServerLifecycleEvents.SERVER_STOPPING.register(ResonanceStorm::clearAll);
 		CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> registerCommand(dispatcher));
 	}
@@ -92,9 +93,10 @@ public final class StormContent {
 	// ------------------------------------------------------------------
 
 	private static void registerCommand(CommandDispatcher<CommandSourceStack> dispatcher) {
+		// Die Berechtigung hängt am Unterbefehl – /jtechstorage companion … (v0.25) dürfen alle Spieler nutzen
 		dispatcher.register(Commands.literal("jtechstorage")
-				.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 				.then(Commands.literal("storm")
+						.requires(Commands.hasPermission(Commands.LEVEL_GAMEMASTERS))
 						.then(Commands.literal("start").executes(context -> start(context.getSource())))
 						.then(Commands.literal("stop").executes(context -> stop(context.getSource())))));
 	}
@@ -128,6 +130,87 @@ public final class StormContent {
 
 		source.sendSuccess(() -> Component.translatable("jtechstorage.storm.command.stopped", count), true);
 		return count;
+	}
+
+	// ------------------------------------------------------------------
+	// Natürliche Stürme (v0.27): Wer viel Amethyst abbaut, lädt Resonanz auf – irgendwann entlädt sie sich als Sturm
+	// über dem eigenen Terminal. Bedingungen: im Chunk des eigenen Terminals, mindestens ein eigener Helfer, mehr als
+	// 500 Amethyst (Blöcke, Knospen, Cluster) seit dem letzten Sturm, mindestens ein Spieltag Abstand.
+	// ------------------------------------------------------------------
+
+	private static final net.minecraft.world.level.block.Block[] AMETHYST = {Blocks.AMETHYST_BLOCK, Blocks.AMETHYST_CLUSTER,
+			Blocks.LARGE_AMETHYST_BUD, Blocks.MEDIUM_AMETHYST_BUD, Blocks.SMALL_AMETHYST_BUD, Blocks.BUDDING_AMETHYST};
+
+	/** Abgebauter Amethyst laut Vanilla-Statistik. */
+	public static int amethystMined(net.minecraft.server.level.ServerPlayer player) {
+		int total = 0;
+
+		for (net.minecraft.world.level.block.Block block : AMETHYST) {
+			total += player.getStats().getValue(net.minecraft.stats.Stats.BLOCK_MINED.get(block));
+		}
+
+		return total;
+	}
+
+	private static void naturalStorms(net.minecraft.server.MinecraftServer server) {
+		dev.bartels.jtechstorage.ModConfig.Storm config = dev.bartels.jtechstorage.ModConfig.get().storm;
+
+		if (!config.naturalStorms) {
+			return;
+		}
+
+		int tick = server.getTickCount();
+
+		for (net.minecraft.server.level.ServerPlayer player : server.getPlayerList().getPlayers()) {
+			if ((tick + Math.floorMod(player.getUUID().hashCode(), 100)) % 100 == 0) {
+				tryNaturalStorm(player, config);
+			}
+		}
+	}
+
+	private static void tryNaturalStorm(net.minecraft.server.level.ServerPlayer player, dev.bartels.jtechstorage.ModConfig.Storm config) {
+		ServerLevel level = player.level();
+
+		if (player.isSpectator() || player.isCreative() || level.getDifficulty() == net.minecraft.world.Difficulty.PEACEFUL) {
+			return;
+		}
+
+		StormData data = StormData.get(level.getServer());
+		StormData.Entry last = data.of(player.getUUID());
+		int mined = amethystMined(player);
+
+		if (mined <= last.amethyst() + config.amethystPerStorm || level.getGameTime() - last.time() < (long) (config.cooldownDays * 24000)) {
+			return;
+		}
+
+		// im Chunk des eigenen Terminals?
+		BlockPos terminal = null;
+
+		if (level.getChunkSource().getChunkNow(player.chunkPosition().x(), player.chunkPosition().z()) instanceof LevelChunk chunk) {
+			for (BlockEntity entity : chunk.getBlockEntities().values()) {
+				if (entity instanceof StorageTerminalBlockEntity t && t.isOwner(player)) {
+					terminal = entity.getBlockPos();
+					break;
+				}
+			}
+		}
+
+		if (terminal == null || ResonanceStorm.at(level, terminal) != null) {
+			return;
+		}
+
+		// mindestens ein eigener Helfer in der Nähe des Terminals
+		boolean hasHelper = !level.getEntitiesOfClass(dev.bartels.jtechstorage.entity.NetworkHelperMob.class,
+				new net.minecraft.world.phys.AABB(terminal).inflate(96.0), h -> h.isAlive() && player.getUUID().equals(h.getOwnerId())).isEmpty();
+
+		if (!hasHelper) {
+			return;
+		}
+
+		if (ResonanceStorm.start(level, terminal) != null) {
+			data.record(player.getUUID(), mined, level.getGameTime());
+			player.sendSystemMessage(Component.translatable("jtechstorage.storm.natural", mined).withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.ITALIC));
+		}
 	}
 
 	/** Nächstes Storage Terminal (geladene Chunks im Umkreis). */

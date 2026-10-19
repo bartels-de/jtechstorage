@@ -216,6 +216,15 @@ public class GuideBookScreen extends Screen {
 		info("moon_wolf");
 		info("helper_home");
 
+		chapter(Items.AMETHYST_CLUSTER, "companions");
+		info("companions");
+		info("geode_keeper");
+		info("mantis");
+		info("shroom");
+		info("raven");
+		shapeless(dev.bartels.jtechstorage.companion.CompanionContent.RESONANCE_TREAT, "jtechstorage.guide.recipe.resonance_treat",
+				Items.HONEY_BOTTLE, Items.AMETHYST_SHARD, Items.AMETHYST_SHARD);
+
 		chapter(ModContent.LEATHER_BACKPACK, "backpacks");
 		info("backpack");
 
@@ -364,6 +373,12 @@ public class GuideBookScreen extends Screen {
 		creature(ModContent.AMETHYST_PHOENIX, "amethyst_phoenix");
 		creature(dev.bartels.jtechstorage.wolf.WolfContent.MOON_WOLF, "moon_wolf");
 
+		chapter(Items.AMETHYST_CLUSTER, "companions");
+		creature(dev.bartels.jtechstorage.companion.CompanionContent.GEODE_KEEPER, "geode_keeper");
+		creature(dev.bartels.jtechstorage.companion.CompanionContent.MANTIS, "mantis");
+		creature(dev.bartels.jtechstorage.companion.CompanionContent.SHROOM, "shroom");
+		creature(dev.bartels.jtechstorage.companion.CompanionContent.RAVEN, "raven");
+
 		chapter(ModContent.AMETHYST_DRAUGHT, "bosses");
 		creature(ModContent.AMETHYST_ROBOT, "boss");
 		creature(EndContent.AMETHYST_SPIDER, "spider");
@@ -400,7 +415,7 @@ public class GuideBookScreen extends Screen {
 				ModContent.AMETHYST_DRAUGHT, EndContent.LAIR_COMPASS, EndContent.CRYSTAL_COCOON);
 
 		chapter(ModContent.AMETHYST_CORE, "lexicon_materials");
-		lexicon(ModContent.AMETHYST_CORE, dev.bartels.jtechstorage.wolf.WolfContent.AMETHYST_BONE, ModContent.WIRELESS_CORE, ModContent.DRAGON_HEART, EndContent.CRYSTAL_OBSIDIAN,
+		lexicon(ModContent.AMETHYST_CORE, dev.bartels.jtechstorage.wolf.WolfContent.AMETHYST_BONE, dev.bartels.jtechstorage.companion.CompanionContent.RESONANCE_TREAT, ModContent.WIRELESS_CORE, ModContent.DRAGON_HEART, EndContent.CRYSTAL_OBSIDIAN,
 				EndContent.AMETHYST_OBSIDIAN_UPGRADE);
 
 		chapter(ModContent.DIAMOND_RANGE_UPGRADE, "lexicon_upgrades");

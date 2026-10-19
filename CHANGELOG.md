@@ -3,6 +3,75 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.25.0]
+
+### Added
+- **Companions:** a loyal friend from the geode who goes everywhere with you and grows with you. One companion per
+  player.
+  - **Geode Keeper:** an old hermit who sometimes lives inside amethyst geodes (every geode has one chance, a soft hum
+    tells you he is near). He offers you one random companion; accept or decline by clicking in chat. Decline and he
+    vanishes – look for another geode. Accept and he settles in his geode for good.
+  - **Shadow Mantis** (attack): a pitch-black mantis with glowing slit eyes, swept-back horns, twitching mandibles and
+    serrated claws. Fights what you attack, what attacks you and monsters near you (never creepers). Stage 2 adds dorsal
+    spikes, a cobra hood and leather wings; stage 3 (Blade Queen) gets spiked pauldrons, a crown, amethyst scythes and
+    faceted crystal wings, and its scythe strike also hits monsters around the target.
+  - **Amethyst Shroom** (healing): a mushroom on two legs that heals you with glowing spores – automatically or on key
+    press (**H** heals, **Shift + H** switches mode), with a cooldown of 30 / 20 / 15 s per stage. Stage 2 also heals your
+    pets and companions, stage 3 heals all players nearby, cures poison and wither and saves you at low health.
+  - **Night Raven** (carrying): a jet-black raven with glowing eyes and a spiky ruff. Collects items around you into its
+    bag (9 / 18 / 27 slots) and flies them to your Storage Terminal once linked with a bound Storage Key. Stage 3
+    (Raven Lord) wears a bone mask, horns, a crystal crest and a saddle with saddlebags.
+  - **All companions fight:** the mantis at full strength (4 / 7 / 11 damage per stage, an attack every 1.3 s), the raven
+    with 50 % (every 1.6 s) and the shroom with 25 % (every 2 s).
+  - **Grows with you:** half of the experience you collect goes to your companion. Stage 2 at companion level 30, stage 3
+    at level 100 (vanilla level curve), each with its own model.
+  - **Follows you everywhere**, also through portals, into other dimensions and after respawning. Right-click or the
+    **G** key (up to 48 blocks away) toggles follow / stay. It never dies – it gets exhausted and recovers, and it is
+    rescued from the void.
+  - **Riding at stage 3:** the mantis walks and flies briefly while you hold Space (about 4 s, then it glides down and
+    recharges); the raven flies for as long as you like.
+  - **Companion menu** (**K** key or shift + right-click; the raven opens its bag on shift + right-click): live portrait,
+    level, XP, health, damage, armor, attack speed, mode and stance, with buttons for follow / stay, stance, call, heal
+    now and heal mode (shroom), the bag (raven) and the HUD. Works from afar and across dimensions.
+  - **Stances:** aggressive (default), defensive (only defends you and itself) and passive (doesn't fight).
+  - **Talent tree:** one point every 5 levels (up to 20), three branches with four talents per species; deeper talents
+    need the one above and partly stage 2 or 3. Resetting costs an Amethyst Core.
+    - Mantis – *Blade:* Sharp Blades, Quick Strike, Precision, Whirling Scythe · *Armor:* Chitin Shell, Crystal Plates,
+      Thorns, Unbreakable · *Hunt:* Swift Legs, Hunting Instinct, Leap Attack, Crystal Flight.
+    - Shroom – *Healing:* Strong Spores, Fast Bloom, Wide Spores, Lifesaver · *Protection:* Tough Stalk, Spore Shield,
+      Calm Aura, Purify · *Poison:* Toxic Spores, Spore Burst, Numbing Spores, Toxic Cloud.
+    - Raven – *Bag:* Keen Eye, Eager Courier, Swift Delivery, Lucky Find · *Combat:* Sharp Beak, Dive, Eye Peck,
+      Shadow Swarm · *Flight:* Tailwind, Feather Fall, Night Eye, Sky Lord.
+  - **Companion HUD** in the top left: name, stage, level, health and XP bars, follow / stay, stance, treat time and,
+    depending on the species, heal cooldown, bag fill or flight stamina while riding; shows the distance when the
+    companion is far away or in another dimension. Can be switched off in the menu.
+  - **Resonance Treat** (honey bottle + 2 amethyst shards → 4): double experience for 5 minutes (stacks up to 15),
+    a minute of speed, 2 hearts and an end to exhaustion. The bonus experience is not taken from you.
+  - Commands: `/jtechstorage companion accept | decline | call | release confirm`, for game masters `keeper` and
+    `xp <amount>`.
+  - Config section `companions` (stage levels, XP share, keeper chance, search radius), sounds for all companions and
+    the keeper, guide book and bestiary pages, advancements "A Loyal Friend", "Growing Together" and "Kindred Spirits".
+- **The Geode Keeper trades** like a villager (vanilla trading screen; shift + right-click, or a plain right-click once
+  you have a companion): amethyst shards for Resonance Treats, experience bottles, tinted glass, amethyst buds, name tags,
+  Resonance Igniters, a spyglass, Amethyst Cores, Wireless Cores, budding amethyst, a Totem of Undying and an Ender Range
+  Upgrade; he buys calcite, smooth basalt, glow berries, echo shards and emeralds for shards. Five levels with villager
+  XP thresholds, two new random offers per level, stock refills every 10 minutes, trades give experience orbs. Keepers
+  also appear for players who already have a companion, and trading with one makes him stay for good.
+- **Natural Resonance Storms:** a storm now starts on its own when you stand in the chunk of your own Storage Terminal,
+  have at least one helper and have mined more than 500 amethyst since your last storm (at most once per in-game day).
+  New config section `storm` (`naturalStorms`, `amethystPerStorm`, `cooldownDays`).
+- **Guide for GitHub** in [`docs/guide`](docs/guide/README.md): one page per topic, plus a recipe page with item pictures
+  and a configuration page, both generated from the mod's own files.
+
+### Changed
+- `/jtechstorage storm` still requires game master rights; the new `/jtechstorage companion` commands are open to all
+  players.
+
+### Fixed
+- **Cheldrogan's tail** no longer sways all the time: the serpent body only slithers while he moves; at rest he stays
+  still apart from a slight breath.
+- In-game handbook: the Resonance Storm page no longer says it can only be started by command.
+
 ## [0.24.0]
 
 ### Added

@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:companion",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:budding_amethyst"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.companion_stage2.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.companion_stage2.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

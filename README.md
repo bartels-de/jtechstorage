@@ -40,6 +40,11 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
 - 🔊 **Own sounds and a server config.** Synthesized crystal sounds for every creature, and a commented config file for
   ranges, bosses and helper speeds.
 
+## 📖 Guide
+
+The full guide lives in [`docs/guide`](docs/guide/README.md): every block, item, helper, companion and boss, all
+recipes with pictures, every key and command and every config option – one page per topic.
+
 ## Installation
 
 1. Install [Fabric Loader](https://fabricmc.net/use/) **0.19.5+** for Minecraft **26.3**.
@@ -189,14 +194,57 @@ Right-click a phoenix with an **Amethyst Obsidian Upgrade** to evolve it into a 
 
 ### Resonance Storm
 
-Sometimes the resonance rings false. A **Resonance Storm** gathers over a Storage Terminal (for now started with
-`/jtechstorage storm start`, a natural trigger follows later):
+Sometimes the resonance rings false. A **Resonance Storm** gathers over a Storage Terminal. It starts on its own when
+you stand in the chunk of **your own terminal**, have **at least one helper** and have mined **more than 500 amethyst**
+(blocks, buds and clusters, counted by the vanilla statistics) since your last storm – at most once per in-game day
+(all configurable). Game masters can also use `/jtechstorage storm start`.
 
 - the network is disturbed while it rages: half range, helpers at half speed, resonance drains fast
 - three waves of **Crystal Shardlings** march on the terminal; the last wave brings the **Storm Herald**
 - defeat the herald to end the storm. Peter Chel Parker, Cheldrogan and the Watch Moths fight alongside you
 
 The **Signal Lantern** lights up and emits a redstone signal while an Amethyst Phoenix rests at a stop within 8 blocks.
+
+### Companions
+
+Deep inside amethyst geodes there sometimes lives a **Geode Keeper**, an old hermit with crystals on his shoulders and
+a geode staff. Every geode has exactly one chance to hold one (a soft hum tells you he is near). Right-click him and he
+offers you one of three companions, chosen at random. Accept or decline by clicking in chat; if you decline, he
+disappears and you can try your luck in another geode.
+
+The keeper is also a **trader** and works like a villager (shift + right-click, or a plain right-click once you have a
+companion): amethyst shards for Resonance Treats, experience bottles, Amethyst Cores, Wireless Cores, budding amethyst,
+a totem and more; he also buys calcite, smooth basalt, glow berries and echo shards. Every trade gives him experience –
+he climbs five levels like a villager and unlocks two new random offers per level. His stock refills every 10 minutes.
+Once you accept a companion from him or trade with him he settles in his geode for good; keepers now also appear for
+players who already have a companion. You can only have one companion. All companions fight at your
+side: the mantis at full strength, the raven with 50 % and the shroom with 25 % of its damage.
+
+| Companion | Role |
+| --- | --- |
+| **Shadow Mantis** | The strongest fighter: attacks what you attack or what attacks you, and monsters near you. Stage 3 hits everything around the target. |
+| **Amethyst Shroom** | Heals you with glowing spores – automatically or on key press (**H** heals, **Shift + H** switches mode), with a cooldown of 30 / 20 / 15 s. Stage 2 also heals your pets and companions, stage 3 heals all players nearby, cures poison and saves you at low health. |
+| **Night Raven** | Collects items around you into its bag (9 / 18 / 27 slots) and flies them to your Storage Terminal (link it with a bound Storage Key). |
+
+- **Follows you everywhere**, also through portals and after you respawn. Right-click or the **G** key toggles
+  **follow / stay**. `/jtechstorage companion call` brings it to you.
+- **Companion menu** (**K** key or shift + right-click; the raven opens its bag on shift + right-click): level, health
+  and stats with a live portrait, follow / stay, call, the shroom's heal mode, the raven's bag and the **stance** –
+  *aggressive* (attacks everything hostile near you), *defensive* (only defends you and itself) or *passive*.
+- **Talent tree:** one talent point every 5 levels (up to 20). Each species has three branches with four talents –
+  mantis *Blade / Armor / Hunt*, shroom *Healing / Protection / Poison*, raven *Bag / Combat / Flight*. Deeper talents
+  need the one above and sometimes stage 2 or 3; resetting costs an Amethyst Core.
+- **HUD** in the top left: name, level, health, experience, follow / stay, stance, treat time and the shroom's cooldown,
+  the raven's bag or the mantis' flight stamina while riding. It can be switched off in the menu.
+- **Riding at stage 3:** the mantis carries you on the ground and flies briefly while you hold Space (about 4 seconds,
+  then it glides down and recharges); the grown raven carries you through the air for as long as you like.
+- **Grows with you:** half of every bit of experience you collect goes to your companion. It levels like a player and
+  reaches **stage 2 at level 30** and **stage 3 at level 100**, each with a new look and stronger abilities.
+- It never dies. When it takes too much damage it is exhausted for a short while and recovers.
+- **Resonance Treat** (honey bottle + 2 amethyst shards → 4): right-click your companion for 5 minutes of double
+  experience (stacks up to 15 minutes), a minute of speed, 2 hearts and an end to its exhaustion.
+- `/jtechstorage companion release confirm` releases it for good. Game masters can spawn a keeper with
+  `/jtechstorage companion keeper` and give XP with `/jtechstorage companion xp <amount>` for testing.
 
 ### Bosses and the End
 
@@ -289,6 +337,8 @@ On first start the mod creates `config/jtechstorage.json` (JSON with comments). 
   robot's core drop chance.
 - **Helpers:** the Amethyst Fox's dig interval and feeding limit, Chel's crafting speed, the Amethyst Sprite's pause
   and radii, watch and guard radii, and phoenix speeds.
+- **Companions:** levels for stage 2 and 3, the share of collected XP that goes to the companion, the chance for a
+  Geode Keeper per geode and the search radius.
 
 Changes apply after a restart. Delete a line (or the whole file) to restore its default. On a server, the server's
 file counts; clients receive its values for tooltips and the handbook.
