@@ -53,6 +53,8 @@ public final class GuiSettings {
 	public Accent accent = Accent.AMETHYST;
 	public Rows rows = Rows.SIX;
 	public CountSize countSize = CountSize.NORMAL;
+	/** Begleiter-HUD oben links (v0.26). */
+	public boolean companionHud = true;
 
 	public static GuiSettings get() {
 		if (instance == null) {

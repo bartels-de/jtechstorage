@@ -348,13 +348,14 @@ public class CheldroganModel extends EntityModel<CheldroganRenderState> implemen
 		lhLeg.xRot += paddle;
 
 		// Schlängeln: eine Welle läuft vom Hals zur Schwanzspitze, schneller und weiter in Bewegung und im Flug
+		// Schlängeln nur in Bewegung – im Stand ruht der Körper, nur ein ganz leichtes Atmen läuft hindurch
 		float move = Math.max(speed, fly);
-		float t = age * (0.1f + 0.12f * move) + state.walkAnimationPos * 0.4f;
-		float amp = 0.12f + 0.12f * move;
+		float t = age * 0.04f + state.walkAnimationPos * 0.45f;
+		float amp = 0.015f + 0.2f * move;
 
 		for (int k = 0; k < segs.length; k++) {
 			segs[k].yRot += amp * Mth.sin(t - (k + 1) * 0.7f);
-			segs[k].xRot += (0.05f + 0.04f * move) * Mth.sin(t * 0.8f - (k + 1) * 0.6f);
+			segs[k].xRot += (0.015f + 0.06f * move) * Mth.sin(t * 0.8f - (k + 1) * 0.6f);
 		}
 
 		seg0.yRot -= amp * 0.4f * Mth.sin(t);
@@ -376,8 +377,8 @@ public class CheldroganModel extends EntityModel<CheldroganRenderState> implemen
 		beard.xRot += Mth.sin(age * 0.11f) * 0.1f + move * 0.3f;
 		rFin.yRot -= Mth.sin(age * 0.2f) * 0.12f;
 		lFin.yRot += Mth.sin(age * 0.2f) * 0.12f;
-		flame.yRot += Mth.sin(age * 0.25f) * 0.25f;
-		flame.xRot += Mth.sin(age * 0.18f) * 0.1f;
+		flame.yRot += Mth.sin(age * 0.12f) * (0.04f + 0.15f * move);   // Flamme flackert leicht, schwingt nur in Bewegung
+		flame.xRot += Mth.sin(age * 0.1f) * 0.03f;
 
 		// Kristall-Odem: Hals senken, Maul weit auf, Kiefer bebt
 		if (state.breathProgress > 0.0f) {

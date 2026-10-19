@@ -3,6 +3,137 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.27.0]
+
+### Added
+- **The Geode Keeper trades** like a villager (vanilla trading screen): amethyst shards for Resonance Treats, experience
+  bottles, tinted glass, amethyst buds, name tags, Amethyst Draughts, a spyglass, Amethyst Cores, Wireless Cores,
+  budding amethyst, a Totem of Undying and an Ender Range Upgrade; he buys calcite, smooth basalt, glow berries, echo
+  shards and emeralds for shards. Five levels with villager XP thresholds, two new random offers per level, stock
+  refills every 10 minutes, trades give experience orbs.
+- **Natural Resonance Storms:** a storm now starts on its own when you stand in the chunk of your own Storage Terminal,
+  have at least one helper and have mined more than 500 amethyst since your last storm (at most once per in-game day).
+  New config section `storm` (`naturalStorms`, `amethystPerStorm`, `cooldownDays`).
+
+### Changed
+- Geode Keepers also appear for players who already have a companion (to trade). Shift + right-click trades, a plain
+  right-click trades once you have a companion.
+- After you accept a companion or trade with him, the keeper settles in his geode for good instead of vanishing.
+
+## [0.26.0]
+
+### Added
+- **Companion menu** (K key or shift + right-click; the raven still opens its bag with shift + right-click): overview
+  with a live portrait of your companion, level and XP bar, health, damage, armor, attack speed, mode and stance, plus
+  buttons for follow / stay, call, heal now and heal mode (shroom), the bag (raven) and switching the HUD on or off.
+  Works from afar and across dimensions.
+- **Stances:** aggressive (as before), defensive (only defends you and itself) and passive (doesn't fight).
+- **Talent tree:** one point every 5 levels (up to 20), three branches with four talents per species, deeper talents
+  need the one above and partly stage 2 or 3. Resetting costs an Amethyst Core.
+  - Mantis – *Blade:* Sharp Blades, Quick Strike, Precision, Whirling Scythe · *Armor:* Chitin Shell, Crystal Plates,
+    Thorns, Unbreakable · *Hunt:* Swift Legs, Hunting Instinct, Leap Attack, Crystal Flight.
+  - Shroom – *Healing:* Strong Spores, Fast Bloom, Wide Spores, Lifesaver · *Protection:* Tough Stalk, Spore Shield,
+    Calm Aura, Purify · *Poison:* Toxic Spores, Spore Burst, Numbing Spores, Toxic Cloud.
+  - Raven – *Bag:* Keen Eye, Eager Courier, Swift Delivery, Lucky Find · *Combat:* Sharp Beak, Dive, Eye Peck,
+    Shadow Swarm · *Flight:* Tailwind, Feather Fall, Night Eye, Sky Lord.
+- **Companion HUD** in the top left: name, stage, level, health and XP bars, follow / stay, stance, treat time and,
+  depending on the species, heal cooldown, bag fill or flight stamina while riding; shows the distance when it is far
+  away or in another dimension.
+
+### Changed
+- Shift + right-click on the mantis or shroom opens the menu instead of printing the status to chat.
+
+## [0.25.5]
+
+### Changed
+- **New look for the mantis – now the Shadow Mantis:** a pitch-black carapace with a violet sheen, a triangular head
+  with glowing slit eyes and swept-back horns, mandibles that twitch and open when it strikes, serrated claws with a
+  glowing inner edge and a glowing seam along its back. Stage 2 adds dorsal spikes, a cobra hood and leather wings;
+  stage 3 (Blade Queen) gets spiked pauldrons, a crown, amethyst scythes and the crystal wings.
+- **New look for the raven – now the Night Raven:** jet-black layered plumage, an angry brow over glowing eyes, a heavy
+  hooked beak and a more upright, imposing stance. Stage 2 adds a spiky ruff with glowing tips and glowing tail
+  feathers; stage 3 (Raven Lord) wears a bone mask with horns, a crystal crest, crystal flight feathers, a saddle with
+  amethyst studs and two saddlebags.
+- Riding seats adjusted to the new models; guide texts updated.
+
+## [0.25.4]
+
+### Added
+- **Ride your companion at stage 3:** right-click the mantis or the raven to mount. The mantis walks and flies briefly
+  while you hold Space (about 4 seconds, then it glides down and recharges on the ground); the raven flies for as long
+  as you like (it goes where you look, Space rises, Shift dismounts).
+- **G key** (changeable): toggles follow / stay for your companion from up to 48 blocks away – needed for rideable
+  companions, where right-click now mounts.
+
+### Changed
+- The stage 3 mantis has real **amethyst wings**: four faceted crystal blades per side with glowing edges that spread
+  and beat in flight. It is also a bit larger so it can carry you.
+- The **raven** is larger at every stage (stage 3 is big enough to carry a player).
+- Companions **attack more slowly** and more believably: mantis every 1.3 s, raven every 1.6 s, shroom every 2 s, with
+  longer strike animations.
+
+### Fixed
+- **Cheldrogan's tail** no longer sways all the time: the serpent body only slithers while he moves; at rest he stays
+  still apart from a slight breath.
+
+## [0.25.3]
+
+### Added
+- **Resonance Treat:** a honey drop with an amethyst splinter (honey bottle + 2 amethyst shards → 4 treats). Right-click
+  your companion with it: double experience for 5 minutes (feed more to stack up to 15 minutes), speed for a minute,
+  2 hearts healed and no more exhaustion. The bonus experience comes on top and is not taken from you. The status shows
+  the remaining time; guide book recipe and lexicon entry.
+
+## [0.25.2]
+
+### Added
+- **Shroom healing on demand:** press **H** (changeable in the controls) to let your Amethyst Shroom heal right away;
+  **Shift + H** switches between automatic healing and key-press-only. Healing has a cooldown (stage 1: 30 s, stage 2:
+  20 s, stage 3: 15 s); the status shows mode and remaining cooldown. The stage 3 emergency heal only works in automatic
+  mode.
+
+### Changed
+- **All companions fight now.** The mantis remains the strongest (4 / 7 / 11 damage per stage), the raven pecks with
+  50 % and the shroom headbutts with 25 % of that. They attack what you attack, what attacks you and monsters near you
+  (never creepers). New attack animations and sounds for raven and shroom.
+
+## [0.25.1]
+
+### Changed
+- Companion and Geode Keeper textures redone with real depth: every surface now has a relief (height map with light from
+  above, edge occlusion, gentle bulge) and hue-shifted colour ramps – cool violet shadows, warm highlights. Overlapping
+  chitin plates and segment grooves on the mantis, a domed cap with raised glowing spots, gills and stalk fibres on the
+  shroom, scalloped feathers with a blue-violet sheen on the raven, fabric folds, beard strands and wood grain on the
+  keeper.
+
+## [0.25.0]
+
+### Added
+- **Companions:** a loyal friend from the geode who goes everywhere with you and grows with you.
+  - **Geode Keeper:** an old hermit who sometimes lives inside amethyst geodes (every geode has one chance, a soft hum
+    tells you he is near). He offers you one random companion; accept or decline by clicking in chat. Declined? Look
+    for another geode. One companion per player.
+  - **Amethyst Mantis** (attack): fights what you attack, what attacks you and monsters near you; stronger with every
+    stage, at stage 3 its scythe strike also hits monsters around the target.
+  - **Amethyst Shroom** (regeneration): a mushroom on two legs that heals you with glowing spores; stage 2 also heals
+    your pets and companions, stage 3 heals all players nearby, cures poison and wither and saves you at low health.
+  - **Amethyst Raven** (carrying): collects items around you into its bag (9 / 18 / 27 slots) and flies them to your
+    Storage Terminal once linked with a bound Storage Key.
+  - Follows you everywhere, also through portals and after respawning; right-click toggles follow / stay,
+    shift + right-click shows its status (the raven opens its bag). It never dies – it gets exhausted and recovers.
+  - Half of the experience you collect goes to your companion. Stage 2 at companion level 30, stage 3 at level 100
+    (vanilla level curve), each with its own model and texture: baby mantis → adult mantis → crystal mantis with wings,
+    little shroom → shroom with arms and side caps → crystal shroom with moss cape and spore staff, fledgling → courier
+    raven → crystal-crested raven with saddlebags.
+  - Commands: `/jtechstorage companion accept | decline | call | release confirm`, for game masters `keeper` and
+    `xp <amount>`.
+  - Config section `companions` (stage levels, XP share, keeper chance, search radius), sounds for all companions and
+    the keeper, guide book and bestiary pages, advancements "A Loyal Friend", "Growing Together" and "Kindred Spirits".
+
+### Changed
+- `/jtechstorage storm` still requires game master rights; the new `/jtechstorage companion` commands are open to all
+  players.
+
 ## [0.24.0]
 
 ### Added

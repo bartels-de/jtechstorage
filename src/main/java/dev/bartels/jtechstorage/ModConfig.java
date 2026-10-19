@@ -86,9 +86,27 @@ public final class ModConfig {
 		public double amethystPhoenixBlocksPerSecond = 12.0;
 	}
 
+	/** Begleiter (v0.25): Mantis, Pilz und Rabe vom Geodenhüter. */
+	public static final class Companions {
+		public int stage2Level = 30;
+		public int stage3Level = 100;
+		public double xpShare = 0.5;
+		public double keeperChance = 0.6;
+		public int keeperSearchRadius = 12;
+	}
+
 	public Network network = new Network();
 	public Bosses bosses = new Bosses();
 	public Helpers helpers = new Helpers();
+	public Companions companions = new Companions();
+	public Storm storm = new Storm();
+
+	/** Resonanz-Sturm (v0.27): startet von selbst am eigenen Terminal. */
+	public static final class Storm {
+		public boolean naturalStorms = true;
+		public int amethystPerStorm = 500;
+		public double cooldownDays = 1.0;
+	}
 
 	private static final Gson GSON = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 	private static ModConfig local;
@@ -228,6 +246,24 @@ public final class ModConfig {
 		h.cheldroganRainCooldownSeconds = clamp(h.cheldroganRainCooldownSeconds, 1.0, 600.0);
 		h.phoenixMailBlocksPerSecond = clamp(h.phoenixMailBlocksPerSecond, 1.0, 10000.0);
 		h.amethystPhoenixBlocksPerSecond = clamp(h.amethystPhoenixBlocksPerSecond, 1.0, 100.0);
+
+		if (companions == null) {
+			companions = new Companions();
+		}
+
+		Companions c = companions;
+		c.stage2Level = clamp(c.stage2Level, 1, 10000);
+		c.stage3Level = clamp(c.stage3Level, c.stage2Level + 1, 10001);
+		c.xpShare = clamp(c.xpShare, 0.0, 1.0);
+		c.keeperChance = clamp(c.keeperChance, 0.0, 1.0);
+		c.keeperSearchRadius = clamp(c.keeperSearchRadius, 4, 32);
+
+		if (storm == null) {
+			storm = new Storm();
+		}
+
+		storm.amethystPerStorm = clamp(storm.amethystPerStorm, 1, 1000000);
+		storm.cooldownDays = clamp(storm.cooldownDays, 0.0, 365.0);
 	}
 
 	private static int clamp(int value, int min, int max) {
@@ -295,7 +331,21 @@ public final class ModConfig {
 				new Entry("cheldroganBreathCooldownSeconds", h.cheldroganBreathCooldownSeconds, "Cheldrogan: crystal breath cooldown when ridden / Odem-Abklingzeit"),
 				new Entry("cheldroganRainCooldownSeconds", h.cheldroganRainCooldownSeconds, "Cheldrogan: shard rain cooldown when ridden / Splitter-Regen-Abklingzeit"),
 				new Entry("phoenixMailBlocksPerSecond", h.phoenixMailBlocksPerSecond, "Phoenix mail: flight speed for parcel delivery time"),
-				new Entry("amethystPhoenixBlocksPerSecond", h.amethystPhoenixBlocksPerSecond, "Amethyst Phoenix: travel speed without cargo")), true);
+				new Entry("amethystPhoenixBlocksPerSecond", h.amethystPhoenixBlocksPerSecond, "Amethyst Phoenix: travel speed without cargo")), false);
+
+		Companions c = companions;
+		section(out, "companions", "Companions / Begleiter", List.of(
+				new Entry("stage2Level", c.stage2Level, "Companion level for stage 2 / Level fuer Stufe 2"),
+				new Entry("stage3Level", c.stage3Level, "Companion level for stage 3 / Level fuer Stufe 3"),
+				new Entry("xpShare", c.xpShare, "Share of collected XP that goes to the companion (0.0-1.0) / XP-Anteil des Begleiters"),
+				new Entry("keeperChance", c.keeperChance, "Chance that a Geode Keeper lives in a newly found geode (0.0-1.0)"),
+				new Entry("keeperSearchRadius", c.keeperSearchRadius, "Radius around players in which geodes are noticed / Suchradius fuer Geoden")), false);
+
+		Storm st = storm;
+		section(out, "storm", "Resonance Storm / Resonanz-Sturm", List.of(
+				new Entry("naturalStorms", st.naturalStorms, "Storms start on their own at your terminal (needs a helper) / Stuerme starten von selbst"),
+				new Entry("amethystPerStorm", st.amethystPerStorm, "Amethyst mined before the first storm and between storms / Amethyst je Sturm"),
+				new Entry("cooldownDays", st.cooldownDays, "Minimum in-game days between two storms of a player / Mindestabstand in Tagen")), true);
 
 		out.append("}\n");
 		return out.toString();
