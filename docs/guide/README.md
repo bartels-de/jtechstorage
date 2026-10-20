@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.27.2** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.28.0** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 
@@ -19,7 +19,7 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | | Page | What's inside |
 |---|---|---|
 | 🚀 | [Getting started](01-getting-started.md) | Installation, your first network, a roadmap through the mod |
-| 📦 | [Storage network](02-storage-network.md) | Terminals, Storage Key, upgrades, search, sorting rules, statistics, wireless, resonance |
+| 📦 | [Storage network](02-storage-network.md) | Terminals, Storage Key, Amethyst Chests, upgrades, search, sorting rules, statistics, wireless, resonance |
 | 👥 | [Teams and trade](03-teams-and-trade.md) | Team Terminal, roles, channels, Trade Terminal |
 | 🧚 | [Helpers](04-helpers.md) | Sprite, Watch Moth, Griffin, Spark Beetle, Chel, Peter, Ashley, Fox, wolves, beds, cosmetics |
 | 🐉 | [Cheldrogan](05-cheldrogan.md) | The rideable crystal serpent dragon |

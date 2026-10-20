@@ -17,8 +17,8 @@
 
 ---
 
-JTechStorage links your existing chests, barrels and shulker boxes into one searchable network, with no new storage blocks
-and no power required. Around that core it adds small amethyst helpers that sort, guard, craft and carry for you, team and
+JTechStorage links your existing chests, barrels and shulker boxes into one searchable network, with no power required.
+If you want more room, optional Amethyst Chests hold up to 8 stacks per slot. Around that core it adds small amethyst helpers that sort, guard, craft and carry for you, team and
 trade terminals, phoenix mail, two bosses and an End update with gear above netherite.
 
 **Highlights**
@@ -57,7 +57,7 @@ Java **25** is required. The mod has to be installed on both the server and the 
 
 1. Place a **Storage Terminal**. It belongs to you.
 2. **Sneak + right-click** the terminal with a **Storage Key** to bind the key.
-3. **Sneak + right-click** a chest, barrel or shulker box with the key to add it to the network (again to remove it).
+3. **Sneak + right-click** a chest, barrel, shulker box or Amethyst Chest with the key to add it to the network (again to remove it).
    Double chests count as one. While you hold the key, linked containers sparkle.
 4. Open the terminal. You'll see every item in every linked container.
 
@@ -216,7 +216,8 @@ The keeper is also a **trader** and works like a villager (shift + right-click, 
 companion): amethyst shards for Resonance Treats, experience bottles, Amethyst Cores, Wireless Cores, budding amethyst,
 a totem and more; he also buys calcite, smooth basalt, glow berries and echo shards. Every trade gives him experience –
 he climbs five levels like a villager and unlocks two new random offers per level. His stock refills every 10 minutes.
-Once you accept a companion from him or trade with him he settles in his geode for good; keepers now also appear for
+Once you accept a companion from him or trade with him he settles in his geode for good. He never disappears on his
+own, can be killed and can be carried away in a boat or minecart; keepers now also appear for
 players who already have a companion. You can only have one companion. All companions fight at your
 side: the mantis at full strength, the raven with 70 % and the shroom with 25 % of its damage.
 

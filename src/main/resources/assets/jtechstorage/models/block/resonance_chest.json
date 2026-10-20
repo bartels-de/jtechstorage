@@ -1,0 +1,10 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "top": "jtechstorage:block/resonance_chest_top",
+    "bottom": "jtechstorage:block/resonance_chest_bottom",
+    "side": "jtechstorage:block/resonance_chest_side",
+    "front": "jtechstorage:block/resonance_chest_front",
+    "particle": "jtechstorage:block/resonance_chest_side"
+  }
+}

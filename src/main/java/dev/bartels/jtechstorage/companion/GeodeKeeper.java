@@ -14,10 +14,8 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.PathfinderMob;
@@ -36,7 +34,7 @@ import dev.bartels.jtechstorage.ModSounds;
 /**
  * Geodenhüter (v0.25): lebt in einer Amethyst-Geode und schenkt dem ersten Spieler ohne Begleiter einen von drei
  * Begleitern (Mantis, Pilz oder Rabe – zufällig, je Hüter fest). Annehmen oder ablehnen per Klick im Chat. Lehnt man ab,
- * verschwindet er. Bleibt er lange allein, zieht er sich in die Geode zurück.
+ * verschwindet er. Sonst verschwindet er nie von selbst (v0.27.3), lässt sich töten und in Booten/Loren transportieren.
  * <p>
  * Händler (v0.27): Wie ein Dorfbewohner tauscht er Amethyst-Splitter gegen Leckerlis, Amethyst-Kerne und Geoden-Schätze.
  * Mit jedem Handel sammelt er Erfahrung und schaltet neue Angebote frei (Stufen 1–5, je Stufe zwei zufällige Angebote),
@@ -47,11 +45,7 @@ public class GeodeKeeper extends PathfinderMob implements net.minecraft.world.it
 	public static final String[] SPECIES = {"mantis", "shroom", "raven"};
 	private static final EntityDataAccessor<Integer> DATA_SPECIES = SynchedEntityData.defineId(GeodeKeeper.class, EntityDataSerializers.INT);
 	private static final EntityDataAccessor<Integer> DATA_OFFER = SynchedEntityData.defineId(GeodeKeeper.class, EntityDataSerializers.INT);
-	private static final int LIFETIME = 20 * 60 * 20;
-	private static final int LONELY_TIME = 20 * 90;
-
 	private int age;
-	private int lonely;
 	private int vanishIn;
 	/** Bleibt für immer (hat einen Begleiter verschenkt oder gehandelt). */
 	private boolean settled;
@@ -137,15 +131,8 @@ public class GeodeKeeper extends PathfinderMob implements net.minecraft.world.it
 			}
 		}
 
-		if (settled) {
-			return;
-		}
-
-		age++;
-		lonely = level.getNearestPlayer(this, 48.0) == null ? lonely + 1 : 0;
-
-		if (tradingPlayer == null && (age > LIFETIME || lonely > LONELY_TIME)) {
-			vanish(level);
+		if (!settled) {
+			age++;
 		}
 	}
 
@@ -249,10 +236,6 @@ public class GeodeKeeper extends PathfinderMob implements net.minecraft.world.it
 		say(player, Component.translatable("jtechstorage.keeper.farewell_decline"));
 		vanishIn = 40;
 	}
-
-	// ------------------------------------------------------------------
-	// Unverwundbar (außer /kill), kein Wegschubsen, kein Verschwinden
-	// ------------------------------------------------------------------
 
 	// ------------------------------------------------------------------
 	// Handel (v0.27) – wie bei Dorfbewohnern
@@ -427,14 +410,16 @@ public class GeodeKeeper extends PathfinderMob implements net.minecraft.world.it
 		return tradingPlayer == player && isAlive() && !isLeaving() && player.distanceToSqr(this) < 8 * 8;
 	}
 
-	@Override
-	public boolean hurtServer(ServerLevel level, DamageSource source, float amount) {
-		return source.is(DamageTypeTags.BYPASSES_INVULNERABILITY) && super.hurtServer(level, source, amount);
-	}
+	// v0.27.3: verwundbar, verschwindet nie von selbst; „schiebbar“ nur, damit Boote und Loren ihn aufnehmen –
+	// Spieler und Mobs schubsen ihn trotzdem nicht weg.
 
 	@Override
 	public boolean isPushable() {
-		return false;
+		return true;
+	}
+
+	@Override
+	public void push(net.minecraft.world.entity.Entity entity) {
 	}
 
 	@Override

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "GDG",
+    "DXD",
+    "GDG"
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "D": "minecraft:diamond",
+    "X": "jtechstorage:crystal_chest"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:resonance_chest"
+  }
+}

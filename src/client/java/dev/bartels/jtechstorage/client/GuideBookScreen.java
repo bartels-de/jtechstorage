@@ -194,6 +194,7 @@ public class GuideBookScreen extends Screen {
 				net.baseCapacity, net.ironCapacity, net.goldCapacity, net.diamondCapacity, net.netheriteCapacity);
 		info("sorting");
 		info("interface");
+		info("amethyst_chests");
 		info("controls");
 		info("rest");
 		info("farm_tools");

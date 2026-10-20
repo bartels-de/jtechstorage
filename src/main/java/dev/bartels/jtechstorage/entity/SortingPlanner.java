@@ -265,8 +265,10 @@ public final class SortingPlanner {
 						break;
 					}
 
-					if (ItemStack.isSameItemSameComponents(existing, rest) && existing.getCount() < existing.getMaxStackSize()) {
-						int move = Math.min(rest.getCount(), existing.getMaxStackSize() - existing.getCount());
+					int limit = containers.get(0).getMaxStackSize(existing);   // Amethyst-Kisten (v0.28): größere Stapel
+
+					if (ItemStack.isSameItemSameComponents(existing, rest) && existing.getCount() < limit) {
+						int move = Math.min(rest.getCount(), limit - existing.getCount());
 						existing.grow(move);
 						rest.shrink(move);
 					}

@@ -99,6 +99,9 @@ public class JTechStorageClient implements ClientModInitializer {
 		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.CRYSTAL_PUSHER_MENU, dev.bartels.jtechstorage.client.farm.CrystalPusherScreen::new);
 		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.FARM_MONITOR_MENU, dev.bartels.jtechstorage.client.farm.FarmMonitorScreen::new);
 		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.CHUNK_LOADER_MENU, dev.bartels.jtechstorage.client.farm.ChunkLoaderScreen::new);
+		for (dev.bartels.jtechstorage.chest.AmethystChestTier tier : dev.bartels.jtechstorage.chest.AmethystChestTier.values()) {
+			MenuScreens.register(dev.bartels.jtechstorage.chest.ChestContent.menuType(tier), dev.bartels.jtechstorage.client.chest.AmethystChestScreen::new);
+		}
 		// Wölfe (v0.26)
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalWolfModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CrystalWolfModel::createBodyLayer);

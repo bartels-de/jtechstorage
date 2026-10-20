@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "BIB",
+    "IXI",
+    "BIB"
+  ],
+  "key": {
+    "B": "minecraft:amethyst_block",
+    "I": "minecraft:iron_ingot",
+    "X": "jtechstorage:amethyst_chest"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_chest"
+  }
+}

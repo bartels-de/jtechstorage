@@ -294,7 +294,7 @@ public class FarmMonitorBlockEntity extends BlockEntity {
 
 				now.merge(stack.getItem(), stack.getCount(), Integer::sum);
 
-				if (stack.getCount() < Math.min(stack.getMaxStackSize(), container.getMaxStackSize())) {
+				if (stack.getCount() < container.getMaxStackSize(stack)) {
 					full = false;
 				}
 			}

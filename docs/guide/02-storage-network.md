@@ -48,6 +48,24 @@ Miscellaneous. Click the active tab again (or right-click a tab) to show everyth
 The chart button right of the hotbar opens the statistics: fill level, a 14-day history, the share of each category,
 the most common items, and today's biggest gains and losses.
 
+## Amethyst Chests
+
+Bigger chests whose slots hold **several stacks**. Link them with the key like any other chest; the terminal, the
+Amethyst Sprite, hoppers and Crystal Pushers all use the bigger stacks.
+
+| Chest | Slots | Per slot | Recipe |
+|---|---|---|---|
+| Amethyst Chest | 54 | 2 stacks (128) | chest, 4 amethyst shards, 4 copper ingots |
+| Crystal Chest | 81 | 4 stacks (256) | Amethyst Chest, 4 amethyst blocks, 4 iron ingots |
+| Resonance Chest | 108 | 8 stacks (512) | Crystal Chest, 4 gold ingots, 4 diamonds |
+
+- They open like a barrel; the front with the gold lock faces you when you place one.
+- **Upgrade in place:** right-click a placed chest with a better one. The contents and the name stay, and you get
+  the old chest back.
+- Taking items out gives you at most one normal stack at a time. Unstackable items (tools, potions …) stay single.
+- Break a chest and its contents drop as normal stacks. Like shulker boxes, they don't accept shulker boxes.
+- Comparators read them like a chest.
+
 ## Upgrades
 
 Upgrades go into the slots of the terminal. **Range** decides how far away containers may be, **capacity** how many
