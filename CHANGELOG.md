@@ -3,6 +3,13 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.27.3]
+
+### Changed
+- The **Geode Keeper** never disappears on his own any more (declining his offer still sends him away).
+- The Geode Keeper can be **killed** (40 health, no drops).
+- The Geode Keeper can be moved in a **boat** or **minecart**; players and mobs still cannot shove him around.
+
 ## [0.27.2]
 
 ### Added

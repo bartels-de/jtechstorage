@@ -16,7 +16,8 @@ and a staff topped with a cracked geode.
 - **Decline** and he disappears – look for another geode and hope for a different offer.
 - **Accept** and your companion appears next to him. The keeper then **settles** in his geode for good and stays your
   trading partner.
-- An unsettled keeper leaves after a while if nobody is around.
+- Apart from that he **never disappears** on his own. He can be **killed** (40 health, he drops nothing) and moved like
+  a villager: push a **boat** or **minecart** into him and he gets in.
 
 ### Trading with the Geode Keeper
 
