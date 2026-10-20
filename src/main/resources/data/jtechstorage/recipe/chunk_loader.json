@@ -5,7 +5,7 @@
     "D": "minecraft:polished_deepslate",
     "G": "minecraft:gold_ingot",
     "L": "minecraft:glass",
-    "C": "jtechstorage:amethyst_core"
+    "C": "minecraft:diamond_block"
   },
   "pattern": [
     "DLD",

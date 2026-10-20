@@ -57,7 +57,7 @@ Keeps **its own chunk** loaded at all times – like `/forceload`, also while yo
 | Amethyst Hopper | hopper, gold ingot, 2 amethyst shards |
 | Crystal Pusher | dropper, gold ingot, 2 amethyst shards |
 | Farm Monitor | observer, glass pane, 2 gold ingots, amethyst shard |
-| Chunk Loader | Amethyst Core, glass, 2 gold ingots, 5 polished deepslate |
+| Chunk Loader | block of diamond, glass, 2 gold ingots, 5 polished deepslate |
 
 See [Recipes](13-recipes.md#farm-tools) for the crafting grids.
 

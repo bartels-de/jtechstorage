@@ -15,6 +15,7 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 - [Backpacks](#backpacks)
 - [Companions](#companions)
 - [Books](#books)
+- [Extra vanilla recipes](#extra-vanilla-recipes)
 - [Items without a recipe](#items-without-a-recipe)
 
 ## Storage network
@@ -386,7 +387,7 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 
 <table>
 <tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
-<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><img src="../images/items/amethyst_core.png" width="32" height="32" alt="Amethyst Core" title="Amethyst Core"><br><sub>Amethyst Core</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><sub>Block of Diamond</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
 <tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
 </table>
 
@@ -543,6 +544,14 @@ Backpacks can be **dyed** in the crafting grid like leather armor (backpack + an
 ### Chel's Joke Book
 
 **Shapeless:** Book + Amethyst Shard + Cookie ➜ <img src="../images/items/joke_book.png" width="24" height="24" alt=""> **Chel's Joke Book**
+
+## Extra vanilla recipes
+
+Recipes the mod adds for vanilla items.
+
+### Nether Quartz
+
+**Shapeless:** Block of Quartz ➜ **Nether Quartz** <b>×4</b>
 
 ## Items without a recipe
 
