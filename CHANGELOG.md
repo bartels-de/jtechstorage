@@ -3,6 +3,36 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.27.2]
+
+### Added
+- Recipe: a **block of quartz** can be turned back into **4 nether quartz** in the crafting grid.
+
+### Changed
+- The **Chunk Loader** is crafted with a **block of diamond** instead of an Amethyst Core.
+
+## [0.27.1]
+
+### Added
+- **Chunk Loader:** keeps its own chunk loaded at all times, also while you are offline. Runs on amethyst shards (1 per
+  hour, amethyst block = 4), can be fed by hoppers, switches off without fuel and messages its owner. Each player may have
+  25 active chunk loaders by default. Its window shows status, remaining time and the chunk borders on request.
+- Config section `farm`: `chunkLoadersPerPlayer`, `chunkLoaderMinutesPerShard`.
+
+## [0.27.0]
+
+### Added
+- **Farm tools** for your Minecraft farms (iron, gold, mob, crop farms …):
+  - **Amethyst Hopper:** works like a hopper (down or sideways, 5 slots, redstone lock, comparator) but moves **8 items
+    every 4 ticks** – 16 times as fast – and sucks in items in a 3 × 3 area above it.
+  - **Crystal Pusher:** pushes items from the container behind it into the container in front of it, in all six
+    directions (upwards too). Placed facing where you look, stopped by redstone, with a 9-slot filter (empty = all).
+  - **Farm Monitor:** placed against a farm's output chest it counts what arrives – items per hour, a chart of the last
+    hour, the most common items – and warns its owner when nothing arrives for 5 / 10 / 30 minutes or the chest is full
+    (screen turns red, chat message). A **safe zone** (8–32 blocks) keeps **companions from attacking the farm's mobs**,
+    even with special attacks. Linked with a Storage Key, the terminal lists all farms under **Statistics → Farms**.
+- New guide page *Farm tools* and a handbook page.
+
 ## [0.26.4]
 
 ### Added

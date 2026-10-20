@@ -1,0 +1,57 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "jtechstorage:block/crystal_pusher_side",
+    "front": "jtechstorage:block/crystal_pusher_front",
+    "back": "jtechstorage:block/crystal_pusher_back",
+    "side": "jtechstorage:block/crystal_pusher_side"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ],
+      "faces": {
+        "north": {
+          "texture": "#front",
+          "cullface": "north"
+        },
+        "south": {
+          "texture": "#back",
+          "cullface": "south"
+        },
+        "west": {
+          "texture": "#side",
+          "cullface": "west"
+        },
+        "east": {
+          "texture": "#side",
+          "uv": [
+            16,
+            0,
+            0,
+            16
+          ],
+          "cullface": "east"
+        },
+        "up": {
+          "texture": "#side",
+          "rotation": 90,
+          "cullface": "up"
+        },
+        "down": {
+          "texture": "#side",
+          "rotation": 270,
+          "cullface": "down"
+        }
+      }
+    }
+  ]
+}

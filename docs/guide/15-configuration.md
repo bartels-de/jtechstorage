@@ -73,6 +73,13 @@ The interface settings (theme, accent color, terminal height, count size, compan
 | `amethystPerStorm` | 500 | Amethyst mined before the first storm and between storms |
 | `cooldownDays` | 1.0 | Minimum in-game days between two storms of a player |
 
+## Farm tools (`farm`)
+
+| Key | Default | Description |
+|---|---:|---|
+| `chunkLoadersPerPlayer` | 25 | Active chunk loaders per player (0 = none allowed) |
+| `chunkLoaderMinutesPerShard` | 60 | Minutes one amethyst shard keeps a chunk loaded |
+
 ---
 
-[← Controls and commands](14-controls-and-commands.md) · [Guide overview](README.md)
+[← Controls and commands](14-controls-and-commands.md) · [Guide overview](README.md) · Next: [Farm tools →](16-farm-tools.md)

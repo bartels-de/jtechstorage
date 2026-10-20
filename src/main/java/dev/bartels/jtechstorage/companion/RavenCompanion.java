@@ -251,7 +251,7 @@ public class RavenCompanion extends Companion {
 			playSound(ModSounds.RAVEN_DEPART, 0.8f, 0.6f);
 
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, target.getBoundingBox().inflate(4.0),
-					e -> e != target && e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> e != target && Companion.hostile(e))) {
 				enemy.hurtServer(level, damageSources().indirectMagic(this, this), 3.0f);
 			}
 		}
@@ -278,7 +278,7 @@ public class RavenCompanion extends Companion {
 
 		if (talent("night_eye") > 0 && tickCount % 200 == 0) {
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, owner.getBoundingBox().inflate(16.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> Companion.hostile(e))) {
 				enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, 120, 0));
 			}
 		}
@@ -925,7 +925,7 @@ public class RavenCompanion extends Companion {
 		int found = 0;
 
 		for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, owner.getBoundingBox().inflate(r),
-				e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+				e -> Companion.hostile(e))) {
 			enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, 120, 0, false, false));
 			found++;
 
@@ -1193,7 +1193,7 @@ public class RavenCompanion extends Companion {
 				int duration = (int) (160 * power);
 
 				for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(10.0),
-						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+						e -> Companion.hostile(e))) {
 					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.SLOWNESS, duration, 1), this);
 					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.WEAKNESS, duration, 0), this);
 					enemy.addEffect(new net.minecraft.world.effect.MobEffectInstance(net.minecraft.world.effect.MobEffects.GLOWING, duration, 0), this);

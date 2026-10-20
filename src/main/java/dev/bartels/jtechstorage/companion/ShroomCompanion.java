@@ -348,7 +348,7 @@ public class ShroomCompanion extends Companion {
 		// Giftwolke: Monster rundherum bekommen die giftige Seite der Sporen ab
 		if (talent("toxic_cloud") > 0) {
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(5.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> Companion.hostile(e))) {
 				enemy.addEffect(new MobEffectInstance(MobEffects.POISON, 80, 1), this);
 				level.sendParticles(SPORE_GREEN, enemy.getX(), enemy.getY() + enemy.getBbHeight() * 0.5, enemy.getZ(), 10, 0.3, 0.4, 0.3, 0.02);
 			}
@@ -496,7 +496,7 @@ public class ShroomCompanion extends Companion {
 		// Sporenfeld: Monster rund um ihn werden alle 5 s vergiftet
 		if (talent("spore_field") > 0 && tickCount % 100 == 0 && getStage() >= 2) {
 			for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, getBoundingBox().inflate(4.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+					e -> Companion.hostile(e))) {
 				enemy.addEffect(new MobEffectInstance(MobEffects.POISON, 60, 0), this);
 				level.sendParticles(SPORE_GREEN, enemy.getX(), enemy.getY() + enemy.getBbHeight() * 0.5, enemy.getZ(), 6, 0.3, 0.3, 0.3, 0.01);
 			}
@@ -576,7 +576,7 @@ public class ShroomCompanion extends Companion {
 				level.sendParticles(ParticleTypes.SNEEZE, at.x, at.y + 0.5, at.z, 30, 2.0, 0.6, 2.0, 0.01);
 
 				for (LivingEntity enemy : level.getEntitiesOfClass(LivingEntity.class, new net.minecraft.world.phys.AABB(at, at).inflate(5.0),
-						e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive())) {
+						e -> Companion.hostile(e))) {
 					enemy.hurtServer(level, damageSources().mobAttack(this), 4.0f * power);
 					enemy.addEffect(new MobEffectInstance(MobEffects.SLOWNESS, 160, 2), this);
 					enemy.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 160, 1), this);

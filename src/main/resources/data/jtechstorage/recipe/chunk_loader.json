@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "D": "minecraft:polished_deepslate",
+    "G": "minecraft:gold_ingot",
+    "L": "minecraft:glass",
+    "C": "minecraft:diamond_block"
+  },
+  "pattern": [
+    "DLD",
+    "GCG",
+    "DDD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:chunk_loader"
+  }
+}

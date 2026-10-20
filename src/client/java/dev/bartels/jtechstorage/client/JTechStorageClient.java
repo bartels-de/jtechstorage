@@ -96,6 +96,9 @@ public class JTechStorageClient implements ClientModInitializer {
 		EntityRenderers.register(ModContent.AMETHYST_PHOENIX, dev.bartels.jtechstorage.client.entity.AmethystPhoenixRenderer::new);
 		MenuScreens.register(ModContent.AMETHYST_PHOENIX_MENU, AmethystPhoenixScreen::new);
 		MenuScreens.register(ModContent.PHOENIX_STOP_MENU, PhoenixStopScreen::new);
+		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.CRYSTAL_PUSHER_MENU, dev.bartels.jtechstorage.client.farm.CrystalPusherScreen::new);
+		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.FARM_MONITOR_MENU, dev.bartels.jtechstorage.client.farm.FarmMonitorScreen::new);
+		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.CHUNK_LOADER_MENU, dev.bartels.jtechstorage.client.farm.ChunkLoaderScreen::new);
 		// Wölfe (v0.26)
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalWolfModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CrystalWolfModel::createBodyLayer);
@@ -308,6 +311,11 @@ public class JTechStorageClient implements ClientModInitializer {
 			}
 		});
 
+		ClientPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.farm.FarmPayloads.Farms.TYPE, (payload, context) -> {
+			if (Minecraft.getInstance().gui.screen() instanceof dev.bartels.jtechstorage.client.farm.FarmsScreen farms && farms.containerId() == payload.containerId()) {
+				farms.setFarms(payload.farms());
+			}
+		});
 		ClientPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.TerminalStatsPayload.TYPE, (payload, context) -> {
 			if (Minecraft.getInstance().gui.screen() instanceof TerminalStatsScreen stats && stats.containerId() == payload.containerId()) {
 				stats.setStats(payload);

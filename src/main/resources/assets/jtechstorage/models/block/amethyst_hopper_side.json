@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/hopper_side",
+  "textures": {
+    "particle": "jtechstorage:block/amethyst_hopper_side",
+    "top": "jtechstorage:block/amethyst_hopper_top",
+    "side": "jtechstorage:block/amethyst_hopper_side",
+    "inside": "jtechstorage:block/amethyst_hopper_inside"
+  }
+}

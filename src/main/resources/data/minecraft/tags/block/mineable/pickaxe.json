@@ -5,6 +5,10 @@
     "jtechstorage:team_terminal",
     "jtechstorage:trade_terminal",
     "jtechstorage:phoenix_stop",
-    "jtechstorage:signal_lantern"
+    "jtechstorage:signal_lantern",
+    "jtechstorage:amethyst_hopper",
+    "jtechstorage:crystal_pusher",
+    "jtechstorage:farm_monitor",
+    "jtechstorage:chunk_loader"
   ]
 }

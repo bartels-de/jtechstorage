@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "G": "minecraft:gold_ingot",
+    "O": "minecraft:observer",
+    "L": "minecraft:glass_pane"
+  },
+  "pattern": [
+    " L ",
+    "GOG",
+    " A "
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:farm_monitor"
+  }
+}

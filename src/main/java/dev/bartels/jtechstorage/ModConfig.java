@@ -110,6 +110,14 @@ public final class ModConfig {
 		public double cooldownDays = 1.0;
 	}
 
+	/** Farm-Werkzeuge (v0.27.1): Chunk Loader. */
+	public static final class Farm {
+		public int chunkLoadersPerPlayer = 25;
+		public int chunkLoaderMinutesPerShard = 60;
+	}
+
+	public Farm farm = new Farm();
+
 	private static final Gson GSON = new GsonBuilder().setStrictness(Strictness.LENIENT).create();
 	private static ModConfig local;
 	private static ModConfig active;
@@ -260,6 +268,13 @@ public final class ModConfig {
 		c.keeperChance = clamp(c.keeperChance, 0.0, 1.0);
 		c.keeperSearchRadius = clamp(c.keeperSearchRadius, 4, 32);
 
+		if (farm == null) {
+			farm = new Farm();
+		}
+
+		farm.chunkLoadersPerPlayer = clamp(farm.chunkLoadersPerPlayer, 0, 1000);
+		farm.chunkLoaderMinutesPerShard = clamp(farm.chunkLoaderMinutesPerShard, 1, 10080);
+
 		if (storm == null) {
 			storm = new Storm();
 		}
@@ -348,7 +363,12 @@ public final class ModConfig {
 		section(out, "storm", "Resonance Storm / Resonanz-Sturm", List.of(
 				new Entry("naturalStorms", st.naturalStorms, "Storms start on their own at your terminal (needs a helper) / Stuerme starten von selbst"),
 				new Entry("amethystPerStorm", st.amethystPerStorm, "Amethyst mined before the first storm and between storms / Amethyst je Sturm"),
-				new Entry("cooldownDays", st.cooldownDays, "Minimum in-game days between two storms of a player / Mindestabstand in Tagen")), true);
+				new Entry("cooldownDays", st.cooldownDays, "Minimum in-game days between two storms of a player / Mindestabstand in Tagen")), false);
+
+		Farm fa = farm;
+		section(out, "farm", "Farm tools / Farm-Werkzeuge", List.of(
+				new Entry("chunkLoadersPerPlayer", fa.chunkLoadersPerPlayer, "Active chunk loaders per player (0 = none allowed) / Aktive Chunk Loader pro Spieler"),
+				new Entry("chunkLoaderMinutesPerShard", fa.chunkLoaderMinutesPerShard, "Minutes one amethyst shard keeps a chunk loaded / Minuten je Amethyst-Scherbe")), true);
 
 		out.append("}\n");
 		return out.toString();

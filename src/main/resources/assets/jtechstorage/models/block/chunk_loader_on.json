@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "side": "jtechstorage:block/chunk_loader_side_on",
+    "top": "jtechstorage:block/chunk_loader_top_on",
+    "bottom": "jtechstorage:block/chunk_loader_top_off",
+    "particle": "jtechstorage:block/chunk_loader_side_on"
+  }
+}

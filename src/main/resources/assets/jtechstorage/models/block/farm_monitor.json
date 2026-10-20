@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "jtechstorage:block/farm_monitor_front_ok",
+    "side": "jtechstorage:block/farm_monitor_side",
+    "top": "jtechstorage:block/farm_monitor_top",
+    "particle": "jtechstorage:block/farm_monitor_side"
+  }
+}

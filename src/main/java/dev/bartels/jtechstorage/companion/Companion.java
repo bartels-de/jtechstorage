@@ -712,6 +712,7 @@ public abstract class Companion extends TamableAnimal {
 		}.setAlertOthers());
 		targetSelector.addGoal(4, new net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal<>(this, LivingEntity.class, 10, true, false,
 				(target, level) -> target instanceof net.minecraft.world.entity.monster.Enemy && !(target instanceof net.minecraft.world.entity.monster.Creeper)
+						&& !dev.bartels.jtechstorage.farm.FarmZones.isProtected(level, target.blockPosition())
 						&& (isActive() && nearOwner(target) || isGuarding() && nearBase(target))) {
 			@Override
 			public boolean canUse() {
@@ -767,6 +768,11 @@ public abstract class Companion extends TamableAnimal {
 		protected boolean canPerformAttack(LivingEntity target) {
 			return attackCooldown <= 0 && super.canPerformAttack(target);
 		}
+	}
+
+	/** Feindliches, lebendes Monster außerhalb der Schonzonen von Farm-Monitoren (v0.27.0) – für Flächenangriffe. */
+	public static boolean hostile(LivingEntity e) {
+		return e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && !dev.bartels.jtechstorage.farm.FarmZones.isProtected(e.level(), e.blockPosition());
 	}
 
 	/** Kämpft nur aus der Ferne (v0.26.1: Pilz)? */
@@ -1305,7 +1311,8 @@ public abstract class Companion extends TamableAnimal {
 	private boolean validSpecialTarget(LivingEntity e) {
 		return e.isAlive() && e != this && e != getOwner() && !(e instanceof Player) && !(e instanceof Companion)
 				&& (e instanceof net.minecraft.world.entity.monster.Enemy || e instanceof net.minecraft.world.entity.Mob mob && mob.getTarget() == getOwner())
-				&& !(e instanceof TamableAnimal pet && getOwner() != null && pet.isOwnedBy(getOwner()));
+				&& !(e instanceof TamableAnimal pet && getOwner() != null && pet.isOwnedBy(getOwner()))
+				&& !dev.bartels.jtechstorage.farm.FarmZones.isProtected(level(), e.blockPosition());
 	}
 
 	/** Abklingzeit, „Instinkt“ (automatisch bei Gefahr) und Nachwirkungen der Art. */
@@ -1320,7 +1327,7 @@ public abstract class Companion extends TamableAnimal {
 				&& getOwner() instanceof ServerPlayer owner && owner.level() == level && owner.distanceToSqr(this) < 24 * 24) {
 			boolean lowHealth = owner.getHealth() < owner.getMaxHealth() * 0.3f;
 			int enemies = level.getEntitiesOfClass(LivingEntity.class, owner.getBoundingBox().inflate(6.0),
-					e -> e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive()).size();
+					e -> Companion.hostile(e)).size();
 
 			if (lowHealth && enemies > 0 || enemies >= 3) {
 				useSpecial(owner, true);
@@ -1784,7 +1791,8 @@ public abstract class Companion extends TamableAnimal {
 
 	@Override
 	public boolean canAttack(LivingEntity target) {
-		return canFight() && !(target instanceof Player) && !(target instanceof Companion) && super.canAttack(target);
+		return canFight() && !(target instanceof Player) && !(target instanceof Companion)
+				&& !dev.bartels.jtechstorage.farm.FarmZones.isProtected(level(), target.blockPosition()) && super.canAttack(target);
 	}
 
 	@Override

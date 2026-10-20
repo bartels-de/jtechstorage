@@ -259,6 +259,17 @@ side: the mantis at full strength, the raven with 70 % and the shroom with 25 % 
 - `/jtechstorage companion release confirm` releases it for good. Game masters can spawn a keeper with
   `/jtechstorage companion keeper` and give XP with `/jtechstorage companion xp <amount>` for testing.
 
+### Farm tools
+
+- **Amethyst Hopper** – a hopper 16 times as fast that also sucks in items in a 3 × 3 area above it.
+- **Crystal Pusher** – pushes items from chest to chest in any direction, upwards too, with a filter.
+- **Farm Monitor** – counts what your farm produces (items per hour, chart, top items), warns you when it stops or the
+  chest is full, keeps companions from attacking the farm's mobs (safe zone) and shows all farms in the terminal.
+- **Chunk Loader** – keeps its chunk loaded, even while you're offline; runs on amethyst shards (1 per hour), limit per
+  player in the config.
+
+See [Farm tools](docs/guide/16-farm-tools.md).
+
 ### Bosses and the End
 
 - **Amethyst Robot:** summoned with a **Resonance Igniter**. A huge mech with crystal fist, laser cannon, stomp and dash
@@ -352,6 +363,7 @@ On first start the mod creates `config/jtechstorage.json` (JSON with comments). 
   and radii, watch and guard radii, and phoenix speeds.
 - **Companions:** levels for stage 2 and 3, the share of collected XP that goes to the companion, the chance for a
   Geode Keeper per geode, the search radius and whether companion equipment gives stats.
+- **Farm tools:** how many chunk loaders each player may run and how long one amethyst shard lasts.
 
 Changes apply after a restart. Delete a line (or the whole file) to restore its default. On a server, the server's
 file counts; clients receive its values for tooltips and the handbook.
