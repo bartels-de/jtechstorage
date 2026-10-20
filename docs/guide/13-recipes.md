@@ -7,6 +7,7 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 ## Contents
 
 - [Storage network](#storage-network)
+- [Amethyst chests](#amethyst-chests)
 - [Helpers and their homes](#helpers-and-their-homes)
 - [Phoenix mail and travel](#phoenix-mail-and-travel)
 - [Farm tools](#farm-tools)
@@ -155,6 +156,44 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 ### Capacity Upgrade (Netherite)
 
 **Smithing table:** Netherite Upgrade (Smithing Template) + Capacity Upgrade (Diamond) + Netherite Ingot ➜ <img src="../images/items/netherite_capacity_upgrade.png" width="24" height="24" alt=""> **Capacity Upgrade (Netherite)**
+
+## Amethyst chests
+
+### Amethyst Chest
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><sub>Copper Ingot</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td></tr>
+<tr><td align="center" width="72"><sub>Copper Ingot</sub></td><td align="center" width="72"><sub>Chest</sub></td><td align="center" width="72"><sub>Copper Ingot</sub></td></tr>
+<tr><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><sub>Copper Ingot</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/amethyst_chest.png" width="40" height="40" alt="Amethyst Chest" title="Amethyst Chest"><br><sub>Amethyst Chest</sub></td></tr></table>
+
+### Crystal Chest
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Block of Amethyst</sub></td><td align="center" width="72"><sub>Iron Ingot</sub></td><td align="center" width="72"><sub>Block of Amethyst</sub></td></tr>
+<tr><td align="center" width="72"><sub>Iron Ingot</sub></td><td align="center" width="72"><img src="../images/items/amethyst_chest.png" width="32" height="32" alt="Amethyst Chest" title="Amethyst Chest"><br><sub>Amethyst Chest</sub></td><td align="center" width="72"><sub>Iron Ingot</sub></td></tr>
+<tr><td align="center" width="72"><sub>Block of Amethyst</sub></td><td align="center" width="72"><sub>Iron Ingot</sub></td><td align="center" width="72"><sub>Block of Amethyst</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_chest.png" width="40" height="40" alt="Crystal Chest" title="Crystal Chest"><br><sub>Crystal Chest</sub></td></tr></table>
+
+### Resonance Chest
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><sub>Diamond</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
+<tr><td align="center" width="72"><sub>Diamond</sub></td><td align="center" width="72"><img src="../images/items/crystal_chest.png" width="32" height="32" alt="Crystal Chest" title="Crystal Chest"><br><sub>Crystal Chest</sub></td><td align="center" width="72"><sub>Diamond</sub></td></tr>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><sub>Diamond</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/resonance_chest.png" width="40" height="40" alt="Resonance Chest" title="Resonance Chest"><br><sub>Resonance Chest</sub></td></tr></table>
 
 ## Helpers and their homes
 

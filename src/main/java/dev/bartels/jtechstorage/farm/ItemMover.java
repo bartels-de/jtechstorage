@@ -47,7 +47,9 @@ final class ItemMover {
 			}
 
 			int n = Math.min(max - moved, stack.getCount());
-			ItemStack rest = HopperBlockEntity.addItem(src, dst, stack.copyWithCount(n), insertFace);
+			ItemStack rest = dst instanceof dev.bartels.jtechstorage.chest.AmethystChestBlockEntity chest
+					? chest.insert(stack.copyWithCount(n))   // Amethyst-Kisten (v0.28): große Stapel füllen
+					: HopperBlockEntity.addItem(src, dst, stack.copyWithCount(n), insertFace);
 			int done = n - rest.getCount();
 
 			if (done > 0) {

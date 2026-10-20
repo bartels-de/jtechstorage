@@ -43,6 +43,7 @@ public class JTechStorage implements ModInitializer {
 		dev.bartels.jtechstorage.wolf.WolfContent.init();
 		dev.bartels.jtechstorage.companion.CompanionContent.init();
 		dev.bartels.jtechstorage.farm.FarmContent.init();
+		dev.bartels.jtechstorage.chest.ChestContent.init();
 		dev.bartels.jtechstorage.enchant.ModEnchantments.init();
 
 		PayloadTypeRegistry.clientboundPlay().registerLarge(TerminalContentsPayload.TYPE,

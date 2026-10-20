@@ -23,7 +23,7 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 | Action | Effect |
 |---|---|
 | Sneak + right-click a Storage Terminal | bind the key to it |
-| Sneak + right-click a chest, barrel or shulker box | link / unlink it |
+| Sneak + right-click a chest, barrel, shulker box or Amethyst Chest | link / unlink it |
 | Click a helper, Team or Trade Terminal, Phoenix Nest, Night Raven | link it to the network |
 | Look at a chest with the key in hand | show its sorting category (with an Amethyst Sprite) |
 | Right-click in the air (with *Recall*) | teleport back to your terminal, once per day |

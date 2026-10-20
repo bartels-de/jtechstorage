@@ -3,6 +3,21 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.28.0]
+
+### Added
+- **Amethyst Chests** in three tiers whose slots hold several stacks:
+  - **Amethyst Chest** – 54 slots, 2 stacks each (chest, amethyst shards, copper).
+  - **Crystal Chest** – 81 slots, 4 stacks each (Amethyst Chest, amethyst blocks, iron).
+  - **Resonance Chest** – 108 slots, 8 stacks each (Crystal Chest, gold, diamonds).
+- They link to the storage network like any chest. The terminal, the Amethyst Sprite, hoppers and Crystal Pushers use the
+  bigger stacks.
+- Right-click a placed chest with a better one to upgrade it in place; contents and name stay, the old chest comes back.
+- Handbook page and guide section "Amethyst Chests".
+
+### Changed
+- The Amethyst Sprite's tidying and the Farm Monitor's "full" check respect containers with bigger stacks.
+
 ## [0.27.3]
 
 ### Changed

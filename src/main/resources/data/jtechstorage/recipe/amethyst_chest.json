@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SCS",
+    "CTC",
+    "SCS"
+  ],
+  "key": {
+    "S": "minecraft:amethyst_shard",
+    "C": "minecraft:copper_ingot",
+    "T": "minecraft:chest"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:amethyst_chest"
+  }
+}

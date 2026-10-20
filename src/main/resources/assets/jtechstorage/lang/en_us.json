@@ -1798,5 +1798,19 @@
   "jtechstorage.chunk_loader.left": "Lasts: %s",
   "jtechstorage.chunk_loader.count": "Yours: %s / %s",
   "jtechstorage.chunk_loader.bounds": "Show chunk borders",
-  "jtechstorage.chunk_loader.out_of_fuel": "A chunk loader (%s, %s, %s) ran out of fuel – its chunk is no longer kept loaded."
+  "jtechstorage.chunk_loader.out_of_fuel": "A chunk loader (%s, %s, %s) ran out of fuel – its chunk is no longer kept loaded.",
+  "block.jtechstorage.amethyst_chest": "Amethyst Chest",
+  "block.jtechstorage.crystal_chest": "Crystal Chest",
+  "block.jtechstorage.resonance_chest": "Resonance Chest",
+  "tooltip.jtechstorage.amethyst_chest.0": "54 slots, each holds 2 stacks (128).",
+  "tooltip.jtechstorage.amethyst_chest.1": "Part of your storage network.",
+  "tooltip.jtechstorage.amethyst_chest.controls.0": "Right-click with a better chest: upgrade in place",
+  "tooltip.jtechstorage.crystal_chest.0": "81 slots, each holds 4 stacks (256).",
+  "tooltip.jtechstorage.crystal_chest.1": "Part of your storage network.",
+  "tooltip.jtechstorage.crystal_chest.controls.0": "Right-click with a Resonance Chest: upgrade in place",
+  "tooltip.jtechstorage.resonance_chest.0": "108 slots, each holds 8 stacks (512).",
+  "tooltip.jtechstorage.resonance_chest.1": "Part of your storage network.",
+  "jtechstorage.amethyst_chest.factor": "×%s stacks",
+  "jtechstorage.guide.amethyst_chests.title": "Amethyst chests",
+  "jtechstorage.guide.amethyst_chests.body": "Bigger chests whose slots hold several stacks. They belong to your storage network like any chest – the terminal, the Amethyst Sprite, hoppers and Crystal Pushers all use them.\n\nAmethyst Chest: 54 slots, 2 stacks each (chest, amethyst shards, copper).\nCrystal Chest: 81 slots, 4 stacks each (Amethyst Chest, amethyst blocks, iron).\nResonance Chest: 108 slots, 8 stacks each (Crystal Chest, gold, diamonds).\n\nRight-click a placed chest with a better one to upgrade it in place: the contents stay and you get the old chest back. Taking items out gives you at most one normal stack at a time. Unstackable items stay single. Break the chest and its contents drop as normal stacks."
 }

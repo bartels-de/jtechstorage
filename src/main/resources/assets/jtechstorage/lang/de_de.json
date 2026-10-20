@@ -1798,5 +1798,19 @@
   "jtechstorage.chunk_loader.left": "Reicht noch: %s",
   "jtechstorage.chunk_loader.count": "Deine: %s / %s",
   "jtechstorage.chunk_loader.bounds": "Chunk-Grenzen zeigen",
-  "jtechstorage.chunk_loader.out_of_fuel": "Ein Chunk Loader (%s, %s, %s) hat keinen Treibstoff mehr – der Chunk wird nicht mehr geladen."
+  "jtechstorage.chunk_loader.out_of_fuel": "Ein Chunk Loader (%s, %s, %s) hat keinen Treibstoff mehr – der Chunk wird nicht mehr geladen.",
+  "block.jtechstorage.amethyst_chest": "Amethyst-Kiste",
+  "block.jtechstorage.crystal_chest": "Kristall-Kiste",
+  "block.jtechstorage.resonance_chest": "Resonanz-Kiste",
+  "tooltip.jtechstorage.amethyst_chest.0": "54 Plätze, jeder fasst 2 Stapel (128).",
+  "tooltip.jtechstorage.amethyst_chest.1": "Gehört zu deinem Speichernetz.",
+  "tooltip.jtechstorage.amethyst_chest.controls.0": "Rechtsklick mit besserer Kiste: an Ort und Stelle aufwerten",
+  "tooltip.jtechstorage.crystal_chest.0": "81 Plätze, jeder fasst 4 Stapel (256).",
+  "tooltip.jtechstorage.crystal_chest.1": "Gehört zu deinem Speichernetz.",
+  "tooltip.jtechstorage.crystal_chest.controls.0": "Rechtsklick mit Resonanz-Kiste: an Ort und Stelle aufwerten",
+  "tooltip.jtechstorage.resonance_chest.0": "108 Plätze, jeder fasst 8 Stapel (512).",
+  "tooltip.jtechstorage.resonance_chest.1": "Gehört zu deinem Speichernetz.",
+  "jtechstorage.amethyst_chest.factor": "×%s Stapel",
+  "jtechstorage.guide.amethyst_chests.title": "Amethyst-Kisten",
+  "jtechstorage.guide.amethyst_chests.body": "Größere Kisten, deren Plätze mehrere Stapel fassen. Sie gehören wie jede Kiste zu deinem Speichernetz – Terminal, Amethyst-Wichtel, Trichter und Kristall-Schieber nutzen sie.\n\nAmethyst-Kiste: 54 Plätze, je 2 Stapel (Truhe, Amethyst-Splitter, Kupfer).\nKristall-Kiste: 81 Plätze, je 4 Stapel (Amethyst-Kiste, Amethystblöcke, Eisen).\nResonanz-Kiste: 108 Plätze, je 8 Stapel (Kristall-Kiste, Gold, Diamanten).\n\nRechtsklick mit einer besseren Kiste auf eine platzierte wertet sie an Ort und Stelle auf: Der Inhalt bleibt, die alte Kiste bekommst du zurück. Beim Herausnehmen bekommst du höchstens einen normalen Stapel auf einmal. Unstapelbares bleibt einzeln. Baust du die Kiste ab, fällt der Inhalt in normalen Stapeln heraus."
 }
