@@ -770,6 +770,93 @@ public abstract class Companion extends TamableAnimal {
 		}
 	}
 
+	/** Feindliches, lebendes Monster außerhalb der Schonzonen von Farm-Monitoren (v0.27.0) – für Flächenangriffe. */
+	public static boolean hostile(LivingEntity e) {
+		return e instanceof net.minecraft.world.entity.monster.Enemy && e.isAlive() && !dev.bartels.jtechstorage.farm.FarmZones.isProtected(e.level(), e.blockPosition());
+	}
+
+	/** Kämpft nur aus der Ferne (v0.26.1: Pilz)? */
+	protected boolean isRanged() {
+		return false;
+	}
+
+	/** Reichweite des Fernangriffs in Blöcken. */
+	protected double rangedRange() {
+		return 10.0;
+	}
+
+	/** Effekt des Fernangriffs (Partikelspur o. Ä.), vor dem Treffer. */
+	protected void rangedEffect(ServerLevel level, LivingEntity target) {
+	}
+
+	/** Fernkampf (v0.26.1): hält Abstand, braucht freie Sicht und trifft aus bis zu {@link #rangedRange()} Blöcken. */
+	private class CompanionRangedGoal extends Goal {
+		private int repath;
+
+		CompanionRangedGoal() {
+			setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
+		}
+
+		@Override
+		public boolean canUse() {
+			return isRanged() && !isVehicle() && canFight() && getTarget() != null && getTarget().isAlive();
+		}
+
+		@Override
+		public boolean canContinueToUse() {
+			return canUse();
+		}
+
+		@Override
+		public void stop() {
+			getNavigation().stop();
+		}
+
+		@Override
+		public boolean requiresUpdateEveryTick() {
+			return true;
+		}
+
+		@Override
+		public void tick() {
+			LivingEntity target = getTarget();
+
+			if (target == null || !(level() instanceof ServerLevel level)) {
+				return;
+			}
+
+			getLookControl().setLookAt(target, 30.0f, 30.0f);
+			double dist = distanceTo(target);
+			boolean sees = getSensing().hasLineOfSight(target);
+			double range = rangedRange();
+
+			if (dist > range * 0.85 || !sees) {
+				if (--repath <= 0) {
+					repath = 10;
+					getNavigation().moveTo(target, 1.15);
+				}
+			} else if (dist < 3.5) {
+				// zu nah: zurückweichen
+				if (--repath <= 0) {
+					repath = 10;
+					Vec3 away = net.minecraft.world.entity.ai.util.DefaultRandomPos.getPosAway(Companion.this, 8, 4, target.position());
+
+					if (away != null) {
+						getNavigation().moveTo(away.x, away.y, away.z, 1.3);
+					}
+				}
+			} else {
+				getNavigation().stop();
+				repath = 0;
+			}
+
+			if (sees && dist <= range && attackCooldown <= 0) {
+				rangedEffect(level, target);
+				doHurtTarget(level, target);
+			}
+		}
+	}
+
 	private boolean nearOwner(LivingEntity target) {
 		LivingEntity owner = getOwner();
 		double r = huntRadius();
