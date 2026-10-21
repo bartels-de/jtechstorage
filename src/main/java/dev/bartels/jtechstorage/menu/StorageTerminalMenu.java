@@ -258,7 +258,7 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 	}
 
 	/** Verarbeitet einen Klick auf das Item-Raster oder einen Knopf (nur Server). */
-	public void handleAction(ServerPlayer player, TerminalActionPayload.Action action, ItemStack prototype) {
+	public void handleAction(ServerPlayer player, TerminalActionPayload.Action action, ItemStack prototype, int slot) {
 		if (!hasPermission(StorageTerminalBlockEntity.Permission.ITEMS)) {
 			player.sendOverlayMessage(Component.translatable("jtechstorage.message.no_permission",
 					Component.translatable("jtechstorage.role.member")));
@@ -301,6 +301,60 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 				}
 			}
 			case CLEAR_GRID -> clearCraftingGrid(network);
+			case SWAP_HOTBAR -> {
+				Inventory inventory = player.getInventory();
+
+				if (!carried.isEmpty() || !(slot >= 0 && slot < Inventory.SELECTION_SIZE || slot == Inventory.SLOT_OFFHAND)) {
+					return;
+				}
+
+				ItemStack existing = inventory.getItem(slot);
+
+				if (prototype.isEmpty()) {
+					// über einem leeren Feld: Inhalt des Platzes einlagern (wie in einen leeren Kistenplatz)
+					inventory.setItem(slot, network.insert(existing));
+				} else {
+					ItemStack taken = network.extract(prototype, prototype.getMaxStackSize());
+
+					if (taken.isEmpty()) {
+						return;
+					}
+
+					ItemStack rest = network.insert(existing);
+					inventory.setItem(slot, taken);
+					giveToPlayer(player, rest);
+				}
+			}
+			case DROP_ONE, DROP_STACK -> {
+				if (!carried.isEmpty() || prototype.isEmpty()) {
+					return;
+				}
+
+				int amount = action == TerminalActionPayload.Action.DROP_ONE ? 1 : prototype.getMaxStackSize();
+				ItemStack dropped = network.extract(prototype, amount);
+
+				if (!dropped.isEmpty()) {
+					player.drop(dropped, false, Prediction.SERVER_ONLY);
+				}
+			}
+			case CLONE -> {
+				if (carried.isEmpty() && !prototype.isEmpty() && player.hasInfiniteMaterials() && network.count(prototype) > 0) {
+					setCarried(prototype.copyWithCount(prototype.getMaxStackSize()));
+				}
+			}
+			case SWAP_CARRIED -> {
+				if (carried.isEmpty() || prototype.isEmpty()) {
+					return;
+				}
+
+				ItemStack rest = network.insert(carried);
+
+				if (rest.isEmpty()) {
+					setCarried(network.extract(prototype, prototype.getMaxStackSize()));
+				} else {
+					setCarried(rest);
+				}
+			}
 		}
 
 		forceSync = true;
