@@ -121,11 +121,12 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 		// Suchfeld beginnt hinter dem Titel, damit sich nichts überlappt
 		searchX = Math.max(SEARCH_MIN_X, titleLabelX + font.width(title) + 8);
-		searchBox = new EditBox(font, leftPos + searchX + 2, topPos + SEARCH_Y, SEARCH_RIGHT - searchX - 4, 9,
+		int iconPad = GuiTheme.classic() ? 0 : 10; // Platz für die Lupe (neue Designs)
+		searchBox = new EditBox(font, leftPos + searchX + 2 + iconPad, topPos + SEARCH_Y, SEARCH_RIGHT - searchX - 4 - iconPad, 9,
 				Component.translatable("jtechstorage.terminal.search"));
 		searchBox.setMaxLength(64);
 		searchBox.setBordered(false);
-		searchBox.setTextColor(0xFFFFFFFF);
+		searchBox.setTextColor(GuiTheme.fieldText());
 		searchBox.setHint(Component.translatable("jtechstorage.terminal.search.hint").withStyle(ChatFormatting.GRAY));
 		searchBox.setValue(lastSearch);
 		searchBox.setResponder(value -> {
@@ -258,7 +259,7 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		int x = leftPos;
 		int y = topPos;
-		GuiTheme.panel(graphics, x, y, imageWidth, imageHeight);
+		GuiTheme.window(graphics, x, y, imageWidth, imageHeight);
 
 		// Netzwerk-Raster + Scrollbalken
 		for (int row = 0; row < rows; row++) {
@@ -292,7 +293,12 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		for (int i = 0; i < 2; i++) {
 			int sx = x + StorageTerminalMenu.UPGRADE_SLOT_X - 1;
 			int sy = y + layout.inventoryY() - 1 + i * 18;
-			graphics.fill(sx - 1, sy - 1, sx + 19, sy + 19, GuiTheme.accent());
+			if (GuiTheme.classic()) {
+				graphics.fill(sx - 1, sy - 1, sx + 19, sy + 19, GuiTheme.accent());
+			} else {
+				GuiTheme.roundOutline(graphics, sx - 1, sy - 1, 20, 20, 2, GuiTheme.accent());
+			}
+
 			GuiTheme.slot(graphics, sx, sy);
 		}
 
@@ -307,8 +313,11 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		// Suchfeld-Hintergrund
 		int sx = leftPos + searchX;
 		int sy = topPos + SEARCH_Y - 2;
-		graphics.fill(sx, sy, leftPos + SEARCH_RIGHT, sy + 12, searchBox.isFocused() ? 0xFFFFFFFF : 0xFFA0A0A0);
-		graphics.fill(sx + 1, sy + 1, leftPos + SEARCH_RIGHT - 1, sy + 11, 0xFF000000);
+		GuiTheme.field(graphics, sx, sy, leftPos + SEARCH_RIGHT - sx, 12, searchBox.isFocused());
+
+		if (!GuiTheme.classic()) {
+			GuiTheme.searchIcon(graphics, sx + 3, sy + 3);
+		}
 	}
 
 	@Override
@@ -381,8 +390,14 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			boolean empty = tab != null && categoryCounts.getOrDefault(tab, 0) == 0;
 			int x = tabX(index);
 			int y = tabY(index);
-			GuiTheme.face(graphics, x, y, TAB_SIZE, TAB_SIZE, selected ? GuiTheme.accent()
-					: index == hovered ? GuiTheme.accentHover() : empty ? GuiTheme.DISABLED_FACE : GuiTheme.accentDark());
+			if (GuiTheme.classic()) {
+				GuiTheme.face(graphics, x, y, TAB_SIZE, TAB_SIZE, selected ? GuiTheme.accent()
+						: index == hovered ? GuiTheme.accentHover() : empty ? GuiTheme.DISABLED_FACE : GuiTheme.accentDark());
+			} else if (empty && !selected) {
+				GuiTheme.face(graphics, x, y, TAB_SIZE, TAB_SIZE, GuiTheme.alpha(GuiTheme.DISABLED_FACE, 0xB0));
+			} else {
+				GuiTheme.toggle(graphics, x, y, TAB_SIZE, TAB_SIZE, selected, index == hovered);
+			}
 			ItemStack icon = tab == null ? new ItemStack(dev.bartels.jtechstorage.ModContent.STORAGE_TERMINAL_ITEM) : CATEGORY_ICONS[tab.ordinal()];
 			graphics.item(icon, x + 2, y + 2);
 		}
@@ -397,12 +412,19 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 				int x = leftPos + GRID_X + column * 18;
 				int y = topPos + GRID_Y + row * 18;
 
-				if (index < filtered.size()) {
+				if (index == hovered && GuiSettings.get().hoverGlow) {
+					GuiTheme.slotGlow(graphics, x, y);
+				}
+
+				// Zahlen-Animation: Items erscheinen nacheinander, Mengen zählen hoch
+				float progress = dev.bartels.jtechstorage.client.gui.GuiFx.countProgress(this, (row * COLUMNS + column) * 12);
+
+				if (index < filtered.size() && progress > 0) {
 					StorageNetwork.Entry entry = filtered.get(index);
 					ItemStack stack = entry.prototype();
 					graphics.item(stack, x, y);
 					graphics.itemDecorations(font, stack, x, y, "");
-					extractCount(graphics, entry.total(), x, y);
+					extractCount(graphics, progress >= 1 ? entry.total() : Math.max(1, Math.round(entry.total() * (double) progress)), x, y);
 				}
 
 				if (index == hovered) {
@@ -426,15 +448,28 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			case LARGE -> text.length() <= 3 ? 1.0f : 0.85f;
 		};
 
+		boolean outline = GuiTheme.outlineCounts();
+
 		if (scale == 1.0f) {
-			graphics.text(font, text, x + 17 - font.width(text), y + 9, 0xFFFFFFFF, true);
+			if (outline) {
+				GuiTheme.outlinedNumber(graphics, font, text, x + 17 - font.width(text), y + 9);
+			} else {
+				graphics.text(font, text, x + 17 - font.width(text), y + 9, 0xFFFFFFFF, true);
+			}
+
 			return;
 		}
 
 		graphics.pose().pushMatrix();
 		graphics.pose().translate(x + 16, y + 16);
 		graphics.pose().scale(scale, scale);
-		graphics.text(font, text, -font.width(text), -8, 0xFFFFFFFF, true);
+
+		if (outline) {
+			GuiTheme.outlinedNumber(graphics, font, text, -font.width(text), -8);
+		} else {
+			graphics.text(font, text, -font.width(text), -8, 0xFFFFFFFF, true);
+		}
+
 		graphics.pose().popMatrix();
 	}
 
@@ -462,8 +497,14 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		int max = maxScroll();
 		int travel = scrollHeight - SCROLLER_HEIGHT;
 		int offset = max == 0 ? 0 : Math.round(travel * (scrollRow / (float) max));
-		graphics.blitSprite(RenderPipelines.GUI_TEXTURED, max == 0 ? SCROLLER_DISABLED : SCROLLER,
-				leftPos + SCROLL_X, topPos + SCROLL_Y + offset, SCROLLER_WIDTH, SCROLLER_HEIGHT);
+		if (GuiTheme.classic()) {
+			graphics.blitSprite(RenderPipelines.GUI_TEXTURED, max == 0 ? SCROLLER_DISABLED : SCROLLER,
+					leftPos + SCROLL_X, topPos + SCROLL_Y + offset, SCROLLER_WIDTH, SCROLLER_HEIGHT);
+			return;
+		}
+
+		GuiTheme.face(graphics, leftPos + SCROLL_X + 1, topPos + SCROLL_Y + offset, SCROLLER_WIDTH - 2, SCROLLER_HEIGHT,
+				max == 0 ? GuiTheme.DISABLED_FACE : draggingScroller ? GuiTheme.accentHover() : GuiTheme.accent());
 	}
 
 	private void extractToolbar(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
@@ -493,8 +534,12 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			int x = leftPos + CLEAR_BUTTON_X;
 			int y = topPos + layout.craftingY() + 21;
 			boolean hovered = isOver(CLEAR_BUTTON_X, layout.craftingY() + 21, CLEAR_BUTTON_SIZE, CLEAR_BUTTON_SIZE, mouseX, mouseY);
-			graphics.fill(x, y, x + CLEAR_BUTTON_SIZE, y + CLEAR_BUTTON_SIZE, 0xFF000000);
-			graphics.fill(x + 1, y + 1, x + CLEAR_BUTTON_SIZE - 1, y + CLEAR_BUTTON_SIZE - 1, hovered ? GuiTheme.mix(GuiTheme.face(), 0xFFFFFFFF, 0.15f) : GuiTheme.face());
+			if (GuiTheme.classic()) {
+				graphics.fill(x, y, x + CLEAR_BUTTON_SIZE, y + CLEAR_BUTTON_SIZE, 0xFF000000);
+				graphics.fill(x + 1, y + 1, x + CLEAR_BUTTON_SIZE - 1, y + CLEAR_BUTTON_SIZE - 1, hovered ? GuiTheme.mix(GuiTheme.face(), 0xFFFFFFFF, 0.15f) : GuiTheme.face());
+			} else {
+				GuiTheme.toggle(graphics, x, y, CLEAR_BUTTON_SIZE, CLEAR_BUTTON_SIZE, false, hovered);
+			}
 			graphics.text(font, "×", x + 6 - font.width("×") / 2, y + 2, GuiTheme.text(), false);
 		}
 	}
@@ -508,14 +553,19 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		int y = topPos + buttonTop;
 		boolean hovered = isOver(buttonX, buttonTop, BUTTON_SIZE, BUTTON_SIZE, mouseX, mouseY);
 
-		int light = active ? GuiTheme.accentHover() : GuiTheme.highlight();
-		int dark = active ? GuiTheme.accentDark() : GuiTheme.shadow();
-		int face = active ? GuiTheme.accent() : hovered ? GuiTheme.mix(GuiTheme.face(), 0xFFFFFFFF, 0.15f) : GuiTheme.face();
+		if (GuiTheme.classic()) {
+			int light = active ? GuiTheme.accentHover() : GuiTheme.highlight();
+			int dark = active ? GuiTheme.accentDark() : GuiTheme.shadow();
+			int face = active ? GuiTheme.accent() : hovered ? GuiTheme.mix(GuiTheme.face(), 0xFFFFFFFF, 0.15f) : GuiTheme.face();
 
-		graphics.fill(x, y, x + BUTTON_SIZE, y + BUTTON_SIZE, 0xFF000000);
-		graphics.fill(x + 1, y + 1, x + BUTTON_SIZE - 1, y + BUTTON_SIZE - 1, dark);
-		graphics.fill(x + 1, y + 1, x + BUTTON_SIZE - 2, y + BUTTON_SIZE - 2, light);
-		graphics.fill(x + 2, y + 2, x + BUTTON_SIZE - 2, y + BUTTON_SIZE - 2, face);
+			graphics.fill(x, y, x + BUTTON_SIZE, y + BUTTON_SIZE, 0xFF000000);
+			graphics.fill(x + 1, y + 1, x + BUTTON_SIZE - 1, y + BUTTON_SIZE - 1, dark);
+			graphics.fill(x + 1, y + 1, x + BUTTON_SIZE - 2, y + BUTTON_SIZE - 2, light);
+			graphics.fill(x + 2, y + 2, x + BUTTON_SIZE - 2, y + BUTTON_SIZE - 2, face);
+			return;
+		}
+
+		GuiTheme.toggle(graphics, x, y, BUTTON_SIZE, BUTTON_SIZE, active, hovered);
 	}
 
 	@Override

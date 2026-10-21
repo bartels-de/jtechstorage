@@ -23,7 +23,7 @@ import dev.bartels.jtechstorage.net.FlightPlanEditPayload;
 /**
  * Flugplan-Fenster: Haltestellen umsortieren (▲/▼) und entfernen (✕). Die Änderungen gehen beim Schließen an den Server.
  */
-public class FlightPlanScreen extends Screen {
+public class FlightPlanScreen extends dev.bartels.jtechstorage.client.gui.ThemedScreen {
 	private static final int W = 236;
 	private static final int ROW_H = 24;
 	private static final int ROWS_Y = 26;
@@ -78,7 +78,7 @@ public class FlightPlanScreen extends Screen {
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
-		GuiTheme.panel(graphics, left, top, W, H);
+		GuiTheme.window(graphics, left, top, W, H);
 	}
 
 	@Override

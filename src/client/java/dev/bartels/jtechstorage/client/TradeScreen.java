@@ -80,7 +80,7 @@ public class TradeScreen extends ThemedContainerScreen<TradeMenu> {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		int x = leftPos;
 		int y = topPos;
-		GuiTheme.panel(graphics, x, y, W, imageHeight);
+		GuiTheme.window(graphics, x, y, W, imageHeight);
 
 		// Kopfzeile in Team-Farbe
 		int team = 0xFF000000 | menu.getColor();

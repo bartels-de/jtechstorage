@@ -23,7 +23,7 @@ import dev.bartels.jtechstorage.farm.FarmPayloads;
 import dev.bartels.jtechstorage.menu.StorageTerminalMenu;
 
 /** „Farmen“ im Terminal (v0.27.0): alle mit diesem Terminal verbundenen Farm-Monitore. */
-public class FarmsScreen extends Screen {
+public class FarmsScreen extends dev.bartels.jtechstorage.client.gui.ThemedScreen {
 	private static final int W = 300;
 	private static final int H = 212;
 	private static final int ROW = 22;
@@ -88,7 +88,7 @@ public class FarmsScreen extends Screen {
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
-		GuiTheme.panel(graphics, left, top, W, H);
+		GuiTheme.window(graphics, left, top, W, H);
 		GuiTheme.sunken(graphics, left + 8, top + 22, W - 16, ROWS * ROW + 4);
 	}
 

@@ -21,14 +21,32 @@ Every book is crafted shapeless from **book + amethyst shard** (+ one more ingre
 ## Interface settings
 
 The **gear button** in the Storage Terminal (below the upgrade slots) opens the settings. They apply to all screens of the
-mod and are saved per player in `config/jtechstorage-client.json`.
+mod and are saved per player in `config/jtechstorage-client.json`. A live preview on the right shows every change at once.
 
 | Setting | Options |
 |---|---|
-| Theme | light, dark |
-| Accent color | amethyst, team color, blue, green, red, gold, rose, gray |
+| Theme | classic light, classic dark, frost glass, crystal glass, modern light, modern dark |
+| Accent color | amethyst, team color, blue, green, red, gold, rose, teal, gray |
+| Effects | preset *off*, *subtle* (default) or *rich* – or switch each effect on its own |
 | Terminal height | 4, 6, 8 or 10 rows, or *auto* (as many as fit on the screen) |
 | Item count size | small, normal, large |
+
+**Themes.** *Classic* looks like vanilla. *Glass* themes are slightly see-through, with a glowing accent border and a soft
+glow at the top. *Modern* themes are flat with rounded pixel corners and a soft shadow. Tooltips in the mod's screens match
+the theme.
+
+**Effects** (each can be turned on and off):
+
+| Effect | What it does |
+|---|---|
+| Slide-in | windows glide gently into place when opened |
+| Hover glow | slots and buttons under the mouse glow in the accent color |
+| Border shimmer | a spark of light slowly travels around the window border |
+| Sheen | every few seconds a streak of light sweeps across the window |
+| Background particles | crystal sparks drift up behind the window |
+| Count animation | in the terminal, items appear one after another and amounts count up |
+
+*Subtle* turns on the first three, *rich* turns on all six.
 
 The companion HUD is switched on and off in the [companion menu](07-companions.md#companion-menu).
 

@@ -80,7 +80,7 @@ public class AmethystPhoenixScreen extends ThemedContainerScreen<AmethystPhoenix
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		int x = leftPos;
 		int y = topPos;
-		GuiTheme.panel(graphics, x, y, W, imageHeight);
+		GuiTheme.window(graphics, x, y, W, imageHeight);
 		// Infobereich als abgesetzte Fläche
 		GuiTheme.sunken(graphics, x + 6, y + LINE_STATUS - 3, W - 12, LINE_LOAD + 11 - LINE_STATUS + 3);
 

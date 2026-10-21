@@ -61,7 +61,7 @@ public class ChelOrderScreen extends ThemedContainerScreen<ChelOrderMenu> {
 		int h = imageHeight;
 
 		// Vanilla-artiges Fenster
-		GuiTheme.panel(graphics, x, y, w, h);
+		GuiTheme.window(graphics, x, y, w, h);
 
 		// Status-Band in Akzentfarbe
 		GuiTheme.face(graphics, x + 6, y + 16, w - 12, 13, GuiTheme.accentDark());

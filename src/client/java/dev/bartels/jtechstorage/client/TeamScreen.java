@@ -110,7 +110,7 @@ public class TeamScreen extends ThemedContainerScreen<TeamMenu> {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		int x = leftPos;
 		int y = topPos;
-		GuiTheme.panel(graphics, x, y, W, H);
+		GuiTheme.window(graphics, x, y, W, H);
 		// Farb-Streifen oben in der Team-Farbe
 		graphics.fill(x + 2, y + 2, x + W - 2, y + 5, 0xFF000000 | state().color());
 

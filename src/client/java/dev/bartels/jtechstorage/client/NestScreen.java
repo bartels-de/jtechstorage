@@ -64,7 +64,7 @@ public class NestScreen extends ThemedContainerScreen<NestMenu> {
 		int x = leftPos;
 		int y = topPos;
 		int h = imageHeight;
-		GuiTheme.panel(graphics, x, y, W, h);
+		GuiTheme.window(graphics, x, y, W, h);
 
 		for (int i = 0; i < 3; i++) {
 			graphics.fill(x + 2, y + 2 + i, x + W - 2, y + 3 + i, FIRE[i]);

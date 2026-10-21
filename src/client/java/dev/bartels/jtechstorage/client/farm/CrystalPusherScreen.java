@@ -23,7 +23,7 @@ public class CrystalPusherScreen extends ThemedContainerScreen<CrystalPusherMenu
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
-		GuiTheme.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
+		GuiTheme.window(graphics, leftPos, topPos, imageWidth, imageHeight);
 
 		for (int slot = 0; slot < CrystalPusherBlockEntity.FILTERS; slot++) {
 			GuiTheme.slot(graphics, leftPos + CrystalPusherMenu.FILTER_X + slot * 18 - 1, topPos + CrystalPusherMenu.FILTER_Y - 1);

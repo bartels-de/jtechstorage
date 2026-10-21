@@ -27,7 +27,7 @@ import dev.bartels.jtechstorage.net.CompanionStatusPayload;
  * Begleiter-Menü (v0.26, Taste K oder Shift + Rechtsklick): Übersicht mit Porträt, Werten und Befehlen sowie der
  * Talentbaum. Alle Werte kommen vom Server ({@link CompanionStatusPayload}), Klicks gehen als {@link CompanionActionPayload} zurück.
  */
-public class CompanionScreen extends Screen {
+public class CompanionScreen extends dev.bartels.jtechstorage.client.gui.ThemedScreen {
 	private static final int W = 256;
 	private static final int H = 262;
 	private static final int NODE = 22;
@@ -164,7 +164,7 @@ public class CompanionScreen extends Screen {
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
-		GuiTheme.panel(graphics, left, top, W, H);
+		GuiTheme.window(graphics, left, top, W, H);
 	}
 
 	@Override

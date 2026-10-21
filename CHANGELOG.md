@@ -3,6 +3,21 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.29.0]
+
+### Added
+- **New interface themes:** *Frost glass* and *Crystal glass* (slightly see-through, glowing accent border) and *Modern light*
+  and *Modern dark* (flat, rounded pixel corners, soft shadow). The classic light and dark themes stay.
+- **Effects**, each one switchable: slide-in, hover glow, border shimmer, sheen, background particles and count animation in
+  the terminal. Presets *off*, *subtle* (default) and *rich*.
+- New accent color **teal**.
+- Tooltips in the mod's screens match the theme.
+
+### Changed
+- **Redesigned settings screen** with theme tiles, color swatches, effect switches and a live preview.
+- Terminal: search field with magnifier, themed scrollbar, buttons and category tabs in the new themes.
+- On light themes, amounts in slots get a dark outline so they stay readable.
+
 ## [0.28.0]
 
 ### Added

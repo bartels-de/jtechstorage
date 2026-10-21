@@ -69,6 +69,7 @@ public class JTechStorageClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
+		dev.bartels.jtechstorage.client.gui.GuiFx.register();
 		MenuScreens.register(ModContent.STORAGE_TERMINAL_MENU, StorageTerminalScreen::new);
 		StorageTerminalMenu.clientRowProvider = crafting -> {
 			int rows = dev.bartels.jtechstorage.client.gui.GuiSettings.get().rows.rows;

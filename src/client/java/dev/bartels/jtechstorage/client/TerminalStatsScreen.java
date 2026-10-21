@@ -33,7 +33,7 @@ import dev.bartels.jtechstorage.network.StorageNetwork;
  * Lager-Statistik (aus dem Speicher-Terminal): Füllstand, Verlauf der letzten 14 Spieltage, häufigste Items,
  * Kategorien und die größten Veränderungen seit Tagesbeginn. Aktualisiert sich alle 5 Sekunden.
  */
-public class TerminalStatsScreen extends Screen {
+public class TerminalStatsScreen extends dev.bartels.jtechstorage.client.gui.ThemedScreen {
 	private static final int W = 300;
 	private static final int H = 212;
 	private static final int COL2 = 160;
@@ -122,7 +122,7 @@ public class TerminalStatsScreen extends Screen {
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
-		GuiTheme.panel(graphics, left, top, W, H);
+		GuiTheme.window(graphics, left, top, W, H);
 		GuiTheme.sunken(graphics, left + 8, top + CHART_Y - 2, COL2 - 16, CHART_H + 4);
 		GuiTheme.sunken(graphics, left + COL2, top + 20, W - COL2 - 8, CAT_ROWS * 14 + 6);
 	}

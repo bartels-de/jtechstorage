@@ -16,13 +16,32 @@ import dev.bartels.jtechstorage.JTechStorage;
  * Persönliche Oberflächen-Einstellungen (nur Client), gespeichert in {@code config/jtechstorage-client.json}.
  */
 public final class GuiSettings {
+	/** Zeichenstil der Fenster (v0.29). */
+	public enum Style {
+		CLASSIC, GLASS, MODERN
+	}
+
 	public enum Theme {
-		LIGHT, DARK
+		LIGHT(Style.CLASSIC, false), DARK(Style.CLASSIC, true), GLASS(Style.GLASS, true), FROST(Style.GLASS, false),
+		MODERN_LIGHT(Style.MODERN, false), MODERN_DARK(Style.MODERN, true);
+
+		public final Style style;
+		public final boolean dark;
+
+		Theme(Style style, boolean dark) {
+			this.style = style;
+			this.dark = dark;
+		}
+	}
+
+	/** Voreinstellungen für die Effekte (setzen nur die einzelnen Schalter). */
+	public enum Effects {
+		OFF, SUBTLE, RICH, CUSTOM
 	}
 
 	public enum Accent {
 		AMETHYST(0xFF8D6ACC), TEAM(0), BLUE(0xFF3F7FD0), GREEN(0xFF3E9E58), RED(0xFFC84040), GOLD(0xFFC89A2A),
-		ROSE(0xFFD0609A), GRAY(0xFF707080);
+		ROSE(0xFFD0609A), TEAL(0xFF2FA8A0), GRAY(0xFF707080);
 
 		public final int color;
 
@@ -55,6 +74,48 @@ public final class GuiSettings {
 	public CountSize countSize = CountSize.NORMAL;
 	/** Begleiter-HUD oben links (v0.26). */
 	public boolean companionHud = true;
+
+	// Effekte (v0.29) – Standard: dezent
+	public boolean fadeIn = true;
+	public boolean hoverGlow = true;
+	public boolean borderShimmer = true;
+	public boolean sheen = false;
+	public boolean particles = false;
+	public boolean countAnimation = false;
+
+	/** Welche Voreinstellung passt zu den aktuellen Schaltern? */
+	public Effects effects() {
+		if (matches(false, false, false, false, false, false)) {
+			return Effects.OFF;
+		}
+
+		if (matches(true, true, true, false, false, false)) {
+			return Effects.SUBTLE;
+		}
+
+		return matches(true, true, true, true, true, true) ? Effects.RICH : Effects.CUSTOM;
+	}
+
+	private boolean matches(boolean fade, boolean hover, boolean shimmer, boolean sheen, boolean particles, boolean count) {
+		return fadeIn == fade && hoverGlow == hover && borderShimmer == shimmer && this.sheen == sheen && this.particles == particles
+				&& countAnimation == count;
+	}
+
+	/** Setzt alle Schalter passend zur Voreinstellung (CUSTOM ändert nichts). */
+	public void applyEffects(Effects preset) {
+		if (preset == Effects.CUSTOM) {
+			return;
+		}
+
+		boolean on = preset != Effects.OFF;
+		boolean rich = preset == Effects.RICH;
+		fadeIn = on;
+		hoverGlow = on;
+		borderShimmer = on;
+		sheen = rich;
+		particles = rich;
+		countAnimation = rich;
+	}
 
 	public static GuiSettings get() {
 		if (instance == null) {
