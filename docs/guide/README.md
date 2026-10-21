@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.29.2** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.29.4** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 

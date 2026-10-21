@@ -3,6 +3,25 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.29.4]
+
+### Changed
+- **Terminal grid fields are now real inventory slots.** Taking and storing items uses the vanilla code, so everything
+  works exactly as in a chest: clicks, Shift-click, number keys, the swap-offhand key, Q, dragging to spread items,
+  double-click and creative middle-click. Each field holds up to one stack; the number still shows the total in the
+  network.
+- Replaces the hand-made click handling of 0.29.1–0.29.3.
+
+## [0.29.3]
+
+### Changed
+- Terminal clicks now match vanilla chests even more closely:
+  - **Double-click** an item fills the stack on your cursor, first from the network and then from your inventory.
+    Before, the second click put the stack straight back.
+  - **Double-click** an item in your inventory also tops up from the network.
+  - **Shift + double-click** an item moves all of that kind into your inventory, until it is full.
+  - **Right-click** with an item on a different item swaps them, like left-click.
+
 ## [0.29.2]
 
 ### Fixed

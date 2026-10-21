@@ -101,6 +101,8 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 	private static final int RESULT_SLOT = PLAYER_END;
 	private static final int CRAFT_START = RESULT_SLOT + 1;
 	private static final int CRAFT_END = CRAFT_START + 9;
+	/** Sichtbare Felder des Netzwerk-Rasters als echte Slots (v0.29.4), höchstens 10 Zeilen. */
+	public static final int MAX_VIEW = 90;
 
 	private static final int REFRESH_INTERVAL = 20;
 	private static final Identifier RANGE_SLOT_ICON = Identifier.withDefaultNamespace("container/slot/amethyst_shard");
@@ -126,6 +128,13 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 	private TerminalContentsPayload.NetworkInfo clientInfo = TerminalContentsPayload.NetworkInfo.EMPTY;
 	private TerminalContentsPayload.AccessInfo clientAccess = TerminalContentsPayload.AccessInfo.EMPTY;
 	private int clientVersion;
+
+	// Netzwerk-Raster als Vanilla-Slots: Vorlage je Feld (Server: vom Client gemeldet), angezeigte Menge
+	private int viewStart;
+	private final ItemStack[] viewPrototype = new ItemStack[MAX_VIEW];
+	private final int[] viewShown = new int[MAX_VIEW];
+	private final ItemStack[] viewDisplay = new ItemStack[MAX_VIEW];
+	private final SimpleContainer clientView = new SimpleContainer(MAX_VIEW);
 
 	/** Client-Konstruktor (über {@link net.fabricmc.fabric.api.menu.v1.ExtendedMenuType}). */
 	public StorageTerminalMenu(int containerId, Inventory inventory, OpenData data) {
@@ -163,6 +172,204 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 		} else {
 			craftSlots = null;
 			resultSlots = null;
+		}
+
+		java.util.Arrays.fill(viewPrototype, ItemStack.EMPTY);
+		java.util.Arrays.fill(viewDisplay, ItemStack.EMPTY);
+		viewStart = slots.size();
+
+		for (int i = 0; i < MAX_VIEW; i++) {
+			addSlot(new NetworkSlot(i, GRID_X + (i % 9) * 18, GRID_Y + (i / 9) * 18));
+		}
+	}
+
+	/** Erster Slot-Index des Netzwerk-Rasters. */
+	public int viewStart() {
+		return viewStart;
+	}
+
+	public boolean isViewSlot(Slot slot) {
+		return slot instanceof NetworkSlot;
+	}
+
+	// ------------------------------------------------------------------
+	// Netzwerk-Raster als Vanilla-Slots (v0.29.4)
+	// ------------------------------------------------------------------
+
+	/** Client: zeigt diese Items in den Feldern (Menge = höchstens ein Stapel) – für die Vorhersage der Klicks. */
+	public void setClientView(List<ItemStack> displays) {
+		for (int i = 0; i < MAX_VIEW; i++) {
+			clientView.setItem(i, i < displays.size() ? displays.get(i) : ItemStack.EMPTY);
+		}
+	}
+
+	/** Server: Vorlagen der sichtbaren Felder vom Client übernehmen. */
+	public void setView(List<ItemStack> prototypes) {
+		for (int i = 0; i < MAX_VIEW; i++) {
+			ItemStack prototype = i < prototypes.size() ? prototypes.get(i) : ItemStack.EMPTY;
+			viewPrototype[i] = prototype.isEmpty() ? ItemStack.EMPTY : prototype.copyWithCount(1);
+		}
+
+		refreshView(network().aggregate());
+		broadcastChanges();
+	}
+
+	/** Angezeigte Mengen aus dem echten Netzwerk-Inhalt neu berechnen. */
+	private void refreshView(List<StorageNetwork.Entry> entries) {
+		java.util.Map<Integer, List<StorageNetwork.Entry>> byHash = new java.util.HashMap<>();
+
+		for (StorageNetwork.Entry entry : entries) {
+			byHash.computeIfAbsent(ItemStack.hashItemAndComponents(entry.prototype()), k -> new java.util.ArrayList<>()).add(entry);
+		}
+
+		for (int i = 0; i < MAX_VIEW; i++) {
+			ItemStack prototype = viewPrototype[i];
+			long total = 0;
+
+			if (!prototype.isEmpty()) {
+				for (StorageNetwork.Entry entry : byHash.getOrDefault(ItemStack.hashItemAndComponents(prototype), List.of())) {
+					if (ItemStack.isSameItemSameComponents(entry.prototype(), prototype)) {
+						total = entry.total();
+						break;
+					}
+				}
+			}
+
+			setShown(i, (int) Math.min(total, prototype.getMaxStackSize()));
+		}
+	}
+
+	private void setShown(int i, int count) {
+		viewShown[i] = Math.max(0, count);
+		// immer ein neues Objekt: Vanilla darf das alte (z. B. auf dem Mauszeiger) behalten
+		viewDisplay[i] = count > 0 && !viewPrototype[i].isEmpty() ? viewPrototype[i].copyWithCount(count) : ItemStack.EMPTY;
+	}
+
+	@Override
+	public void clicked(int slotId, int button, net.minecraft.world.inventory.ContainerInput input, Player player) {
+		if (terminal != null) {
+			// frische Mengen, damit Vanilla nie mehr verteilt, als wirklich da ist
+			refreshView(network().aggregate());
+			forceSync = true;
+		}
+
+		super.clicked(slotId, button, input, player);
+	}
+
+	/** Ein Feld des Netzwerk-Rasters. Server: Entnehmen/Ablegen geht direkt ins Netzwerk. */
+	private class NetworkSlot extends Slot {
+		private final int view;
+
+		NetworkSlot(int view, int x, int y) {
+			super(clientView, view, x, y);
+			this.view = view;
+		}
+
+		private boolean server() {
+			return terminal != null;
+		}
+
+		@Override
+		public boolean isActive() {
+			return server() || view < layout.gridRows() * 9;
+		}
+
+		@Override
+		public ItemStack getItem() {
+			return server() ? viewDisplay[view] : super.getItem();
+		}
+
+		@Override
+		public boolean hasItem() {
+			return !getItem().isEmpty();
+		}
+
+		@Override
+		public int getMaxStackSize() {
+			return Integer.MAX_VALUE / 2;
+		}
+
+		@Override
+		public int getMaxStackSize(ItemStack stack) {
+			return Integer.MAX_VALUE / 2;
+		}
+
+		@Override
+		public boolean mayPlace(ItemStack stack) {
+			return hasPermission(StorageTerminalBlockEntity.Permission.ITEMS);
+		}
+
+		@Override
+		public boolean mayPickup(Player player) {
+			return hasPermission(StorageTerminalBlockEntity.Permission.ITEMS);
+		}
+
+		@Override
+		public ItemStack remove(int amount) {
+			if (!server()) {
+				return super.remove(amount);
+			}
+
+			ItemStack prototype = viewPrototype[view];
+			int take = Math.min(amount, viewShown[view]);
+
+			if (prototype.isEmpty() || take <= 0) {
+				return ItemStack.EMPTY;
+			}
+
+			ItemStack taken = network().extract(prototype, take);
+			setShown(view, viewShown[view] - taken.getCount());
+			forceSync = true;
+			return taken;
+		}
+
+		@Override
+		public void set(ItemStack stack) {
+			if (!server()) {
+				super.set(stack);
+				return;
+			}
+
+			StorageNetwork net = network();
+			ItemStack prototype = viewPrototype[view];
+			int had = viewShown[view];
+
+			if (!stack.isEmpty() && !prototype.isEmpty() && ItemStack.isSameItemSameComponents(stack, prototype)) {
+				int diff = stack.getCount() - had;
+
+				if (diff > 0) {
+					giveBack(net.insert(prototype.copyWithCount(diff)));
+				} else if (diff < 0) {
+					net.extract(prototype, -diff);
+				}
+			} else {
+				// was bisher angezeigt wurde, hat Vanilla weitergegeben (z. B. beim Tauschen auf den Mauszeiger)
+				if (had > 0 && !prototype.isEmpty()) {
+					net.extract(prototype, had);
+				}
+
+				if (!stack.isEmpty()) {
+					giveBack(net.insert(stack.copy()));
+					viewPrototype[view] = stack.copyWithCount(1);
+				}
+			}
+
+			ItemStack now = viewPrototype[view];
+			setShown(view, now.isEmpty() ? 0 : (int) Math.min(net.count(now), now.getMaxStackSize()));
+			forceSync = true;
+		}
+
+		private void giveBack(ItemStack rest) {
+			if (!rest.isEmpty() && player instanceof ServerPlayer serverPlayer) {
+				giveToPlayer(serverPlayer, rest); // Netzwerk voll
+			}
+		}
+
+		@Override
+		public void setChanged() {
+			if (!server()) {
+				super.setChanged();
+			}
 		}
 	}
 
@@ -214,6 +421,7 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 		}
 
 		List<StorageNetwork.Entry> entries = network.aggregate();
+		refreshView(entries);
 		TerminalContentsPayload.NetworkInfo info = new TerminalContentsPayload.NetworkInfo(
 				terminal.getRange(), network.linkCount(), terminal.getCapacity(), network.unavailable(),
 				network.overCapacity(), network.usedSlots(), network.totalSlots(), network.sortRuleCount(),
@@ -258,7 +466,7 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 	}
 
 	/** Verarbeitet einen Klick auf das Item-Raster oder einen Knopf (nur Server). */
-	public void handleAction(ServerPlayer player, TerminalActionPayload.Action action, ItemStack prototype, int slot) {
+	public void handleAction(ServerPlayer player, TerminalActionPayload.Action action, ItemStack prototype) {
 		if (!hasPermission(StorageTerminalBlockEntity.Permission.ITEMS)) {
 			player.sendOverlayMessage(Component.translatable("jtechstorage.message.no_permission",
 					Component.translatable("jtechstorage.role.member")));
@@ -301,60 +509,6 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 				}
 			}
 			case CLEAR_GRID -> clearCraftingGrid(network);
-			case SWAP_HOTBAR -> {
-				Inventory inventory = player.getInventory();
-
-				if (!carried.isEmpty() || !(slot >= 0 && slot < Inventory.SELECTION_SIZE || slot == Inventory.SLOT_OFFHAND)) {
-					return;
-				}
-
-				ItemStack existing = inventory.getItem(slot);
-
-				if (prototype.isEmpty()) {
-					// über einem leeren Feld: Inhalt des Platzes einlagern (wie in einen leeren Kistenplatz)
-					inventory.setItem(slot, network.insert(existing));
-				} else {
-					ItemStack taken = network.extract(prototype, prototype.getMaxStackSize());
-
-					if (taken.isEmpty()) {
-						return;
-					}
-
-					ItemStack rest = network.insert(existing);
-					inventory.setItem(slot, taken);
-					giveToPlayer(player, rest);
-				}
-			}
-			case DROP_ONE, DROP_STACK -> {
-				if (!carried.isEmpty() || prototype.isEmpty()) {
-					return;
-				}
-
-				int amount = action == TerminalActionPayload.Action.DROP_ONE ? 1 : prototype.getMaxStackSize();
-				ItemStack dropped = network.extract(prototype, amount);
-
-				if (!dropped.isEmpty()) {
-					player.drop(dropped, false, Prediction.SERVER_ONLY);
-				}
-			}
-			case CLONE -> {
-				if (carried.isEmpty() && !prototype.isEmpty() && player.hasInfiniteMaterials() && network.count(prototype) > 0) {
-					setCarried(prototype.copyWithCount(prototype.getMaxStackSize()));
-				}
-			}
-			case SWAP_CARRIED -> {
-				if (carried.isEmpty() || prototype.isEmpty()) {
-					return;
-				}
-
-				ItemStack rest = network.insert(carried);
-
-				if (rest.isEmpty()) {
-					setCarried(network.extract(prototype, prototype.getMaxStackSize()));
-				} else {
-					setCarried(rest);
-				}
-			}
 		}
 
 		forceSync = true;
@@ -552,6 +706,24 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 		Slot slot = getSlot(slotIndex);
 
 		if (!slot.hasItem()) {
+			return ItemStack.EMPTY;
+		}
+
+		if (slot instanceof NetworkSlot) {
+			if (terminal != null && slot.mayPickup(player)) {
+				// wie bei einer Kiste: nur dieser eine Stapel
+				ItemStack moving = slot.remove(slot.getItem().getCount());
+				moveItemStackTo(moving, PLAYER_START, PLAYER_END, true);
+
+				if (!moving.isEmpty()) {
+					ItemStack rest = network().insert(moving);
+
+					if (!rest.isEmpty() && player instanceof ServerPlayer serverPlayer) {
+						giveToPlayer(serverPlayer, rest);
+					}
+				}
+			}
+
 			return ItemStack.EMPTY;
 		}
 

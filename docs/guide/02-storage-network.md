@@ -19,19 +19,17 @@ a **Storage Terminal** shows and manages the contents of every container you lin
 
 ## The terminal
 
-Items are taken and stored just like in a chest. Number keys and Q work once you have clicked into the grid (the search
-field is active when the terminal opens). While the mouse is over the grid, items stay in place even if their amounts
-change; the list sorts again when the mouse leaves the grid.
+Every field of the item grid behaves like a chest slot holding up to one stack; the number shows the total in the network.
+Take and store items exactly as in a chest – clicks, Shift-click, number keys, Q, dragging and double-click all work the
+vanilla way. Number keys and Q work once you have clicked into the grid (the search field is active when the terminal
+opens). While the mouse is over the grid, items stay in place even if their amounts change; the list sorts again when the
+mouse leaves the grid.
 
 | Action | Effect |
 |---|---|
-| Left click on an item | take a stack |
-| Right click on an item | take half a stack |
-| Shift + click on an item | move it straight into your inventory |
-| Left click with an item on the cursor | store it in the network (on a different item: swap) |
-| Right click with an item on the cursor | store one |
-| Number keys 1–9 over an item | put a stack into that hotbar slot |
-| Q / Ctrl + Q over an item | drop one / a stack |
+| Left click / right click on an item | take a stack / half a stack |
+| Shift + click on an item | move the stack into your inventory |
+| Click with an item on the cursor | store it (left: all, right: one) |
 | Right-click the search field | clear the search |
 
 ### Search
