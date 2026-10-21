@@ -110,7 +110,7 @@ public class JTechStorage implements ModInitializer {
 			if (context.player().containerMenu instanceof StorageTerminalMenu menu
 					&& menu.containerId == payload.containerId()
 					&& menu.stillValid(context.player())) {
-				menu.handleAction(context.player(), payload.action(), payload.prototype());
+				menu.handleAction(context.player(), payload.action(), payload.prototype(), payload.slot());
 			}
 		});
 

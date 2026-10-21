@@ -105,6 +105,9 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	private int seenVersion = -1;
 	private int scrollRow;
 	private boolean draggingScroller;
+	/** Letzte Mausposition (für Tasten über dem Raster). */
+	private double lastMouseX = -1;
+	private double lastMouseY = -1;
 
 	public StorageTerminalScreen(StorageTerminalMenu menu, Inventory inventory, Component title) {
 		super(menu, inventory, title, IMAGE_WIDTH, menu.getLayout().imageHeight());
@@ -328,6 +331,8 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		}
 
 		super.extractContents(graphics, mouseX, mouseY, delta);
+		lastMouseX = mouseX;
+		lastMouseY = mouseY;
 
 		extractGrid(graphics, mouseX, mouseY);
 		extractButtonAt(graphics, SETTINGS_BUTTON_X, layout.inventoryY() + 58, mouseX, mouseY, false);
@@ -792,13 +797,33 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		return super.mouseClicked(event, doubleClick);
 	}
 
+	/**
+	 * Klicks ins Raster – so wie bei einer Kiste: Links = Stapel nehmen / alles ablegen (anderes Item: tauschen),
+	 * Rechts = halber Stapel / ein Item ablegen, Shift = ins Inventar, Mittelklick (Kreativ) = vollen Stapel klonen.
+	 */
 	private void handleGridClick(MouseButtonEvent event, StorageNetwork.@Nullable Entry entry) {
 		ItemStack carried = menu.getCarried();
 		TerminalActionPayload.Action action;
 		ItemStack prototype = ItemStack.EMPTY;
 
-		if (!carried.isEmpty()) {
-			action = event.button() == 1 ? TerminalActionPayload.Action.INSERT_ONE : TerminalActionPayload.Action.INSERT_ALL;
+		if (entry != null && carried.isEmpty() && minecraft.options.keyPickItem.matchesMouse(event)) {
+			if (!minecraft.player.hasInfiniteMaterials()) {
+				return;
+			}
+
+			action = TerminalActionPayload.Action.CLONE;
+			prototype = entry.prototype();
+		} else if (!carried.isEmpty()) {
+			if (event.button() == 1) {
+				action = TerminalActionPayload.Action.INSERT_ONE;
+			} else if (event.button() == 0 && entry != null && !ItemStack.isSameItemSameComponents(carried, entry.prototype())) {
+				action = TerminalActionPayload.Action.SWAP_CARRIED;
+				prototype = entry.prototype();
+			} else if (event.button() == 0) {
+				action = TerminalActionPayload.Action.INSERT_ALL;
+			} else {
+				return;
+			}
 		} else if (entry != null) {
 			prototype = entry.prototype();
 
@@ -815,13 +840,48 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			return;
 		}
 
+		send(action, prototype, -1);
+	}
+
+	private void send(TerminalActionPayload.Action action, ItemStack prototype, int slot) {
 		if (!menu.hasPermission(StorageTerminalBlockEntity.Permission.ITEMS)) {
 			minecraft.player.sendOverlayMessage(Component.translatable("jtechstorage.message.no_permission",
 					Component.translatable("jtechstorage.role.member")));
 			return;
 		}
 
-		ClientPlayNetworking.send(new TerminalActionPayload(menu.containerId, action, prototype));
+		ClientPlayNetworking.send(new TerminalActionPayload(menu.containerId, action, prototype, slot));
+	}
+
+	/** Zahlentasten, Zweithand-Taste und Q über dem Raster – wie über einem Kistenplatz. */
+	private boolean handleGridKey(KeyEvent event) {
+		int index = gridIndexAt(lastMouseX, lastMouseY);
+
+		if (index < 0 || !menu.getCarried().isEmpty()) {
+			return false;
+		}
+
+		StorageNetwork.Entry entry = entryAt(index);
+		ItemStack prototype = entry == null ? ItemStack.EMPTY : entry.prototype();
+
+		for (int i = 0; i < 9; i++) {
+			if (minecraft.options.keyHotbarSlots[i].matches(event)) {
+				send(TerminalActionPayload.Action.SWAP_HOTBAR, prototype, i);
+				return true;
+			}
+		}
+
+		if (minecraft.options.keySwapOffhand.matches(event)) {
+			send(TerminalActionPayload.Action.SWAP_HOTBAR, prototype, net.minecraft.world.entity.player.Inventory.SLOT_OFFHAND);
+			return true;
+		}
+
+		if (entry != null && minecraft.options.keyDrop.matches(event)) {
+			send(event.hasControlDown() ? TerminalActionPayload.Action.DROP_STACK : TerminalActionPayload.Action.DROP_ONE, prototype, -1);
+			return true;
+		}
+
+		return false;
 	}
 
 	private void scrollTo(double mouseY) {
@@ -872,6 +932,10 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 			searchBox.keyPressed(event);
 			return true; // Tasten wie "E" sollen beim Tippen das Terminal nicht schließen
+		}
+
+		if (handleGridKey(event)) {
+			return true;
 		}
 
 		return super.keyPressed(event);

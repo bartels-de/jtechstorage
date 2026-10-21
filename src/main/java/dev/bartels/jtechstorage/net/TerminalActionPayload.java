@@ -14,7 +14,7 @@ import dev.bartels.jtechstorage.JTechStorage;
  * <p>{@code prototype} dient nur als Vorlage – der Server entnimmt ausschließlich Items,
  * die wirklich im Netzwerk liegen und exakt gleich sind.
  */
-public record TerminalActionPayload(int containerId, Action action, ItemStack prototype) implements CustomPacketPayload {
+public record TerminalActionPayload(int containerId, Action action, ItemStack prototype, int slot) implements CustomPacketPayload {
 	public static final Type<TerminalActionPayload> TYPE = new Type<>(JTechStorage.id("terminal_action"));
 
 	public static final StreamCodec<RegistryFriendlyByteBuf, TerminalActionPayload> STREAM_CODEC = StreamCodec.composite(
@@ -22,7 +22,12 @@ public record TerminalActionPayload(int containerId, Action action, ItemStack pr
 			ByteBufCodecs.idMapper(i -> Action.values()[Math.floorMod(i, Action.values().length)], Action::ordinal),
 			TerminalActionPayload::action,
 			ItemStack.OPTIONAL_STREAM_CODEC, TerminalActionPayload::prototype,
+			ByteBufCodecs.VAR_INT, TerminalActionPayload::slot,
 			TerminalActionPayload::new);
+
+	public TerminalActionPayload(int containerId, Action action, ItemStack prototype) {
+		this(containerId, action, prototype, -1);
+	}
 
 	@Override
 	public Type<? extends CustomPacketPayload> type() {
@@ -41,6 +46,16 @@ public record TerminalActionPayload(int containerId, Action action, ItemStack pr
 		/** Ein einzelnes Item vom Mauszeiger einlagern. */
 		INSERT_ONE,
 		/** Crafting-Raster ins Netzwerk leeren. */
-		CLEAR_GRID
+		CLEAR_GRID,
+		/** Zahlentaste / Zweithand-Taste über dem Raster: Stapel in diesen Inventar-Platz, dessen Inhalt ins Netzwerk (v0.29.1). */
+		SWAP_HOTBAR,
+		/** Q über dem Raster: ein Item fallen lassen. */
+		DROP_ONE,
+		/** Strg + Q über dem Raster: einen Stapel fallen lassen. */
+		DROP_STACK,
+		/** Mittelklick im Kreativmodus: vollen Stapel auf den Mauszeiger (ohne Entnahme). */
+		CLONE,
+		/** Linksklick mit anderem Item: Item am Mauszeiger einlagern und den angeklickten Stapel aufnehmen (wie Tauschen). */
+		SWAP_CARRIED
 	}
 }

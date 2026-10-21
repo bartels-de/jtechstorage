@@ -3,6 +3,17 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.29.1]
+
+### Changed
+- **The terminal handles items like a chest:**
+  - Left-click with an item on a different item stores yours and picks that one up.
+  - Number keys 1–9 and the swap-offhand key over an item put a stack into that slot; what was there is stored.
+  - Number keys over an empty field store that hotbar slot.
+  - **Q** drops one item, **Ctrl + Q** a stack.
+  - Middle click in creative picks up a full stack.
+- The search field stays active when the terminal opens; click into the grid to use the keys.
+
 ## [0.29.0]
 
 ### Added
