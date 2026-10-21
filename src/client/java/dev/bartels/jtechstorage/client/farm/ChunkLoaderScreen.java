@@ -38,7 +38,7 @@ public class ChunkLoaderScreen extends ThemedContainerScreen<ChunkLoaderMenu> {
 	@Override
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
-		GuiTheme.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
+		GuiTheme.window(graphics, leftPos, topPos, imageWidth, imageHeight);
 		GuiTheme.slot(graphics, leftPos + ChunkLoaderMenu.FUEL_X - 1, topPos + ChunkLoaderMenu.FUEL_Y - 1);
 
 		for (int row = 0; row < 4; row++) {

@@ -21,7 +21,7 @@ public class AmethystChestScreen extends ThemedContainerScreen<AmethystChestMenu
 	public void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		AmethystChestTier tier = menu.tier();
-		GuiTheme.panel(graphics, leftPos, topPos, imageWidth, imageHeight);
+		GuiTheme.window(graphics, leftPos, topPos, imageWidth, imageHeight);
 
 		for (int row = 0; row < tier.rows; row++) {
 			for (int col = 0; col < tier.columns; col++) {

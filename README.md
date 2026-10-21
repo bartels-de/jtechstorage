@@ -36,7 +36,8 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
 - 🦊 **Crystal enchantments.** Five new enchantments that only the Amethyst Fox can dig up.
 - 📚 **A library of books.** Handbook, recipe book, bestiary with 3D models, item lexicon, crystal chronicle and
   Chel's joke book with 75 collectible jokes.
-- 🎨 **Readable, themeable UI.** Light and dark themes, accent colors and adjustable terminal size, in English and German.
+- 🎨 **Modern, themeable UI.** Six themes (classic, glass and modern – light and dark), accent colors, optional effects
+  like hover glow and border shimmer, adjustable terminal size, in English and German.
 - 🔊 **Own sounds and a server config.** Synthesized crystal sounds for every creature, and a commented config file for
   ranges, bosses and helper speeds.
 
@@ -331,8 +332,10 @@ the ground to place it as a block (hopper-compatible). Picked-up items go into b
 The gear button in the terminal opens UI settings, which apply to all screens of the mod and are saved in
 `config/jtechstorage-client.json`:
 
-- light or dark theme
+- theme: classic, glass or modern, each light or dark
 - accent color
+- effects: off, subtle or rich – or each one on its own (slide-in, hover glow, border shimmer, sheen, background particles,
+  count animation)
 - terminal height (4–10 rows or auto)
 - item count size
 

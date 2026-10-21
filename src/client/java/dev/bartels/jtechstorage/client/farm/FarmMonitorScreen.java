@@ -96,7 +96,7 @@ public class FarmMonitorScreen extends ThemedContainerScreen<FarmMonitorMenu> {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		int x = leftPos;
 		int y = topPos;
-		GuiTheme.panel(graphics, x, y, imageWidth, imageHeight);
+		GuiTheme.window(graphics, x, y, imageWidth, imageHeight);
 		GuiTheme.sunken(graphics, x + 8, y + NAME_Y, W - 16, 16);
 		GuiTheme.sunken(graphics, x + 8, y + CHART_Y - 2, W - 16, CHART_H + 4);
 

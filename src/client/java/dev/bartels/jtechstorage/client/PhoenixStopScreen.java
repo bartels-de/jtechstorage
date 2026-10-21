@@ -124,7 +124,7 @@ public class PhoenixStopScreen extends ThemedContainerScreen<PhoenixStopMenu> {
 		super.extractBackground(graphics, mouseX, mouseY, delta);
 		int x = leftPos;
 		int y = topPos;
-		GuiTheme.panel(graphics, x, y, imageWidth, imageHeight);
+		GuiTheme.window(graphics, x, y, imageWidth, imageHeight);
 		GuiTheme.sunken(graphics, x + 7, y + NAME_Y, W - 14, 16);
 		GuiTheme.sunken(graphics, x + 7, y + STATUS_Y - 2, W - 14, 12);
 

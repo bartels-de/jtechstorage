@@ -44,7 +44,7 @@ import dev.bartels.jtechstorage.item.GuideBookItem;
  * Gegenstands-Lexikon, Kristall-Chronik und Chels Witzbuch. Inhaltsverzeichnisse sind anklickbar,
  * „☰“ oben links springt zurück zum Inhalt.
  */
-public class GuideBookScreen extends Screen {
+public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedScreen {
 	private static final Identifier BOOK_TEXTURE = Identifier.withDefaultNamespace("textures/gui/book.png");
 	private static final Identifier PAGE_FORWARD = Identifier.withDefaultNamespace("widget/page_forward");
 	private static final Identifier PAGE_FORWARD_HIGHLIGHTED = Identifier.withDefaultNamespace("widget/page_forward_highlighted");

@@ -2,7 +2,7 @@
 
 On its first start the mod writes **`config/jtechstorage.json`** – a JSON file with comments in English and German. Changes apply after a **restart**. Delete a line (or the whole file) to get the default value back. On a server the server's file counts; clients receive its values for tooltips and the handbook.
 
-The interface settings (theme, accent color, terminal height, count size, companion HUD) are per player and live in **`config/jtechstorage-client.json`** – change them with the gear button in the terminal (and the HUD button in the companion menu).
+The interface settings (theme, accent color, effects, terminal height, count size, companion HUD) are per player and live in **`config/jtechstorage-client.json`** – change them with the gear button in the terminal (and the HUD button in the companion menu).
 
 ## Storage network (`network`)
 
