@@ -20,7 +20,8 @@ a **Storage Terminal** shows and manages the contents of every container you lin
 ## The terminal
 
 Items are taken and stored just like in a chest. Number keys and Q work once you have clicked into the grid (the search
-field is active when the terminal opens).
+field is active when the terminal opens). While the mouse is over the grid, items stay in place even if their amounts
+change; the list sorts again when the mouse leaves the grid.
 
 | Action | Effect |
 |---|---|

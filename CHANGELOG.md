@@ -3,6 +3,13 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.29.2]
+
+### Fixed
+- Terminal: while the mouse is over the item grid, items keep their places when amounts change. Before, sorting by amount
+  could move a different item under the cursor while you were taking items out (e.g. with Shift held). The list sorts
+  again as soon as the mouse leaves the grid; items used up completely leave a gap until then.
+
 ## [0.29.1]
 
 ### Changed

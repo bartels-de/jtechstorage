@@ -101,7 +101,9 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 	private EditBox searchBox;
 	private int searchX = SEARCH_MIN_X;
-	private List<StorageNetwork.Entry> filtered = List.of();
+	private List<StorageNetwork.@Nullable Entry> filtered = List.of();
+	/** Reihenfolge gerade eingefroren (Maus über dem Raster); beim Verlassen wird neu sortiert. */
+	private boolean orderFrozen;
 	private int seenVersion = -1;
 	private int scrollRow;
 	private boolean draggingScroller;
@@ -149,6 +151,14 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	// ------------------------------------------------------------------
 
 	private void refilter() {
+		refilter(false);
+	}
+
+	/**
+	 * Liste neu aufbauen. {@code keepOrder}: nur Mengen aktualisieren, Reihenfolge bleibt (solange die Maus über dem
+	 * Raster ist) – sonst springen Items beim Rausnehmen unter dem Mauszeiger weg.
+	 */
+	private void refilter(boolean keepOrder) {
 		seenVersion = menu.getClientVersion();
 		String phrase = lastSearch.toLowerCase(Locale.ROOT).trim();
 		String[] terms = phrase.split("\\s+");
@@ -176,8 +186,56 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 		Comparator<StorageNetwork.Entry> comparator = sortMode.comparator;
 		result.sort(descending ? comparator.reversed() : comparator);
-		filtered = result;
+		filtered = keepOrder ? stableOrder(result) : result;
+		orderFrozen = keepOrder;
 		scrollRow = Mth.clamp(scrollRow, 0, maxScroll());
+	}
+
+	/**
+	 * Behält die bisherige Reihenfolge: bekannte Items bleiben an ihrem Platz (aufgebrauchte hinterlassen eine Lücke),
+	 * neue kommen ans Ende.
+	 */
+	private List<StorageNetwork.@Nullable Entry> stableOrder(List<StorageNetwork.Entry> sorted) {
+		java.util.Map<Integer, List<Integer>> byHash = new java.util.HashMap<>();
+
+		for (int i = 0; i < sorted.size(); i++) {
+			byHash.computeIfAbsent(ItemStack.hashItemAndComponents(sorted.get(i).prototype()), k -> new ArrayList<>()).add(i);
+		}
+
+		boolean[] used = new boolean[sorted.size()];
+		List<StorageNetwork.@Nullable Entry> stable = new ArrayList<>();
+
+		for (StorageNetwork.@Nullable Entry old : filtered) {
+			StorageNetwork.Entry match = null;
+
+			if (old != null) {
+				for (int i : byHash.getOrDefault(ItemStack.hashItemAndComponents(old.prototype()), List.of())) {
+					if (!used[i] && ItemStack.isSameItemSameComponents(sorted.get(i).prototype(), old.prototype())) {
+						used[i] = true;
+						match = sorted.get(i);
+						break;
+					}
+				}
+			}
+
+			stable.add(match);
+		}
+
+		for (int i = 0; i < sorted.size(); i++) {
+			if (!used[i]) {
+				stable.add(sorted.get(i));
+			}
+		}
+
+		while (!stable.isEmpty() && stable.get(stable.size() - 1) == null) {
+			stable.remove(stable.size() - 1);
+		}
+
+		return stable;
+	}
+
+	private boolean mouseOverGrid() {
+		return gridIndexAt(lastMouseX, lastMouseY) >= 0;
 	}
 
 	private static boolean isSpecial(ItemStack stack) {
@@ -326,13 +384,17 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	@Override
 	public void extractContents(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
 		if (seenVersion != menu.getClientVersion()) {
-			refilter();
+			refilter(mouseOverGrid() && !filtered.isEmpty());
 			GuiTheme.setTeamColor(menu.getClientAccess().color());
 		}
 
 		super.extractContents(graphics, mouseX, mouseY, delta);
 		lastMouseX = mouseX;
 		lastMouseY = mouseY;
+
+		if (orderFrozen && !mouseOverGrid()) {
+			refilter(); // Maus hat das Raster verlassen: jetzt neu sortieren
+		}
 
 		extractGrid(graphics, mouseX, mouseY);
 		extractButtonAt(graphics, SETTINGS_BUTTON_X, layout.inventoryY() + 58, mouseX, mouseY, false);
@@ -424,8 +486,9 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 				// Zahlen-Animation: Items erscheinen nacheinander, Mengen zählen hoch
 				float progress = dev.bartels.jtechstorage.client.gui.GuiFx.countProgress(this, (row * COLUMNS + column) * 12);
 
-				if (index < filtered.size() && progress > 0) {
-					StorageNetwork.Entry entry = filtered.get(index);
+				StorageNetwork.@Nullable Entry entry = index < filtered.size() ? filtered.get(index) : null;
+
+				if (entry != null && progress > 0) {
 					ItemStack stack = entry.prototype();
 					graphics.item(stack, x, y);
 					graphics.itemDecorations(font, stack, x, y, "");
