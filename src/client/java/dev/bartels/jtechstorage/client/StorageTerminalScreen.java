@@ -109,6 +109,8 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	private boolean draggingScroller;
 	/** Letzte Mausposition (für Tasten über dem Raster). */
 	private double lastMouseX = -1;
+	/** Zuletzt an den Server gemeldete Vorlagen der sichtbaren Felder. */
+	private List<ItemStack> sentView = List.of();
 	private double lastMouseY = -1;
 
 	public StorageTerminalScreen(StorageTerminalMenu menu, Inventory inventory, Component title) {
@@ -232,6 +234,56 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		}
 
 		return stable;
+	}
+
+	/**
+	 * Sichtbare Felder an die Vanilla-Slots des Menüs geben (v0.29.4): Client-Vorschau sofort, Server per Paket, wenn sich
+	 * etwas geändert hat. So laufen alle Klicks und Tasten im Raster genau wie in einer Truhe.
+	 */
+	private void updateView() {
+		int visible = rows * COLUMNS;
+		List<ItemStack> prototypes = new ArrayList<>(visible);
+		List<ItemStack> displays = new ArrayList<>(visible);
+
+		for (int i = 0; i < visible; i++) {
+			StorageNetwork.@Nullable Entry entry = entryAt(scrollRow * COLUMNS + i);
+
+			if (entry == null) {
+				prototypes.add(ItemStack.EMPTY);
+				displays.add(ItemStack.EMPTY);
+			} else {
+				prototypes.add(entry.prototype().copyWithCount(1));
+				displays.add(entry.prototype().copyWithCount((int) Math.min(entry.total(), entry.prototype().getMaxStackSize())));
+			}
+		}
+
+		if (!sameView(prototypes, sentView)) {
+			sentView = prototypes;
+			ClientPlayNetworking.send(new dev.bartels.jtechstorage.net.TerminalViewPayload(menu.containerId, prototypes));
+		}
+
+		menu.setClientView(displays);
+	}
+
+	private static boolean sameView(List<ItemStack> a, List<ItemStack> b) {
+		if (a.size() != b.size()) {
+			return false;
+		}
+
+		for (int i = 0; i < a.size(); i++) {
+			if (!ItemStack.isSameItemSameComponents(a.get(i), b.get(i)) || a.get(i).isEmpty() != b.get(i).isEmpty()) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Override
+	protected void extractSlot(GuiGraphicsExtractor graphics, net.minecraft.world.inventory.Slot slot, int mouseX, int mouseY) {
+		if (!menu.isViewSlot(slot)) {
+			super.extractSlot(graphics, slot, mouseX, mouseY); // Rasterfelder zeichnet extractGrid (mit Gesamtmenge)
+		}
 	}
 
 	private boolean mouseOverGrid() {
@@ -391,6 +443,7 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		super.extractContents(graphics, mouseX, mouseY, delta);
 		lastMouseX = mouseX;
 		lastMouseY = mouseY;
+		updateView();
 
 		if (orderFrozen && !mouseOverGrid()) {
 			refilter(); // Maus hat das Raster verlassen: jetzt neu sortieren
@@ -495,9 +548,6 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 					extractCount(graphics, progress >= 1 ? entry.total() : Math.max(1, Math.round(entry.total() * (double) progress)), x, y);
 				}
 
-				if (index == hovered) {
-					graphics.fill(x, y, x + 16, y + 16, 0x80FFFFFF);
-				}
 			}
 		}
 	}
@@ -638,7 +688,9 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 	@Override
 	protected void extractTooltip(GuiGraphicsExtractor graphics, int mouseX, int mouseY) {
-		super.extractTooltip(graphics, mouseX, mouseY);
+		if (hoveredSlot == null || !menu.isViewSlot(hoveredSlot)) {
+			super.extractTooltip(graphics, mouseX, mouseY); // Rasterfelder: eigener Tooltip mit Gesamtmenge
+		}
 
 		if (!menu.getCarried().isEmpty()) {
 			return;
@@ -784,6 +836,7 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubleClick) {
 		double mouseX = event.x();
 		double mouseY = event.y();
+		updateView(); // Server muss wissen, welches Item in welchem Feld steht, bevor der Klick ankommt
 
 		if (isOver(SETTINGS_BUTTON_X, layout.inventoryY() + 38, BUTTON_SIZE, BUTTON_SIZE, mouseX, mouseY)) {
 			minecraft.setScreenAndShow(new GuiSettingsScreen(this));
@@ -819,13 +872,6 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 
 		searchBox.setFocused(false);
 
-		int index = gridIndexAt(mouseX, mouseY);
-
-		if (index >= 0) {
-			handleGridClick(event, entryAt(index));
-			return true;
-		}
-
 		if (isOver(SCROLL_X, SCROLL_Y, SCROLLER_WIDTH, scrollHeight, mouseX, mouseY)) {
 			draggingScroller = maxScroll() > 0;
 			scrollTo(mouseY);
@@ -860,93 +906,6 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 		return super.mouseClicked(event, doubleClick);
 	}
 
-	/**
-	 * Klicks ins Raster – so wie bei einer Kiste: Links = Stapel nehmen / alles ablegen (anderes Item: tauschen),
-	 * Rechts = halber Stapel / ein Item ablegen, Shift = ins Inventar, Mittelklick (Kreativ) = vollen Stapel klonen.
-	 */
-	private void handleGridClick(MouseButtonEvent event, StorageNetwork.@Nullable Entry entry) {
-		ItemStack carried = menu.getCarried();
-		TerminalActionPayload.Action action;
-		ItemStack prototype = ItemStack.EMPTY;
-
-		if (entry != null && carried.isEmpty() && minecraft.options.keyPickItem.matchesMouse(event)) {
-			if (!minecraft.player.hasInfiniteMaterials()) {
-				return;
-			}
-
-			action = TerminalActionPayload.Action.CLONE;
-			prototype = entry.prototype();
-		} else if (!carried.isEmpty()) {
-			if (event.button() == 1) {
-				action = TerminalActionPayload.Action.INSERT_ONE;
-			} else if (event.button() == 0 && entry != null && !ItemStack.isSameItemSameComponents(carried, entry.prototype())) {
-				action = TerminalActionPayload.Action.SWAP_CARRIED;
-				prototype = entry.prototype();
-			} else if (event.button() == 0) {
-				action = TerminalActionPayload.Action.INSERT_ALL;
-			} else {
-				return;
-			}
-		} else if (entry != null) {
-			prototype = entry.prototype();
-
-			if (event.hasShiftDown()) {
-				action = TerminalActionPayload.Action.TAKE_TO_INVENTORY;
-			} else if (event.button() == 1) {
-				action = TerminalActionPayload.Action.TAKE_HALF;
-			} else if (event.button() == 0) {
-				action = TerminalActionPayload.Action.TAKE_STACK;
-			} else {
-				return;
-			}
-		} else {
-			return;
-		}
-
-		send(action, prototype, -1);
-	}
-
-	private void send(TerminalActionPayload.Action action, ItemStack prototype, int slot) {
-		if (!menu.hasPermission(StorageTerminalBlockEntity.Permission.ITEMS)) {
-			minecraft.player.sendOverlayMessage(Component.translatable("jtechstorage.message.no_permission",
-					Component.translatable("jtechstorage.role.member")));
-			return;
-		}
-
-		ClientPlayNetworking.send(new TerminalActionPayload(menu.containerId, action, prototype, slot));
-	}
-
-	/** Zahlentasten, Zweithand-Taste und Q über dem Raster – wie über einem Kistenplatz. */
-	private boolean handleGridKey(KeyEvent event) {
-		int index = gridIndexAt(lastMouseX, lastMouseY);
-
-		if (index < 0 || !menu.getCarried().isEmpty()) {
-			return false;
-		}
-
-		StorageNetwork.Entry entry = entryAt(index);
-		ItemStack prototype = entry == null ? ItemStack.EMPTY : entry.prototype();
-
-		for (int i = 0; i < 9; i++) {
-			if (minecraft.options.keyHotbarSlots[i].matches(event)) {
-				send(TerminalActionPayload.Action.SWAP_HOTBAR, prototype, i);
-				return true;
-			}
-		}
-
-		if (minecraft.options.keySwapOffhand.matches(event)) {
-			send(TerminalActionPayload.Action.SWAP_HOTBAR, prototype, net.minecraft.world.entity.player.Inventory.SLOT_OFFHAND);
-			return true;
-		}
-
-		if (entry != null && minecraft.options.keyDrop.matches(event)) {
-			send(event.hasControlDown() ? TerminalActionPayload.Action.DROP_STACK : TerminalActionPayload.Action.DROP_ONE, prototype, -1);
-			return true;
-		}
-
-		return false;
-	}
-
 	private void scrollTo(double mouseY) {
 		int max = maxScroll();
 
@@ -972,6 +931,7 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 	@Override
 	public boolean mouseReleased(MouseButtonEvent event) {
 		draggingScroller = false;
+		updateView();
 		return super.mouseReleased(event);
 	}
 
@@ -997,10 +957,7 @@ public class StorageTerminalScreen extends ThemedContainerScreen<StorageTerminal
 			return true; // Tasten wie "E" sollen beim Tippen das Terminal nicht schließen
 		}
 
-		if (handleGridKey(event)) {
-			return true;
-		}
-
+		updateView(); // Tasten (1–9, Q …) wirken über Vanilla auf das Feld unter der Maus
 		return super.keyPressed(event);
 	}
 

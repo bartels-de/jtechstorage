@@ -30,20 +30,15 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 
 ## Storage Terminal
 
-Items are taken and stored like in a chest. The search field is active when the terminal opens – click into the item
-grid first to use the number keys and Q.
+Every field of the item grid is a normal inventory slot that holds up to one stack of an item (the number shows the total
+in the network). Clicks, keys, dragging and double-clicks work exactly as in a vanilla chest. The search field is active
+when the terminal opens – click into the grid first to use the number keys and Q.
 
 | Action | Effect |
 |---|---|
-| Left click | take a stack |
-| Right click | take half a stack |
-| Shift + click | move a stack into your inventory |
-| Left click with an item | store it (on a different item: store it and pick that one up) |
-| Right click with an item | store one |
-| 1–9 / swap-offhand key over an item | put a stack into that hotbar slot / your offhand (what was there is stored) |
-| 1–9 over an empty field | store that hotbar slot |
-| Q / Ctrl + Q over an item | drop one / a stack |
-| Middle click (creative) | pick up a full stack without taking it |
+| Left click / right click | take a stack / half a stack |
+| Shift + click | move the stack into your inventory |
+| Click with an item | store it (left: all, right: one) |
 | Shift + click in your inventory | store it |
 | Right-click the search field | clear the search |
 | Click the active category tab again / right-click a tab | show all items |

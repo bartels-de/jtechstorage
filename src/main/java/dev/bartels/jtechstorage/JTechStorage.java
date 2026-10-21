@@ -106,11 +106,17 @@ public class JTechStorage implements ModInitializer {
 		});
 		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.DoubleJumpPayload.TYPE,
 				(payload, context) -> dev.bartels.jtechstorage.enchant.ModEnchantments.handleDoubleJump(context.player()));
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.TerminalViewPayload.TYPE, dev.bartels.jtechstorage.net.TerminalViewPayload.STREAM_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.TerminalViewPayload.TYPE, (payload, context) -> {
+			if (context.player().containerMenu instanceof StorageTerminalMenu menu && menu.containerId == payload.containerId()) {
+				menu.setView(payload.prototypes());
+			}
+		});
 		ServerPlayNetworking.registerGlobalReceiver(TerminalActionPayload.TYPE, (payload, context) -> {
 			if (context.player().containerMenu instanceof StorageTerminalMenu menu
 					&& menu.containerId == payload.containerId()
 					&& menu.stillValid(context.player())) {
-				menu.handleAction(context.player(), payload.action(), payload.prototype(), payload.slot());
+				menu.handleAction(context.player(), payload.action(), payload.prototype());
 			}
 		});
 
