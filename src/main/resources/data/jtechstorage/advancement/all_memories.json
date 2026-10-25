@@ -1,0 +1,29 @@
+{
+  "parent": "jtechstorage:first_memory",
+  "criteria": {
+    "case": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:memory_case"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.all_memories.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.all_memories.description"
+    },
+    "frame": "challenge",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "case"
+    ]
+  ],
+  "rewards": {
+    "experience": 500
+  }
+}

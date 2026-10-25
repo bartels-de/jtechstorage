@@ -1,0 +1,115 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_geode_halls",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "0"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_crystal_lakes",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "1"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_vein_chasm",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "2"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_resonance_grotto",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "3"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_prism_forest",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "4"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_rose_gardens",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "5"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_azure_frost",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "6"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_citrine_dunes",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "7"
+                }
+              }
+            },
+            {
+              "type": "minecraft:item",
+              "name": "jtechstorage:memory_crystal_hollow_expanse",
+              "condition": {
+                "type": "minecraft:match_block",
+                "blocks": "jtechstorage:memory_crystal",
+                "state": {
+                  "kind": "8"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "jtechstorage:blocks/memory_crystal"
+}

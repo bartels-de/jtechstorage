@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "jtechstorage:pure_amethyst_block"
+  ],
+  "result": {
+    "count": 9,
+    "id": "jtechstorage:pure_amethyst"
+  }
+}

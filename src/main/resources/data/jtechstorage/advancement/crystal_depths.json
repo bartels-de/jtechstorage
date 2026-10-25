@@ -1,0 +1,28 @@
+{
+  "parent": "jtechstorage:amethyst_robot",
+  "criteria": {
+    "entered": {
+      "conditions": {
+        "to": "jtechstorage:crystal_depths"
+      },
+      "trigger": "minecraft:changed_dimension"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:glow_crystal"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.crystal_depths.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.crystal_depths.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "entered"
+    ]
+  ]
+}

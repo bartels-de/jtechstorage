@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "jtechstorage:block/red_crystal_wool"
+  }
+}

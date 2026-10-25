@@ -1,0 +1,73 @@
+package dev.bartels.jtechstorage.client.cosmetic;
+
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+
+import dev.bartels.jtechstorage.JTechStorage;
+
+/**
+ * Lagermeister-Umhang: Samt mit Goldsaum, gesticktem Speicherschlüssel und Kristallspangen.
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/cosmetics.py (Teile und Posen), Animation von Hand.
+ */
+public class StorageCapeModel extends EntityModel<AvatarRenderState> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("cosmetic_storage_cape"), "main");
+
+	private final ModelPart cape;
+	private final ModelPart upper;
+	private final ModelPart lower;
+
+	public StorageCapeModel(ModelPart root) {
+		super(root);
+		this.cape = root.getChild("cape");
+		this.upper = root.getChild("cape").getChild("upper");
+		this.lower = root.getChild("cape").getChild("upper").getChild("lower");
+	}
+
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p1 = root.addOrReplaceChild("cape", CubeListBuilder.create()
+				.texOffs(0, 19).addBox(-10.0f, -4.0f, -1.0f, 20.0f, 5.0f, 3.0f, new CubeDeformation(0.0f))
+				.texOffs(46, 19).addBox(-11.0f, -3.0f, -2.0f, 4.0f, 4.0f, 2.0f, new CubeDeformation(0.0f))
+				.texOffs(46, 19).addBox(7.0f, -3.0f, -2.0f, 4.0f, 4.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 0.0f, 4.5f, 0.1f, 0.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("upper", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-10.0f, 0.0f, 0.0f, 20.0f, 18.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(84, 0).addBox(-4.0f, 4.0f, 0.6f, 8.0f, 10.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 1.0f, 0.0f));
+		p2.addOrReplaceChild("lower", CubeListBuilder.create()
+				.texOffs(42, 0).addBox(-10.0f, 0.0f, 0.0f, 20.0f, 18.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(58, 19).addBox(-10.0f, 17.0f, -0.5f, 20.0f, 2.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 18.0f, 0.0f));
+		return LayerDefinition.create(mesh, 128, 128);
+	}
+
+	@Override
+	public void setupAnim(AvatarRenderState state) {
+		super.setupAnim(state);
+		float lean = (6.0f + state.capeLean / 2.0f + state.capeFlap) * Mth.DEG_TO_RAD;
+		cape.xRot += Mth.clamp(lean, 0.0f, 1.4f);
+		cape.zRot += state.capeLean2 / 2.0f * Mth.DEG_TO_RAD;
+		lower.xRot += Mth.clamp(state.capeFlap * 0.5f, 0.0f, 40.0f) * Mth.DEG_TO_RAD + Mth.sin(state.ageInTicks * 0.06f) * 0.03f;
+
+		if (state.isCrouching) {
+			cape.xRot += 0.35f;
+			cape.y += 2.0f;
+			cape.z += 1.0f;
+		}
+	}
+
+
+
+
+}

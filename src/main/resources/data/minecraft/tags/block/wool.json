@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "jtechstorage:white_crystal_wool",
+    "jtechstorage:orange_crystal_wool",
+    "jtechstorage:magenta_crystal_wool",
+    "jtechstorage:light_blue_crystal_wool",
+    "jtechstorage:yellow_crystal_wool",
+    "jtechstorage:lime_crystal_wool",
+    "jtechstorage:pink_crystal_wool",
+    "jtechstorage:gray_crystal_wool",
+    "jtechstorage:light_gray_crystal_wool",
+    "jtechstorage:cyan_crystal_wool",
+    "jtechstorage:purple_crystal_wool",
+    "jtechstorage:blue_crystal_wool",
+    "jtechstorage:brown_crystal_wool",
+    "jtechstorage:green_crystal_wool",
+    "jtechstorage:red_crystal_wool",
+    "jtechstorage:black_crystal_wool"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:iron_ingot",
+    "minecraft:string",
+    "minecraft:yellow_dye"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:measuring_tape"
+  }
+}

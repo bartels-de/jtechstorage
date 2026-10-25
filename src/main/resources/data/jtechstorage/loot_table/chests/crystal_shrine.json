@@ -1,0 +1,238 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 1
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 2
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 3
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 4
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 5
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 6
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 7
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 8
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 9
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:ancient_note",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_components",
+            "components": {
+              "jtechstorage:note": 10
+            }
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:pure_amethyst",
+          "weight": 1,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 3
+            }
+          }
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 2,
+        "max": 4
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:glow_crystal",
+          "weight": 10,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 2,
+              "max": 6
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:amethyst_block",
+          "weight": 8,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 3
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:experience_bottle",
+          "weight": 6,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 2,
+              "max": 6
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond",
+          "weight": 4,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 3
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:diamond_range_upgrade",
+          "weight": 2,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:diamond_capacity_upgrade",
+          "weight": 2,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 1
+            }
+          }
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_apple",
+          "weight": 3,
+          "modifier": {
+            "type": "minecraft:set_count",
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 1
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

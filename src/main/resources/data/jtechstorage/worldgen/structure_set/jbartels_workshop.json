@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 35001977,
+    "separation": 12,
+    "spacing": 32
+  },
+  "structures": [
+    {
+      "structure": "jtechstorage:jbartels_workshop",
+      "weight": 1
+    }
+  ]
+}

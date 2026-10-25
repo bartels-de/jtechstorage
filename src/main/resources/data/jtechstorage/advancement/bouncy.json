@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:resonance_cap"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.bouncy.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.bouncy.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

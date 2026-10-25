@@ -1,0 +1,199 @@
+package dev.bartels.jtechstorage.client.entity;
+
+
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+
+import dev.bartels.jtechstorage.JTechStorage;
+
+/**
+ * Kristallkrebs: seitwärts trippelnder Krebs mit Kristallen auf dem Panzer.
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/depthmobs3.py (Teile und Posen), Animation von Hand.
+ */
+public class CrystalCrabModel extends EntityModel<CrystalCrabRenderState> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("crystal_crab"), "main");
+
+	private final ModelPart crab;
+	private final ModelPart body;
+	private final ModelPart rArm;
+	private final ModelPart lArm;
+	private final ModelPart rClaw;
+	private final ModelPart lClaw;
+	private final ModelPart rJaw;
+	private final ModelPart lJaw;
+	private final ModelPart rStalk;
+	private final ModelPart lStalk;
+	private final ModelPart rLeg0;
+	private final ModelPart rLeg1;
+	private final ModelPart rLeg2;
+	private final ModelPart lLeg0;
+	private final ModelPart lLeg1;
+	private final ModelPart lLeg2;
+
+	public CrystalCrabModel(ModelPart root) {
+		super(root);
+		this.crab = root.getChild("crab");
+		this.body = root.getChild("crab").getChild("body");
+		this.rArm = root.getChild("crab").getChild("body").getChild("r_arm");
+		this.lArm = root.getChild("crab").getChild("body").getChild("l_arm");
+		this.rClaw = root.getChild("crab").getChild("body").getChild("r_arm").getChild("r_claw");
+		this.lClaw = root.getChild("crab").getChild("body").getChild("l_arm").getChild("l_claw");
+		this.rJaw = root.getChild("crab").getChild("body").getChild("r_arm").getChild("r_claw").getChild("r_jaw");
+		this.lJaw = root.getChild("crab").getChild("body").getChild("l_arm").getChild("l_claw").getChild("l_jaw");
+		this.rStalk = root.getChild("crab").getChild("body").getChild("r_stalk");
+		this.lStalk = root.getChild("crab").getChild("body").getChild("l_stalk");
+		this.rLeg0 = root.getChild("crab").getChild("body").getChild("r_leg0");
+		this.rLeg1 = root.getChild("crab").getChild("body").getChild("r_leg1");
+		this.rLeg2 = root.getChild("crab").getChild("body").getChild("r_leg2");
+		this.lLeg0 = root.getChild("crab").getChild("body").getChild("l_leg0");
+		this.lLeg1 = root.getChild("crab").getChild("body").getChild("l_leg1");
+		this.lLeg2 = root.getChild("crab").getChild("body").getChild("l_leg2");
+	}
+
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p1 = root.addOrReplaceChild("crab", CubeListBuilder.create(),
+				PartPose.offset(0.0f, 24.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-7.0f, -5.0f, -5.0f, 14.0f, 5.0f, 10.0f, new CubeDeformation(0.0f))
+				.texOffs(0, 15).addBox(-6.0f, 0.0f, -4.0f, 12.0f, 2.0f, 8.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, -4.0f, 0.0f));
+		p2.addOrReplaceChild("cr0", CubeListBuilder.create()
+				.texOffs(0, 25).addBox(-1.5f, -6.0f, -1.5f, 3.0f, 6.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(1.0f, -5.0f, 0.0f, -0.15f, 0.0f, 0.2f));
+		p2.addOrReplaceChild("cr1", CubeListBuilder.create()
+				.texOffs(28, 25).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-3.0f, -5.0f, 2.0f, 0.2f, 0.0f, -0.35f));
+		p2.addOrReplaceChild("cr2", CubeListBuilder.create()
+				.texOffs(28, 25).addBox(-1.0f, -5.0f, -1.0f, 2.0f, 5.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.0f, -5.0f, 2.5f, 0.3f, 0.0f, 0.45f));
+		p2.addOrReplaceChild("r_stalk", CubeListBuilder.create()
+				.texOffs(52, 25).addBox(-0.5f, -4.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(56, 25).addBox(-1.0f, -6.0f, -1.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-2.5f, -4.0f, -4.0f, -0.2f, 0.0f, -0.15f));
+		p2.addOrReplaceChild("l_stalk", CubeListBuilder.create()
+				.texOffs(52, 25).addBox(-0.5f, -4.0f, -0.5f, 1.0f, 4.0f, 1.0f, new CubeDeformation(0.0f))
+				.texOffs(56, 25).addBox(-1.0f, -6.0f, -1.0f, 2.0f, 2.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(2.5f, -4.0f, -4.0f, -0.2f, 0.0f, 0.15f));
+		PartDefinition p8 = p2.addOrReplaceChild("r_arm", CubeListBuilder.create()
+				.texOffs(12, 25).addBox(-1.0f, -1.0f, -6.0f, 2.0f, 2.0f, 6.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-6.0f, -3.0f, -4.0f, -0.2f, -0.5f, 0.0f));
+		PartDefinition p9 = p8.addOrReplaceChild("r_claw", CubeListBuilder.create()
+				.texOffs(40, 15).addBox(-2.5f, -2.0f, -5.0f, 5.0f, 4.0f, 5.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 0.0f, -6.0f, 0.0f, 0.4f, 0.0f));
+		p9.addOrReplaceChild("r_jaw", CubeListBuilder.create()
+				.texOffs(36, 25).addBox(-2.0f, 0.0f, -4.0f, 4.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 2.0f, -1.0f));
+		PartDefinition p11 = p2.addOrReplaceChild("l_arm", CubeListBuilder.create()
+				.texOffs(12, 25).addBox(-1.0f, -1.0f, -6.0f, 2.0f, 2.0f, 6.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(6.0f, -3.0f, -4.0f, -0.2f, 0.5f, 0.0f));
+		PartDefinition p12 = p11.addOrReplaceChild("l_claw", CubeListBuilder.create()
+				.texOffs(40, 15).addBox(-2.5f, -2.0f, -5.0f, 5.0f, 4.0f, 5.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, 0.0f, -6.0f, 0.0f, -0.4f, 0.0f));
+		p12.addOrReplaceChild("l_jaw", CubeListBuilder.create()
+				.texOffs(36, 25).addBox(-2.0f, 0.0f, -4.0f, 4.0f, 2.0f, 4.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, 2.0f, -1.0f));
+		PartDefinition p14 = p2.addOrReplaceChild("r_leg0", CubeListBuilder.create()
+				.texOffs(0, 34).addBox(-7.0f, -0.5f, -1.0f, 7.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-6.0f, -2.0f, -1.5f, 0.0f, -0.3f, -0.35f));
+		p14.addOrReplaceChild("r_leg0_foot", CubeListBuilder.create()
+				.texOffs(18, 34).addBox(-5.0f, -0.5f, -0.5f, 5.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-7.0f, 0.0f, 0.0f, 0.0f, 0.0f, -0.85f));
+		PartDefinition p16 = p2.addOrReplaceChild("r_leg1", CubeListBuilder.create()
+				.texOffs(0, 34).addBox(-7.0f, -0.5f, -1.0f, 7.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-6.0f, -2.0f, 1.5f, 0.0f, 0.0f, -0.35f));
+		p16.addOrReplaceChild("r_leg1_foot", CubeListBuilder.create()
+				.texOffs(18, 34).addBox(-5.0f, -0.5f, -0.5f, 5.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-7.0f, 0.0f, 0.0f, 0.0f, 0.0f, -0.85f));
+		PartDefinition p18 = p2.addOrReplaceChild("r_leg2", CubeListBuilder.create()
+				.texOffs(0, 34).addBox(-7.0f, -0.5f, -1.0f, 7.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-6.0f, -2.0f, 4.5f, 0.0f, 0.3f, -0.35f));
+		p18.addOrReplaceChild("r_leg2_foot", CubeListBuilder.create()
+				.texOffs(18, 34).addBox(-5.0f, -0.5f, -0.5f, 5.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-7.0f, 0.0f, 0.0f, 0.0f, 0.0f, -0.85f));
+		PartDefinition p20 = p2.addOrReplaceChild("l_leg0", CubeListBuilder.create()
+				.texOffs(0, 34).addBox(0.0f, -0.5f, -1.0f, 7.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(6.0f, -2.0f, -1.5f, 0.0f, 0.3f, 0.35f));
+		p20.addOrReplaceChild("l_leg0_foot", CubeListBuilder.create()
+				.texOffs(18, 34).addBox(0.0f, -0.5f, -0.5f, 5.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.85f));
+		PartDefinition p22 = p2.addOrReplaceChild("l_leg1", CubeListBuilder.create()
+				.texOffs(0, 34).addBox(0.0f, -0.5f, -1.0f, 7.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(6.0f, -2.0f, 1.5f, 0.0f, 0.0f, 0.35f));
+		p22.addOrReplaceChild("l_leg1_foot", CubeListBuilder.create()
+				.texOffs(18, 34).addBox(0.0f, -0.5f, -0.5f, 5.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.85f));
+		PartDefinition p24 = p2.addOrReplaceChild("l_leg2", CubeListBuilder.create()
+				.texOffs(0, 34).addBox(0.0f, -0.5f, -1.0f, 7.0f, 1.0f, 2.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(6.0f, -2.0f, 4.5f, 0.0f, -0.3f, 0.35f));
+		p24.addOrReplaceChild("l_leg2_foot", CubeListBuilder.create()
+				.texOffs(18, 34).addBox(0.0f, -0.5f, -0.5f, 5.0f, 1.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(7.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.85f));
+		return LayerDefinition.create(mesh, 64, 64);
+	}
+
+	@Override
+	public void setupAnim(CrystalCrabRenderState state) {
+		super.setupAnim(state);
+		float pos = state.walkAnimationPos;
+		float speed = Math.min(state.walkAnimationSpeed, 1.0f);
+		float age = state.ageInTicks;
+		// Krebse laufen seitwärts: beim Laufen dreht sich der Körper quer zur Laufrichtung
+		crab.yRot += 1.45f * Math.min(1.0f, speed * 4.0f);
+		ModelPart[] right = {rLeg0, rLeg1, rLeg2};
+		ModelPart[] left = {lLeg0, lLeg1, lLeg2};
+
+		for (int k = 0; k < 3; k++) {
+			float w = Mth.sin(pos * 1.6f + k * 2.1f) * 0.4f * speed;
+			right[k].zRot += w;
+			left[k].zRot -= Mth.sin(pos * 1.6f + k * 2.1f + Mth.PI) * 0.4f * speed;
+			right[k].yRot += Mth.cos(pos * 1.6f + k * 2.1f) * 0.15f * speed;
+			left[k].yRot -= Mth.cos(pos * 1.6f + k * 2.1f + Mth.PI) * 0.15f * speed;
+		}
+
+		// Scheren klappern ab und zu, Stielaugen schauen umher
+		rJaw.xRot += 0.15f + Math.max(0.0f, Mth.sin(age * 0.23f)) * 0.35f;
+		lJaw.xRot += 0.15f + Math.max(0.0f, Mth.sin(age * 0.19f + 1.7f)) * 0.35f;
+		rStalk.zRot += Mth.sin(age * 0.07f) * 0.12f;
+		lStalk.zRot -= Mth.sin(age * 0.06f + 0.8f) * 0.12f;
+		body.y += Mth.sin(age * 0.1f) * 0.2f;
+
+		if (state.sitting) {
+			poseSit(1.0f);
+		}
+
+		if (state.dig > 0.0f) {
+			float d = Mth.sin(state.dig * Mth.PI);
+			poseDig(d);
+			rArm.xRot += Mth.sin(age * 1.1f) * 0.45f * d;
+			lArm.xRot += Mth.sin(age * 1.1f + Mth.PI) * 0.45f * d;
+		}
+	}
+
+	private void poseDig(float k) {
+		body.xRot += k * 0.350f;
+		body.y += k * 1.000f;
+		rArm.xRot += k * 0.900f;
+		lArm.xRot += k * 0.900f;
+		rStalk.xRot += k * -0.400f;
+		lStalk.xRot += k * -0.400f;
+	}
+
+	private void poseSit(float k) {
+		crab.y += k * 2.000f;
+		rArm.yRot += k * 0.400f;
+		lArm.yRot += k * -0.400f;
+	}
+
+
+}

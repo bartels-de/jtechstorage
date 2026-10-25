@@ -1,0 +1,38 @@
+{
+  "parent": "jtechstorage:find_temple",
+  "criteria": {
+    "kill": {
+      "trigger": "minecraft:player_killed_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:entity_type": "jtechstorage:last_master"
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:master_hammer"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.last_master.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.last_master.description"
+    },
+    "frame": "challenge",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "kill"
+    ]
+  ],
+  "rewards": {
+    "experience": 300
+  }
+}

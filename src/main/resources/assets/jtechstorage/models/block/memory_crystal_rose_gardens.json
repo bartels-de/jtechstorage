@@ -1,0 +1,165 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "jtechstorage:item/memory_crystal_rose_gardens",
+    "crystal": "jtechstorage:item/memory_crystal_rose_gardens",
+    "pedestal": "jtechstorage:block/memory_pedestal"
+  },
+  "elements": [
+    {
+      "from": [
+        2,
+        0,
+        2
+      ],
+      "to": [
+        14,
+        3,
+        14
+      ],
+      "faces": {
+        "north": {
+          "texture": "#pedestal",
+          "uv": [
+            2,
+            13,
+            14,
+            16
+          ]
+        },
+        "south": {
+          "texture": "#pedestal",
+          "uv": [
+            2,
+            13,
+            14,
+            16
+          ]
+        },
+        "east": {
+          "texture": "#pedestal",
+          "uv": [
+            2,
+            13,
+            14,
+            16
+          ]
+        },
+        "west": {
+          "texture": "#pedestal",
+          "uv": [
+            2,
+            13,
+            14,
+            16
+          ]
+        },
+        "up": {
+          "texture": "#pedestal",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ]
+        },
+        "down": {
+          "texture": "#pedestal",
+          "uv": [
+            2,
+            2,
+            14,
+            14
+          ],
+          "cullface": "down"
+        }
+      }
+    },
+    {
+      "from": [
+        0.8,
+        3,
+        8
+      ],
+      "to": [
+        15.2,
+        16,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": 45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            16,
+            14
+          ],
+          "texture": "#crystal"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            16,
+            14
+          ],
+          "texture": "#crystal"
+        }
+      }
+    },
+    {
+      "from": [
+        0.8,
+        3,
+        8
+      ],
+      "to": [
+        15.2,
+        16,
+        8
+      ],
+      "shade": false,
+      "rotation": {
+        "origin": [
+          8,
+          8,
+          8
+        ],
+        "axis": "y",
+        "angle": -45,
+        "rescale": true
+      },
+      "faces": {
+        "north": {
+          "uv": [
+            0,
+            1,
+            16,
+            14
+          ],
+          "texture": "#crystal"
+        },
+        "south": {
+          "uv": [
+            0,
+            1,
+            16,
+            14
+          ],
+          "texture": "#crystal"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "AAA",
+    "IRI"
+  ],
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "I": "minecraft:iron_ingot",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "count": 8,
+    "id": "jtechstorage:crystal_conveyor"
+  }
+}

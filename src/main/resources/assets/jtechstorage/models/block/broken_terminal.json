@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "front": "jtechstorage:block/broken_terminal_front",
+    "side": "jtechstorage:block/polished_crystal_stone",
+    "top": "jtechstorage:block/polished_crystal_stone"
+  }
+}

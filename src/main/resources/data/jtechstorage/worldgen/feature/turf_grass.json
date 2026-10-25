@@ -1,0 +1,6 @@
+{
+  "type": "jtechstorage:plant_patch",
+  "plant": "jtechstorage:crystal_grass",
+  "ground": "jtechstorage:crystal_turf",
+  "tries": 56
+}

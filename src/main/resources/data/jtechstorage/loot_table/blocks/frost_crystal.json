@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:alternatives",
+          "children": [
+            {
+              "type": "minecraft:item",
+              "condition": "minecraft:tool/can_silk_touch",
+              "name": "jtechstorage:frost_crystal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "random_sequence": "jtechstorage:blocks/frost_crystal"
+}

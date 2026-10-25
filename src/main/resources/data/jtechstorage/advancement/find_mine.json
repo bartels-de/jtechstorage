@@ -1,0 +1,37 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "mine": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "jtechstorage:crystal_mine"
+            }
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:chest_minecart"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.find_mine.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.find_mine.description"
+    },
+    "frame": "goal",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "mine"
+    ]
+  ]
+}

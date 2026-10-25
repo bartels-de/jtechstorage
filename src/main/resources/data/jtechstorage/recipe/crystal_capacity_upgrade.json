@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PGP",
+    "GUG",
+    "PGP"
+  ],
+  "key": {
+    "P": "jtechstorage:pure_amethyst",
+    "G": "jtechstorage:glow_crystal",
+    "U": "jtechstorage:netherite_capacity_upgrade"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_capacity_upgrade"
+  }
+}

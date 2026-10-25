@@ -1,0 +1,61 @@
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:amethyst_shard",
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 2
+            },
+            "type": "minecraft:set_count"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:magma_cream",
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 0,
+              "max": 1
+            },
+            "type": "minecraft:set_count"
+          }
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:vein_stone",
+          "modifier": {
+            "count": {
+              "type": "minecraft:uniform",
+              "min": 1,
+              "max": 1
+            },
+            "type": "minecraft:set_count"
+          }
+        }
+      ],
+      "condition": {
+        "chance": 0.2,
+        "type": "minecraft:random_chance"
+      }
+    }
+  ],
+  "random_sequence": "jtechstorage:entities/vein_crawler"
+}

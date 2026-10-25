@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jtechstorage:item/geode_sheep_spawn_egg"
+  }
+}

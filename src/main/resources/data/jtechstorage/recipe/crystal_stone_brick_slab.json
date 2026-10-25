@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "BBB"
+  ],
+  "key": {
+    "B": "jtechstorage:crystal_stone_bricks"
+  },
+  "result": {
+    "count": 6,
+    "id": "jtechstorage:crystal_stone_brick_slab"
+  }
+}

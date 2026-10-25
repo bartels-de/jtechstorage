@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/broken_terminal"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/broken_terminal",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/broken_terminal",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/broken_terminal",
+      "y": 270
+    }
+  }
+}

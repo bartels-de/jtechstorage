@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "hanging=false": {
+      "model": "jtechstorage:block/crystal_lantern"
+    },
+    "hanging=true": {
+      "model": "jtechstorage:block/crystal_lantern_hanging"
+    }
+  }
+}

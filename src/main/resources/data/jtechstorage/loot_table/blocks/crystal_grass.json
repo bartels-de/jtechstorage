@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:crystal_grass"
+        }
+      ],
+      "condition": {
+        "type": "minecraft:any_of",
+        "terms": [
+          "minecraft:tool/can_silk_touch",
+          {
+            "type": "minecraft:match_tool",
+            "predicate": {
+              "items": "minecraft:shears"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "random_sequence": "jtechstorage:blocks/crystal_grass"
+}

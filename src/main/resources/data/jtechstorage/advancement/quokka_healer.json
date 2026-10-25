@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:quokka_friend",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "minecraft:golden_apple"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.quokka_healer.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.quokka_healer.description"
+    },
+    "frame": "goal"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 39017331,
+    "separation": 16,
+    "spacing": 44
+  },
+  "structures": [
+    {
+      "structure": "jtechstorage:storage_temple",
+      "weight": 1
+    }
+  ]
+}
