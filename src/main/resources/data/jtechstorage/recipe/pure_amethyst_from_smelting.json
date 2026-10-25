@@ -1,0 +1,10 @@
+{
+  "type": "minecraft:smelting",
+  "category": "misc",
+  "ingredient": "jtechstorage:raw_pure_amethyst",
+  "result": {
+    "id": "jtechstorage:pure_amethyst"
+  },
+  "experience": 1.0,
+  "cookingtime": 200
+}

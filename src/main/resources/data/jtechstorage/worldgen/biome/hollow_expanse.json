@@ -1,0 +1,121 @@
+{
+  "attributes": {
+    "minecraft:audio/ambient_sounds": {
+      "loop": "jtechstorage:ambient.depths.water",
+      "additions": {
+        "sound": "jtechstorage:ambient.depths.drip",
+        "tick_chance": 0.006
+      },
+      "mood": {
+        "block_search_extent": 8,
+        "offset": 2.0,
+        "sound": "jtechstorage:ambient.depths.mood",
+        "tick_delay": 6000
+      }
+    },
+    "minecraft:audio/background_music": {
+      "default": {
+        "max_delay": 24000,
+        "min_delay": 9000,
+        "sound": "minecraft:music.overworld.deep_dark"
+      }
+    },
+    "minecraft:gameplay/natural_mob_spawns": {
+      "argument": {
+        "spawn_costs": {},
+        "spawns_by_category": {
+          "monster": [
+            {
+              "type": "jtechstorage:swarm_shard",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 3,
+                "max_inclusive": 5
+              },
+              "weight": 35
+            },
+            {
+              "type": "jtechstorage:lake_wraith",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 1,
+                "max_inclusive": 2
+              },
+              "weight": 15
+            }
+          ],
+          "water_ambient": [
+            {
+              "type": "jtechstorage:glow_fish",
+              "count": {
+                "type": "minecraft:uniform",
+                "min_inclusive": 3,
+                "max_inclusive": 6
+              },
+              "weight": 20
+            }
+          ]
+        }
+      },
+      "modifier": "overlay"
+    },
+    "minecraft:visual/ambient_particles": {
+      "argument": [
+        {
+          "particle": {
+            "type": "minecraft:end_rod"
+          },
+          "probability": 0.0006
+        },
+        {
+          "particle": {
+            "type": "minecraft:glow"
+          },
+          "probability": 0.0008
+        }
+      ],
+      "modifier": "append"
+    },
+    "minecraft:visual/fog_color": "#10183a",
+    "minecraft:visual/ambient_light_color": "#141c38",
+    "minecraft:visual/fog_start_distance": 40.0,
+    "minecraft:visual/fog_end_distance": 260.0,
+    "minecraft:visual/water_fog_color": "#0e1a3a"
+  },
+  "carvers": [],
+  "downfall": 0.5,
+  "effects": {
+    "water_color": "#5a8ae8"
+  },
+  "features": [
+    [],
+    [],
+    [],
+    [],
+    [
+      "jtechstorage:depths_crystal_shrine"
+    ],
+    [],
+    [
+      "jtechstorage:depths_ore_pure_amethyst"
+    ],
+    [
+      "jtechstorage:depths_stalactites",
+      "jtechstorage:depths_hanging_crystals",
+      "jtechstorage:depths_floating_shards_dense"
+    ],
+    [
+      "jtechstorage:depths_waterfalls_dense"
+    ],
+    [
+      "jtechstorage:depths_sprout_patch",
+      "jtechstorage:depths_turf_grass",
+      "jtechstorage:depths_memory_crystal_hollow_expanse"
+    ],
+    [
+      "jtechstorage:depths_biome_blend"
+    ]
+  ],
+  "has_precipitation": false,
+  "temperature": 0.7
+}

@@ -1,0 +1,6 @@
+{
+  "type": "jtechstorage:plant_patch",
+  "plant": "jtechstorage:rose_bloom",
+  "ground": "jtechstorage:rose_moss",
+  "tries": 40
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "B  ",
+    "BB ",
+    "BBB"
+  ],
+  "key": {
+    "B": "jtechstorage:crystal_stone_bricks"
+  },
+  "result": {
+    "count": 4,
+    "id": "jtechstorage:crystal_stone_brick_stairs"
+  }
+}

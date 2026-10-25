@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:ore",
+  "discard_chance_on_air_exposure": 0.4,
+  "size": 4,
+  "targets": [
+    {
+      "state": "jtechstorage:pure_amethyst_ore",
+      "target": {
+        "predicate_type": "minecraft:block_match",
+        "block": "jtechstorage:crystal_stone"
+      }
+    },
+    {
+      "state": "jtechstorage:vein_pure_amethyst_ore",
+      "target": {
+        "predicate_type": "minecraft:block_match",
+        "block": "jtechstorage:vein_stone"
+      }
+    }
+  ]
+}

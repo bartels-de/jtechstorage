@@ -1,0 +1,37 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "temple": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "jtechstorage:storage_temple"
+            }
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:master_seal"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.find_temple.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.find_temple.description"
+    },
+    "frame": "goal",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "temple"
+    ]
+  ]
+}

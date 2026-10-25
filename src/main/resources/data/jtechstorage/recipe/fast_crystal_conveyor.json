@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "CCC",
+    "CGC",
+    "CCC"
+  ],
+  "key": {
+    "C": "jtechstorage:crystal_conveyor",
+    "G": "jtechstorage:glow_crystal"
+  },
+  "result": {
+    "count": 8,
+    "id": "jtechstorage:fast_crystal_conveyor"
+  }
+}

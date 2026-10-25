@@ -1,0 +1,14 @@
+{
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 36011423,
+    "separation": 10,
+    "spacing": 30
+  },
+  "structures": [
+    {
+      "structure": "jtechstorage:crystal_settlement",
+      "weight": 1
+    }
+  ]
+}

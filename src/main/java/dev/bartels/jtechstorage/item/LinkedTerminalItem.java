@@ -79,6 +79,19 @@ public abstract class LinkedTerminalItem extends Item {
 						.withStyle(style -> style.withItalic(false)))));
 	}
 
+	/** Wie {@link #findTerminal}, aber ohne Meldungen (für Werkzeuge, die still ins Lager liefern). */
+	public static @Nullable StorageTerminalBlockEntity quietTerminal(ItemStack stack, Level level, Player player) {
+		GlobalPos bound = stack.get(ModContent.LINKED_TERMINAL);
+
+		if (bound == null || !bound.dimension().equals(level.dimension()) || !level.isLoaded(bound.pos())
+				|| !(level.getBlockEntity(bound.pos()) instanceof StorageTerminalBlockEntity terminal) || !terminal.canAccess(player)) {
+			return null;
+		}
+
+		double range = terminal.getWirelessRange();
+		return terminal.getBlockPos().distToCenterSqr(player.position()) <= range * range ? terminal : null;
+	}
+
 	/**
 	 * Sucht das gekoppelte Terminal und prüft Dimension, geladenen Chunk und Besitzer.
 	 * Gibt bei Problemen eine Meldung an den Spieler aus und liefert {@code null}.

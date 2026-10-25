@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:stonecutting",
+  "ingredient": "jtechstorage:crystal_stone",
+  "result": {
+    "id": "jtechstorage:crystal_stone_bricks"
+  }
+}

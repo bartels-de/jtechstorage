@@ -1,0 +1,132 @@
+{
+  "type": "jtechstorage:crystal_depths",
+  "generator": {
+    "type": "minecraft:noise",
+    "settings": "jtechstorage:crystal_depths",
+    "biome_source": {
+      "type": "minecraft:multi_noise",
+      "biomes": [
+        {
+          "biome": "jtechstorage:geode_halls",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": 0.0,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:crystal_lakes",
+          "parameters": {
+            "temperature": -0.35,
+            "humidity": 0.35,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:vein_chasm",
+          "parameters": {
+            "temperature": 0.35,
+            "humidity": -0.35,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:resonance_grotto",
+          "parameters": {
+            "temperature": -0.35,
+            "humidity": -0.35,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:prism_forest",
+          "parameters": {
+            "temperature": 0.35,
+            "humidity": 0.35,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:rose_gardens",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": 0.5,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:azure_frost",
+          "parameters": {
+            "temperature": -0.5,
+            "humidity": 0.0,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:citrine_dunes",
+          "parameters": {
+            "temperature": 0.5,
+            "humidity": 0.0,
+            "continentalness": 0.0,
+            "erosion": 0.0,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:hollow_expanse",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": 0.0,
+            "continentalness": 0.0,
+            "erosion": 0.7,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        },
+        {
+          "biome": "jtechstorage:crystal_plains",
+          "parameters": {
+            "temperature": 0.0,
+            "humidity": 0.0,
+            "continentalness": 0.0,
+            "erosion": -0.8,
+            "weirdness": 0.0,
+            "depth": 0.0,
+            "offset": 0.0
+          }
+        }
+      ]
+    }
+  }
+}

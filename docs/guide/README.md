@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.29.4** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.40.0** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 
@@ -33,7 +33,9 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | 🛠️ | [Recipes](13-recipes.md) | Every recipe with pictures, plus items that have no recipe |
 | 🎮 | [Controls and commands](14-controls-and-commands.md) | All keys, mouse actions and commands on one page |
 | ⚙️ | [Configuration](15-configuration.md) | Every option of `config/jtechstorage.json` |
-| 🏭 | [Farm tools](16-farm-tools.md) | Amethyst Hopper, Crystal Pusher, Farm Monitor (statistics, warnings, safe zone for companions), Chunk Loader |
+| 🏭 | [Farm tools](16-farm-tools.md) | Amethyst Hopper, Crystal Pusher, Block Placer, Crystal Conveyor, Crystal Sorter, Farm Monitor (statistics, warnings, safe zone for companions), Chunk Loader |
+| 💎 | [The Crystal Depths](17-crystal-depths.md) | The Amethyst Portal, the ten biomes, creatures and animals, structures, memory crystals and the new blocks |
+| 🖥️ | [Network displays and cosmetics](18-displays-and-cosmetics.md) | Storage Display (up to 4 × 3), Storage Banner, their menu, player cosmetics and how to unlock them |
 
 ## Quick answers
 
@@ -43,7 +45,7 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | get more range or more chests | [Storage network → Upgrades](02-storage-network.md#upgrades) |
 | make a chest accept only one item | [Storage network → Sorting rules](02-storage-network.md#sorting-rules) |
 | open my storage from anywhere | [Storage network → Wireless Terminal](02-storage-network.md#wireless-terminal) |
-| get an **Amethyst Core** | [Bosses → Amethyst Robot](09-bosses-and-end.md#amethyst-robot) or the [Geode Keeper](07-companions.md#trading-with-the-geode-keeper) |
+| get an **Amethyst Core** | [Bosses → Amethyst Robot](09-bosses-and-end.md#amethyst-robot) |
 | have my chests sorted automatically | [Helpers → Amethyst Sprite](04-helpers.md#amethyst-sprite) |
 | craft things automatically | [Helpers → Chel](04-helpers.md#chel) |
 | protect my base | [Helpers → Peter Chel Parker](04-helpers.md#peter-chel-parker), [Crystal Wolf](04-helpers.md#crystal-wolf), [Watch Moth](04-helpers.md#watch-moth) |
@@ -63,6 +65,17 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | see what my iron farm produces / get warned when it stops | [Farm tools → Farm Monitor](16-farm-tools.md#farm-monitor) |
 | stop my companion from killing the mobs in my farm | [Farm tools → Farm Monitor](16-farm-tools.md#farm-monitor) (safe zone) |
 | move items faster than a hopper, or upwards | [Farm tools](16-farm-tools.md) |
+| replant saplings automatically | [Farm tools → Block Placer](16-farm-tools.md#block-placer) |
+| move items or mobs on a belt | [Farm tools → Crystal Conveyor](16-farm-tools.md#crystal-conveyor) |
+| sort items into different chests | [Farm tools → Crystal Sorter](16-farm-tools.md#crystal-sorter) |
+| make my netherite gear even stronger | [Bosses and the End → Crystal Forge](09-bosses-and-end.md#crystal-forge) |
+| connect two amethyst portals far apart | [Crystal Depths → Linking portals](17-crystal-depths.md#linking-portals) |
+| fight the boss of the Crystal Depths | [Bosses → The Last Storage Master](09-bosses-and-end.md#the-last-storage-master) |
+| build walls and floors faster | [Storage network → Building tools](02-storage-network.md#building-tools) |
+| show my stock on a wall screen | [Network displays → Storage Display](18-displays-and-cosmetics.md#storage-display) |
+| wear wings, a hat or a trail | [Cosmetics](18-displays-and-cosmetics.md#cosmetics) |
+| ride through the Crystal Depths | [Crystal Depths → Crystal Deer](17-crystal-depths.md#crystal-deer-geode-sheep-and-crystal-crab) |
+| find all memory crystals | [Crystal Depths → Memory Crystals](17-crystal-depths.md#memory-crystals) |
 | keep my farm running while I'm away | [Farm tools → Chunk Loader](16-farm-tools.md#chunk-loader) |
 
 ## Good to know

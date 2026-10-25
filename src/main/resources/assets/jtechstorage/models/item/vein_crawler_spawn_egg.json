@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "jtechstorage:item/vein_crawler_spawn_egg"
+  }
+}

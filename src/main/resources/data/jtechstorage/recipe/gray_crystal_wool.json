@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "building",
+  "group": "crystal_wool",
+  "ingredients": [
+    "#jtechstorage:crystal_wool",
+    "minecraft:gray_dye"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:gray_crystal_wool"
+  }
+}

@@ -19,6 +19,14 @@ loom {
 			sourceSet sourceSets.client
 		}
 	}
+
+	runs {
+		client {
+			// Fester Name im Testclient: sonst würfelt runClient bei jedem Start einen neuen.
+			// Offline hängt die UUID am Namen, damit bleiben Inventar, Fortschritte und Kosmetik erhalten.
+			programArgs "--username", "Jbartels"
+		}
+	}
 }
 
 dependencies {

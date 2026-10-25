@@ -123,6 +123,21 @@ public final class ModSounds {
 	public static final SoundEvent JBARTELS_APPEAR = register("jbartels.appear");
 	public static final SoundEvent JBARTELS_TALK = register("jbartels.talk");
 	public static final SoundEvent JBARTELS_VANISH = register("jbartels.vanish");
+	// Kristalltiefe (v0.33): Umgebungsklänge und Quokka
+	public static final SoundEvent DEPTHS_LOOP = register("ambient.depths.loop");
+	public static final SoundEvent DEPTHS_LOOP_WATER = register("ambient.depths.water");
+	public static final SoundEvent DEPTHS_LOOP_RUMBLE = register("ambient.depths.rumble");
+	public static final SoundEvent DEPTHS_LOOP_WIND = register("ambient.depths.wind");
+	public static final SoundEvent DEPTHS_LOOP_GROTTO = register("ambient.depths.grotto");
+	public static final SoundEvent DEPTHS_CHIME = register("ambient.depths.chime");
+	public static final SoundEvent DEPTHS_DRIP = register("ambient.depths.drip");
+	public static final SoundEvent DEPTHS_EMBER = register("ambient.depths.ember");
+	public static final SoundEvent DEPTHS_MOOD = register("ambient.depths.mood");
+	public static final SoundEvent QUOKKA_AMBIENT = register("quokka.ambient");
+	public static final SoundEvent QUOKKA_HURT = register("quokka.hurt");
+	public static final SoundEvent QUOKKA_DEATH = register("quokka.death");
+	public static final SoundEvent QUOKKA_EAT = register("quokka.eat");
+	public static final SoundEvent QUOKKA_CURE = register("quokka.cure");
 
 	private ModSounds() {
 	}

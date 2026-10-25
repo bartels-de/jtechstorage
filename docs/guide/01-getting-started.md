@@ -23,6 +23,10 @@ That's the whole storage network. Everything else in the mod builds on top of it
 On your first join you receive the **Storage Handbook**. Jbartels, the creator of the mod, appears as a hologram and gives
 you a short tour of the stations. Sneak + right-click with the handbook restarts the tour.
 
+Later, he drops by briefly at big milestones – your first linked chest, your first sprite, the bosses, the Crystal
+Depths, his workshop and a few more. Each appears once; right-click sends him away early. You can turn this off with
+`milestoneHologram` in the [configuration](15-configuration.md).
+
 ## Roadmap
 
 There is no fixed order, but this path leads you through the whole mod:

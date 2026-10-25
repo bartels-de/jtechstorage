@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": "jtechstorage:polished_crystal_stone"
+  },
+  "result": {
+    "count": 4,
+    "id": "jtechstorage:crystal_stone_bricks"
+  }
+}

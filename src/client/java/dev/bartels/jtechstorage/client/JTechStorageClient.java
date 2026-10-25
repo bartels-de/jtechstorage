@@ -98,6 +98,8 @@ public class JTechStorageClient implements ClientModInitializer {
 		MenuScreens.register(ModContent.AMETHYST_PHOENIX_MENU, AmethystPhoenixScreen::new);
 		MenuScreens.register(ModContent.PHOENIX_STOP_MENU, PhoenixStopScreen::new);
 		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.CRYSTAL_PUSHER_MENU, dev.bartels.jtechstorage.client.farm.CrystalPusherScreen::new);
+		MenuScreens.register(dev.bartels.jtechstorage.logistics.LogisticsContent.SORTER_MENU, dev.bartels.jtechstorage.client.logistics.SorterScreen::new);
+		MenuScreens.register(dev.bartels.jtechstorage.forge.ForgeContent.MENU, dev.bartels.jtechstorage.client.forge.ForgeScreen::new);
 		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.FARM_MONITOR_MENU, dev.bartels.jtechstorage.client.farm.FarmMonitorScreen::new);
 		MenuScreens.register(dev.bartels.jtechstorage.farm.FarmContent.CHUNK_LOADER_MENU, dev.bartels.jtechstorage.client.farm.ChunkLoaderScreen::new);
 		for (dev.bartels.jtechstorage.chest.AmethystChestTier tier : dev.bartels.jtechstorage.chest.AmethystChestTier.values()) {
@@ -115,6 +117,46 @@ public class JTechStorageClient implements ClientModInitializer {
 		// Resonanz-Sturm (v0.25)
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalShardlingModel.LAYER,
 				dev.bartels.jtechstorage.client.entity.CrystalShardlingModel::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalLurkerModel.LAYER, dev.bartels.jtechstorage.client.entity.CrystalLurkerModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_LURKER, dev.bartels.jtechstorage.client.entity.CrystalLurkerRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.SwarmShardModel.LAYER, dev.bartels.jtechstorage.client.entity.SwarmShardModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.SWARM_SHARD, dev.bartels.jtechstorage.client.entity.SwarmShardRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.LakeWraithModel.LAYER, dev.bartels.jtechstorage.client.entity.LakeWraithModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.LAKE_WRAITH, dev.bartels.jtechstorage.client.entity.LakeWraithRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.VeinCrawlerModel.LAYER, dev.bartels.jtechstorage.client.entity.VeinCrawlerModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.VEIN_CRAWLER, dev.bartels.jtechstorage.client.entity.VeinCrawlerRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalSnailModel.LAYER, dev.bartels.jtechstorage.client.entity.CrystalSnailModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_SNAIL, dev.bartels.jtechstorage.client.entity.CrystalSnailRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.GlowFishModel.LAYER, dev.bartels.jtechstorage.client.entity.GlowFishModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.GLOW_FISH, dev.bartels.jtechstorage.client.entity.GlowFishRenderer::new);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.QuokkaModel.LAYER, dev.bartels.jtechstorage.client.entity.QuokkaModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsContent.QUOKKA, dev.bartels.jtechstorage.client.entity.QuokkaRenderer::new);
+		// v0.36: neue Tiere der Kristalltiefe
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalDeerModel.LAYER, dev.bartels.jtechstorage.client.entity.CrystalDeerModel::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.GeodeSheepModel.LAYER, dev.bartels.jtechstorage.client.entity.GeodeSheepModel::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.GeodeSheepWoolModel.LAYER, dev.bartels.jtechstorage.client.entity.GeodeSheepWoolModel::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.CrystalCrabModel.LAYER, dev.bartels.jtechstorage.client.entity.CrystalCrabModel::createBodyLayer);
+		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.LastMasterModel.LAYER, dev.bartels.jtechstorage.client.entity.LastMasterModel::createBodyLayer);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsAnimals.CRYSTAL_DEER, dev.bartels.jtechstorage.client.entity.CrystalDeerRenderer::new);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsAnimals.GEODE_SHEEP, dev.bartels.jtechstorage.client.entity.GeodeSheepRenderer::new);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.DepthsAnimals.CRYSTAL_CRAB, dev.bartels.jtechstorage.client.entity.CrystalCrabRenderer::new);
+		EntityRenderers.register(dev.bartels.jtechstorage.depths.temple.TempleContent.LAST_MASTER, dev.bartels.jtechstorage.client.entity.LastMasterRenderer::new);
+		// v0.36: Menü von Lager-Bildschirm und Lager-Banner
+		net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.PanelMenuPayload.TYPE, (payload, context) -> {
+			var client = context.client();
+
+			if (client.level == null) {
+				return;
+			}
+
+			var be = client.level.getBlockEntity(payload.pos());
+
+			if (be instanceof dev.bartels.jtechstorage.display.StorageDisplayBlockEntity) {
+				client.setScreenAndShow(new dev.bartels.jtechstorage.client.display.StorageDisplayScreen(payload.pos(), payload.items(), payload.counts()));
+			} else if (be instanceof dev.bartels.jtechstorage.display.StorageBannerBlockEntity) {
+				client.setScreenAndShow(new dev.bartels.jtechstorage.client.display.StorageBannerScreen(payload.pos(), payload.items(), payload.counts()));
+			}
+		});
 		EntityRenderers.register(dev.bartels.jtechstorage.storm.StormContent.CRYSTAL_SHARDLING,
 				dev.bartels.jtechstorage.client.entity.CrystalShardlingRenderer::new);
 		ModelLayerRegistry.registerModelLayer(dev.bartels.jtechstorage.client.entity.StormHeraldModel.LAYER,
@@ -284,7 +326,15 @@ public class JTechStorageClient implements ClientModInitializer {
 				helper.register(new BackpackLayer(avatar, new BackpackModel(context.bakeLayer(BackpackModel.LAYER))));
 			}
 		});
+		dev.bartels.jtechstorage.client.cosmetic.CosmeticsClient.init();
+		net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry.register(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_DISPLAY_BLOCK_ENTITY,
+				dev.bartels.jtechstorage.client.display.StorageDisplayRenderer::new);
+		net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry.register(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_BANNER_BLOCK_ENTITY,
+				dev.bartels.jtechstorage.client.display.StorageBannerRenderer::new);
+		net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry.register(dev.bartels.jtechstorage.depths.memory.MemoryContent.MEMORY_CASE_BLOCK_ENTITY,
+				MemoryCaseRenderer::new);
 		GuideBookItem.openScreen = stack -> Minecraft.getInstance().setScreenAndShow(new GuideBookScreen(stack));
+		dev.bartels.jtechstorage.depths.AncientNoteItem.openScreen = n -> Minecraft.getInstance().setScreenAndShow(new dev.bartels.jtechstorage.client.gui.NoteScreen(n));
 		dev.bartels.jtechstorage.item.FlightPlanItem.openScreen = hand -> {
 			Minecraft client = Minecraft.getInstance();
 
@@ -334,6 +384,19 @@ public class JTechStorageClient implements ClientModInitializer {
 	}
 
 	private static void addModTooltip(net.minecraft.world.item.ItemStack stack, java.util.List<net.minecraft.network.chat.Component> lines) {
+		java.util.Map<String, Integer> forged = stack.get(dev.bartels.jtechstorage.forge.ForgeContent.UPGRADES);
+
+		if (forged != null) {
+			for (dev.bartels.jtechstorage.forge.ForgeUpgrade up : dev.bartels.jtechstorage.forge.ForgeUpgrade.values()) {
+				int lvl = forged.getOrDefault(up.id(), 0);
+
+				if (lvl > 0) {
+					lines.add(Math.min(1, lines.size()), net.minecraft.network.chat.Component.translatable("jtechstorage.forge.upgrade." + up.id())
+							.append(up.maxLevel > 1 ? " " + "I".repeat(lvl) : "").withStyle(net.minecraft.ChatFormatting.LIGHT_PURPLE));
+				}
+			}
+		}
+
 		net.minecraft.resources.Identifier id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem());
 
 		if (!dev.bartels.jtechstorage.JTechStorage.MOD_ID.equals(id.getNamespace())) {

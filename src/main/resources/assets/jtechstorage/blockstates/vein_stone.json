@@ -1,0 +1,36 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "jtechstorage:block/vein_stone"
+      },
+      {
+        "model": "jtechstorage:block/vein_stone",
+        "y": 90
+      },
+      {
+        "model": "jtechstorage:block/vein_stone",
+        "y": 180
+      },
+      {
+        "model": "jtechstorage:block/vein_stone",
+        "y": 270
+      },
+      {
+        "model": "jtechstorage:block/vein_stone_alt"
+      },
+      {
+        "model": "jtechstorage:block/vein_stone_alt",
+        "y": 90
+      },
+      {
+        "model": "jtechstorage:block/vein_stone_alt",
+        "y": 180
+      },
+      {
+        "model": "jtechstorage:block/vein_stone_alt",
+        "y": 270
+      }
+    ]
+  }
+}

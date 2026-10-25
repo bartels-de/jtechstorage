@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "PPP",
+    "PPP",
+    "PPP"
+  ],
+  "key": {
+    "P": "jtechstorage:pure_amethyst"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:pure_amethyst_block"
+  }
+}

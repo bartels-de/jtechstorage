@@ -1,0 +1,101 @@
+package dev.bartels.jtechstorage.client.entity;
+
+
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+
+import dev.bartels.jtechstorage.JTechStorage;
+
+/**
+ * Schwarmsplitter: schwebender Kristallsplitter mit glühendem Auge, Flügelschuppen und kreisenden Bruchstücken.
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/depthmobs.py (Teile und Posen), Animation von Hand.
+ */
+public class SwarmShardModel extends EntityModel<SwarmShardRenderState> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("swarm_shard"), "main");
+
+	private final ModelPart swarm;
+	private final ModelPart body;
+	private final ModelPart frag0;
+	private final ModelPart frag1;
+	private final ModelPart frag2;
+	private final ModelPart rWing;
+	private final ModelPart lWing;
+
+	public SwarmShardModel(ModelPart root) {
+		super(root);
+		this.swarm = root.getChild("swarm");
+		this.body = root.getChild("swarm").getChild("body");
+		this.frag0 = root.getChild("swarm").getChild("body").getChild("frag0");
+		this.frag1 = root.getChild("swarm").getChild("body").getChild("frag1");
+		this.frag2 = root.getChild("swarm").getChild("body").getChild("frag2");
+		this.rWing = root.getChild("swarm").getChild("body").getChild("r_wing");
+		this.lWing = root.getChild("swarm").getChild("body").getChild("l_wing");
+	}
+
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p1 = root.addOrReplaceChild("swarm", CubeListBuilder.create(),
+				PartPose.offset(0.0f, 24.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-4.0f, -7.0f, -4.0f, 8.0f, 14.0f, 8.0f, new CubeDeformation(0.0f))
+				.texOffs(46, 0).addBox(-2.0f, -13.0f, -2.0f, 4.0f, 6.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(46, 0).addBox(-2.0f, 7.0f, -2.0f, 4.0f, 6.0f, 4.0f, new CubeDeformation(0.0f))
+				.texOffs(12, 22).addBox(-2.0f, -3.0f, -4.6f, 4.0f, 2.0f, 1.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, -16.0f, 0.0f));
+		p2.addOrReplaceChild("frag0", CubeListBuilder.create()
+				.texOffs(0, 22).addBox(-1.5f, -2.5f, -1.5f, 3.0f, 5.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(9.0f, 0.0f, 0.0f));
+		p2.addOrReplaceChild("frag1", CubeListBuilder.create()
+				.texOffs(0, 22).addBox(-1.5f, -2.5f, -1.5f, 3.0f, 5.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(-5.0f, 2.0f, 8.0f));
+		p2.addOrReplaceChild("frag2", CubeListBuilder.create()
+				.texOffs(0, 22).addBox(-1.5f, -2.5f, -1.5f, 3.0f, 5.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(-5.0f, -2.0f, -8.0f));
+		p2.addOrReplaceChild("r_wing", CubeListBuilder.create()
+				.texOffs(32, 0).addBox(-0.5f, -4.0f, 0.0f, 1.0f, 8.0f, 6.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(-4.0f, -3.0f, 2.0f, 0.0f, -0.5f, 0.0f));
+		p2.addOrReplaceChild("l_wing", CubeListBuilder.create()
+				.texOffs(32, 0).addBox(-0.5f, -4.0f, 0.0f, 1.0f, 8.0f, 6.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(4.0f, -3.0f, 2.0f, 0.0f, 0.5f, 0.0f));
+		return LayerDefinition.create(mesh, 64, 64);
+	}
+
+	@Override
+	public void setupAnim(SwarmShardRenderState state) {
+		super.setupAnim(state);
+		float age = state.ageInTicks;
+		body.y += Mth.sin(age * 0.15f) * 2.0f;
+		ModelPart[] frags = {frag0, frag1, frag2};
+
+		for (int k = 0; k < 3; k++) {
+			float angle = age * 0.12f + k * 2.094f;
+			frags[k].x = Mth.cos(angle) * 9.0f;
+			frags[k].z = Mth.sin(angle) * 9.0f;
+			frags[k].y = Mth.sin(age * 0.2f + k) * 2.0f;
+			frags[k].yRot = -angle;
+		}
+
+		rWing.yRot += Mth.sin(age * 1.6f) * 0.6f;
+		lWing.yRot -= Mth.sin(age * 1.6f) * 0.6f;
+
+		if (state.dash > 0.0f) {
+			poseDash(Mth.sin(state.dash * Mth.PI));
+		}
+	}
+
+	private void poseDash(float k) {
+		body.xRot += k * -0.600f;
+	}
+
+
+}

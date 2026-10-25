@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/fast_crystal_conveyor"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/fast_crystal_conveyor",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/fast_crystal_conveyor",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/fast_crystal_conveyor",
+      "y": 270
+    }
+  }
+}

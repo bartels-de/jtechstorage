@@ -1,0 +1,261 @@
+{
+  "type": "minecraft:cache",
+  "input": {
+    "type": "minecraft:clamp",
+    "input": {
+      "type": "minecraft:mul",
+      "left": {
+        "type": "minecraft:min",
+        "left": {
+          "type": "minecraft:min",
+          "left": {
+            "type": "minecraft:min",
+            "left": {
+              "type": "minecraft:min",
+              "left": {
+                "type": "minecraft:min",
+                "left": {
+                  "type": "minecraft:min",
+                  "left": {
+                    "type": "minecraft:min",
+                    "left": {
+                      "type": "minecraft:min",
+                      "left": {
+                        "type": "minecraft:add",
+                        "left": {
+                          "type": "minecraft:add",
+                          "left": {
+                            "type": "minecraft:add",
+                            "left": {
+                              "type": "minecraft:mul",
+                              "left": "jtechstorage:depths/temperature",
+                              "right": 0.7071067811865476
+                            },
+                            "right": {
+                              "type": "minecraft:mul",
+                              "left": "jtechstorage:depths/humidity",
+                              "right": 0.7071067811865476
+                            }
+                          },
+                          "right": {
+                            "type": "minecraft:mul",
+                            "left": "jtechstorage:depths/openness",
+                            "right": 0.0
+                          }
+                        },
+                        "right": -0.24748737341529162
+                      },
+                      "right": {
+                        "type": "minecraft:add",
+                        "left": {
+                          "type": "minecraft:add",
+                          "left": {
+                            "type": "minecraft:add",
+                            "left": {
+                              "type": "minecraft:mul",
+                              "left": "jtechstorage:depths/temperature",
+                              "right": 1.0
+                            },
+                            "right": {
+                              "type": "minecraft:mul",
+                              "left": "jtechstorage:depths/humidity",
+                              "right": 0.0
+                            }
+                          },
+                          "right": {
+                            "type": "minecraft:mul",
+                            "left": "jtechstorage:depths/openness",
+                            "right": 0.0
+                          }
+                        },
+                        "right": -0.0
+                      }
+                    },
+                    "right": {
+                      "type": "minecraft:add",
+                      "left": {
+                        "type": "minecraft:add",
+                        "left": {
+                          "type": "minecraft:add",
+                          "left": {
+                            "type": "minecraft:mul",
+                            "left": "jtechstorage:depths/temperature",
+                            "right": 0.0
+                          },
+                          "right": {
+                            "type": "minecraft:mul",
+                            "left": "jtechstorage:depths/humidity",
+                            "right": 1.0
+                          }
+                        },
+                        "right": {
+                          "type": "minecraft:mul",
+                          "left": "jtechstorage:depths/openness",
+                          "right": 0.0
+                        }
+                      },
+                      "right": -0.0
+                    }
+                  },
+                  "right": {
+                    "type": "minecraft:add",
+                    "left": {
+                      "type": "minecraft:add",
+                      "left": {
+                        "type": "minecraft:add",
+                        "left": {
+                          "type": "minecraft:mul",
+                          "left": "jtechstorage:depths/temperature",
+                          "right": 0.7071067811865476
+                        },
+                        "right": {
+                          "type": "minecraft:mul",
+                          "left": "jtechstorage:depths/humidity",
+                          "right": 0.7071067811865476
+                        }
+                      },
+                      "right": {
+                        "type": "minecraft:mul",
+                        "left": "jtechstorage:depths/openness",
+                        "right": 0.0
+                      }
+                    },
+                    "right": -0.0
+                  }
+                },
+                "right": {
+                  "type": "minecraft:add",
+                  "left": {
+                    "type": "minecraft:add",
+                    "left": {
+                      "type": "minecraft:add",
+                      "left": {
+                        "type": "minecraft:mul",
+                        "left": "jtechstorage:depths/temperature",
+                        "right": 0.9191450300180579
+                      },
+                      "right": {
+                        "type": "minecraft:mul",
+                        "left": "jtechstorage:depths/humidity",
+                        "right": -0.39391929857916774
+                      }
+                    },
+                    "right": {
+                      "type": "minecraft:mul",
+                      "left": "jtechstorage:depths/openness",
+                      "right": 0.0
+                    }
+                  },
+                  "right": 0.00656532164298617
+                }
+              },
+              "right": {
+                "type": "minecraft:add",
+                "left": {
+                  "type": "minecraft:add",
+                  "left": {
+                    "type": "minecraft:add",
+                    "left": {
+                      "type": "minecraft:mul",
+                      "left": "jtechstorage:depths/temperature",
+                      "right": 0.924678098474716
+                    },
+                    "right": {
+                      "type": "minecraft:mul",
+                      "left": "jtechstorage:depths/humidity",
+                      "right": 0.3807498052542948
+                    }
+                  },
+                  "right": {
+                    "type": "minecraft:mul",
+                    "left": "jtechstorage:depths/openness",
+                    "right": 0.0
+                  }
+                },
+                "right": 0.0027196414661021235
+              }
+            },
+            "right": {
+              "type": "minecraft:add",
+              "left": {
+                "type": "minecraft:add",
+                "left": {
+                  "type": "minecraft:add",
+                  "left": {
+                    "type": "minecraft:mul",
+                    "left": "jtechstorage:depths/temperature",
+                    "right": -0.39391929857916774
+                  },
+                  "right": {
+                    "type": "minecraft:mul",
+                    "left": "jtechstorage:depths/humidity",
+                    "right": 0.9191450300180579
+                  }
+                },
+                "right": {
+                  "type": "minecraft:mul",
+                  "left": "jtechstorage:depths/openness",
+                  "right": 0.0
+                }
+              },
+              "right": 0.00656532164298617
+            }
+          },
+          "right": {
+            "type": "minecraft:add",
+            "left": {
+              "type": "minecraft:add",
+              "left": {
+                "type": "minecraft:add",
+                "left": {
+                  "type": "minecraft:mul",
+                  "left": "jtechstorage:depths/temperature",
+                  "right": 0.4082482904638631
+                },
+                "right": {
+                  "type": "minecraft:mul",
+                  "left": "jtechstorage:depths/humidity",
+                  "right": 0.4082482904638631
+                }
+              },
+              "right": {
+                "type": "minecraft:mul",
+                "left": "jtechstorage:depths/openness",
+                "right": -0.8164965809277261
+              }
+            },
+            "right": 0.14288690166235204
+          }
+        },
+        "right": {
+          "type": "minecraft:add",
+          "left": {
+            "type": "minecraft:add",
+            "left": {
+              "type": "minecraft:add",
+              "left": {
+                "type": "minecraft:mul",
+                "left": "jtechstorage:depths/temperature",
+                "right": 0.3720458024169137
+              },
+              "right": {
+                "type": "minecraft:mul",
+                "left": "jtechstorage:depths/humidity",
+                "right": 0.3720458024169137
+              }
+            },
+            "right": {
+              "type": "minecraft:mul",
+              "left": "jtechstorage:depths/openness",
+              "right": 0.8503904055243743
+            }
+          },
+          "right": 0.20994013136382997
+        }
+      },
+      "right": 5.0
+    },
+    "min": 0.0,
+    "max": 1.0
+  }
+}

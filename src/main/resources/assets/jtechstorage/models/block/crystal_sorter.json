@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "jtechstorage:block/crystal_sorter_side",
+    "north": "jtechstorage:block/crystal_sorter_front",
+    "south": "jtechstorage:block/crystal_sorter_back",
+    "east": "jtechstorage:block/crystal_sorter_side",
+    "west": "jtechstorage:block/crystal_sorter_side",
+    "up": "jtechstorage:block/crystal_sorter_top",
+    "down": "jtechstorage:block/crystal_sorter_bottom"
+  }
+}

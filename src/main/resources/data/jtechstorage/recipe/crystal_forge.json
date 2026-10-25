@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "PPP",
+    "DSD",
+    "DAD"
+  ],
+  "key": {
+    "P": "jtechstorage:pure_amethyst",
+    "D": "minecraft:polished_deepslate",
+    "S": "minecraft:smithing_table",
+    "A": "minecraft:anvil"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_forge"
+  }
+}

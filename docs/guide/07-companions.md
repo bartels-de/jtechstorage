@@ -35,8 +35,10 @@ The keeper trades **like a villager**, using the normal trading screen.
 | 1 | 6 amethyst shards → 2 Resonance Treats · 4 shards → 1 amethyst cluster · 16 calcite → 3 shards · 16 smooth basalt → 3 shards · 1 emerald → 6 shards |
 | 2 | 12 shards → 3 bottles o' enchanting · 8 shards → 4 tinted glass · 10 shards → 2 large amethyst buds · 16 shards → name tag · 12 glow berries → 4 shards |
 | 3 | 24 shards → Resonance Igniter · 20 shards + 2 emeralds → spyglass · 16 shards → 8 Resonance Treats · 1 echo shard → 16 shards |
-| 4 | 48 shards + 1 diamond → **Amethyst Core** · 40 shards + 1 diamond → **Wireless Core** · 32 shards + 8 emeralds → 16 bottles o' enchanting |
-| 5 | 64 shards + 4 diamonds → **budding amethyst** · 64 shards + 2 emerald blocks → Totem of Undying · 64 shards + Amethyst Core → **Ender Upgrade** |
+| 4 | 32 shards → 4 glow crystals · 24 shards + 2 emeralds → 4 crystal lanterns · 32 shards + 8 emeralds → 16 bottles o' enchanting |
+| 5 | 64 shards + 4 diamonds → **budding amethyst** · 64 shards + 2 emerald blocks → Totem of Undying |
+
+Amethyst Cores, Wireless Cores and network upgrades are not for sale – you earn them from the bosses.
 
 ## The three companions
 

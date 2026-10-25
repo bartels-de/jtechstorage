@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "jtechstorage:block/storage_display"
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/storage_display",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/storage_display",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/storage_display",
+      "y": 270
+    }
+  }
+}

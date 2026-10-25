@@ -1,0 +1,37 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "workshop": {
+      "trigger": "minecraft:location",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "minecraft:location": {
+              "structures": "jtechstorage:jbartels_workshop"
+            }
+          }
+        }
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:broken_terminal"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.find_workshop.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.find_workshop.description"
+    },
+    "frame": "goal",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "workshop"
+    ]
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "GGG",
+    "GCG",
+    "GGG"
+  ],
+  "key": {
+    "G": "minecraft:glass",
+    "C": "jtechstorage:glow_crystal"
+  },
+  "result": {
+    "count": 8,
+    "id": "jtechstorage:crystal_glass"
+  }
+}

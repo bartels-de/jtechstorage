@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:cache",
+  "input": {
+    "type": "minecraft:noise",
+    "noise": "jtechstorage:depths/openness",
+    "xz_scale": 0.25,
+    "y_scale": 0.0
+  }
+}

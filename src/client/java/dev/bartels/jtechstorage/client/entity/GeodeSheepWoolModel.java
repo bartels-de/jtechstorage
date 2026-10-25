@@ -1,0 +1,121 @@
+package dev.bartels.jtechstorage.client.entity;
+
+
+import net.minecraft.client.model.EntityModel;
+import net.minecraft.client.model.geom.ModelLayerLocation;
+import net.minecraft.client.model.geom.ModelPart;
+import net.minecraft.client.model.geom.PartPose;
+import net.minecraft.client.model.geom.builders.CubeDeformation;
+import net.minecraft.client.model.geom.builders.CubeListBuilder;
+import net.minecraft.client.model.geom.builders.LayerDefinition;
+import net.minecraft.client.model.geom.builders.MeshDefinition;
+import net.minecraft.client.model.geom.builders.PartDefinition;
+import net.minecraft.util.Mth;
+
+import dev.bartels.jtechstorage.JTechStorage;
+
+/**
+ * Wolle des Geodenschafs (wird in der Schaffarbe eingefärbt).
+ * Modell in doppelter Detaildichte (halbe Pixel) – der Renderer skaliert es auf 0.5.
+ * Erzeugt von scratchpad/depthmobs3.py (Teile und Posen), Animation von Hand.
+ */
+public class GeodeSheepWoolModel extends EntityModel<GeodeSheepRenderState> {
+	public static final ModelLayerLocation LAYER = new ModelLayerLocation(JTechStorage.id("geode_sheep_wool"), "main");
+
+	private final ModelPart sheep;
+	private final ModelPart body;
+	private final ModelPart head;
+	private final ModelPart rEar;
+	private final ModelPart lEar;
+	private final ModelPart tail;
+	private final ModelPart rfLeg;
+	private final ModelPart lfLeg;
+	private final ModelPart rbLeg;
+	private final ModelPart lbLeg;
+
+	public GeodeSheepWoolModel(ModelPart root) {
+		super(root);
+		this.sheep = root.getChild("sheep");
+		this.body = root.getChild("sheep").getChild("body");
+		this.head = root.getChild("sheep").getChild("head");
+		this.rEar = root.getChild("sheep").getChild("head").getChild("r_ear");
+		this.lEar = root.getChild("sheep").getChild("head").getChild("l_ear");
+		this.tail = root.getChild("sheep").getChild("body").getChild("tail");
+		this.rfLeg = root.getChild("sheep").getChild("rf_leg");
+		this.lfLeg = root.getChild("sheep").getChild("lf_leg");
+		this.rbLeg = root.getChild("sheep").getChild("rb_leg");
+		this.lbLeg = root.getChild("sheep").getChild("lb_leg");
+	}
+
+	public static LayerDefinition createBodyLayer() {
+		MeshDefinition mesh = new MeshDefinition();
+		PartDefinition root = mesh.getRoot();
+		PartDefinition p1 = root.addOrReplaceChild("sheep", CubeListBuilder.create(),
+				PartPose.offset(0.0f, 24.0f, 0.0f));
+		PartDefinition p2 = p1.addOrReplaceChild("body", CubeListBuilder.create()
+				.texOffs(0, 0).addBox(-8.0f, -14.5f, -11.5f, 16.0f, 15.0f, 22.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, -12.0f, 0.0f));
+		p2.addOrReplaceChild("crys0", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(-2.0f, -12.0f, -2.0f, -0.2f, 0.0f, -0.3f));
+		p2.addOrReplaceChild("crys1", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(2.5f, -12.0f, 3.0f, 0.2f, 0.0f, 0.3f));
+		p2.addOrReplaceChild("tail", CubeListBuilder.create()
+				.texOffs(0, 37).addBox(-2.0f, -0.5f, -0.5f, 4.0f, 6.0f, 3.0f, new CubeDeformation(0.0f)),
+				PartPose.offsetAndRotation(0.0f, -10.0f, 9.0f, 0.6f, 0.0f, 0.0f));
+		PartDefinition p6 = p1.addOrReplaceChild("head", CubeListBuilder.create()
+				.texOffs(76, 0).addBox(-4.0f, -5.5f, -6.5f, 8.0f, 4.0f, 7.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(0.0f, -20.0f, -9.0f));
+		p6.addOrReplaceChild("r_ear", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(-3.5f, -2.5f, -3.0f, 0.0f, 0.0f, 0.35f));
+		p6.addOrReplaceChild("l_ear", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(3.5f, -2.5f, -3.0f, 0.0f, 0.0f, -0.35f));
+		p6.addOrReplaceChild("r_horn", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(-3.0f, -3.5f, -3.0f, 0.1f, 0.0f, -0.6f));
+		p6.addOrReplaceChild("l_horn", CubeListBuilder.create(),
+				PartPose.offsetAndRotation(3.0f, -3.5f, -3.0f, 0.1f, 0.0f, 0.6f));
+		p1.addOrReplaceChild("rf_leg", CubeListBuilder.create()
+				.texOffs(106, 0).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 5.0f, 5.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(-3.5f, -12.0f, -6.0f));
+		p1.addOrReplaceChild("lf_leg", CubeListBuilder.create()
+				.texOffs(106, 0).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 5.0f, 5.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(3.5f, -12.0f, -6.0f));
+		p1.addOrReplaceChild("rb_leg", CubeListBuilder.create()
+				.texOffs(106, 0).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 5.0f, 5.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(-3.5f, -12.0f, 6.0f));
+		p1.addOrReplaceChild("lb_leg", CubeListBuilder.create()
+				.texOffs(106, 0).addBox(-2.5f, 0.0f, -2.5f, 5.0f, 5.0f, 5.0f, new CubeDeformation(0.0f)),
+				PartPose.offset(3.5f, -12.0f, 6.0f));
+		return LayerDefinition.create(mesh, 128, 64);
+	}
+
+	@Override
+	public void setupAnim(GeodeSheepRenderState state) {
+		super.setupAnim(state);
+		float pos = state.walkAnimationPos;
+		float speed = Math.min(state.walkAnimationSpeed, 1.0f);
+		float age = state.ageInTicks;
+		head.yRot += Mth.clamp(state.yRot, -40.0f, 40.0f) * Mth.DEG_TO_RAD;
+		head.xRot += state.xRot * Mth.DEG_TO_RAD * 0.5f;
+		float a = Mth.cos(pos * 0.6662f) * 1.2f * speed;
+		rfLeg.xRot += a;
+		lbLeg.xRot += a;
+		lfLeg.xRot -= a;
+		rbLeg.xRot -= a;
+		tail.zRot += Mth.sin(age * 0.18f) * 0.15f;
+		rEar.zRot += Mth.sin(age * 0.1f) * 0.08f;
+		lEar.zRot -= Mth.sin(age * 0.12f + 1.0f) * 0.08f;
+
+		if (state.graze > 0.0f) {
+			poseGraze(state.graze);
+			head.xRot += Mth.sin(age * 0.9f) * 0.08f * state.graze;
+		}
+	}
+
+	private void poseGraze(float k) {
+		head.xRot += k * 1.100f;
+		head.y += k * 5.000f;
+		head.z += k * 1.000f;
+	}
+
+
+}

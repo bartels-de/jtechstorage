@@ -1,7 +1,10 @@
 {
+  "replace": false,
   "values": [
     "jtechstorage:phoenix_nest",
     "jtechstorage:helper_bed",
-    "jtechstorage:wolf_basket"
+    "jtechstorage:wolf_basket",
+    "jtechstorage:resonance_cap",
+    "jtechstorage:resonance_stem"
   ]
 }

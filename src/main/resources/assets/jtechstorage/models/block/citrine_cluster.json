@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cross",
+  "textures": {
+    "cross": "jtechstorage:block/citrine_cluster"
+  }
+}

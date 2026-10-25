@@ -52,8 +52,18 @@ public class CrystalShard extends ThrowableItemProjectile {
 		super.onHitEntity(result);
 		Entity target = result.getEntity();
 
-		if (target instanceof Enemy && level() instanceof ServerLevel level) {
-			Entity owner = getOwner();
+		if (!(level() instanceof ServerLevel level)) {
+			return;
+		}
+
+		Entity owner = getOwner();
+
+		if (owner instanceof Enemy) {
+			// von Monstern gespuckt (Aderkriecher, v0.31): trifft alles außer Monstern, brennende Splitter zünden an
+			if (!(target instanceof Enemy) && target.hurtServer(level, damageSources().thrown(this, owner), damage) && isOnFire()) {
+				target.igniteForSeconds(3.0f);
+			}
+		} else if (target instanceof Enemy) {
 			target.hurtServer(level, damageSources().thrown(this, owner), damage);
 		}
 	}

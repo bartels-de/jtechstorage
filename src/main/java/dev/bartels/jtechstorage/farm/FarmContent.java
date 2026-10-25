@@ -64,6 +64,12 @@ public final class FarmContent {
 			FabricBlockEntityTypeBuilder.create(ChunkLoaderBlockEntity::new, CHUNK_LOADER).build();
 	public static final MenuType<ChunkLoaderMenu> CHUNK_LOADER_MENU = new MenuType<>(ChunkLoaderMenu::new, FeatureFlags.VANILLA_SET);
 
+	public static final ResourceKey<Block> BLOCK_PLACER_KEY = key("block_placer");
+	public static final Block BLOCK_PLACER = new BlockPlacerBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.DISPENSER).setId(BLOCK_PLACER_KEY));
+	public static final Item BLOCK_PLACER_ITEM = item(BLOCK_PLACER, BLOCK_PLACER_KEY);
+	public static final BlockEntityType<BlockPlacerBlockEntity> BLOCK_PLACER_BLOCK_ENTITY =
+			FabricBlockEntityTypeBuilder.create(BlockPlacerBlockEntity::new, BLOCK_PLACER).build();
+
 	private FarmContent() {
 	}
 
@@ -90,6 +96,8 @@ public final class FarmContent {
 		register(FARM_MONITOR_KEY, FARM_MONITOR, FARM_MONITOR_ITEM);
 		Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, JTechStorage.id("farm_monitor"), FARM_MONITOR_BLOCK_ENTITY);
 		Registry.register(BuiltInRegistries.MENU, JTechStorage.id("farm_monitor"), FARM_MONITOR_MENU);
+		register(BLOCK_PLACER_KEY, BLOCK_PLACER, BLOCK_PLACER_ITEM);
+		Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, JTechStorage.id("block_placer"), BLOCK_PLACER_BLOCK_ENTITY);
 		register(CHUNK_LOADER_KEY, CHUNK_LOADER, CHUNK_LOADER_ITEM);
 		Registry.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, JTechStorage.id("chunk_loader"), CHUNK_LOADER_BLOCK_ENTITY);
 		Registry.register(BuiltInRegistries.MENU, JTechStorage.id("chunk_loader"), CHUNK_LOADER_MENU);

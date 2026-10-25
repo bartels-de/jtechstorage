@@ -3,6 +3,264 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.40.0]
+
+### Added
+- **Crystal Conveyor:** a flat belt that moves items, animals, monsters and players in the arrow direction and puts items
+  into a chest, barrel or hopper at its end. Sneak to stand still, redstone stops it. Recipe gives 8.
+- **Fast Crystal Conveyor:** twice as fast, glows softly (8 belts around a glow crystal).
+- **Crystal Sorter:** takes items from the back and sends them left, right or straight on – each side has its own row
+  of 9 filters. Items without a match go straight on or stay inside ("Rest: hold"). Redstone stops it, a comparator
+  shows waiting items.
+- **Crystal Forge:** upgrades netherite and Amethyst Obsidian gear (and the Storage Master's Hammer):
+  - **Hardened** I–III: +25 % durability per level (pure amethyst).
+  - **Sharpened** I–III: +1 attack damage and faster mining per level, tools and weapons (glow crystals).
+  - **Reinforced** I–III: +1 armor and +0.5 toughness per level, armor (netherite scrap).
+  - **Self-Mending:** repairs 1 durability every 5 seconds while carried (netherite ingot).
+  - Upgrades stay when the piece is upgraded from netherite to Amethyst Obsidian; the stats are recalculated.
+- Handbook pages, recipes and lexicon entries for all new blocks.
+
+## [0.39.0]
+
+### Added
+- **The Last Storage Master:** the boss of the Crystal Depths – a floating ghost in a tattered robe with a key staff,
+  a crystal crown and circling seals (500 health).
+  - Phase 1: fans of crystal shards and blink jumps. Phase 2: calls Crystal Lurkers and Swarm Shards that shield him
+    (75 % less damage while they live). Phase 3: shard rain and a shockwave.
+  - He talks while he fights, has a boss bar, a bestiary page and the challenge *Closing Time*.
+- **Storage Masters' Temple:** an extremely rare structure on the cave floor with a pillared hall, a dais with the
+  **Storage Masters' Seal** (right-click with an Amethyst Core to wake the boss), an archive and a treasury. Finding it
+  gives the advancement *Hallowed Halls*.
+- **Storage Master's Hammer** (boss loot): mines 3 × 3, and when bound to a terminal everything goes straight into
+  your storage.
+- **Building tools:**
+  - **Building Wand:** places a whole layer (3×3, 5×5 or 7×7) in front of a surface.
+  - **Exchange Wand:** swaps a surface of blocks for a selected block and gives the old ones back.
+  - **Measuring Tape:** shows size, block count and distance between two blocks.
+  - Both wands take blocks from your inventory and – when bound to a terminal – from your storage.
+
+## [0.38.0]
+
+### Added
+- **Block Placer:** works like a dispenser (9 slots, all six directions, redstone pulse, hoppers can fill it), but it
+  places the next block from its inventory in front of it – including saplings, seeds, mushrooms and other plants,
+  wherever they can stand. Great for replanting tree farms. Recipe: cobbled deepslate around a piston, redstone below.
+- **Linking Amethyst Portals:** right-click a portal (or its frame) in the Overworld with the Storage Key, then one in
+  the Crystal Depths – the two now always lead to each other, however far apart they are. Sneak + right-click removes
+  the link; breaking a portal removes it too.
+
+## [0.37.1]
+
+### Fixed
+- **Crystal Glass** had the same recipe as vanilla Tinted Glass (glass with four amethyst shards), so only one of them
+  could be crafted. It is now made from **8 glass around 1 glow crystal** and gives 8. A check of all recipes against
+  vanilla and each other found no other overlaps.
+
+## [0.37.0]
+
+### Added
+- **Crystal Plains:** a new biome in the Crystal Depths made for building – a huge flat hall with a level crystal turf
+  floor, more than 50 blocks of headroom under a vaulted ceiling, only a few pillars, soft light and very few monsters.
+  Crystal deer and geode sheep live there; the settlement and Jbartels' Workshop can appear there too.
+
+### Changed
+- **Smooth biome transitions:** the cave shape blends over a wider band, and floor, ceiling and plants of neighbouring
+  biomes mix over about 16–24 blocks instead of switching at a hard edge.
+- **Bigger, nicer structures:**
+  - Storage Ruins come in three forms – a furnished hall, two rooms with an archive, or a hall with a tower.
+  - Every second Crystal Shrine in a high cave is a roofed pavilion.
+  - Crystal Haven got an archive, three market stalls, a berry arbour and furnished houses.
+  - Crystal Mine got a collapsed tunnel, a tool room and a whole lower level with a ring gallery, a flooded dip, miners'
+    quarters and a powder store.
+- **Shift-crafting in the Crafting Terminal** now makes at most one stack per click, so the auto-refill can no longer
+  empty half your storage by accident.
+
+## [0.36.1]
+
+### Fixed
+- **Animals in the Crystal Depths now actually appear.** Vanilla only places peaceful animals while a chunk is
+  generated and, in dimensions with a ceiling, only checks the topmost cave – so crystal deer, geode sheep, crystal crabs,
+  quokkas and crystal snails almost never showed up. A small spawner now keeps a few animals around every player in the
+  depths (one group every 10 seconds while fewer than 8 live within 64 blocks), using the biome's spawn list and the
+  animals' normal spawn rules. Works in existing worlds too.
+
+## [0.36.0]
+
+### Added
+- **New animals in the Crystal Depths:**
+  - **Crystal Deer:** a mount with glowing crystal antlers. Tame it with glow berries, saddle it and jump almost five
+    blocks high. Its hooves ring like amethyst.
+  - **Geode Sheep:** grows faintly glowing **crystal wool** in 16 colours. Shear and dye it like a sheep; the wool grows
+    back on crystal turf and moss.
+  - **Crystal Crab:** tame it with fish. It digs in soft ground and drops small treasures at your feet.
+  - Models, textures, spawn eggs, loot and bestiary pages for all three. Crystal vines now drop glow berries.
+- **Crystal Haven:** a very rare abandoned settlement of the Storage Masters on the cave floor, with a fountain,
+  half-timbered houses, a watchtower, a well, gardens and a big storage hall.
+- **Crystal Mine:** a very rare old mine buried in the rock, with four tunnels, rails, chest minecarts, a pit hall with a
+  crane and a hidden crystal vein chamber.
+- **Memory crystals:** twelve collectibles – one on the cave floor of each biome, one each in Jbartels' Workshop, the
+  settlement and the mine.
+  - **Memory Case:** a display case that shows all twelve on its shelves and counts them.
+  - Advancements *Crystal Haven*, *Good Luck Below!*, *Do You Remember?* and the challenge *All the Memories*.
+  - The challenge unlocks the new aura cosmetic **Memory Glow**.
+- **Menu for displays and banners:** right-click with an empty hand.
+  - Pick items straight from the network with a search.
+  - Change the display's frame, background, accent colour, glow and scanlines, with a live preview.
+  - Change the banner's cloth colour, trim, pattern, text colour and wind.
+- New handbook pages for the animals, the new structures, the memory crystals and the display menu.
+
+### Changed
+- **Retextured every block and item of the Crystal Depths:** more detail in the same style. The crystal lantern now
+  flickers.
+- The compass in Jbartels' Workshop made room for a memory crystal.
+- The **Geode Keeper** no longer sells Amethyst Cores, Wireless Cores or the Ender Upgrade – they only come from the
+  bosses now. Level 4 offers glow crystals and crystal lanterns instead; old offers disappear from existing keepers.
+
+## [0.35.0]
+
+### Added
+- **Jbartels' Workshop:** a rare new structure on the cave floor of the Crystal Depths – the abandoned workshop of B., the
+  last Storage Master, alias the creator of the mod.
+  - A half-timbered house with a slate roof and a crystal rose window, often dug into a slope.
+  - Outside: a half-dismantled giant robot (the Amethyst Robot's prototype), a building site and a workbench.
+  - Inside: glass cases with frozen prototypes of the sprite, moth and beetle, *Terminal v0.1*, a sparking Mega
+    Terminal, workbenches, B.'s notebook, a tool wall and an office.
+  - Funny signs in English and German, barrels with tinkering junk, and the advancement *Behind the Scenes*.
+- **Jbartels at milestones:** his hologram drops by briefly at nine big moments, for example your first linked chest,
+  your first sprite, each boss, the Crystal Depths and his workshop. Each appears once per player; right-click sends him
+  away early. Players of older worlds get no flood of visits for milestones they already reached.
+  - New config option `milestoneHologram` (default on).
+
+## [0.34.0]
+
+### Added
+- **Player cosmetics** in six slots, each unlocked by an advancement and visible to all players:
+  - **Back:** Crystal Wings, Phoenix Wings, Storage Master's Cape and Prism Orbs.
+  - **Head:** Crystal Halo, Storage Master's Crown, Resonance Shroom Hat and Wanderer's Hat.
+  - **Shoulder:** a little quokka that looks around, and a hovering amethyst sprite.
+  - **Trails:** sparkles, petals, snowflakes, embers and prism sparks.
+  - **Auras:** a crystal spiral and fireflies.
+  - **Emotes:** crystal firework, resonance wave, quokka greeting and crystal rain.
+  - Detailed models with glowing parts and animations: wings beat as you walk and spread while gliding, the cape
+    flutters, the orbs circle and the quokka's head follows yours.
+  - New cosmetics menu (**J**) with a preview of yourself that you can turn with the mouse. Emotes play with **N**.
+- **Storage Display:** a glowing wall screen linked to a terminal with the Storage Key.
+  - Four modes: item with spinning model, smooth counter and trend per minute; fill level; a 10-minute history graph;
+    top 5.
+  - Displays side by side form one big screen of up to 4 × 3 blocks.
+- **Storage Banner:** a waving velvet banner with a ticker of up to 8 items, their stock and trend.
+- New advancements: *Little Friend* (tame a quokka), *Healing Crystals* (your quokka cures a zombie villager) and
+  *Shroom Jump* (jump onto a resonance cap from high up).
+- New handbook chapters and a guide page for network displays and cosmetics.
+
+## [0.33.0]
+
+### Added
+- **Six new biomes in the Crystal Depths**, each with its own cave shape:
+  - **Resonance Grotto:** low, wide moss caves with giant resonance mushrooms.
+  - **Prism Forest:** a pillared hall with crystal turf and colourful crystal spires.
+  - **Rose Quartz Gardens:** open halls of rose moss, rose quartz blooms and falling petals.
+  - **Azure Frost:** slippery frost crystal, frozen lakes and azure icicles.
+  - **Citrine Dunes:** a huge hall over wavy citrine sand dunes.
+  - **Floating Expanse:** an enormous void with floating islands and waterfalls.
+- **Quokka:** a small, smiling marsupial with amethyst crystals that lives in the Prism Forest and the Rose Quartz Gardens.
+  - Tame it with grass. It sits on command, heals with grass and breeds.
+  - A tamed quokka cures zombie villagers nearby within 15–30 seconds, and you get the healer's discount.
+  - It has its own model, sounds and spawn egg, and a page in the bestiary.
+- **New blocks:**
+  - Azure, rose and citrine crystals that sing when walked on, and matching crystal clusters. Both craft into dye.
+  - Crystal turf and crystal grass.
+  - Bouncy resonance caps and resonance stems.
+  - Rose moss and rose quartz blooms.
+  - Slippery frost crystal.
+  - Citrine sand and citrine sandstone.
+- **New world features:** big crystal stalactites and stalagmites, slender crystal spires, giant mushrooms, waterfalls and
+  frozen lakes.
+- **Own atmosphere per biome:** fog colour and distance, light colour, particles, music, and new synthesized ambient
+  sounds (hum, water, rumble, wind, grotto loop, crystal chimes, drips and embers).
+
+### Changed
+- **New terrain for the Crystal Depths:** instead of the same flat cave layers everywhere, each biome now has its own
+  shape:
+  - Vaulted halls in the Geode Halls and deep slot canyons in the Vein Chasm.
+  - Big lakes in the Crystal Lakes and a pillared hall in the Prism Forest.
+  - A huge void in the Floating Expanse.
+- Crystal stone and vein stone have new textures with two variants that are rotated at random, so walls no longer look
+  tiled.
+
+### Fixed
+- Giant geodes could reach too far into neighbouring chunks while the world was generated.
+
+## [0.32.1]
+
+### Changed
+- **The Crystal Depths are much darker**, especially with shaders:
+  - Hanging crystals, crystal pillars and floating shards now contain only a few glow crystals instead of up to half.
+  - Fewer hanging crystals, pillars, floating shards and glow geodes.
+  - Vein stone and resonance moss no longer give off light.
+  - Lower light levels:
+    - Glow crystal: 15 ➜ 12
+    - Crystal sprout: 7 ➜ 4
+    - Resonance shroom: 10 ➜ 5
+    - Crystal vines: 6 ➜ 3
+    - Pure amethyst ore: 4/7 ➜ 1/2
+    - Block of pure amethyst: 10 ➜ 6
+    - Broken terminal: 3 ➜ 1
+  - Chiseled crystal stone and crystal glass no longer give off light.
+  - Darker ambient light, and fewer glowing particles.
+
+## [0.32.0]
+
+### Added
+- **Pure Amethyst:** a new ore in the Crystal Depths, with a richer variant in the Vein Chasm. Smelt raw pure amethyst into
+  pure amethyst; 9 make a Block of Pure Amethyst.
+- **Range Upgrade (Crystal)** (192 blocks, keeps the ender abilities) and **Capacity Upgrade (Crystal)** (256 slots), crafted from
+  the ender or netherite upgrade with pure amethyst and glow crystal. Both values are in the config.
+- **Structures in the Crystal Depths:**
+  - **Storage Ruin:** crumbling halls with a broken terminal and chests.
+  - **Sunken Hall:** a flooded ruin on the floor of the Crystal Lakes.
+  - **Crystal Shrine:** a rare pillar shrine with better loot.
+- **The story of the Storage Masters:** 10 Ancient Notes hidden in ruin and shrine chests. Right-click to read them on a parchment
+  screen. Reading all ten completes the new advancement "The Whole Story".
+- **New blocks:**
+  - Building: Cracked Crystal Stone Bricks, Chiseled Crystal Stone, Crystal Stone Brick Stairs and Slab, Crystal Glass and
+    Crystal Lantern.
+  - Found in the world: Resonance Shroom, Crystal Vines and Broken Terminal.
+
+### Fixed
+- Loot tables now use the Minecraft 26.3 format. Before, conditions and functions were ignored silently, so the Amethyst Chest
+  lost its name when broken, and mob drops ignored their counts and chances.
+
+## [0.31.0]
+
+### Added
+- **Creatures of the Crystal Depths:**
+  - **Crystal Lurker:** a golem that hides as a rock and smashes with both fists.
+  - **Swarm Shard:** flying crystal shards that come in swarms.
+  - **Lake Wraith:** a glowing jellyfish that drags swimmers down.
+  - **Vein Crawler:** fire-immune and spits burning crystal shards.
+  - **Crystal Snail:** peaceful; feed it amethyst and it sheds crystals and breeds.
+  - **Glow Fish:** glowing schooling fish.
+- Each creature has its own model, animations, loot and spawn egg. A new bestiary chapter describes them.
+
+### Changed
+- Vanilla mobs no longer spawn in the Crystal Depths; only its own creatures live there.
+
+## [0.30.0]
+
+### Added
+- **The Crystal Depths**, a new dimension: huge crystal caves up to 190 blocks high without a sky, lit by crystals, glowing
+  veins and lava.
+  - **Amethyst Portal:** build a frame of amethyst blocks like a Nether portal and right-click it with an Amethyst Core. The
+    core is not used up. The scale is 1:1, and a return portal is built on the other side.
+  - Three biomes:
+    - **Geode Halls:** giant geodes, crystal pillars up to the ceiling, hanging crystals and floating shards.
+    - **Crystal Lakes:** turquoise water, glowing resonance moss and crystal sprouts.
+    - **Vein Chasm:** glowing vein stone, lava falls and lava rivers.
+  - Each biome has its own fog colour, particles, music and monsters.
+  - New blocks: crystal stone (also polished and as bricks), vein stone, glow crystal, resonance moss and crystal sprout.
+- Advancement "Into the Crystal Depths", a handbook page and a guide chapter.
+
 ## [0.29.4]
 
 ### Changed

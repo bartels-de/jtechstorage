@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "jtechstorage:block/crystal_turf_top",
+    "side": "jtechstorage:block/crystal_turf_side",
+    "bottom": "jtechstorage:block/crystal_stone"
+  }
+}

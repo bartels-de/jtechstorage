@@ -1,0 +1,11 @@
+{
+  "type": "jtechstorage:cave_template",
+  "biomes": "#jtechstorage:has_structure/storage_temple",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none",
+  "template": "jtechstorage:storage_temple",
+  "placement": "floor",
+  "headroom": 10,
+  "floor_offset": 0
+}

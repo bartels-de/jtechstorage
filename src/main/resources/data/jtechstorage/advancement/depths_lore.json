@@ -1,0 +1,79 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "note_1": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_2": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_3": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_4": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_5": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_6": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_7": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_8": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_9": {
+      "trigger": "minecraft:impossible"
+    },
+    "note_10": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:ancient_note"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.depths_lore.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.depths_lore.description"
+    },
+    "frame": "challenge"
+  },
+  "requirements": [
+    [
+      "note_1"
+    ],
+    [
+      "note_2"
+    ],
+    [
+      "note_3"
+    ],
+    [
+      "note_4"
+    ],
+    [
+      "note_5"
+    ],
+    [
+      "note_6"
+    ],
+    [
+      "note_7"
+    ],
+    [
+      "note_8"
+    ],
+    [
+      "note_9"
+    ],
+    [
+      "note_10"
+    ]
+  ]
+}

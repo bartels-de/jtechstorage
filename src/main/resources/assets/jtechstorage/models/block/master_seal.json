@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "top": "jtechstorage:block/master_seal_top",
+    "side": "jtechstorage:block/master_seal_side",
+    "bottom": "jtechstorage:block/master_seal_bottom"
+  }
+}

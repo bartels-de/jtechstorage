@@ -1,0 +1,11 @@
+{
+  "type": "jtechstorage:cave_template",
+  "biomes": "#jtechstorage:has_structure/crystal_mine",
+  "spawn_overrides": {},
+  "step": "underground_structures",
+  "terrain_adaptation": "none",
+  "template": "jtechstorage:crystal_mine",
+  "placement": "buried",
+  "headroom": 10,
+  "floor_offset": 8
+}

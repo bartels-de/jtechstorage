@@ -1,0 +1,33 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "memory": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "#jtechstorage:memory_crystals"
+          }
+        ]
+      }
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:memory_crystal_geode_halls"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.first_memory.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.first_memory.description"
+    },
+    "frame": "task",
+    "hidden": false
+  },
+  "requirements": [
+    [
+      "memory"
+    ]
+  ]
+}

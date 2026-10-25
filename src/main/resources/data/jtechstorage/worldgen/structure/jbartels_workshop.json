@@ -1,0 +1,7 @@
+{
+  "type": "jtechstorage:jbartels_workshop",
+  "biomes": "#jtechstorage:has_structure/jbartels_workshop",
+  "spawn_overrides": {},
+  "step": "surface_structures",
+  "terrain_adaptation": "none"
+}

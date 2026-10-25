@@ -1,0 +1,30 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "jtechstorage:block/azure_cluster"
+    },
+    "facing=down": {
+      "model": "jtechstorage:block/azure_cluster",
+      "x": 180
+    },
+    "facing=north": {
+      "model": "jtechstorage:block/azure_cluster",
+      "x": 90
+    },
+    "facing=south": {
+      "model": "jtechstorage:block/azure_cluster",
+      "x": 90,
+      "y": 180
+    },
+    "facing=east": {
+      "model": "jtechstorage:block/azure_cluster",
+      "x": 90,
+      "y": 90
+    },
+    "facing=west": {
+      "model": "jtechstorage:block/azure_cluster",
+      "x": 90,
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "jtechstorage:block/depths_portal_ns"
+    },
+    "axis=z": {
+      "model": "jtechstorage:block/depths_portal_ew"
+    }
+  }
+}

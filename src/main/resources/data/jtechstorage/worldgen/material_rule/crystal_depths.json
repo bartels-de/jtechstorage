@@ -1,0 +1,286 @@
+{
+  "type": "minecraft:sequence",
+  "sequence": [
+    "minecraft:bedrock_floor",
+    "minecraft:bedrock_roof",
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:crystal_lakes"
+      },
+      "then_run": {
+        "type": "minecraft:condition",
+        "if_true": "minecraft:on_floor",
+        "then_run": {
+          "type": "minecraft:condition",
+          "if_true": "minecraft:not_underwater",
+          "then_run": {
+            "type": "minecraft:block",
+            "result_state": "jtechstorage:resonance_moss"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:vein_chasm"
+      },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:under_ceiling",
+            "then_run": {
+              "type": "minecraft:block",
+              "result_state": "jtechstorage:vein_stone"
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:under_floor",
+            "then_run": {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:noise_threshold",
+                "max_threshold": 1.7976931348623157e+308,
+                "min_threshold": 0.15,
+                "noise": "minecraft:nether_state_selector"
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": "jtechstorage:vein_stone"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:geode_halls"
+      },
+      "then_run": {
+        "type": "minecraft:condition",
+        "if_true": "minecraft:on_floor",
+        "then_run": {
+          "type": "minecraft:condition",
+          "if_true": {
+            "type": "minecraft:noise_threshold",
+            "max_threshold": 1.7976931348623157e+308,
+            "min_threshold": 0.55,
+            "noise": "minecraft:nether_state_selector"
+          },
+          "then_run": {
+            "type": "minecraft:block",
+            "result_state": "jtechstorage:polished_crystal_stone"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:resonance_grotto"
+      },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_floor",
+            "then_run": {
+              "type": "minecraft:condition",
+              "if_true": "minecraft:not_underwater",
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": "jtechstorage:resonance_moss"
+              }
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_ceiling",
+            "then_run": {
+              "type": "minecraft:block",
+              "result_state": "jtechstorage:resonance_moss"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": [
+          "jtechstorage:prism_forest",
+          "jtechstorage:hollow_expanse",
+          "jtechstorage:crystal_plains"
+        ]
+      },
+      "then_run": {
+        "type": "minecraft:condition",
+        "if_true": "minecraft:on_floor",
+        "then_run": {
+          "type": "minecraft:condition",
+          "if_true": "minecraft:not_underwater",
+          "then_run": {
+            "type": "minecraft:block",
+            "result_state": "jtechstorage:crystal_turf"
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:rose_gardens"
+      },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_floor",
+            "then_run": {
+              "type": "minecraft:condition",
+              "if_true": "minecraft:not_underwater",
+              "then_run": {
+                "type": "minecraft:sequence",
+                "sequence": [
+                  {
+                    "type": "minecraft:condition",
+                    "if_true": {
+                      "type": "minecraft:noise_threshold",
+                      "max_threshold": 1.7976931348623157e+308,
+                      "min_threshold": 0.35,
+                      "noise": "minecraft:nether_state_selector"
+                    },
+                    "then_run": {
+                      "type": "minecraft:block",
+                      "result_state": "jtechstorage:crystal_turf"
+                    }
+                  },
+                  {
+                    "type": "minecraft:block",
+                    "result_state": "jtechstorage:rose_moss"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_ceiling",
+            "then_run": {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:noise_threshold",
+                "max_threshold": 1.7976931348623157e+308,
+                "min_threshold": 0.2,
+                "noise": "minecraft:nether_state_selector"
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": "jtechstorage:rose_moss"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:azure_frost"
+      },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_floor",
+            "then_run": {
+              "type": "minecraft:block",
+              "result_state": "jtechstorage:frost_crystal"
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_ceiling",
+            "then_run": {
+              "type": "minecraft:condition",
+              "if_true": {
+                "type": "minecraft:noise_threshold",
+                "max_threshold": 1.7976931348623157e+308,
+                "min_threshold": 0.3,
+                "noise": "minecraft:nether_state_selector"
+              },
+              "then_run": {
+                "type": "minecraft:block",
+                "result_state": "jtechstorage:frost_crystal"
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "type": "minecraft:condition",
+      "if_true": {
+        "type": "minecraft:biome",
+        "biome_is": "jtechstorage:citrine_dunes"
+      },
+      "then_run": {
+        "type": "minecraft:sequence",
+        "sequence": [
+          {
+            "type": "minecraft:condition",
+            "if_true": {
+              "type": "minecraft:stone_depth",
+              "offset": 3,
+              "add_surface_depth": false,
+              "secondary_depth_range": 0,
+              "surface_type": "floor"
+            },
+            "then_run": {
+              "type": "minecraft:block",
+              "result_state": "jtechstorage:citrine_sand"
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": {
+              "type": "minecraft:stone_depth",
+              "offset": 8,
+              "add_surface_depth": false,
+              "secondary_depth_range": 0,
+              "surface_type": "floor"
+            },
+            "then_run": {
+              "type": "minecraft:block",
+              "result_state": "jtechstorage:citrine_sandstone"
+            }
+          },
+          {
+            "type": "minecraft:condition",
+            "if_true": "minecraft:on_ceiling",
+            "then_run": {
+              "type": "minecraft:block",
+              "result_state": "jtechstorage:citrine_sandstone"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

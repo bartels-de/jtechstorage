@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "jtechstorage:block/cracked_crystal_stone_bricks"
+  }
+}

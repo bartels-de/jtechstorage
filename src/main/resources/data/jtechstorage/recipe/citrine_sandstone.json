@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "SS",
+    "SS"
+  ],
+  "key": {
+    "S": "jtechstorage:citrine_sand"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:citrine_sandstone"
+  }
+}

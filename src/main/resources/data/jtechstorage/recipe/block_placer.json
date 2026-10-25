@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    "DDD",
+    "DPD",
+    "DRD"
+  ],
+  "key": {
+    "D": "minecraft:cobbled_deepslate",
+    "P": "minecraft:piston",
+    "R": "minecraft:redstone"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:block_placer"
+  }
+}

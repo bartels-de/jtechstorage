@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "redstone",
+  "pattern": [
+    " A ",
+    "CHC",
+    " R "
+  ],
+  "key": {
+    "A": "minecraft:amethyst_shard",
+    "C": "jtechstorage:crystal_conveyor",
+    "H": "minecraft:hopper",
+    "R": "minecraft:comparator"
+  },
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:crystal_sorter"
+  }
+}

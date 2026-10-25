@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "jtechstorage:crystal_vines"
+        }
+      ],
+      "rolls": 1
+    },
+    {
+      "condition": {
+        "type": "minecraft:random_chance",
+        "chance": 0.3
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:glow_berries"
+        }
+      ],
+      "rolls": 1
+    }
+  ],
+  "random_sequence": "jtechstorage:blocks/crystal_vines"
+}

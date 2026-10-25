@@ -1,0 +1,25 @@
+{
+  "parent": "jtechstorage:crystal_depths",
+  "criteria": {
+    "granted": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "display": {
+    "icon": {
+      "id": "jtechstorage:quokka_spawn_egg"
+    },
+    "title": {
+      "translate": "advancements.jtechstorage.quokka_friend.title"
+    },
+    "description": {
+      "translate": "advancements.jtechstorage.quokka_friend.description"
+    },
+    "frame": "task"
+  },
+  "requirements": [
+    [
+      "granted"
+    ]
+  ]
+}
