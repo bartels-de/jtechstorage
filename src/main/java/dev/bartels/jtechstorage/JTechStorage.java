@@ -44,7 +44,19 @@ public class JTechStorage implements ModInitializer {
 		dev.bartels.jtechstorage.companion.CompanionContent.init();
 		dev.bartels.jtechstorage.farm.FarmContent.init();
 		dev.bartels.jtechstorage.chest.ChestContent.init();
+		dev.bartels.jtechstorage.depths.DepthsContent.init();
+		dev.bartels.jtechstorage.depths.DepthsAnimals.init();
+		dev.bartels.jtechstorage.depths.memory.MemoryContent.init();
+		dev.bartels.jtechstorage.depths.temple.TempleContent.init();
+		dev.bartels.jtechstorage.tools.ToolsContent.init();
+		dev.bartels.jtechstorage.logistics.LogisticsContent.init();
+		dev.bartels.jtechstorage.forge.ForgeContent.init();
 		dev.bartels.jtechstorage.enchant.ModEnchantments.init();
+		dev.bartels.jtechstorage.cosmetic.Cosmetics.init();
+		dev.bartels.jtechstorage.JbartelsMilestones.init();
+		dev.bartels.jtechstorage.depths.structure.WorkshopStructure.init();
+		dev.bartels.jtechstorage.depths.structure.CaveStructure.init();
+		dev.bartels.jtechstorage.display.DisplayContent.init();
 
 		PayloadTypeRegistry.clientboundPlay().registerLarge(TerminalContentsPayload.TYPE,
 				TerminalContentsPayload.STREAM_CODEC, TerminalContentsPayload.MAX_SIZE);
@@ -64,6 +76,22 @@ public class JTechStorage implements ModInitializer {
 		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.CompanionStatusPayload.TYPE, dev.bartels.jtechstorage.net.CompanionStatusPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.PhoenixStopEditPayload.TYPE, dev.bartels.jtechstorage.net.PhoenixStopEditPayload.STREAM_CODEC);
 		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.FlightPlanEditPayload.TYPE, dev.bartels.jtechstorage.net.FlightPlanEditPayload.STREAM_CODEC);
+		// Spieler-Kosmetik (v0.34)
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.CosmeticEquipPayload.TYPE, dev.bartels.jtechstorage.net.CosmeticEquipPayload.STREAM_CODEC);
+		PayloadTypeRegistry.serverboundPlay().register(dev.bartels.jtechstorage.net.CosmeticRequestPayload.TYPE, dev.bartels.jtechstorage.net.CosmeticRequestPayload.STREAM_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.CosmeticUnlocksPayload.TYPE, dev.bartels.jtechstorage.net.CosmeticUnlocksPayload.STREAM_CODEC);
+		PayloadTypeRegistry.clientboundPlay().register(dev.bartels.jtechstorage.net.CosmeticEffectPayload.TYPE, dev.bartels.jtechstorage.net.CosmeticEffectPayload.STREAM_CODEC);
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.CosmeticEquipPayload.TYPE, (payload, context) -> {
+			dev.bartels.jtechstorage.cosmetic.Cosmetics.equip(context.player(), payload.slot(), payload.cosmetic());
+			dev.bartels.jtechstorage.cosmetic.Cosmetics.sendUnlocks(context.player());
+		});
+		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.CosmeticRequestPayload.TYPE, (payload, context) -> {
+			if (payload.action() == dev.bartels.jtechstorage.net.CosmeticRequestPayload.EMOTE) {
+				dev.bartels.jtechstorage.cosmetic.Cosmetics.emote(context.player());
+			} else {
+				dev.bartels.jtechstorage.cosmetic.Cosmetics.sendUnlocks(context.player());
+			}
+		});
 		ServerPlayNetworking.registerGlobalReceiver(dev.bartels.jtechstorage.net.PhoenixStopEditPayload.TYPE, (payload, context) -> {
 			net.minecraft.server.level.ServerPlayer player = context.player();
 

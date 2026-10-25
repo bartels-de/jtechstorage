@@ -14,11 +14,13 @@ The interface settings (theme, accent color, effects, terminal height, count siz
 | `diamondRange` | 64 | Range: diamond upgrade |
 | `netheriteRange` | 96 | Range: netherite upgrade |
 | `enderRange` | 128 | Range: ender upgrade (wireless terminal is unlimited anyway) |
+| `crystalRange` | 192 | Range: crystal upgrade (pure amethyst, keeps the ender abilities) |
 | `baseCapacity` | 8 | Linked containers without upgrade |
 | `ironCapacity` | 16 | Capacity: iron upgrade |
 | `goldCapacity` | 32 | Capacity: gold upgrade |
 | `diamondCapacity` | 64 | Capacity: diamond upgrade |
 | `netheriteCapacity` | 128 | Capacity: netherite upgrade |
+| `crystalCapacity` | 256 | Capacity: crystal upgrade (pure amethyst) |
 | `wirelessRangeFactor` | 4 | Wireless terminal range = terminal range x this |
 | `resonanceRangeBonus` | 16 | Extra range while charged with resonance |
 | `resonanceHelperSpeed` | 1.8 | Helper speed multiplier while charged |
@@ -53,6 +55,7 @@ The interface settings (theme, accent color, effects, terminal height, count siz
 | `cheldroganRainCooldownSeconds` | 10.0 | Cheldrogan: shard rain cooldown when ridden |
 | `phoenixMailBlocksPerSecond` | 32.0 | Phoenix mail: flight speed for parcel delivery time |
 | `amethystPhoenixBlocksPerSecond` | 12.0 | Amethyst Phoenix: travel speed without cargo |
+| `milestoneHologram` | true | Jbartels' hologram appears briefly at big milestones |
 
 ## Companions (`companions`)
 

@@ -11,6 +11,8 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 | **G** | companion: follow / stay (up to 48 blocks away) | [Companions](07-companions.md#following-staying-and-calling) |
 | **H** | Amethyst Shroom: heal now | [Companions](07-companions.md#amethyst-shroom) |
 | **Shift + H** | Amethyst Shroom: automatic healing ↔ on key | [Companions](07-companions.md#amethyst-shroom) |
+| **J** | open the cosmetics menu | [Cosmetics](18-displays-and-cosmetics.md#cosmetics) |
+| **N** | play your selected emote | [Cosmetics](18-displays-and-cosmetics.md#cosmetics) |
 | **R** | Cheldrogan (riding): crystal breath | [Cheldrogan](05-cheldrogan.md#riding) |
 | **V** | Cheldrogan (riding): crystal shard rain | [Cheldrogan](05-cheldrogan.md#riding) |
 | **Left click** | Cheldrogan (riding): tail sweep | [Cheldrogan](05-cheldrogan.md#riding) |
@@ -24,7 +26,7 @@ All keys of the mod can be changed in **Options → Controls → Key Binds** (ca
 |---|---|
 | Sneak + right-click a Storage Terminal | bind the key to it |
 | Sneak + right-click a chest, barrel, shulker box or Amethyst Chest | link / unlink it |
-| Click a helper, Team or Trade Terminal, Phoenix Nest, Night Raven | link it to the network |
+| Click a helper, Team or Trade Terminal, Phoenix Nest, Night Raven, Storage Display or Storage Banner | link it to the network |
 | Look at a chest with the key in hand | show its sorting category (with an Amethyst Sprite) |
 | Right-click in the air (with *Recall*) | teleport back to your terminal, once per day |
 

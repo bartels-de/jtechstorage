@@ -273,13 +273,18 @@ public class GeodeKeeper extends PathfinderMob implements net.minecraft.world.it
 						new Trade(SHARD, 16, null, 0, CompanionContent.RESONANCE_TREAT, 8, 8, 10),
 						new Trade(net.minecraft.world.item.Items.ECHO_SHARD, 1, null, 0, SHARD, 16, 8, 10)),
 				java.util.List.of(
-						new Trade(SHARD, 48, net.minecraft.world.item.Items.DIAMOND, 1, dev.bartels.jtechstorage.ModContent.AMETHYST_CORE, 1, 3, 20),
-						new Trade(SHARD, 40, net.minecraft.world.item.Items.DIAMOND, 1, dev.bartels.jtechstorage.ModContent.WIRELESS_CORE, 1, 2, 20),
+						// v0.36: Amethyst-/Funk-Kern gibt es nur noch vom Boss
+						new Trade(SHARD, 32, null, 0, dev.bartels.jtechstorage.depths.DepthsContent.GLOW_CRYSTAL, 4, 6, 20),
+						new Trade(SHARD, 24, net.minecraft.world.item.Items.EMERALD, 2, dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_LANTERN, 4, 6, 20),
 						new Trade(SHARD, 32, net.minecraft.world.item.Items.EMERALD, 8, net.minecraft.world.item.Items.EXPERIENCE_BOTTLE, 16, 4, 20)),
 				java.util.List.of(
 						new Trade(SHARD, 64, net.minecraft.world.item.Items.DIAMOND, 4, net.minecraft.world.item.Items.BUDDING_AMETHYST, 1, 2, 30),
-						new Trade(SHARD, 64, net.minecraft.world.item.Items.EMERALD_BLOCK, 2, net.minecraft.world.item.Items.TOTEM_OF_UNDYING, 1, 1, 30),
-						new Trade(SHARD, 64, dev.bartels.jtechstorage.ModContent.AMETHYST_CORE, 1, dev.bartels.jtechstorage.ModContent.ENDER_RANGE_UPGRADE, 1, 1, 30)));
+						new Trade(SHARD, 64, net.minecraft.world.item.Items.EMERALD_BLOCK, 2, net.minecraft.world.item.Items.TOTEM_OF_UNDYING, 1, 1, 30)));
+	}
+
+	private static boolean bossOnly(net.minecraft.world.item.ItemStack stack) {
+		return stack.is(dev.bartels.jtechstorage.ModContent.AMETHYST_CORE) || stack.is(dev.bartels.jtechstorage.ModContent.WIRELESS_CORE)
+				|| stack.getItem() instanceof dev.bartels.jtechstorage.item.UpgradeItem;
 	}
 
 	private void addTier(int tier) {
@@ -462,6 +467,11 @@ public class GeodeKeeper extends PathfinderMob implements net.minecraft.world.it
 		merchantLevel = Math.clamp(input.getIntOr("MerchantLevel", 1), 1, 5);
 		restockIn = input.getIntOr("Restock", RESTOCK);
 		offers = input.read("Offers", net.minecraft.world.item.trading.MerchantOffers.CODEC).orElse(null);
+
+		if (offers != null) {
+			// v0.36: Kerne und Upgrades gibt es nicht mehr beim Hüter – alte Angebote aus bestehenden Welten entfernen
+			offers.removeIf(offer -> bossOnly(offer.getResult()) || bossOnly(offer.getCostA()) || bossOnly(offer.getCostB()));
+		}
 	}
 
 	/** Erzeugt einen Hüter mit zufälligem Angebot. */

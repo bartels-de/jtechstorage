@@ -4,7 +4,9 @@
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"ItemEntityMixin",
-		"PlayerXpMixin"
+		"PlayerXpMixin",
+		"SmithingForgeMixin",
+		"ZombieVillagerAccessor"
 	],
 	"injectors": {
 		"defaultRequire": 1

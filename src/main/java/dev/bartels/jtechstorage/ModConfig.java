@@ -26,11 +26,13 @@ public final class ModConfig {
 		public int diamondRange = 64;
 		public int netheriteRange = 96;
 		public int enderRange = 128;
+		public int crystalRange = 192;
 		public int baseCapacity = 8;
 		public int ironCapacity = 16;
 		public int goldCapacity = 32;
 		public int diamondCapacity = 64;
 		public int netheriteCapacity = 128;
+		public int crystalCapacity = 256;
 		public int wirelessRangeFactor = 4;
 		public int resonanceRangeBonus = 16;
 		public double resonanceHelperSpeed = 1.8;
@@ -80,6 +82,8 @@ public final class ModConfig {
 		public int peterGuardRadius = 16;
 		public double cheldroganHealth = 250.0;
 		public double cheldroganDamage = 24.0;
+		/** v0.35: Jbartels' Hologramm erscheint kurz bei großen Meilensteinen. */
+		public boolean milestoneHologram = true;
 		public double cheldroganBreathCooldownSeconds = 4.0;
 		public double cheldroganRainCooldownSeconds = 10.0;
 		public double phoenixMailBlocksPerSecond = 32.0;
@@ -222,11 +226,13 @@ public final class ModConfig {
 		n.diamondRange = clamp(n.diamondRange, 1, 512);
 		n.netheriteRange = clamp(n.netheriteRange, 1, 512);
 		n.enderRange = clamp(n.enderRange, 1, 512);
+		n.crystalRange = clamp(n.crystalRange, 1, 512);
 		n.baseCapacity = clamp(n.baseCapacity, 1, 1024);
 		n.ironCapacity = clamp(n.ironCapacity, 1, 1024);
 		n.goldCapacity = clamp(n.goldCapacity, 1, 1024);
 		n.diamondCapacity = clamp(n.diamondCapacity, 1, 1024);
 		n.netheriteCapacity = clamp(n.netheriteCapacity, 1, 1024);
+		n.crystalCapacity = clamp(n.crystalCapacity, 1, 1024);
 		n.wirelessRangeFactor = clamp(n.wirelessRangeFactor, 1, 64);
 		n.resonanceRangeBonus = clamp(n.resonanceRangeBonus, 0, 256);
 		n.resonanceHelperSpeed = clamp(n.resonanceHelperSpeed, 1.0, 10.0);
@@ -313,11 +319,13 @@ public final class ModConfig {
 				new Entry("diamondRange", n.diamondRange, "Range: diamond upgrade"),
 				new Entry("netheriteRange", n.netheriteRange, "Range: netherite upgrade"),
 				new Entry("enderRange", n.enderRange, "Range: ender upgrade (wireless terminal is unlimited anyway)"),
+				new Entry("crystalRange", n.crystalRange, "Range: crystal upgrade (pure amethyst, keeps the ender abilities)"),
 				new Entry("baseCapacity", n.baseCapacity, "Linked containers without upgrade / Kisten ohne Upgrade"),
 				new Entry("ironCapacity", n.ironCapacity, "Capacity: iron upgrade"),
 				new Entry("goldCapacity", n.goldCapacity, "Capacity: gold upgrade"),
 				new Entry("diamondCapacity", n.diamondCapacity, "Capacity: diamond upgrade"),
 				new Entry("netheriteCapacity", n.netheriteCapacity, "Capacity: netherite upgrade"),
+				new Entry("crystalCapacity", n.crystalCapacity, "Capacity: crystal upgrade (pure amethyst)"),
 				new Entry("wirelessRangeFactor", n.wirelessRangeFactor, "Wireless terminal range = terminal range x this / Funk-Faktor"),
 				new Entry("resonanceRangeBonus", n.resonanceRangeBonus, "Extra range while charged with resonance / Resonanz-Bonus"),
 				new Entry("resonanceHelperSpeed", n.resonanceHelperSpeed, "Helper speed multiplier while charged / Helfer-Tempo mit Resonanz"),
@@ -348,7 +356,8 @@ public final class ModConfig {
 				new Entry("cheldroganBreathCooldownSeconds", h.cheldroganBreathCooldownSeconds, "Cheldrogan: crystal breath cooldown when ridden / Odem-Abklingzeit"),
 				new Entry("cheldroganRainCooldownSeconds", h.cheldroganRainCooldownSeconds, "Cheldrogan: shard rain cooldown when ridden / Splitter-Regen-Abklingzeit"),
 				new Entry("phoenixMailBlocksPerSecond", h.phoenixMailBlocksPerSecond, "Phoenix mail: flight speed for parcel delivery time"),
-				new Entry("amethystPhoenixBlocksPerSecond", h.amethystPhoenixBlocksPerSecond, "Amethyst Phoenix: travel speed without cargo")), false);
+				new Entry("amethystPhoenixBlocksPerSecond", h.amethystPhoenixBlocksPerSecond, "Amethyst Phoenix: travel speed without cargo"),
+				new Entry("milestoneHologram", h.milestoneHologram, "Jbartels' hologram appears briefly at big milestones / Hologramm bei Meilensteinen")), false);
 
 		Companions c = companions;
 		section(out, "companions", "Companions / Begleiter", List.of(

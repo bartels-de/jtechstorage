@@ -99,7 +99,7 @@ For fully automatic sorting by category, use the [Amethyst Sprite](04-helpers.md
 A Storage Terminal with a 3×3 crafting grid (Storage Terminal + Crafter).
 
 - After every craft the grid **refills itself** from the network.
-- **Shift-click** the result to craft as many as possible.
+- **Shift-click** the result to craft up to **one stack** at once (so a single click never empties half your storage).
 - **×** puts everything from the grid back into the network.
 - With **JEI**, the `+` button transfers a whole recipe from network and inventory into the grid.
 
@@ -115,6 +115,17 @@ Opens your storage from a distance.
 
 Its range is **4 × the terminal range**. With an **Ender Upgrade** in the terminal it works everywhere, even in other
 dimensions.
+
+## Building tools
+
+Three tools for building. The two wands use blocks from your inventory – and, once bound to a terminal (sneak +
+right-click the terminal), they fetch missing blocks from your storage while you are within wireless range.
+
+| Tool | How it works | Recipe |
+|---|---|---|
+| **Building Wand** | Right-click a block face: a new layer is placed in front of the whole connected surface of that block – 3×3, 5×5 or 7×7. Sneak + right-click in the air switches the size. | Amethyst block at the top right, gold ingot in the middle, stick at the bottom left |
+| **Exchange Wand** | Sneak + right-click a block to select it. Right-click swaps a connected surface of the same block (3×3 / 5×5 / 7×7) for the selected one. The old blocks come back to you (into storage when bound). | Amethyst block, ender pearl, stick (diagonal) |
+| **Measuring Tape** | Right-click two blocks: shows width × height × depth, the number of blocks in the box and the distance, and outlines the box with particles. Sneak + right-click in the air resets it. | Iron ingot + string + yellow dye (shapeless) |
 
 ## Resonance (optional)
 

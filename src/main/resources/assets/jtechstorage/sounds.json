@@ -876,5 +876,111 @@
       "jtechstorage:shroom/attack2",
       "jtechstorage:shroom/attack3"
     ]
+  },
+  "ambient.depths.loop": {
+    "sounds": [
+      {
+        "name": "jtechstorage:ambient/depths/loop1",
+        "stream": true
+      }
+    ]
+  },
+  "ambient.depths.water": {
+    "sounds": [
+      {
+        "name": "jtechstorage:ambient/depths/water1",
+        "stream": true
+      }
+    ]
+  },
+  "ambient.depths.rumble": {
+    "sounds": [
+      {
+        "name": "jtechstorage:ambient/depths/rumble1",
+        "stream": true
+      }
+    ]
+  },
+  "ambient.depths.wind": {
+    "sounds": [
+      {
+        "name": "jtechstorage:ambient/depths/wind1",
+        "stream": true
+      }
+    ]
+  },
+  "ambient.depths.grotto": {
+    "sounds": [
+      {
+        "name": "jtechstorage:ambient/depths/grotto1",
+        "stream": true
+      }
+    ]
+  },
+  "ambient.depths.chime": {
+    "sounds": [
+      "jtechstorage:ambient/depths/chime1",
+      "jtechstorage:ambient/depths/chime2",
+      "jtechstorage:ambient/depths/chime3",
+      "jtechstorage:ambient/depths/chime4"
+    ],
+    "subtitle": "subtitles.jtechstorage.ambient.depths.chime"
+  },
+  "ambient.depths.drip": {
+    "sounds": [
+      "jtechstorage:ambient/depths/drip1",
+      "jtechstorage:ambient/depths/drip2",
+      "jtechstorage:ambient/depths/drip3",
+      "jtechstorage:ambient/depths/drip4"
+    ],
+    "subtitle": "subtitles.jtechstorage.ambient.depths.drip"
+  },
+  "ambient.depths.ember": {
+    "sounds": [
+      "jtechstorage:ambient/depths/ember1",
+      "jtechstorage:ambient/depths/ember2",
+      "jtechstorage:ambient/depths/ember3"
+    ],
+    "subtitle": "subtitles.jtechstorage.ambient.depths.ember"
+  },
+  "ambient.depths.mood": {
+    "sounds": [
+      "jtechstorage:ambient/depths/mood1",
+      "jtechstorage:ambient/depths/mood2"
+    ]
+  },
+  "quokka.ambient": {
+    "sounds": [
+      "jtechstorage:quokka/ambient1",
+      "jtechstorage:quokka/ambient2",
+      "jtechstorage:quokka/ambient3"
+    ],
+    "subtitle": "subtitles.jtechstorage.quokka.ambient"
+  },
+  "quokka.hurt": {
+    "sounds": [
+      "jtechstorage:quokka/hurt1",
+      "jtechstorage:quokka/hurt2"
+    ],
+    "subtitle": "subtitles.jtechstorage.quokka.hurt"
+  },
+  "quokka.death": {
+    "sounds": [
+      "jtechstorage:quokka/death1"
+    ],
+    "subtitle": "subtitles.jtechstorage.quokka.death"
+  },
+  "quokka.eat": {
+    "sounds": [
+      "jtechstorage:quokka/eat1",
+      "jtechstorage:quokka/eat2"
+    ],
+    "subtitle": "subtitles.jtechstorage.quokka.eat"
+  },
+  "quokka.cure": {
+    "sounds": [
+      "jtechstorage:quokka/cure1"
+    ],
+    "subtitle": "subtitles.jtechstorage.quokka.cure"
   }
 }

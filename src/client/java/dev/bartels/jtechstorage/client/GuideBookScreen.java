@@ -195,9 +195,37 @@ public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedS
 		info("sorting");
 		info("interface");
 		info("amethyst_chests");
+		info("crystal_depths");
+		info("portal_link");
+		info("workshop");
+		info("depths_animals");
+		info("depths_explore");
+		info("memory_crystals");
+		info("temple");
+		crafting(dev.bartels.jtechstorage.depths.memory.MemoryContent.MEMORY_CASE, "jtechstorage.guide.recipe.memory_case",
+				Items.DARK_OAK_SLAB, Items.DARK_OAK_SLAB, Items.DARK_OAK_SLAB, dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_GLASS, Items.AMETHYST_SHARD, dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_GLASS, Items.GOLD_INGOT, dev.bartels.jtechstorage.depths.DepthsContent.POLISHED_CRYSTAL_STONE, Items.GOLD_INGOT);
 		info("controls");
 		info("rest");
 		info("farm_tools");
+		info("block_placer");
+		crafting(dev.bartels.jtechstorage.farm.FarmContent.BLOCK_PLACER, "jtechstorage.guide.recipe.block_placer",
+				Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.PISTON, Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.REDSTONE, Items.COBBLED_DEEPSLATE);
+		info("build_tools");
+		crafting(dev.bartels.jtechstorage.tools.ToolsContent.BUILDING_WAND, "jtechstorage.guide.recipe.building_wand",
+				null, null, Items.AMETHYST_BLOCK, null, Items.GOLD_INGOT, null, Items.STICK, null, null);
+		crafting(dev.bartels.jtechstorage.tools.ToolsContent.EXCHANGE_WAND, "jtechstorage.guide.recipe.exchange_wand",
+				null, null, Items.AMETHYST_BLOCK, null, Items.ENDER_PEARL, null, Items.STICK, null, null);
+		shapeless(dev.bartels.jtechstorage.tools.ToolsContent.MEASURING_TAPE, "jtechstorage.guide.recipe.measuring_tape", Items.IRON_INGOT, Items.STRING, Items.DYE.yellow());
+		info("logistics");
+		crafting(dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, "jtechstorage.guide.recipe.crystal_conveyor",
+				Items.AMETHYST_SHARD, Items.AMETHYST_SHARD, Items.AMETHYST_SHARD, Items.IRON_INGOT, Items.REDSTONE, Items.IRON_INGOT, null, null, null);
+		crafting(dev.bartels.jtechstorage.logistics.LogisticsContent.FAST_CONVEYOR, "jtechstorage.guide.recipe.fast_crystal_conveyor",
+				dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.depths.DepthsContent.GLOW_CRYSTAL, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR);
+		crafting(dev.bartels.jtechstorage.logistics.LogisticsContent.SORTER, "jtechstorage.guide.recipe.crystal_sorter",
+				null, Items.AMETHYST_SHARD, null, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, Items.HOPPER, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, null, Items.COMPARATOR, null);
+		info("forge");
+		crafting(dev.bartels.jtechstorage.forge.ForgeContent.FORGE, "jtechstorage.guide.recipe.crystal_forge",
+				dev.bartels.jtechstorage.depths.DepthsContent.PURE_AMETHYST, dev.bartels.jtechstorage.depths.DepthsContent.PURE_AMETHYST, dev.bartels.jtechstorage.depths.DepthsContent.PURE_AMETHYST, Items.POLISHED_DEEPSLATE, Items.SMITHING_TABLE, Items.POLISHED_DEEPSLATE, Items.POLISHED_DEEPSLATE, Items.ANVIL, Items.POLISHED_DEEPSLATE);
 		info("cosmetics");
 
 		chapter(ModContent.TEAM_TERMINAL_ITEM, "team");
@@ -228,6 +256,20 @@ public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedS
 		info("companion_bond");
 		shapeless(dev.bartels.jtechstorage.companion.CompanionContent.RESONANCE_TREAT, "jtechstorage.guide.recipe.resonance_treat",
 				Items.HONEY_BOTTLE, Items.AMETHYST_SHARD, Items.AMETHYST_SHARD);
+
+		chapter(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_DISPLAY, "displays");
+		info("storage_display");
+		info("display_modes");
+		info("storage_banner");
+		info("display_menu");
+		crafting(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_DISPLAY, "jtechstorage.guide.recipe.storage_display",
+				Items.AMETHYST_SHARD, Items.POLISHED_DEEPSLATE, Items.AMETHYST_SHARD, Items.POLISHED_DEEPSLATE, Items.TINTED_GLASS, Items.POLISHED_DEEPSLATE, Items.REDSTONE, Items.COMPARATOR, Items.REDSTONE);
+		crafting(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_BANNER, "jtechstorage.guide.recipe.storage_banner",
+				Items.GOLD_NUGGET, Items.STICK, Items.GOLD_NUGGET, Items.WOOL.purple(), Items.AMETHYST_SHARD, Items.WOOL.purple(), Items.WOOL.purple(), Items.REDSTONE, Items.WOOL.purple());
+
+		chapter(Items.AMETHYST_CLUSTER, "cosmetics");
+		info("cosmetics");
+		info("cosmetics_unlock");
 
 		chapter(ModContent.LEATHER_BACKPACK, "backpacks");
 		info("backpack");
@@ -274,7 +316,30 @@ public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedS
 		crafting(dev.bartels.jtechstorage.storm.StormContent.SIGNAL_LANTERN_ITEM, "jtechstorage.guide.recipe.signal_lantern",
 				null, Items.GOLD_NUGGET, null, Items.POLISHED_DEEPSLATE, Items.AMETHYST_SHARD, Items.POLISHED_DEEPSLATE, Items.POLISHED_DEEPSLATE, Items.REDSTONE, Items.POLISHED_DEEPSLATE);
 
+		crafting(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_DISPLAY, "jtechstorage.guide.recipe.storage_display",
+				Items.AMETHYST_SHARD, Items.POLISHED_DEEPSLATE, Items.AMETHYST_SHARD, Items.POLISHED_DEEPSLATE, Items.TINTED_GLASS, Items.POLISHED_DEEPSLATE, Items.REDSTONE, Items.COMPARATOR, Items.REDSTONE);
+		crafting(dev.bartels.jtechstorage.display.DisplayContent.STORAGE_BANNER, "jtechstorage.guide.recipe.storage_banner",
+				Items.GOLD_NUGGET, Items.STICK, Items.GOLD_NUGGET, Items.WOOL.purple(), Items.AMETHYST_SHARD, Items.WOOL.purple(), Items.WOOL.purple(), Items.REDSTONE, Items.WOOL.purple());
+		crafting(dev.bartels.jtechstorage.depths.memory.MemoryContent.MEMORY_CASE, "jtechstorage.guide.recipe.memory_case",
+				Items.DARK_OAK_SLAB, Items.DARK_OAK_SLAB, Items.DARK_OAK_SLAB, dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_GLASS, Items.AMETHYST_SHARD, dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_GLASS, Items.GOLD_INGOT, dev.bartels.jtechstorage.depths.DepthsContent.POLISHED_CRYSTAL_STONE, Items.GOLD_INGOT);
+
+		crafting(dev.bartels.jtechstorage.farm.FarmContent.BLOCK_PLACER, "jtechstorage.guide.recipe.block_placer",
+				Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.PISTON, Items.COBBLED_DEEPSLATE, Items.COBBLED_DEEPSLATE, Items.REDSTONE, Items.COBBLED_DEEPSLATE);
+		crafting(dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, "jtechstorage.guide.recipe.crystal_conveyor",
+				Items.AMETHYST_SHARD, Items.AMETHYST_SHARD, Items.AMETHYST_SHARD, Items.IRON_INGOT, Items.REDSTONE, Items.IRON_INGOT, null, null, null);
+		crafting(dev.bartels.jtechstorage.logistics.LogisticsContent.FAST_CONVEYOR, "jtechstorage.guide.recipe.fast_crystal_conveyor",
+				dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.depths.DepthsContent.GLOW_CRYSTAL, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR);
+		crafting(dev.bartels.jtechstorage.logistics.LogisticsContent.SORTER, "jtechstorage.guide.recipe.crystal_sorter",
+				null, Items.AMETHYST_SHARD, null, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, Items.HOPPER, dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, null, Items.COMPARATOR, null);
+		crafting(dev.bartels.jtechstorage.forge.ForgeContent.FORGE, "jtechstorage.guide.recipe.crystal_forge",
+				dev.bartels.jtechstorage.depths.DepthsContent.PURE_AMETHYST, dev.bartels.jtechstorage.depths.DepthsContent.PURE_AMETHYST, dev.bartels.jtechstorage.depths.DepthsContent.PURE_AMETHYST, Items.POLISHED_DEEPSLATE, Items.SMITHING_TABLE, Items.POLISHED_DEEPSLATE, Items.POLISHED_DEEPSLATE, Items.ANVIL, Items.POLISHED_DEEPSLATE);
+
 		chapter(ModContent.STORAGE_KEY, "recipes_tools");
+		crafting(dev.bartels.jtechstorage.tools.ToolsContent.BUILDING_WAND, "jtechstorage.guide.recipe.building_wand",
+				null, null, Items.AMETHYST_BLOCK, null, Items.GOLD_INGOT, null, Items.STICK, null, null);
+		crafting(dev.bartels.jtechstorage.tools.ToolsContent.EXCHANGE_WAND, "jtechstorage.guide.recipe.exchange_wand",
+				null, null, Items.AMETHYST_BLOCK, null, Items.ENDER_PEARL, null, Items.STICK, null, null);
+		shapeless(dev.bartels.jtechstorage.tools.ToolsContent.MEASURING_TAPE, "jtechstorage.guide.recipe.measuring_tape", Items.IRON_INGOT, Items.STRING, Items.DYE.yellow());
 		crafting(ModContent.STORAGE_KEY, "jtechstorage.guide.recipe.storage_key",
 				null, Items.AMETHYST_SHARD, null, null, Items.ENDER_PEARL, null, null, Items.GOLD_INGOT, null);
 		crafting(ModContent.WIRELESS_TERMINAL, "jtechstorage.guide.recipe.wireless_terminal",
@@ -386,10 +451,23 @@ public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedS
 		chapter(ModContent.AMETHYST_DRAUGHT, "bosses");
 		creature(ModContent.AMETHYST_ROBOT, "boss");
 		creature(EndContent.AMETHYST_SPIDER, "spider");
+		creature(dev.bartels.jtechstorage.depths.temple.TempleContent.LAST_MASTER, "last_master");
 
 		chapter(Items.AMETHYST_CLUSTER, "storm_creatures");
 		creature(dev.bartels.jtechstorage.storm.StormContent.CRYSTAL_SHARDLING, "shardling");
 		creature(dev.bartels.jtechstorage.storm.StormContent.STORM_HERALD, "herald");
+
+		chapter(dev.bartels.jtechstorage.depths.DepthsContent.GLOW_CRYSTAL.asItem(), "depths_creatures");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_LURKER, "crystal_lurker");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.SWARM_SHARD, "swarm_shard");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.LAKE_WRAITH, "lake_wraith");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.VEIN_CRAWLER, "vein_crawler");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.CRYSTAL_SNAIL, "crystal_snail");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.GLOW_FISH, "glow_fish");
+		creature(dev.bartels.jtechstorage.depths.DepthsContent.QUOKKA, "quokka");
+		creature(dev.bartels.jtechstorage.depths.DepthsAnimals.CRYSTAL_DEER, "crystal_deer");
+		creature(dev.bartels.jtechstorage.depths.DepthsAnimals.GEODE_SHEEP, "geode_sheep");
+		creature(dev.bartels.jtechstorage.depths.DepthsAnimals.CRYSTAL_CRAB, "crystal_crab");
 
 		chapter(ModContent.GUIDE_BOOK, "others");
 		creature(ModContent.JBARTELS_HOLOGRAM, "jbartels");
@@ -412,9 +490,13 @@ public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedS
 		lexicon(ModContent.STORAGE_TERMINAL_ITEM, ModContent.CRAFTING_TERMINAL_ITEM, ModContent.TEAM_TERMINAL_ITEM,
 				ModContent.TRADE_TERMINAL_ITEM, ModContent.PHOENIX_NEST_ITEM, ModContent.PHOENIX_STOP_ITEM,
 				dev.bartels.jtechstorage.storm.StormContent.SIGNAL_LANTERN_ITEM, dev.bartels.jtechstorage.wolf.WolfContent.WOLF_BASKET_ITEM,
-				dev.bartels.jtechstorage.wolf.WolfContent.HELPER_BED_ITEM, EndContent.CRYSTAL_ALTAR_ITEM);
+				dev.bartels.jtechstorage.wolf.WolfContent.HELPER_BED_ITEM, EndContent.CRYSTAL_ALTAR_ITEM,
+				dev.bartels.jtechstorage.display.DisplayContent.STORAGE_DISPLAY.asItem(), dev.bartels.jtechstorage.display.DisplayContent.STORAGE_BANNER.asItem(),
+				dev.bartels.jtechstorage.depths.memory.MemoryContent.MEMORY_CASE.asItem(), dev.bartels.jtechstorage.farm.FarmContent.BLOCK_PLACER_ITEM);
 
 		chapter(ModContent.STORAGE_KEY, "lexicon_tools");
+		lexicon(dev.bartels.jtechstorage.tools.ToolsContent.BUILDING_WAND, dev.bartels.jtechstorage.tools.ToolsContent.EXCHANGE_WAND, dev.bartels.jtechstorage.tools.ToolsContent.MEASURING_TAPE, dev.bartels.jtechstorage.depths.temple.TempleContent.MASTER_HAMMER);
+		lexicon(dev.bartels.jtechstorage.logistics.LogisticsContent.CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.FAST_CONVEYOR, dev.bartels.jtechstorage.logistics.LogisticsContent.SORTER, dev.bartels.jtechstorage.forge.ForgeContent.FORGE_ITEM);
 		lexicon(ModContent.STORAGE_KEY, ModContent.WIRELESS_TERMINAL, ModContent.FLIGHT_PLAN, ModContent.LEATHER_BACKPACK,
 				ModContent.AMETHYST_DRAUGHT, EndContent.LAIR_COMPASS, EndContent.CRYSTAL_COCOON);
 

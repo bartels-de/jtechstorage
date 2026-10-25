@@ -7,10 +7,13 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 ## Contents
 
 - [Storage network](#storage-network)
+- [Network displays](#network-displays)
+- [Building tools](#building-tools)
 - [Amethyst chests](#amethyst-chests)
 - [Helpers and their homes](#helpers-and-their-homes)
 - [Phoenix mail and travel](#phoenix-mail-and-travel)
 - [Farm tools](#farm-tools)
+- [Crystal Depths](#crystal-depths)
 - [Bosses and the End](#bosses-and-the-end)
 - [Amethyst Obsidian gear](#amethyst-obsidian-gear)
 - [Backpacks](#backpacks)
@@ -129,6 +132,18 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 
 </td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/ender_range_upgrade.png" width="40" height="40" alt="Ender Upgrade" title="Ender Upgrade"><br><sub>Ender Upgrade</sub></td></tr></table>
 
+### Range Upgrade (Crystal)
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/ender_range_upgrade.png" width="32" height="32" alt="Ender Upgrade" title="Ender Upgrade"><br><sub>Ender Upgrade</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_range_upgrade.png" width="40" height="40" alt="Range Upgrade (Crystal)" title="Range Upgrade (Crystal)"><br><sub>Range Upgrade (Crystal)</sub></td></tr></table>
+
 ### Capacity Upgrade (Gold)
 
 <table><tr><td>
@@ -156,6 +171,74 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 ### Capacity Upgrade (Netherite)
 
 **Smithing table:** Netherite Upgrade (Smithing Template) + Capacity Upgrade (Diamond) + Netherite Ingot ➜ <img src="../images/items/netherite_capacity_upgrade.png" width="24" height="24" alt=""> **Capacity Upgrade (Netherite)**
+
+### Capacity Upgrade (Crystal)
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/netherite_capacity_upgrade.png" width="32" height="32" alt="Capacity Upgrade (Netherite)" title="Capacity Upgrade (Netherite)"><br><sub>Capacity Upgrade (Netherite)</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_capacity_upgrade.png" width="40" height="40" alt="Capacity Upgrade (Crystal)" title="Capacity Upgrade (Crystal)"><br><sub>Capacity Upgrade (Crystal)</sub></td></tr></table>
+
+## Network displays
+
+### Storage Display
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td></tr>
+<tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Tinted Glass</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
+<tr><td align="center" width="72"><sub>Redstone Dust</sub></td><td align="center" width="72"><sub>Redstone Comparator</sub></td><td align="center" width="72"><sub>Redstone Dust</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/storage_display.png" width="40" height="40" alt="Storage Display" title="Storage Display"><br><sub>Storage Display</sub> <b>×2</b></td></tr></table>
+
+### Storage Banner
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Gold Nugget</sub></td><td align="center" width="72"><sub>Stick</sub></td><td align="center" width="72"><sub>Gold Nugget</sub></td></tr>
+<tr><td align="center" width="72"><sub>Purple Wool</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><sub>Purple Wool</sub></td></tr>
+<tr><td align="center" width="72"><sub>Purple Wool</sub></td><td align="center" width="72"><sub>Redstone Dust</sub></td><td align="center" width="72"><sub>Purple Wool</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/storage_banner.png" width="40" height="40" alt="Storage Banner" title="Storage Banner"><br><sub>Storage Banner</sub></td></tr></table>
+
+## Building tools
+
+### Building Wand
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"></td><td align="center" width="72"></td><td align="center" width="72"><sub>Block of Amethyst</sub></td></tr>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><sub>Stick</sub></td><td align="center" width="72"></td><td align="center" width="72"></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/building_wand.png" width="40" height="40" alt="Building Wand" title="Building Wand"><br><sub>Building Wand</sub></td></tr></table>
+
+### Exchange Wand
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"></td><td align="center" width="72"></td><td align="center" width="72"><sub>Block of Amethyst</sub></td></tr>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Ender Pearl</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><sub>Stick</sub></td><td align="center" width="72"></td><td align="center" width="72"></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/exchange_wand.png" width="40" height="40" alt="Exchange Wand" title="Exchange Wand"><br><sub>Exchange Wand</sub></td></tr></table>
+
+### Measuring Tape
+
+**Shapeless:** Iron Ingot + String + Yellow Dye ➜ <img src="../images/items/measuring_tape.png" width="24" height="24" alt=""> **Measuring Tape**
 
 ## Amethyst chests
 
@@ -408,6 +491,53 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 
 </td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_pusher.png" width="40" height="40" alt="Crystal Pusher" title="Crystal Pusher"><br><sub>Crystal Pusher</sub></td></tr></table>
 
+### Block Placer
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Cobbled Deepslate</sub></td><td align="center" width="72"><sub>Cobbled Deepslate</sub></td><td align="center" width="72"><sub>Cobbled Deepslate</sub></td></tr>
+<tr><td align="center" width="72"><sub>Cobbled Deepslate</sub></td><td align="center" width="72"><sub>Piston</sub></td><td align="center" width="72"><sub>Cobbled Deepslate</sub></td></tr>
+<tr><td align="center" width="72"><sub>Cobbled Deepslate</sub></td><td align="center" width="72"><sub>Redstone Dust</sub></td><td align="center" width="72"><sub>Cobbled Deepslate</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/block_placer.png" width="40" height="40" alt="Block Placer" title="Block Placer"><br><sub>Block Placer</sub></td></tr></table>
+
+### Crystal Conveyor
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td></tr>
+<tr><td align="center" width="72"><sub>Iron Ingot</sub></td><td align="center" width="72"><sub>Redstone Dust</sub></td><td align="center" width="72"><sub>Iron Ingot</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_conveyor.png" width="40" height="40" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub> <b>×8</b></td></tr></table>
+
+### Fast Crystal Conveyor
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/fast_crystal_conveyor.png" width="40" height="40" alt="Fast Crystal Conveyor" title="Fast Crystal Conveyor"><br><sub>Fast Crystal Conveyor</sub> <b>×8</b></td></tr></table>
+
+### Crystal Sorter
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td><td align="center" width="72"><sub>Hopper</sub></td><td align="center" width="72"><img src="../images/items/crystal_conveyor.png" width="32" height="32" alt="Crystal Conveyor" title="Crystal Conveyor"><br><sub>Crystal Conveyor</sub></td></tr>
+<tr><td align="center" width="72"></td><td align="center" width="72"><sub>Redstone Comparator</sub></td><td align="center" width="72"></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_sorter.png" width="40" height="40" alt="Crystal Sorter" title="Crystal Sorter"><br><sub>Crystal Sorter</sub></td></tr></table>
+
 ### Farm Monitor
 
 <table><tr><td>
@@ -431,6 +561,192 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 </table>
 
 </td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/chunk_loader.png" width="40" height="40" alt="Chunk Loader" title="Chunk Loader"><br><sub>Chunk Loader</sub></td></tr></table>
+
+## Crystal Depths
+
+### Polished Crystal Stone
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone.png" width="32" height="32" alt="Crystal Stone" title="Crystal Stone"><br><sub>Crystal Stone</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone.png" width="32" height="32" alt="Crystal Stone" title="Crystal Stone"><br><sub>Crystal Stone</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone.png" width="32" height="32" alt="Crystal Stone" title="Crystal Stone"><br><sub>Crystal Stone</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone.png" width="32" height="32" alt="Crystal Stone" title="Crystal Stone"><br><sub>Crystal Stone</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/polished_crystal_stone.png" width="40" height="40" alt="Polished Crystal Stone" title="Polished Crystal Stone"><br><sub>Polished Crystal Stone</sub> <b>×4</b></td></tr></table>
+
+### Polished Crystal Stone
+
+
+
+### Crystal Stone Bricks
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/polished_crystal_stone.png" width="32" height="32" alt="Polished Crystal Stone" title="Polished Crystal Stone"><br><sub>Polished Crystal Stone</sub></td><td align="center" width="72"><img src="../images/items/polished_crystal_stone.png" width="32" height="32" alt="Polished Crystal Stone" title="Polished Crystal Stone"><br><sub>Polished Crystal Stone</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/polished_crystal_stone.png" width="32" height="32" alt="Polished Crystal Stone" title="Polished Crystal Stone"><br><sub>Polished Crystal Stone</sub></td><td align="center" width="72"><img src="../images/items/polished_crystal_stone.png" width="32" height="32" alt="Polished Crystal Stone" title="Polished Crystal Stone"><br><sub>Polished Crystal Stone</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_stone_bricks.png" width="40" height="40" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub> <b>×4</b></td></tr></table>
+
+### Crystal Stone Bricks
+
+
+
+### Crystal Stone Bricks
+
+
+
+### Cracked Crystal Stone Bricks
+
+
+
+### Chiseled Crystal Stone
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone_brick_slab.png" width="32" height="32" alt="Crystal Stone Brick Slab" title="Crystal Stone Brick Slab"><br><sub>Crystal Stone Brick Slab</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone_brick_slab.png" width="32" height="32" alt="Crystal Stone Brick Slab" title="Crystal Stone Brick Slab"><br><sub>Crystal Stone Brick Slab</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/chiseled_crystal_stone.png" width="40" height="40" alt="Chiseled Crystal Stone" title="Chiseled Crystal Stone"><br><sub>Chiseled Crystal Stone</sub></td></tr></table>
+
+### Chiseled Crystal Stone
+
+
+
+### Chiseled Crystal Stone
+
+
+
+### Chiseled Crystal Stone
+
+
+
+### Crystal Stone Brick Stairs
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_stone_brick_stairs.png" width="40" height="40" alt="Crystal Stone Brick Stairs" title="Crystal Stone Brick Stairs"><br><sub>Crystal Stone Brick Stairs</sub> <b>×4</b></td></tr></table>
+
+### Crystal Stone Brick Stairs
+
+
+
+### Crystal Stone Brick Stairs
+
+
+
+### Crystal Stone Brick Stairs
+
+
+
+### Crystal Stone Brick Slab
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td><td align="center" width="72"><img src="../images/items/crystal_stone_bricks.png" width="32" height="32" alt="Crystal Stone Bricks" title="Crystal Stone Bricks"><br><sub>Crystal Stone Bricks</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_stone_brick_slab.png" width="40" height="40" alt="Crystal Stone Brick Slab" title="Crystal Stone Brick Slab"><br><sub>Crystal Stone Brick Slab</sub> <b>×6</b></td></tr></table>
+
+### Crystal Stone Brick Slab
+
+
+
+### Crystal Stone Brick Slab
+
+
+
+### Crystal Stone Brick Slab
+
+
+
+### Crystal Glass
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><sub>Glass</sub></td></tr>
+<tr><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><sub>Glass</sub></td></tr>
+<tr><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><sub>Glass</sub></td><td align="center" width="72"><sub>Glass</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_glass.png" width="40" height="40" alt="Crystal Glass" title="Crystal Glass"><br><sub>Crystal Glass</sub> <b>×8</b></td></tr></table>
+
+### Crystal Lantern
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Iron Nugget</sub></td><td align="center" width="72"><sub>Iron Nugget</sub></td><td align="center" width="72"><sub>Iron Nugget</sub></td></tr>
+<tr><td align="center" width="72"><sub>Iron Nugget</sub></td><td align="center" width="72"><img src="../images/items/glow_crystal.png" width="32" height="32" alt="Glow Crystal" title="Glow Crystal"><br><sub>Glow Crystal</sub></td><td align="center" width="72"><sub>Iron Nugget</sub></td></tr>
+<tr><td align="center" width="72"><sub>Iron Nugget</sub></td><td align="center" width="72"><sub>Iron Nugget</sub></td><td align="center" width="72"><sub>Iron Nugget</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_lantern.png" width="40" height="40" alt="Crystal Lantern" title="Crystal Lantern"><br><sub>Crystal Lantern</sub> <b>×2</b></td></tr></table>
+
+### Pure Amethyst
+
+
+
+### Pure Amethyst
+
+**Shapeless:** Block of Pure Amethyst ➜ <img src="../images/items/pure_amethyst.png" width="24" height="24" alt=""> **Pure Amethyst** <b>×9</b>
+
+### Pure Amethyst
+
+
+
+### Block of Pure Amethyst
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/pure_amethyst_block.png" width="40" height="40" alt="Block of Pure Amethyst" title="Block of Pure Amethyst"><br><sub>Block of Pure Amethyst</sub></td></tr></table>
+
+### Citrine Sandstone
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/citrine_sand.png" width="32" height="32" alt="Citrine Sand" title="Citrine Sand"><br><sub>Citrine Sand</sub></td><td align="center" width="72"><img src="../images/items/citrine_sand.png" width="32" height="32" alt="Citrine Sand" title="Citrine Sand"><br><sub>Citrine Sand</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/citrine_sand.png" width="32" height="32" alt="Citrine Sand" title="Citrine Sand"><br><sub>Citrine Sand</sub></td><td align="center" width="72"><img src="../images/items/citrine_sand.png" width="32" height="32" alt="Citrine Sand" title="Citrine Sand"><br><sub>Citrine Sand</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/citrine_sandstone.png" width="40" height="40" alt="Citrine Sandstone" title="Citrine Sandstone"><br><sub>Citrine Sandstone</sub></td></tr></table>
+
+### White Crystal Wool
+
+**Shapeless:** any Crystal Wool + White Dye ➜ <img src="../images/items/white_crystal_wool.png" width="24" height="24" alt=""> **White Crystal Wool**
+
+### Memory Case
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><sub>Dark Oak Slab</sub></td><td align="center" width="72"><sub>Dark Oak Slab</sub></td><td align="center" width="72"><sub>Dark Oak Slab</sub></td></tr>
+<tr><td align="center" width="72"><img src="../images/items/crystal_glass.png" width="32" height="32" alt="Crystal Glass" title="Crystal Glass"><br><sub>Crystal Glass</sub></td><td align="center" width="72"><sub>Amethyst Shard</sub></td><td align="center" width="72"><img src="../images/items/crystal_glass.png" width="32" height="32" alt="Crystal Glass" title="Crystal Glass"><br><sub>Crystal Glass</sub></td></tr>
+<tr><td align="center" width="72"><sub>Gold Ingot</sub></td><td align="center" width="72"><img src="../images/items/polished_crystal_stone.png" width="32" height="32" alt="Polished Crystal Stone" title="Polished Crystal Stone"><br><sub>Polished Crystal Stone</sub></td><td align="center" width="72"><sub>Gold Ingot</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/memory_case.png" width="40" height="40" alt="Memory Case" title="Memory Case"><br><sub>Memory Case</sub></td></tr></table>
+
+Crystal wool works like wool: any crystal wool + a dye gives that colour, and crystal wool turns back into string.
 
 ## Bosses and the End
 
@@ -520,6 +836,18 @@ Some items have **no recipe** and only come from bosses or helpers – see [Item
 
 **Smithing table:** Amethyst Obsidian Upgrade + Netherite Hoe + Crystal Obsidian ➜ <img src="../images/items/amethyst_obsidian_hoe.png" width="24" height="24" alt=""> **Amethyst Obsidian Hoe**
 
+### Crystal Forge
+
+<table><tr><td>
+
+<table>
+<tr><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td><td align="center" width="72"><img src="../images/items/pure_amethyst.png" width="32" height="32" alt="Pure Amethyst" title="Pure Amethyst"><br><sub>Pure Amethyst</sub></td></tr>
+<tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Smithing Table</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
+<tr><td align="center" width="72"><sub>Polished Deepslate</sub></td><td align="center" width="72"><sub>Anvil</sub></td><td align="center" width="72"><sub>Polished Deepslate</sub></td></tr>
+</table>
+
+</td><td align="center" width="40">➜</td><td align="center" width="96"><img src="../images/items/crystal_forge.png" width="40" height="40" alt="Crystal Forge" title="Crystal Forge"><br><sub>Crystal Forge</sub></td></tr></table>
+
 ## Backpacks
 
 ### Leather Backpack
@@ -588,16 +916,48 @@ Backpacks can be **dyed** in the crafting grid like leather armor (backpack + an
 
 Recipes the mod adds for vanilla items.
 
+### Cyan Dye
+
+**Shapeless:** Azure Crystal Cluster ➜ **Cyan Dye**
+
+### Cyan Dye
+
+**Shapeless:** Azure Crystal ➜ **Cyan Dye** <b>×2</b>
+
+### Pink Dye
+
+**Shapeless:** Rose Quartz Bloom ➜ **Pink Dye**
+
+### Pink Dye
+
+**Shapeless:** Rose Crystal Cluster ➜ **Pink Dye**
+
+### Pink Dye
+
+**Shapeless:** Rose Crystal ➜ **Pink Dye** <b>×2</b>
+
 ### Nether Quartz
 
 **Shapeless:** Block of Quartz ➜ **Nether Quartz** <b>×4</b>
+
+### String
+
+**Shapeless:** any Crystal Wool ➜ **String** <b>×4</b>
+
+### Yellow Dye
+
+**Shapeless:** Citrine Crystal Cluster ➜ **Yellow Dye**
+
+### Yellow Dye
+
+**Shapeless:** Citrine Crystal ➜ **Yellow Dye** <b>×2</b>
 
 ## Items without a recipe
 
 | Item | Where it comes from |
 |---|---|
-| <img src="../images/items/amethyst_core.png" width="24" height="24" alt="Amethyst Core" title="Amethyst Core"> Amethyst Core | Amethyst Robot (30 % per kill, or a Wireless Core), Storm Herald (sometimes), Geode Keeper (trade, level 4) |
-| <img src="../images/items/wireless_core.png" width="24" height="24" alt="Wireless Core" title="Wireless Core"> Wireless Core | Amethyst Robot (30 % per kill, or an Amethyst Core), Geode Keeper (trade, level 4) |
+| <img src="../images/items/amethyst_core.png" width="24" height="24" alt="Amethyst Core" title="Amethyst Core"> Amethyst Core | Amethyst Robot (30 % per kill, or a Wireless Core), Storm Herald (sometimes) |
+| <img src="../images/items/wireless_core.png" width="24" height="24" alt="Wireless Core" title="Wireless Core"> Wireless Core | Amethyst Robot (30 % per kill, or an Amethyst Core) |
 | <img src="../images/items/iron_range_upgrade.png" width="24" height="24" alt="Range Upgrade (Iron)" title="Range Upgrade (Iron)"> Range / Capacity Upgrade (Iron) | Amethyst Robot (always) |
 | <img src="../images/items/amethyst_obsidian_upgrade_smithing_template.png" width="24" height="24" alt="Amethyst Obsidian Upgrade" title="Amethyst Obsidian Upgrade"> Amethyst Obsidian Upgrade | Great Amethyst Spider (exactly one per kill) |
 | <img src="../images/items/peter_chel_parker.png" width="24" height="24" alt="Peter Chel Parker" title="Peter Chel Parker"> Peter Chel Parker | Right-click Chel with a nether star |
@@ -606,6 +966,7 @@ Recipes the mod adds for vanilla items.
 | <img src="../images/items/crystal_wolf.png" width="24" height="24" alt="Crystal Wolf" title="Crystal Wolf"> Crystal Wolf | Feed a tamed wolf an Amethyst Core |
 | <img src="../images/items/moon_wolf.png" width="24" height="24" alt="Moon Wolf" title="Moon Wolf"> Moon Wolf | Appears at full moon once you have 5 Crystal Wolves; win it over with an Amethyst Bone |
 | Crystal enchantment books | Amethyst Fox (digs one up about every three days) |
+| <img src="../images/items/master_hammer.png" width="24" height="24" alt="Storage Master's Hammer" title="Storage Master's Hammer"> Storage Master's Hammer | The Last Storage Master |
 | Companions | Geode Keeper in amethyst geodes |
 
 ---

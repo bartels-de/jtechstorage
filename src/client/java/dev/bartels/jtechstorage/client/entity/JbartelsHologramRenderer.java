@@ -49,7 +49,9 @@ public class JbartelsHologramRenderer extends MobRenderer<JbartelsHologram, Jbar
 		ArmedEntityRenderState.extractArmedEntityRenderState(hologram, state, itemModelResolver, partialTick);
 		state.standby = hologram.level().getNearestPlayer(hologram, 8.0) == null;
 		state.bubble.clear();
-		String text = Component.translatable("jtechstorage.tutorial.step." + hologram.getStep()).getString();
+		boolean milestone = hologram.isMilestone();
+		String text = Component.translatable(milestone ? "jtechstorage.milestone." + hologram.getMilestone()
+				: "jtechstorage.tutorial.step." + hologram.getStep()).getString();
 		StringBuilder line = new StringBuilder();
 
 		for (String word : text.split(" ")) {
@@ -67,8 +69,10 @@ public class JbartelsHologramRenderer extends MobRenderer<JbartelsHologram, Jbar
 			state.bubble.add(Component.literal(line.toString()));
 		}
 
-		state.bubble.add(Component.translatable("jtechstorage.tutorial.hint", hologram.getStep() + 1, JbartelsHologram.STEP_COUNT)
-				.withStyle(ChatFormatting.GRAY));
+		if (!milestone) {
+			state.bubble.add(Component.translatable("jtechstorage.tutorial.hint", hologram.getStep() + 1, JbartelsHologram.STEP_COUNT)
+					.withStyle(ChatFormatting.GRAY));
+		}
 	}
 
 	@Override

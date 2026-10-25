@@ -38,6 +38,10 @@ import dev.bartels.jtechstorage.end.EndContent;
  */
 public class JbartelsHologram extends PathfinderMob {
 	private static final EntityDataAccessor<Integer> DATA_STEP = SynchedEntityData.defineId(JbartelsHologram.class, EntityDataSerializers.INT);
+	/** v0.35: Meilenstein-Auftritt – leer = Rundgang, sonst die ID des Meilensteins (Sprechblase „jtechstorage.milestone.&lt;id&gt;“). */
+	private static final EntityDataAccessor<String> DATA_MILESTONE = SynchedEntityData.defineId(JbartelsHologram.class, EntityDataSerializers.STRING);
+	/** Wie lange ein Meilenstein-Auftritt dauert (Ticks). */
+	public static final int MILESTONE_TICKS = 170;
 
 	/** Ein Schritt des Rundgangs: Dauer in Ticks, Item in der Hand, gezeigter Mob. */
 	private record Step(int ticks, @Nullable ItemStack held, @Nullable EntityType<?> show) {
@@ -91,10 +95,60 @@ public class JbartelsHologram extends PathfinderMob {
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_STEP, 0);
+		builder.define(DATA_MILESTONE, "");
 	}
 
 	public int getStep() {
 		return entityData.get(DATA_STEP);
+	}
+
+	public String getMilestone() {
+		return entityData.get(DATA_MILESTONE);
+	}
+
+	public boolean isMilestone() {
+		return !getMilestone().isEmpty();
+	}
+
+	/** Gehört dieses Hologramm (Rundgang oder Meilenstein) zu dem Spieler? */
+	public boolean isFor(ServerPlayer player) {
+		return player.getUUID().equals(viewer);
+	}
+
+	/**
+	 * Kurzer Auftritt bei einem Meilenstein (v0.35): erscheint schräg vor dem Spieler, sagt einen Satz (Sprechblase und
+	 * Chat) und verschwindet nach ein paar Sekunden wieder. Rechtsklick schickt es früher weg.
+	 */
+	public static void milestone(ServerPlayer player, String id) {
+		ServerLevel level = player.level();
+		JbartelsHologram hologram = ModContent.JBARTELS_HOLOGRAM.create(level, EntitySpawnReason.TRIGGERED);
+
+		if (hologram == null) {
+			return;
+		}
+
+		Vec3 look = player.getLookAngle();
+		Vec3 flat = new Vec3(look.x, 0, look.z);
+		flat = flat.lengthSqr() < 1.0e-4 ? new Vec3(0, 0, 1) : flat.normalize();
+		Vec3 side = new Vec3(-flat.z, 0, flat.x);
+		Vec3 pos = player.position().add(flat.scale(2.6)).add(side.scale(1.2));
+
+		// nicht in eine Wand stellen: sonst direkt neben den Spieler
+		if (!level.noCollision(hologram.getType().getSpawnAABB(pos.x, player.getY(), pos.z))) {
+			pos = player.position().add(side.scale(1.1));
+		}
+
+		hologram.snapTo(pos.x, player.getY(), pos.z, player.getYRot() + 180.0f, 0.0f);
+		hologram.viewer = player.getUUID();
+		hologram.entityData.set(DATA_MILESTONE, id);
+		hologram.setCustomName(Component.literal(ModGuide.AUTHOR).withStyle(ChatFormatting.LIGHT_PURPLE));
+		hologram.setCustomNameVisible(true);
+		level.addFreshEntity(hologram);
+		level.sendParticles(ParticleTypes.END_ROD, pos.x, player.getY() + 1.0, pos.z, 30, 0.35, 0.9, 0.35, 0.04);
+		hologram.playSound(dev.bartels.jtechstorage.ModSounds.JBARTELS_APPEAR, 0.8f, 1.05f);
+		hologram.playSound(dev.bartels.jtechstorage.ModSounds.JBARTELS_TALK, 0.8f, 1.0f);
+		player.sendSystemMessage(Component.literal("[" + ModGuide.AUTHOR + "] ").withStyle(ChatFormatting.LIGHT_PURPLE)
+				.append(Component.translatable("jtechstorage.milestone." + id).withStyle(ChatFormatting.WHITE)));
 	}
 
 	/** Startet den Rundgang für einen Spieler: Hologramm erscheint ein paar Blöcke vor ihm. */
@@ -223,14 +277,21 @@ public class JbartelsHologram extends PathfinderMob {
 			return;
 		}
 
-		// schaut den Spieler an
-		double dx = player.getX() - getX();
-		double dz = player.getZ() - getZ();
-		float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0f;
-		setYRot(yaw);
-		yBodyRot = yaw;
-		yHeadRot = yaw;
-		setDeltaMovement(Vec3.ZERO);
+		if (isMilestone()) {
+			lookAt(player);
+
+			if (tickCount % 12 == 0) {
+				level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.05, getZ(), 1, 0.4, 0.0, 0.4, 0.0);
+			}
+
+			if (tickCount >= MILESTONE_TICKS) {
+				finish(false);
+			}
+
+			return;
+		}
+
+		lookAt(player);
 
 		if (tickCount % 15 == 0) {
 			level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.05, getZ(), 1, 0.4, 0.0, 0.4, 0.0);
@@ -248,9 +309,25 @@ public class JbartelsHologram extends PathfinderMob {
 		}
 	}
 
+	/** Schaut den Spieler an und bleibt stehen. */
+	private void lookAt(ServerPlayer player) {
+		double dx = player.getX() - getX();
+		double dz = player.getZ() - getZ();
+		float yaw = (float) (Mth.atan2(dz, dx) * Mth.RAD_TO_DEG) - 90.0f;
+		setYRot(yaw);
+		yBodyRot = yaw;
+		yHeadRot = yaw;
+		setDeltaMovement(Vec3.ZERO);
+	}
+
 	@Override
 	protected InteractionResult mobInteract(Player player, InteractionHand hand) {
 		if (level().isClientSide()) {
+			return InteractionResult.SUCCESS;
+		}
+
+		if (isMilestone()) {
+			finish(false);
 			return InteractionResult.SUCCESS;
 		}
 

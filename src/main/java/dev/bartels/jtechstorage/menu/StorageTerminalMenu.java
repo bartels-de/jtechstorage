@@ -253,8 +253,18 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 			forceSync = true;
 		}
 
-		super.clicked(slotId, button, input, player);
+		// Shift-Klick aufs Ergebnis craftet höchstens einen Stapel (v0.37) – sonst leert das Nachfüllen das halbe Lager
+		shiftCrafted = input == net.minecraft.world.inventory.ContainerInput.QUICK_MOVE && slotId == RESULT_SLOT ? 0 : -1;
+
+		try {
+			super.clicked(slotId, button, input, player);
+		} finally {
+			shiftCrafted = -1;
+		}
 	}
+
+	/** Beim laufenden Shift-Klick aufs Ergebnis: bisher gecraftete Anzahl, sonst -1. */
+	private int shiftCrafted = -1;
 
 	/** Ein Feld des Netzwerk-Rasters. Server: Entnehmen/Ablegen geht direkt ins Netzwerk. */
 	private class NetworkSlot extends Slot {
@@ -731,6 +741,10 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 
 		// Crafting-Ergebnis: so oft wie möglich craften (wird von Vanilla wiederholt aufgerufen)
 		if (slotIndex == RESULT_SLOT && craftSlots != null) {
+			if (shiftCrafted >= 0 && shiftCrafted + stack.getCount() > stack.getMaxStackSize()) {
+				return ItemStack.EMPTY;   // ein Stapel ist voll
+			}
+
 			ItemStack original = stack.copy();
 			stack.getItem().onCraftedBy(stack, player);
 
@@ -751,6 +765,11 @@ public class StorageTerminalMenu extends AbstractContainerMenu {
 			}
 
 			slot.onTake(player, stack);
+
+			if (shiftCrafted >= 0) {
+				shiftCrafted += original.getCount();
+			}
+
 			return original;
 		}
 

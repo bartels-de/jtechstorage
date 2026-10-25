@@ -36,6 +36,15 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
 - 🦊 **Crystal enchantments.** Five new enchantments that only the Amethyst Fox can dig up.
 - 📚 **A library of books.** Handbook, recipe book, bestiary with 3D models, item lexicon, crystal chronicle and
   Chel's joke book with 75 collectible jokes.
+- 💎 **The Crystal Depths.** A dimension of giant crystal caves with ten biomes – from singing prism forests and floating
+  islands to a flat crystal plain for building – reached through Amethyst Portals that you can link for good with the Storage Key. Ride a crystal deer, shear geode sheep, let a crystal crab dig for you,
+  explore an abandoned settlement and old crystal mines, collect twelve memory crystals and face the Last Storage Master in his temple.
+- 🛠️ **Jbartels' Workshop.** Find the abandoned workshop of the mod's creator deep in the Crystal Depths, full of
+  prototypes and jokes – and meet his hologram again at big milestones.
+- 🖥️ **Network displays.** Glowing wall screens (up to 4 × 3) with stock, fill level, history or top 5, and a waving
+  velvet banner with a stock ticker – both with a menu to pick items and change frame, colours and pattern.
+- 🪽 **Player cosmetics.** Wings, capes, hats, shoulder pets, trails, auras and emotes, unlocked by advancements and
+  visible to everyone.
 - 🎨 **Modern, themeable UI.** Six themes (classic, glass and modern – light and dark), accent colors, optional effects
   like hover glow and border shimmer, adjustable terminal size, in English and German.
 - 🔊 **Own sounds and a server config.** Synthesized crystal sounds for every creature, and a commented config file for
@@ -214,8 +223,8 @@ offers you one of three companions, chosen at random. Accept or decline by click
 disappears and you can try your luck in another geode.
 
 The keeper is also a **trader** and works like a villager (shift + right-click, or a plain right-click once you have a
-companion): amethyst shards for Resonance Treats, experience bottles, Amethyst Cores, Wireless Cores, budding amethyst,
-a totem and more; he also buys calcite, smooth basalt, glow berries and echo shards. Every trade gives him experience –
+companion): amethyst shards for Resonance Treats, experience bottles, glow crystals, budding amethyst,
+a totem and more (cores and upgrades only come from the bosses); he also buys calcite, smooth basalt, glow berries and echo shards. Every trade gives him experience –
 he climbs five levels like a villager and unlocks two new random offers per level. His stock refills every 10 minutes.
 Once you accept a companion from him or trade with him he settles in his geode for good. He never disappears on his
 own, can be killed and can be carried away in a boat or minecart; keepers now also appear for
@@ -265,12 +274,33 @@ side: the mantis at full strength, the raven with 70 % and the shroom with 25 % 
 
 - **Amethyst Hopper** – a hopper 16 times as fast that also sucks in items in a 3 × 3 area above it.
 - **Crystal Pusher** – pushes items from chest to chest in any direction, upwards too, with a filter.
+- **Block Placer** – like a dispenser, but it places blocks on a redstone pulse: saplings, seeds and any other block.
+- **Crystal Conveyor** (and a fast one) – moves items, animals and players and fills a chest or hopper at the end.
+- **Crystal Sorter** – sends items left, right or straight on, with filters for each side.
 - **Farm Monitor** – counts what your farm produces (items per hour, chart, top items), warns you when it stops or the
   chest is full, keeps companions from attacking the farm's mobs (safe zone) and shows all farms in the terminal.
 - **Chunk Loader** – keeps its chunk loaded, even while you're offline; runs on amethyst shards (1 per hour), limit per
   player in the config.
 
 See [Farm tools](docs/guide/16-farm-tools.md).
+
+### Network displays
+
+- **Storage Display** – a glowing wall screen linked to a terminal. Click it with an item to show its stock (spinning
+  item, smooth counter, trend per minute); sneak to switch to fill level, a 10-minute history graph or the top 5.
+  Displays side by side form one big screen of up to 4 × 3 blocks.
+- **Storage Banner** – a velvet banner on a golden rod that waves two blocks down, with a ticker of up to 8 items, their
+  stock and trend.
+- **Menu** – right-click either one with an empty hand: pick items from the network with a search, and change frame,
+  background, accent colour, glow and scanlines (display) or cloth colour, trim, pattern, text colour and wind (banner).
+
+### Cosmetics
+
+Press **J** for the cosmetics menu with a turnable preview of yourself. 22 cosmetics in six slots – back (crystal and
+phoenix wings, cape, prism orbs), head (halo, crown, shroom hat, wanderer's hat), shoulder (quokka, sprite), trails,
+auras and emotes (**N**). Each one is unlocked by an advancement, and every player sees what you wear.
+
+See [Network displays and cosmetics](docs/guide/18-displays-and-cosmetics.md).
 
 ### Bosses and the End
 
@@ -297,6 +327,10 @@ are kept.
 
 **Full set bonus:** +2 hearts, Fire Resistance and Haste I. Melee attackers take 3 + 25 % of the damage back and are
 slowed (**Resonance Thorns**).
+
+**Crystal Forge:** upgrades netherite and Amethyst Obsidian gear – Hardened (+25 % durability), Sharpened (+1 damage,
+faster mining), Reinforced (+1 armor, +0.5 toughness), each up to III, and Self-Mending. See
+[Bosses and the End → Crystal Forge](docs/guide/09-bosses-and-end.md#crystal-forge).
 
 ### Amethyst Fox and crystal enchantments
 

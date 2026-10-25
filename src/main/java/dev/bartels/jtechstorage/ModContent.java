@@ -208,6 +208,11 @@ public final class ModContent {
 	public static final Item GOLD_CAPACITY_UPGRADE = upgrade("gold_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.goldCapacity, Rarity.UNCOMMON);
 	public static final Item DIAMOND_CAPACITY_UPGRADE = upgrade("diamond_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.diamondCapacity, Rarity.RARE);
 	public static final Item NETHERITE_CAPACITY_UPGRADE = upgrade("netherite_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.netheriteCapacity, Rarity.EPIC);
+	/** Kristalltiefe (v0.32): aus reinem Amethyst – über Ender/Netherit; Reichweite behält die Ender-Fähigkeiten. */
+	public static final Item CRYSTAL_RANGE_UPGRADE = item("crystal_range_upgrade",
+			p -> new UpgradeItem(UpgradeItem.Kind.RANGE, () -> ModConfig.get().network.crystalRange, true, p),
+			new Item.Properties().stacksTo(16).rarity(Rarity.EPIC));
+	public static final Item CRYSTAL_CAPACITY_UPGRADE = upgrade("crystal_capacity_upgrade", UpgradeItem.Kind.CAPACITY, () -> ModConfig.get().network.crystalCapacity, Rarity.EPIC);
 
 	// --- Amethyst-Wichtel ----------------------------------------------
 
@@ -506,6 +511,14 @@ public final class ModContent {
 							dev.bartels.jtechstorage.companion.CompanionContent.creativeItems().forEach(output::accept);
 							dev.bartels.jtechstorage.farm.FarmContent.creativeItems().forEach(output::accept);
 							dev.bartels.jtechstorage.chest.ChestContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.depths.DepthsContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.depths.DepthsAnimals.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.depths.memory.MemoryContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.depths.temple.TempleContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.tools.ToolsContent.creativeItems().forEach(output::accept);
+							dev.bartels.jtechstorage.logistics.LogisticsContent.creativeItems().forEach(output::accept);
+							output.accept(dev.bartels.jtechstorage.forge.ForgeContent.FORGE_ITEM);
+							dev.bartels.jtechstorage.display.DisplayContent.creativeItems().forEach(output::accept);
 						})
 						.build());
 	}
