@@ -3,7 +3,8 @@
 ## Installation
 
 1. Install [Fabric Loader](https://fabricmc.net/use/) **0.19.5 or newer** for Minecraft **26.3**.
-2. Put [Fabric API](https://modrinth.com/mod/fabric-api) and `jtechstorage-<version>.jar` into your `mods` folder.
+2. Put [Fabric API](https://modrinth.com/mod/fabric-api) and `jtechstorage-all-<version>.jar` into your `mods` folder – or
+   only the parts you want (Core, Helpers & Phoenix, Adventure; see [Modules](../../README.md#modules)).
 3. Optional: [JEI](https://modrinth.com/mod/jei) for recipe lookup and one-click recipe transfer into the Crafting Terminal.
 
 Java **25** is required. On a server, the mod has to be installed on the server **and** on every client.

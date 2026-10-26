@@ -1,0 +1,12 @@
+{
+	"required": true,
+	"package": "dev.bartels.jtechstorage.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"NaturalSpawnerMixin",
+		"PlayerXpMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

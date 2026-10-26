@@ -25,7 +25,7 @@ Hats: pumpkin, flowers, cake, mushrooms, amethyst cluster, candle, cookie and mo
 | | Helper | Job |
 |---|---|---|
 | <img src="../images/items/amethyst_sprite.png" width="32"> | [Amethyst Sprite](#amethyst-sprite) | sorts chests by category, collects items |
-| <img src="../images/items/collector_moth.png" width="32"> | [Watch Moth](#watch-moth) | night guard, reveals monsters |
+| <img src="../images/items/collector_moth.png" width="32"> | [Watch Moth](#watch-moth) | night guard, stops monster spawns |
 | <img src="../images/items/storage_griffin.png" width="32"> | [Storage Griffin](#storage-griffin) | flying mount with a chest |
 | <img src="../images/items/spark_beetle.png" width="32"> | [Spark Beetle](#spark-beetle) | charges resonance |
 | <img src="../images/items/chel.png" width="32"> | [Chel](#chel) | chaotic auto-crafter |
@@ -54,11 +54,12 @@ Hold the key and look at a chest to see its category.
 
 A nocturnal guard. At night it circles above its home and
 
-- makes monsters within **24 blocks** glow (visible through walls),
+- **stops natural monster spawns** within **24 blocks** of its home while it is awake,
+- makes monsters within that range glow – only those it can actually see,
 - rings a bell to warn you and posts to the *guard* channel,
 - shows [Peter Chel Parker](#peter-chel-parker) his targets.
 
-It sleeps during the day.
+It sleeps during the day; then the spawn protection pauses too.
 
 ## Storage Griffin
 

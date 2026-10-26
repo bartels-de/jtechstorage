@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:all_mods_loaded",
+        "values": [
+          "jtechstorage_adventure"
+        ]
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "R": "minecraft:redstone_block",
+    "E": "minecraft:ender_pearl",
+    "D": "minecraft:diamond"
+  },
+  "pattern": [
+    "RER",
+    "EDE",
+    "RER"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:wireless_core"
+  }
+}

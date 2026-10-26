@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:all_mods_loaded",
+        "values": [
+          "jtechstorage_adventure"
+        ]
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": "minecraft:amethyst_block",
+    "D": "minecraft:diamond",
+    "E": "minecraft:ender_eye"
+  },
+  "pattern": [
+    "ADA",
+    "DED",
+    "ADA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:amethyst_core"
+  }
+}

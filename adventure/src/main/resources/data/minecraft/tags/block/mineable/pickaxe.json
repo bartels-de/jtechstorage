@@ -1,0 +1,29 @@
+{
+  "replace": false,
+  "values": [
+    "jtechstorage:crystal_stone",
+    "jtechstorage:polished_crystal_stone",
+    "jtechstorage:crystal_stone_bricks",
+    "jtechstorage:vein_stone",
+    "jtechstorage:glow_crystal",
+    "jtechstorage:pure_amethyst_ore",
+    "jtechstorage:vein_pure_amethyst_ore",
+    "jtechstorage:pure_amethyst_block",
+    "jtechstorage:cracked_crystal_stone_bricks",
+    "jtechstorage:chiseled_crystal_stone",
+    "jtechstorage:crystal_stone_brick_stairs",
+    "jtechstorage:crystal_stone_brick_slab",
+    "jtechstorage:crystal_lantern",
+    "jtechstorage:broken_terminal",
+    "jtechstorage:azure_crystal",
+    "jtechstorage:rose_crystal",
+    "jtechstorage:citrine_crystal",
+    "jtechstorage:azure_cluster",
+    "jtechstorage:rose_cluster",
+    "jtechstorage:citrine_cluster",
+    "jtechstorage:crystal_turf",
+    "jtechstorage:frost_crystal",
+    "jtechstorage:citrine_sandstone",
+    "jtechstorage:crystal_forge"
+  ]
+}

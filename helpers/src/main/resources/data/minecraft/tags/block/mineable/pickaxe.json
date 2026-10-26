@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "jtechstorage:phoenix_stop",
+    "jtechstorage:signal_lantern"
+  ]
+}

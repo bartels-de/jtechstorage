@@ -1,0 +1,27 @@
+{
+  "values": [
+    "minecraft:netherite_sword",
+    "minecraft:netherite_pickaxe",
+    "minecraft:netherite_axe",
+    "minecraft:netherite_shovel",
+    "minecraft:netherite_hoe",
+    "minecraft:netherite_helmet",
+    "minecraft:netherite_chestplate",
+    "minecraft:netherite_leggings",
+    "minecraft:netherite_boots",
+    {
+      "id": "minecraft:netherite_spear",
+      "required": false
+    },
+    "jtechstorage:amethyst_obsidian_sword",
+    "jtechstorage:amethyst_obsidian_pickaxe",
+    "jtechstorage:amethyst_obsidian_axe",
+    "jtechstorage:amethyst_obsidian_shovel",
+    "jtechstorage:amethyst_obsidian_hoe",
+    "jtechstorage:amethyst_obsidian_helmet",
+    "jtechstorage:amethyst_obsidian_chestplate",
+    "jtechstorage:amethyst_obsidian_leggings",
+    "jtechstorage:amethyst_obsidian_boots",
+    "jtechstorage:master_hammer"
+  ]
+}

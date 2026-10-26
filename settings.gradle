@@ -10,3 +10,9 @@ pluginManagement {
 }
 
 rootProject.name = 'jtechstorage'
+
+// v0.43: drei Teil-Mods und das All-in-One-Bündel
+include 'core'        // JTechStorage (Lager, Automation, Werkzeuge)
+include 'helpers'     // JTechStorage: Helpers & Phoenix
+include 'adventure'   // JTechStorage: Adventure (Bosse, End, Kristalltiefe, Verzauberungen, Schmiede)
+include 'all'         // JTechStorage All-in-One: bündelt die drei per Jar-in-Jar

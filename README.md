@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="src/main/resources/assets/jtechstorage/icon.png" width="128" alt="JTechStorage icon">
+  <img src="core/src/main/resources/assets/jtechstorage/icon.png" width="128" alt="JTechStorage icon">
 </p>
 
 <h1 align="center">JTechStorage</h1>
@@ -59,10 +59,39 @@ recipes with pictures, every key and command and every config option – one pag
 ## Installation
 
 1. Install [Fabric Loader](https://fabricmc.net/use/) **0.19.5+** for Minecraft **26.3**.
-2. Put [Fabric API](https://modrinth.com/mod/fabric-api) and `jtechstorage-<version>.jar` into your `mods` folder.
+2. Put [Fabric API](https://modrinth.com/mod/fabric-api) and **either** `jtechstorage-all-<version>.jar` (everything)
+   **or** the parts you want into your `mods` folder (see [Modules](#modules)).
 3. Optional: [JEI](https://modrinth.com/mod/jei) for recipe lookup and one-click crafting transfer.
 
-Java **25** is required. The mod has to be installed on both the server and the client.
+Java **25** is required. The mod has to be installed on both the server and the client, with the same parts.
+
+## Modules
+
+Since 0.43 JTechStorage comes in three parts. The **All-in-One** file contains all of them – if you played an older
+version, just update to the All-in-One file and your world stays exactly as it was.
+
+| File | Contents | Needs |
+|---|---|---|
+| `jtechstorage-<version>.jar` (**Core**) | Storage network, terminals, Storage Key, upgrades, Amethyst Chests, automation (hoppers, pushers, conveyors, sorter, block placer, farm monitor, chunk loader), building tools, displays, backpacks, books | Fabric API |
+| `jtechstorage_helpers-<version>.jar` (**Helpers & Phoenix**) | Helper mobs, Peter Chel Parker and Cheldrogan, companions and the Geode Keeper, wolves, phoenix mail, the Amethyst Phoenix and its stops | Core |
+| `jtechstorage_adventure-<version>.jar` (**Adventure**) | Amethyst Robot, Resonance Storm, the End lair and Amethyst Obsidian gear, the Crystal Depths, crystal enchantments and the Amethyst Fox, the Crystal Forge | Core |
+| `jtechstorage-all-<version>.jar` (**All-in-One**) | all three parts | Fabric API |
+
+All parts keep their content under the `jtechstorage:` IDs, so worlds work with any mix. **Removing** a part later
+removes its blocks, items and creatures from the world, like with any mod.
+
+**Without Adventure** some boss drops get a crafting recipe instead, so everything stays reachable:
+
+| Item | Recipe (only without Adventure) |
+|---|---|
+| Amethyst Core | 4 amethyst blocks and 4 diamonds around an eye of ender |
+| Wireless Core | 4 redstone blocks, 4 ender pearls and a diamond in the middle |
+| Range Upgrade (Iron) | 4 amethyst shards, 4 iron blocks and a redstone block in the middle |
+| Capacity Upgrade (Iron) | 4 chests, 4 iron blocks and a barrel in the middle |
+| Amethyst Obsidian Upgrade | 7 diamonds, a nether star (top) and Crystal Obsidian (middle) |
+
+Crystal upgrades, the Crystal Forge and the fast conveyor need materials from the Crystal Depths and are part of
+Adventure. Handbook, recipe book and lexicon only show the parts you have installed.
 
 ## Getting started
 
@@ -142,7 +171,7 @@ drops from the Amethyst Robot.
 | Helper | What it does |
 |---|---|
 | **Amethyst Sprite** | Gives every chest a fixed category (15 categories) and moves stacks there. Picks up loose items around the terminal, tidies chests from the inside and empties placed backpacks. |
-| **Watch Moth** | Night guard. Makes monsters within 24 blocks glow, rings an alarm and reports targets to Peter. |
+| **Watch Moth** | Night guard. No monster spawns within 24 blocks while awake; marks visible monsters, rings an alarm and reports targets to Peter. |
 | **Storage Griffin** | Flying mount with a 27-slot chest (inventory key while riding). It unloads into the network when it lands near the terminal. |
 | **Spark Beetle** | Charges the terminal with resonance. Feed it redstone or glowstone for a boost. |
 | **Chel** | Chaotic auto-crafter. Keeps up to 8 items in stock using crafting recipes, and tells a joke for a diamond. |
@@ -433,17 +462,21 @@ English and German.
 Requirements: **JDK 25**.
 
 ```bash
-./gradlew build        # jar in build/libs/
-./gradlew runClient    # test client (JEI included)
+./gradlew build             # jars in core/build/libs, helpers/build/libs, adventure/build/libs, all/build/libs
+./gradlew :all:runClient    # test client with all three parts (JEI included)
 ```
 
-In IntelliJ IDEA, import the folder as a Gradle project and use the `runClient` or `build` tasks.
+In IntelliJ IDEA, import the folder as a Gradle project and use the `build` or `:all:runClient` tasks.
 
-The project uses Fabric Loom with Mojang mappings and split client/common source sets:
+The project is a Gradle multi-project with Fabric Loom and split client/common source sets in every part:
 
 ```
-src/main/      common code, data (recipes, advancements, enchantments, worldgen)
-src/client/    rendering, models, screens, JEI plugin
+core/        JTechStorage – storage, automation, tools, displays (also all textures, models and translations)
+helpers/     Helpers & Phoenix
+adventure/   Adventure – bosses, End, Crystal Depths, enchantments, forge
+all/         All-in-One bundle (jar-in-jar) and the run configurations
+<part>/src/main/     common code and data
+<part>/src/client/   rendering, models, screens
 ```
 
 ## Changelog

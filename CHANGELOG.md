@@ -3,6 +3,39 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.43.1]
+
+### Changed
+- **Watch Moth rework:** while it is awake, no monsters spawn naturally within its watch area (24 blocks around its
+  home, `mothWatchRadius`). It now only marks monsters it can actually see.
+- Code clean-up: all source comments are now English, imports tidied, a few per-frame allocations removed. No gameplay
+  changes.
+
+### Fixed
+- Watch Moth and Night Raven (Night Eye talent, scout crows, Terror Cry) no longer make monsters glow through walls –
+  only monsters the raven or its owner can see are marked. The creeper warning still works without line of sight.
+- Crystal Depths: lava in the Vein Chasm no longer sits right next to the water of neighbouring biomes; the border now
+  turns into obsidian like in vanilla (newly generated chunks only).
+- Crystal Depths now follows the overworld day clock, so the terminal statistics, companion daily counters and the
+  night visuals of wolves, phoenixes and Peter work there.
+
+## [0.43.0]
+
+### Changed
+- **JTechStorage is now split into three parts** – Core (storage, automation, tools, displays), **Helpers & Phoenix**
+  and **Adventure** (bosses, End, Crystal Depths, enchantments, forge) – plus an **All-in-One** file that contains all
+  three. Existing worlds keep working: update to the All-in-One file and everything stays as it was (all IDs are
+  unchanged).
+- Handbook, recipe book, bestiary and lexicon only show pages for installed parts.
+- The Geode Keeper only offers items from installed parts.
+- In jbartels' tour, creatures from parts that are not installed are left out.
+- Two advancements moved in the advancement tree: *Amethyst Fox* and *Storm Survivor* now hang directly below the
+  root.
+
+### Added
+- **Recipes for boss drops when Adventure is not installed:** Amethyst Core, Wireless Core, Range and Capacity Upgrade
+  (Iron) and the Amethyst Obsidian Upgrade. With Adventure installed they still only come from the bosses.
+
 ## [0.42.0]
 
 ### Added

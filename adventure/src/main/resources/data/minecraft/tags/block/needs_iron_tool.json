@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "jtechstorage:pure_amethyst_ore",
+    "jtechstorage:vein_pure_amethyst_ore",
+    "jtechstorage:pure_amethyst_block"
+  ]
+}
