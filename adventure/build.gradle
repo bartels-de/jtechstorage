@@ -1,0 +1,23 @@
+// JTechStorage: Adventure – baut auf dem Core auf
+// Core muss zuerst ausgewertet sein (wir greifen auf seine Source-Sets zu)
+evaluationDependsOn(':core')
+
+base {
+	archivesName = "jtechstorage_adventure"
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"jtechstorage_adventure" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+dependencies {
+	implementation project(":core")
+	clientImplementation rootProject.project(":core").sourceSets.client.output
+}

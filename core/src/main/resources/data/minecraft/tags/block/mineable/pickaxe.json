@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "jtechstorage:storage_terminal",
+    "jtechstorage:crafting_terminal",
+    "jtechstorage:team_terminal",
+    "jtechstorage:trade_terminal",
+    "jtechstorage:amethyst_hopper",
+    "jtechstorage:crystal_pusher",
+    "jtechstorage:farm_monitor",
+    "jtechstorage:chunk_loader",
+    "jtechstorage:amethyst_chest",
+    "jtechstorage:crystal_chest",
+    "jtechstorage:resonance_chest",
+    "jtechstorage:crystal_conveyor",
+    "jtechstorage:fast_crystal_conveyor",
+    "jtechstorage:crystal_sorter"
+  ]
+}

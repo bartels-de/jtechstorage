@@ -55,7 +55,7 @@ Your network within 96 blocks of the storm is **disturbed**:
 
 - [Peter Chel Parker](04-helpers.md#peter-chel-parker) and [Cheldrogan](05-cheldrogan.md) fight every storm creature in
   their guard radius.
-- [Watch Moths](04-helpers.md#watch-moth) make the creatures glow through walls.
+- [Watch Moths](04-helpers.md#watch-moth) make the creatures they can see glow.
 - [Crystal Wolves](04-helpers.md#crystal-wolf) wake up and defend the base; the [Moon Wolf](04-helpers.md#moon-wolf)
   howls and freezes the storm creatures for a moment while the pack gets stronger.
 - Your [companion](07-companions.md) fights at your side.

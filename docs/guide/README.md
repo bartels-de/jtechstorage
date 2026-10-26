@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../src/main/resources/assets/jtechstorage/icon.png" width="96" alt="JTechStorage icon">
+  <img src="../../core/src/main/resources/assets/jtechstorage/icon.png" width="96" alt="JTechStorage icon">
 </p>
 
 <h1 align="center">JTechStorage Guide</h1>
@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.42.0** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.43.0** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 

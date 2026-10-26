@@ -47,7 +47,7 @@ The interface settings (theme, accent color, effects, terminal height, count siz
 | `spritePauseSeconds` | 2.5 | Amethyst Sprite: pause between jobs |
 | `spriteCollectRadius` | 12 | Amethyst Sprite: item pickup radius around the terminal |
 | `spriteBackpackRadius` | 10 | Amethyst Sprite: radius for emptying placed backpacks |
-| `mothWatchRadius` | 24 | Watch Moth: radius for glowing monsters |
+| `mothWatchRadius` | 24 | Watch Moth: radius for spawn protection and glowing monsters |
 | `peterGuardRadius` | 16 | Peter Chel Parker (and Cheldrogan): guard radius |
 | `cheldroganHealth` | 250.0 | Cheldrogan: health (0 = turns back into Peter) |
 | `cheldroganDamage` | 24.0 | Cheldrogan: tail sweep damage |

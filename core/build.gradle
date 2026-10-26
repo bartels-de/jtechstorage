@@ -1,0 +1,21 @@
+// JTechStorage (Core): Lager-Netzwerk, Terminals, Automation, Bau-Werkzeuge, Displays, Rucksäcke, Bücher
+base {
+	archivesName = "jtechstorage"
+}
+
+loom {
+	splitEnvironmentSourceSets()
+
+	mods {
+		"jtechstorage" {
+			sourceSet sourceSets.main
+			sourceSet sourceSets.client
+		}
+	}
+}
+
+dependencies {
+	// JEI: nur die API zum Kompilieren
+	clientCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}"
+	clientCompileOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric-api:${rootProject.jei_version}"
+}

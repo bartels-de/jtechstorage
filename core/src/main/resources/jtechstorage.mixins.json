@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "dev.bartels.jtechstorage.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"mixins": [
+		"ItemEntityMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"client": [
+		"client.TooltipStyleMixin"
+	]
+}

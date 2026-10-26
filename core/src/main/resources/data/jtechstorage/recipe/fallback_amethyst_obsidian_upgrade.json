@@ -1,0 +1,29 @@
+{
+  "fabric:load_conditions": [
+    {
+      "condition": "fabric:not",
+      "value": {
+        "condition": "fabric:all_mods_loaded",
+        "values": [
+          "jtechstorage_adventure"
+        ]
+      }
+    }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": "minecraft:diamond",
+    "S": "minecraft:nether_star",
+    "C": "jtechstorage:crystal_obsidian"
+  },
+  "pattern": [
+    "DSD",
+    "DCD",
+    "DDD"
+  ],
+  "result": {
+    "count": 1,
+    "id": "jtechstorage:amethyst_obsidian_upgrade_smithing_template"
+  }
+}

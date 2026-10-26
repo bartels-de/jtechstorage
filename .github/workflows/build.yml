@@ -30,5 +30,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jtechstorage
-          path: build/libs/*.jar
+          # v0.43: Teil-Mods und All-in-One (ohne -sources)
+          path: |
+            core/build/libs/*.jar
+            helpers/build/libs/*.jar
+            adventure/build/libs/*.jar
+            all/build/libs/*.jar
+            !**/*-sources.jar
           if-no-files-found: error

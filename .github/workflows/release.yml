@@ -59,5 +59,8 @@ jobs:
           body_path: release-notes.md
           prerelease: ${{ startsWith(env.VERSION, '0.') }}
           files: |
-            build/libs/jtechstorage-${{ env.VERSION }}.jar
+            all/build/libs/jtechstorage-all-${{ env.VERSION }}.jar
+            core/build/libs/jtechstorage-${{ env.VERSION }}.jar
+            helpers/build/libs/jtechstorage_helpers-${{ env.VERSION }}.jar
+            adventure/build/libs/jtechstorage_adventure-${{ env.VERSION }}.jar
           fail_on_unmatched_files: true

@@ -936,10 +936,6 @@ Recipes the mod adds for vanilla items.
 
 **Shapeless:** Rose Crystal ➜ **Pink Dye** <b>×2</b>
 
-### Nether Quartz
-
-**Shapeless:** Block of Quartz ➜ **Nether Quartz** <b>×4</b>
-
 ### String
 
 **Shapeless:** any Crystal Wool ➜ **String** <b>×4</b>
@@ -951,6 +947,10 @@ Recipes the mod adds for vanilla items.
 ### Yellow Dye
 
 **Shapeless:** Citrine Crystal ➜ **Yellow Dye** <b>×2</b>
+
+### Nether Quartz
+
+**Shapeless:** Block of Quartz ➜ **Nether Quartz** <b>×4</b>
 
 ## Items without a recipe
 

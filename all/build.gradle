@@ -1,0 +1,53 @@
+// JTechStorage All-in-One: enthält Core, Helpers und Adventure (Jar-in-Jar). Diese Datei ersetzt für bestehende
+// Spieler die bisherige Mod – nach dem Update ist alles wie vorher. Hier liegen auch die Startkonfigurationen
+// (runClient / runServer) mit allen drei Teil-Mods und JEI.
+// Teil-Mods zuerst auswerten (wir greifen auf ihre Source-Sets zu)
+evaluationDependsOn(':core')
+evaluationDependsOn(':helpers')
+evaluationDependsOn(':adventure')
+
+base {
+	archivesName = "jtechstorage-all"
+}
+
+loom {
+	mods {
+		"jtechstorage" {
+			sourceSet rootProject.project(":core").sourceSets.main
+			sourceSet rootProject.project(":core").sourceSets.client
+		}
+		"jtechstorage_helpers" {
+			sourceSet rootProject.project(":helpers").sourceSets.main
+			sourceSet rootProject.project(":helpers").sourceSets.client
+		}
+		"jtechstorage_adventure" {
+			sourceSet rootProject.project(":adventure").sourceSets.main
+			sourceSet rootProject.project(":adventure").sourceSets.client
+		}
+	}
+
+	runs {
+		client {
+			// gleiche Testwelt wie bisher (Ordner run/ im Projekt)
+			runDir "../run"
+			// Fester Name im Testclient: sonst würfelt runClient bei jedem Start einen neuen.
+			programArgs "--username", "Jbartels"
+		}
+		server {
+			runDir "../run"
+		}
+	}
+}
+
+dependencies {
+	include project(":core")
+	include project(":helpers")
+	include project(":adventure")
+
+	implementation project(":core")
+	implementation project(":helpers")
+	implementation project(":adventure")
+
+	// JEI nur im Testclient
+	runtimeOnly "mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}"
+}
