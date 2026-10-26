@@ -50,8 +50,11 @@ import dev.bartels.jtechstorage.menu.AmethystPhoenixMenu;
 
 /**
  * Amethyst-Phönix – die Entwicklungsstufe des Phönix (Rechtsklick mit einem Amethyst-Obsidian-Upgrade).
- * Groß, zwei Sitze für Spieler, bis zu vier ausrüstbare Kisten. Mit einem Flugplan bekommt er 2–4 Haltestellen
+ * Groß, zwei Sitze für Spieler, bis zu vier ausrüstbare Kisten. Mit einem Flugplan bekommt er 2–6 Haltestellen
  * und fliegt sie dann selbstständig der Reihe nach an; die Rastdauer stellt jede Haltestelle selbst ein.
+ * Seit v0.41 dürfen die Haltestellen in verschiedenen Dimensionen liegen: Er wechselt per Flammensprung (mit Reitern
+ * und Ladung) und taucht über der nächsten Haltestelle wieder auf. Bleibt er unterwegs stecken (z. B. in den Höhlen
+ * der Kristalltiefe), springt er ebenso direkt über die Haltestelle.
  * Wer vorne sitzt, kann mit der Sprungtaste früher starten. Je mehr Kisten und Ladung, desto langsamer fliegt er.
  * Im Sitz-Modus bewegt er sich nicht.
  */
@@ -77,13 +80,31 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 		}
 	};
 	/** Haltestelle der Route (Name als Kopie, falls der Block gerade nicht geladen ist). */
-	public record RouteStop(BlockPos pos, String name) {
+	public record RouteStop(BlockPos pos, String name, java.util.Optional<net.minecraft.resources.ResourceKey<Level>> dimension) {
 		public static final com.mojang.serialization.Codec<RouteStop> CODEC = com.mojang.serialization.codecs.RecordCodecBuilder.create(
 				instance -> instance.group(
 						BlockPos.CODEC.fieldOf("pos").forGetter(RouteStop::pos),
-						com.mojang.serialization.Codec.STRING.fieldOf("name").forGetter(RouteStop::name)
+						com.mojang.serialization.Codec.STRING.fieldOf("name").forGetter(RouteStop::name),
+						net.minecraft.resources.ResourceKey.codec(net.minecraft.core.registries.Registries.DIMENSION).optionalFieldOf("dimension")
+								.forGetter(RouteStop::dimension)
 				).apply(instance, RouteStop::new));
+
+		/** Liegt die Haltestelle in dieser Dimension? (ohne Angabe: ja – Routen von vor v0.41) */
+		public boolean in(Level level) {
+			return dimension.isEmpty() || dimension.get().equals(level.dimension());
+		}
+
+		RouteStop withName(String newName) {
+			return new RouteStop(pos, newName, dimension);
+		}
 	}
+
+	/** Dauer des Aufstiegs vor einem Flammensprung. */
+	private static final int JUMP_TICKS = 30;
+	/** So lange (Ticks) darf er festhängen, bevor er direkt über die Haltestelle springt. */
+	private static final int STUCK_TICKS = 160;
+	private int jumpTicks;
+	private int stuckTicks;
 
 	private final List<RouteStop> stops = new java.util.ArrayList<>();
 	/** Index der Haltestelle, zu der er fliegt bzw. an der er rastet. */
@@ -179,7 +200,7 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 			return -1;
 		}
 
-		return (int) Math.max(0, (departAt - level().getDefaultClockTime() + 1199) / 1200);
+		return (int) Math.max(0, (departAt - routeClock() + 1199) / 1200);
 	}
 
 	private void setState(int state) {
@@ -242,7 +263,7 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 
 		for (RouteStop stop : route) {
 			if (stops.size() < dev.bartels.jtechstorage.item.FlightPlanItem.MAX_STOPS) {
-				stops.add(new RouteStop(stop.pos().immutable(), stop.name()));
+				stops.add(new RouteStop(stop.pos().immutable(), stop.name(), stop.dimension()));
 			}
 		}
 
@@ -250,23 +271,19 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 
 		if (!hasRoute()) {
 			setState(STATE_IDLE);
-		} else if (position().distanceTo(landing(stops.getFirst().pos())) < 8.0) {
+		} else if (stops.getFirst().in(level()) && position().distanceTo(landing(stops.getFirst().pos())) < 8.0) {
 			arrive();
 		} else {
 			takeOff();
 		}
 	}
 
-	/** Route aus einem Flugplan (alle Haltestellen müssen in dieser Dimension liegen). */
-	private @Nullable List<RouteStop> routeFrom(List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan) {
+	/** Route aus einem Flugplan (Haltestellen dürfen seit v0.41 in verschiedenen Dimensionen liegen). */
+	private List<RouteStop> routeFrom(List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan) {
 		List<RouteStop> route = new java.util.ArrayList<>();
 
 		for (dev.bartels.jtechstorage.item.FlightPlanItem.Stop stop : plan) {
-			if (!stop.pos().dimension().equals(level().dimension())) {
-				return null;
-			}
-
-			route.add(new RouteStop(stop.pos().pos(), stop.name()));
+			route.add(new RouteStop(stop.pos().pos(), stop.name(), java.util.Optional.of(stop.pos().dimension())));
 		}
 
 		return route;
@@ -276,7 +293,7 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 		List<dev.bartels.jtechstorage.item.FlightPlanItem.Stop> plan = new java.util.ArrayList<>();
 
 		for (RouteStop stop : stops) {
-			plan.add(new dev.bartels.jtechstorage.item.FlightPlanItem.Stop(GlobalPos.of(level().dimension(), stop.pos()), stop.name()));
+			plan.add(new dev.bartels.jtechstorage.item.FlightPlanItem.Stop(GlobalPos.of(stop.dimension().orElse(level().dimension()), stop.pos()), stop.name()));
 		}
 
 		return plan;
@@ -304,6 +321,8 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 	private void takeOff() {
 		setState(STATE_FLYING);
 		cruiseY = getY();
+		jumpTicks = 0;
+		stuckTicks = 0;
 		playSound(ModSounds.AMETHYST_PHOENIX_DEPART, 1.5f, 1.0f);
 	}
 
@@ -332,11 +351,11 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 		RouteStop stop = targetStop();
 
 		// Rastdauer (und aktuellen Namen) von der Haltestelle lesen – fehlt der Block, rastet er eine Nacht
-		if (stop != null && level().getBlockEntity(stop.pos()) instanceof dev.bartels.jtechstorage.block.PhoenixStopBlockEntity block) {
+		if (stop != null && stop.in(level()) && level().getBlockEntity(stop.pos()) instanceof dev.bartels.jtechstorage.block.PhoenixStopBlockEntity block) {
 			rest = block.getRest();
 
 			if (block.hasName()) {
-				stops.set(target, new RouteStop(stop.pos(), block.getStopName()));
+				stops.set(target, stop.withName(block.getStopName()));
 			}
 
 			// Lieferauftrag: mit den Kisten neben der Haltestelle tauschen
@@ -350,9 +369,17 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 			}
 		}
 
-		departAt = nextDeparture(level().getDefaultClockTime(), rest);
+		departAt = nextDeparture(routeClock(), rest);
 		playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 1.2f, 0.8f);
 		tellPassengers(Component.translatable("jtechstorage.amethyst_phoenix.arrived", stopName(target), Component.translatable(rest.key())));
+	}
+
+	/**
+	 * Uhr für Rast und Abflug: immer die der Overworld (v0.41). In der Kristalltiefe steht die eigene Uhr still – dort
+	 * wäre er sonst nie wieder losgeflogen; außerdem passt die Zeit so auch über einen Dimensionswechsel hinweg.
+	 */
+	private long routeClock() {
+		return level() instanceof ServerLevel level ? level.getServer().overworld().getDefaultClockTime() : level().getDefaultClockTime();
 	}
 
 	static long nextDeparture(long time, dev.bartels.jtechstorage.block.PhoenixStopBlockEntity.Rest rest) {
@@ -430,7 +457,7 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 		int state = getState();
 
 		if (state == STATE_RESTING) {
-			if (hasRoute() && level.getDefaultClockTime() >= departAt) {
+			if (hasRoute() && routeClock() >= departAt) {
 				departNow();
 			}
 
@@ -445,6 +472,11 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 
 		if (stop == null) {
 			setState(STATE_IDLE);
+			return;
+		}
+
+		if (!stop.in(level)) {
+			jumpTick(level, stop);
 			return;
 		}
 
@@ -463,7 +495,11 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 		Vec3 dir = distance > 1.0E-4 ? flat.scale(1.0 / distance) : Vec3.ZERO;
 		double desiredY;
 
-		if (distance > 14.0) {
+		if (distance > 14.0 && level.dimensionType().hasCeiling()) {
+			// Höhlen-Dimension (Kristalltiefe): nicht über das Gelände, sondern unter der Decke voraus bleiben
+			int roof = roofAbove(level, Mth.floor(pos.x + dir.x * 4), Mth.floor(pos.y), Mth.floor(pos.z + dir.z * 4));
+			desiredY = Math.min(Math.max(goal.y + 4.0, pos.y), roof - 3.0);
+		} else if (distance > 14.0) {
 			// Reiseflughöhe: über dem Gelände voraus, mindestens CRUISE_HEIGHT über Start/Ziel
 			int ahead = level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(pos.x + dir.x * 8), Mth.floor(pos.z + dir.z * 8));
 			int below = level.getHeight(Heightmap.Types.MOTION_BLOCKING, Mth.floor(pos.x), Mth.floor(pos.z));
@@ -488,6 +524,21 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 			cruiseY = pos.y + 6.0;
 		}
 
+		// hängt er fest (Wand, Höhle), springt er nach einer Weile direkt über die Haltestelle
+		if (horizontalCollision || (verticalCollision && distance > 3.0)) {
+			if (++stuckTicks > STUCK_TICKS && distance > 3.0) {
+				stuckTicks = 0;
+				Vec3 above = arrivalAbove(level, stop.pos());
+				flameBurst(level);
+				teleportTo(above.x, above.y, above.z);
+				flameBurst(level);
+				cruiseY = above.y;
+				return;
+			}
+		} else if (stuckTicks > 0) {
+			stuckTicks--;
+		}
+
 		setDeltaMovement(dir.x * horizontal, vertical, dir.z * horizontal);
 
 		if (distance > 0.5) {
@@ -496,6 +547,84 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 			yBodyRot = getYRot();
 			yHeadRot = getYRot();
 		}
+	}
+
+	/** Flammensprung in die Dimension der nächsten Haltestelle: erst steil nach oben, dann verschwinden und dort auftauchen. */
+	private void jumpTick(ServerLevel level, RouteStop stop) {
+		if (jumpTicks == 0) {
+			tellPassengers(Component.translatable("jtechstorage.amethyst_phoenix.jump", stopName(target)));
+			playSound(ModSounds.AMETHYST_PHOENIX_DEPART, 1.5f, 0.8f);
+		}
+
+		jumpTicks++;
+		setDeltaMovement(0.0, verticalCollision ? 0.0 : 0.3 + jumpTicks * 0.01, 0.0);
+		level.sendParticles(ParticleTypes.FLAME, getX(), getY() + 0.5, getZ(), 8, 0.6, 0.4, 0.6, 0.03);
+		level.sendParticles(ParticleTypes.WITCH, getX(), getY() + 0.5, getZ(), 3, 0.6, 0.4, 0.6, 0.02);
+
+		if (jumpTicks < JUMP_TICKS) {
+			return;
+		}
+
+		jumpTicks = 0;
+		ServerLevel to = stop.dimension().map(key -> level.getServer().getLevel(key)).orElse(null);
+
+		if (to == null) {
+			// Dimension gibt es nicht (mehr): Haltestelle überspringen
+			target = (target + 1) % stops.size();
+			return;
+		}
+
+		flameBurst(level);
+		to.getChunk(stop.pos());
+		Vec3 above = arrivalAbove(to, stop.pos());
+		Entity moved = teleport(new net.minecraft.world.level.portal.TeleportTransition(to, above, Vec3.ZERO, getYRot(), 0.0f,
+				net.minecraft.world.level.portal.TeleportTransition.PLACE_PORTAL_TICKET));
+
+		if (moved instanceof AmethystPhoenix arrived) {
+			arrived.cruiseY = above.y;
+			arrived.flameBurst(to);
+		}
+	}
+
+	private void flameBurst(ServerLevel level) {
+		level.sendParticles(ParticleTypes.FLAME, getX(), getY() + 0.8, getZ(), 50, 0.8, 0.8, 0.8, 0.12);
+		level.sendParticles(ParticleTypes.END_ROD, getX(), getY() + 0.8, getZ(), 20, 0.6, 0.6, 0.6, 0.08);
+		level.playSound(null, getX(), getY(), getZ(), SoundEvents.BLAZE_SHOOT, getSoundSource(), 1.0f, 1.2f);
+	}
+
+	/** Freie Stelle über der Haltestelle (bis 10 Blöcke hoch, so weit der Platz reicht). */
+	private static Vec3 arrivalAbove(ServerLevel level, BlockPos stop) {
+		BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+		int best = 1;
+
+		for (int up = 1; up <= 10; up++) {
+			boolean free = true;
+
+			for (int h = 0; h < 3 && free; h++) {
+				free = level.getBlockState(p.set(stop.getX(), stop.getY() + up + h, stop.getZ())).getCollisionShape(level, p).isEmpty();
+			}
+
+			if (!free) {
+				break;
+			}
+
+			best = up;
+		}
+
+		return new Vec3(stop.getX() + 0.5, stop.getY() + best, stop.getZ() + 0.5);
+	}
+
+	/** Erste feste Decke über (x, y, z), höchstens 32 Blöcke hoch. */
+	private static int roofAbove(ServerLevel level, int x, int y, int z) {
+		BlockPos.MutableBlockPos p = new BlockPos.MutableBlockPos();
+
+		for (int up = 1; up <= 32; up++) {
+			if (!level.getBlockState(p.set(x, y + up, z)).getCollisionShape(level, p).isEmpty()) {
+				return y + up;
+			}
+		}
+
+		return y + 32;
 	}
 
 	@Override
@@ -515,6 +644,12 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 			setStatus(unlinkedStatus());
 		} else if (getState() == STATE_FLYING) {
 			RouteStop stop = targetStop();
+
+			if (stop != null && !stop.in(level())) {
+				setStatus("jtechstorage.amethyst_phoenix.status.jumping", stopName(target));
+				return;
+			}
+
 			int distance = stop == null ? 0 : (int) Math.sqrt(stop.pos().distToCenterSqr(position()));
 			setStatus("jtechstorage.amethyst_phoenix.status.flying", stopName(target), distance, getSpeedPercent());
 		} else if (getState() == STATE_RESTING) {
@@ -599,14 +734,7 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 				return InteractionResult.FAIL;
 			}
 
-			List<RouteStop> route = routeFrom(plan);
-
-			if (route == null) {
-				player.sendOverlayMessage(Component.translatable("jtechstorage.flight_plan.dimension"));
-				return InteractionResult.FAIL;
-			}
-
-			setRoute(route);
+			setRoute(routeFrom(plan));
 			playSound(SoundEvents.AMETHYST_BLOCK_CHIME, 1.0f, 1.4f);
 			player.sendOverlayMessage(Component.translatable("jtechstorage.amethyst_phoenix.route_set", routeText()));
 			return InteractionResult.SUCCESS;
@@ -830,13 +958,17 @@ public class AmethystPhoenix extends NetworkHelperMob implements net.minecraft.w
 		departAt = input.getLongOr("DepartAt", 0L);
 		cruiseY = input.getDoubleOr("CruiseY", getY());
 		stops.clear();
-		stops.addAll(input.read("Stops", RouteStop.CODEC.listOf()).orElse(List.of()));
+		for (RouteStop stop : input.read("Stops", RouteStop.CODEC.listOf()).orElse(List.of())) {
+			// Routen von vor v0.41 haben keine Dimension: dann die, in der er gerade ist
+			stops.add(stop.dimension().isPresent() ? stop : new RouteStop(stop.pos(), stop.name(), java.util.Optional.of(level().dimension())));
+		}
+
 		BlockPos legacyA = input.read("StopA", BlockPos.CODEC).orElse(null);
 		BlockPos legacyB = input.read("StopB", BlockPos.CODEC).orElse(null);
 
 		if (stops.isEmpty() && legacyA != null && legacyB != null) {
-			stops.add(new RouteStop(legacyA, "A"));
-			stops.add(new RouteStop(legacyB, "B"));
+			stops.add(new RouteStop(legacyA, "A", java.util.Optional.of(level().dimension())));
+			stops.add(new RouteStop(legacyB, "B", java.util.Optional.of(level().dimension())));
 		}
 
 		target = stops.isEmpty() ? 0 : Math.floorMod(target, stops.size());

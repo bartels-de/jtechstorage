@@ -34,7 +34,7 @@ import dev.bartels.jtechstorage.block.PhoenixStopBlockEntity;
  * Luft öffnet ein Fenster zum Umsortieren und Entfernen, danach den Phönix damit rechtsklicken.
  */
 public class FlightPlanItem extends Item {
-	public static final int MAX_STOPS = 4;
+	public static final int MAX_STOPS = 6;
 
 	/** Eine Haltestelle im Plan (der Name wird beim Anklicken übernommen). */
 	public record Stop(GlobalPos pos, String name) {
@@ -95,11 +95,6 @@ public class FlightPlanItem extends Item {
 
 		if (stops.size() >= MAX_STOPS) {
 			player.sendOverlayMessage(Component.translatable("jtechstorage.flight_plan.full", MAX_STOPS).withStyle(ChatFormatting.RED));
-			return InteractionResult.FAIL;
-		}
-
-		if (!stops.isEmpty() && !stops.getFirst().pos().dimension().equals(clicked.dimension())) {
-			player.sendOverlayMessage(Component.translatable("jtechstorage.flight_plan.dimension").withStyle(ChatFormatting.RED));
 			return InteractionResult.FAIL;
 		}
 

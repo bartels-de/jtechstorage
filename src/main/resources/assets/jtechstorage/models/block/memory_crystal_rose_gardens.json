@@ -1,8 +1,8 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "jtechstorage:item/memory_crystal_rose_gardens",
-    "crystal": "jtechstorage:item/memory_crystal_rose_gardens",
+    "particle": "jtechstorage:block/memory_crystal_rose_gardens",
+    "crystal": "jtechstorage:block/memory_crystal_rose_gardens",
     "pedestal": "jtechstorage:block/memory_pedestal"
   },
   "elements": [

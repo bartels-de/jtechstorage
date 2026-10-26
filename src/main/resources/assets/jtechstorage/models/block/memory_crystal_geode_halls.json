@@ -1,8 +1,8 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "jtechstorage:item/memory_crystal_geode_halls",
-    "crystal": "jtechstorage:item/memory_crystal_geode_halls",
+    "particle": "jtechstorage:block/memory_crystal_geode_halls",
+    "crystal": "jtechstorage:block/memory_crystal_geode_halls",
     "pedestal": "jtechstorage:block/memory_pedestal"
   },
   "elements": [

@@ -30,10 +30,11 @@ trade terminals, phoenix mail, two bosses and an End update with gear above neth
 - 👥 **Teams and trade.** Roles from guest to owner, team colors, event channels and a small shop that sells straight
   from storage.
 - 🔥 **Phoenix mail and travel.** Send parcels to a friend's storage. Evolve the phoenix into a rideable amethyst phoenix
-  that flies players and cargo along a route of up to four named stops.
+  that flies players and cargo along a route of up to six named stops – even across dimensions.
 - ⚔️ **Bosses and End content.** The Amethyst Robot, the Crystal Lair in the outer End with the Great Amethyst Spider,
   and Amethyst Obsidian gear with a set bonus.
-- 🦊 **Crystal enchantments.** Five new enchantments that only the Amethyst Fox can dig up.
+- 🦊 **Crystal enchantments.** 17 new enchantments – movement, quality of life, armor, bow and melee – that only the
+  Amethyst Fox can dig up.
 - 📚 **A library of books.** Handbook, recipe book, bestiary with 3D models, item lexicon, crystal chronicle and
   Chel's joke book with 75 collectible jokes.
 - 💎 **The Crystal Depths.** A dimension of giant crystal caves with ten biomes – from singing prism forests and floating
@@ -184,14 +185,14 @@ Place a **Phoenix Nest** and link it to your storage. It becomes your mail addre
 it, and it moves into the nest. In the nest you choose a destination, put up to nine items in the parcel slots and send.
 The phoenix takes the items from your storage and they arrive in the recipient's storage, or in the nest inbox if storage
 is full. Unloaded destinations simply wait, so nothing is lost. Daily standing orders and an accept list
-(everyone / team / closed) are supported.
+(everyone / team / closed) are supported. Mail also works between dimensions (always 60 seconds).
 
 ### Amethyst Phoenix
 
 Right-click a phoenix with an **Amethyst Obsidian Upgrade** to evolve it into a large, majestic Amethyst Phoenix.
 
-- Build up to four **Phoenix Stops** and right-click each to give it a name and a rest time (30 seconds, 5 minutes or
-  one night).
+- Build up to six **Phoenix Stops** and right-click each to give it a name and a rest time (30 seconds, 5 minutes or
+  one night). Stops may be in different dimensions: the phoenix switches with a flame jump, riders and cargo included.
 - Click the stops with a **Flight Plan** in the order you want. Right-click in the air to reorder or remove stops, then
   right-click the phoenix with the plan.
 - It visits the stops in order, rests as long as each stop says and starts over. It keeps chunks along its path loaded.
@@ -347,6 +348,18 @@ These enchantments are not available from the enchanting table, villagers or loo
 | Recall | Storage Key | I | Right-click in the air to return to your terminal once per day |
 | Careful Touch | pickaxe | I | Mines monster spawners (the mob is kept) and budding amethyst |
 | Life Spark | sword / axe | I–III | Melee hits heal 10 % of the damage per level (max. 2 hearts) |
+| Long Reach | tools | I–III | +1/2/3 blocks of reach |
+| Soulbound | any item | I–III | Kept on death; loses one level each time |
+| Restock | Storage Key | I | Refills the stack in your hand from inventory or storage |
+| Crystal Shield | chestplate | I–III | Up to 2/4/6 absorption hearts after 10 s without damage |
+| Nourishing | helmet | I–III | 20/40/60 % less hunger |
+| Arrow Ward | helmet | I–III | 20/40/60 % chance that projectiles bounce off |
+| Wind Arrow | bow / crossbow | I–III | Faster, flatter arrows (same damage) |
+| Binding Arrow | bow / crossbow | I–III | Hits slow the target heavily for 2/3/4 s |
+| Resonance Arrow | bow / crossbow | I–III | Every third hit on the same target echoes with 50/75/100 % extra damage |
+| Beheading | sword / axe | I–III | 5/10/15 % chance for a head (mobs and players) |
+| Crystal Venom | sword | I–III | Target bleeds for 3 s (1/2/3 damage per second) |
+| Whirlwind | sword / axe | I–III | Full sneak attack also hits all monsters around you |
 
 ### Backpacks
 

@@ -1,8 +1,8 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "jtechstorage:item/memory_crystal_hollow_expanse",
-    "crystal": "jtechstorage:item/memory_crystal_hollow_expanse",
+    "particle": "jtechstorage:block/memory_crystal_hollow_expanse",
+    "crystal": "jtechstorage:block/memory_crystal_hollow_expanse",
     "pedestal": "jtechstorage:block/memory_pedestal"
   },
   "elements": [

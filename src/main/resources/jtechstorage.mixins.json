@@ -3,7 +3,9 @@
 	"package": "dev.bartels.jtechstorage.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
+		"AbstractArrowAccessor",
 		"ItemEntityMixin",
+		"PlayerSoulboundMixin",
 		"PlayerXpMixin",
 		"SmithingForgeMixin",
 		"ZombieVillagerAccessor"

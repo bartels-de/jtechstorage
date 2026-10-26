@@ -1,8 +1,8 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "jtechstorage:item/memory_crystal_vein_chasm",
-    "crystal": "jtechstorage:item/memory_crystal_vein_chasm",
+    "particle": "jtechstorage:block/memory_crystal_vein_chasm",
+    "crystal": "jtechstorage:block/memory_crystal_vein_chasm",
     "pedestal": "jtechstorage:block/memory_pedestal"
   },
   "elements": [
