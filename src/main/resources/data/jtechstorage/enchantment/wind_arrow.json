@@ -1,0 +1,21 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "translate": "enchantment.jtechstorage.wind_arrow"
+  },
+  "max_cost": {
+    "base": 80,
+    "per_level_above_first": 20
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 40,
+    "per_level_above_first": 20
+  },
+  "slots": [
+    "mainhand",
+    "offhand"
+  ],
+  "supported_items": "#jtechstorage:enchantable/ranged",
+  "weight": 1
+}

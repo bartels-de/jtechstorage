@@ -3,6 +3,46 @@
 All notable changes to JTechStorage. The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 All versions so far are pre-releases (0.x) for Minecraft 26.3 / Fabric.
 
+## [0.42.0]
+
+### Added
+- **Twelve new crystal enchantments** (like the others only from the Amethyst Fox):
+  - Quality of life: **Long Reach** (tools, +1/2/3 blocks reach), **Soulbound** (any item, kept on death, loses a level
+    each time), **Restock** (Storage Key, refills the stack in your hand from inventory or storage).
+  - Armor: **Crystal Shield** (chestplate, absorption hearts after 10 s without damage), **Nourishing** (helmet, less
+    hunger), **Arrow Ward** (helmet, projectiles may bounce off).
+  - Bow and crossbow: **Wind Arrow** (faster, flatter arrows), **Binding Arrow** (heavy slowness), **Resonance Arrow**
+    (every third hit echoes with extra damage).
+  - Melee: **Beheading** (heads from mobs and players), **Crystal Venom** (bleeding), **Whirlwind** (a full sneak attack
+    hits all monsters around you).
+- A second handbook page lists the new enchantments.
+
+## [0.41.0]
+
+### Added
+- **Amethyst Phoenix across dimensions:** a Flight Plan may now mix stops from different dimensions (for example the
+  Overworld and the Crystal Depths). Before a stop in the other dimension the phoenix climbs and vanishes in a
+  **flame jump**, then appears above that stop – riders and cargo included, no portal needed.
+- Flight Plans hold **6 stops** instead of 4. The Flight Plan window shows the dimension of each stop.
+
+### Changed
+- In dimensions with a ceiling (Crystal Depths) the Amethyst Phoenix flies below the cave ceiling instead of above the
+  terrain. If it gets stuck on its way, it jumps straight above the next stop after a few seconds.
+- Rest times at stops follow the Overworld clock.
+
+### Fixed
+- An Amethyst Phoenix resting at a stop in the Crystal Depths never took off again (the dimension has no clock of its
+  own).
+
+### Documentation
+- Phoenix mail between dimensions (it already worked, 60 seconds per flight) is now described in the guide.
+
+## [0.40.1]
+
+### Fixed
+- **Memory Crystals** placed in the world showed the missing texture. Their block model used the item textures, which
+  are no longer part of the block atlas in Minecraft 26.x. They now have their own block textures.
+
 ## [0.40.0]
 
 ### Added

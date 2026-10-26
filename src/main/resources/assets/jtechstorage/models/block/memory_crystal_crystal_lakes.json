@@ -1,8 +1,8 @@
 {
   "ambientocclusion": false,
   "textures": {
-    "particle": "jtechstorage:item/memory_crystal_crystal_lakes",
-    "crystal": "jtechstorage:item/memory_crystal_crystal_lakes",
+    "particle": "jtechstorage:block/memory_crystal_crystal_lakes",
+    "crystal": "jtechstorage:block/memory_crystal_crystal_lakes",
     "pedestal": "jtechstorage:block/memory_pedestal"
   },
   "elements": [

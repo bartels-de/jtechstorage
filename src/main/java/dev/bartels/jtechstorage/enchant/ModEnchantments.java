@@ -54,7 +54,7 @@ import dev.bartels.jtechstorage.JTechStorage;
 /**
  * Kristall-Verzauberungen (nur vom Amethyst-Fuchs – nicht am Verzauberungstisch, nicht beim Handel, nicht in Truhen):
  * Doppelsprung (Stiefel), Sprint (Beinschutz), Rückruf (Speicher-Schlüssel), Behutsamkeit (Spitzhacke),
- * Lebensfunke (Schwert/Axt). Die Daten liegen in {@code data/jtechstorage/enchantment/}, das Verhalten steht hier.
+ * Lebensfunke (Schwert/Axt) – seit v0.42 zwölf weitere ({@link MoreEnchantments}). Die Daten liegen in {@code data/jtechstorage/enchantment/}, das Verhalten steht hier.
  */
 public final class ModEnchantments {
 	public static final ResourceKey<Enchantment> DOUBLE_JUMP = key("double_jump");
@@ -62,7 +62,22 @@ public final class ModEnchantments {
 	public static final ResourceKey<Enchantment> RECALL = key("recall");
 	public static final ResourceKey<Enchantment> CAREFUL_TOUCH = key("careful_touch");
 	public static final ResourceKey<Enchantment> LIFE_SPARK = key("life_spark");
-	public static final List<ResourceKey<Enchantment>> ALL = List.of(DOUBLE_JUMP, SPRINT, RECALL, CAREFUL_TOUCH, LIFE_SPARK);
+	// v0.42
+	public static final ResourceKey<Enchantment> LONG_REACH = key("long_reach");
+	public static final ResourceKey<Enchantment> SOULBOUND = key("soulbound");
+	public static final ResourceKey<Enchantment> RESTOCK = key("restock");
+	public static final ResourceKey<Enchantment> CRYSTAL_SHIELD = key("crystal_shield");
+	public static final ResourceKey<Enchantment> NOURISHING = key("nourishing");
+	public static final ResourceKey<Enchantment> ARROW_WARD = key("arrow_ward");
+	public static final ResourceKey<Enchantment> WIND_ARROW = key("wind_arrow");
+	public static final ResourceKey<Enchantment> BINDING_ARROW = key("binding_arrow");
+	public static final ResourceKey<Enchantment> RESONANCE_ARROW = key("resonance_arrow");
+	public static final ResourceKey<Enchantment> BEHEADING = key("beheading");
+	public static final ResourceKey<Enchantment> CRYSTAL_VENOM = key("crystal_venom");
+	public static final ResourceKey<Enchantment> WHIRLWIND = key("whirlwind");
+	public static final List<ResourceKey<Enchantment>> ALL = List.of(DOUBLE_JUMP, SPRINT, RECALL, CAREFUL_TOUCH, LIFE_SPARK,
+			LONG_REACH, SOULBOUND, RESTOCK, CRYSTAL_SHIELD, NOURISHING, ARROW_WARD, WIND_ARROW, BINDING_ARROW, RESONANCE_ARROW,
+			BEHEADING, CRYSTAL_VENOM, WHIRLWIND);
 
 	/** Mob-Typ eines mit Behutsamkeit abgebauten Spawners. */
 	public static final DataComponentType<Identifier> SPAWNER_MOB = Registry.register(BuiltInRegistries.DATA_COMPONENT_TYPE,
@@ -102,6 +117,7 @@ public final class ModEnchantments {
 
 	public static void init() {
 		ServerTickEvents.END_SERVER_TICK.register(ModEnchantments::tick);
+		MoreEnchantments.init();
 		ServerLivingEntityEvents.AFTER_DAMAGE.register(ModEnchantments::lifeSpark);
 		PlayerBlockBreakEvents.AFTER.register(ModEnchantments::carefulTouch);
 		UseBlockCallback.EVENT.register((player, level, hand, hit) -> {

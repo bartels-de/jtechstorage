@@ -10,7 +10,7 @@
 
 ---
 
-This guide covers JTechStorage **0.40.0** for Minecraft **26.3 (Fabric)**. New here? Start with
+This guide covers JTechStorage **0.42.0** for Minecraft **26.3 (Fabric)**. New here? Start with
 [Getting started](01-getting-started.md). Looking for something specific? Use the table of contents or the quick answers
 below. In game, the **Storage Handbook** and the other [books](12-books-and-interface.md) contain the same information.
 
@@ -27,7 +27,7 @@ below. In game, the **Storage Handbook** and the other [books](12-books-and-inte
 | 🦗 | [Companions](07-companions.md) | Geode Keeper and his trades, Shadow Mantis, Amethyst Shroom, Night Raven, menu, talents, customization, bond, HUD |
 | ⛈️ | [Resonance Storm](08-resonance-storm.md) | When it starts, the waves, the Storm Herald, how to defend |
 | ⚔️ | [Bosses and the End](09-bosses-and-end.md) | Amethyst Robot, Crystal Lair, Great Amethyst Spider, Amethyst Obsidian gear |
-| 🦊 | [Crystal enchantments](10-crystal-enchantments.md) | The Amethyst Fox and its five enchantments |
+| 🦊 | [Crystal enchantments](10-crystal-enchantments.md) | The Amethyst Fox and its 17 enchantments |
 | 🎒 | [Backpacks](11-backpacks.md) | Tiers, upgrading, wearing and placing |
 | 📚 | [Books and interface](12-books-and-interface.md) | The six books, UI settings, JEI, advancements |
 | 🛠️ | [Recipes](13-recipes.md) | Every recipe with pictures, plus items that have no recipe |

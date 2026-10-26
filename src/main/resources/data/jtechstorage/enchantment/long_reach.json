@@ -1,0 +1,34 @@
+{
+  "anvil_cost": 4,
+  "description": {
+    "translate": "enchantment.jtechstorage.long_reach"
+  },
+  "effects": {
+    "minecraft:attributes": [
+      {
+        "amount": {
+          "type": "minecraft:linear",
+          "base": 1.0,
+          "per_level_above_first": 1.0
+        },
+        "attribute": "minecraft:block_interaction_range",
+        "id": "jtechstorage:enchantment.long_reach",
+        "operation": "add_value"
+      }
+    ]
+  },
+  "max_cost": {
+    "base": 80,
+    "per_level_above_first": 20
+  },
+  "max_level": 3,
+  "min_cost": {
+    "base": 40,
+    "per_level_above_first": 20
+  },
+  "slots": [
+    "mainhand"
+  ],
+  "supported_items": "#minecraft:enchantable/mining",
+  "weight": 1
+}

@@ -554,6 +554,7 @@ public class GuideBookScreen extends dev.bartels.jtechstorage.client.gui.ThemedS
 
 		chapter(Items.ENCHANTED_BOOK, "chronicle_enchants");
 		info("crystal_enchants");
+		info("crystal_enchants2");
 
 		chapter(ModContent.DRAGON_HEART, "chronicle_evolutions");
 		info("evolutions");

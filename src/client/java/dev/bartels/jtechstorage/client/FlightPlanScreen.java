@@ -105,7 +105,14 @@ public class FlightPlanScreen extends dev.bartels.jtechstorage.client.gui.Themed
 			graphics.text(font, String.valueOf(row + 1), left + 14, y + 7, 0xFFE0B0FF, true);
 			int textW = buttonX(0) - (left + 30) - 4;
 			GuiTheme.label(graphics, font, Component.literal(stop.name()), left + 30, y + 3, textW, infoText);
-			GuiTheme.label(graphics, font, Component.literal(pos.getX() + ", " + pos.getY() + ", " + pos.getZ()), left + 30, y + 12, textW, infoSubtle);
+			net.minecraft.network.chat.MutableComponent where = Component.literal(pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+			String dim = stop.pos().dimension().identifier().getPath();
+
+			if (!"overworld".equals(dim)) {
+				where.append(" · ").append(Component.translatableWithFallback("jtechstorage.flight_plan.gui.dim." + dim, dim));
+			}
+
+			GuiTheme.label(graphics, font, where, left + 30, y + 12, textW, infoSubtle);
 
 			for (int button = 0; button < 3; button++) {
 				boolean on = enabled(row, button);

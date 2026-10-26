@@ -15,6 +15,8 @@
 - **Standing orders:** send the same parcel automatically every day.
 - **Accept list:** receive parcels from everyone, only your team, or nobody.
 - The flight time depends on the distance (`phoenixMailBlocksPerSecond` in the [configuration](15-configuration.md)).
+- **Between dimensions:** nests in the Overworld and the Crystal Depths (or any other dimension) can send to each other.
+  Each side needs its own nest linked to its own terminal; such a flight always takes **60 seconds**.
 
 ## Amethyst Phoenix
 
@@ -25,7 +27,7 @@ carries players and cargo along a route.
 
 ### Building a route
 
-1. Build up to **four Phoenix Stops**. Right-click each one to give it a **name** and a **rest time**: 30 seconds,
+1. Build up to **six Phoenix Stops**. Right-click each one to give it a **name** and a **rest time**: 30 seconds,
    5 minutes or one night.
 2. Click the stops with a **Flight Plan** in the order you want.
 3. Right-click the Flight Plan in the air to reorder or remove stops.
@@ -33,6 +35,14 @@ carries players and cargo along a route.
 
 The phoenix lands on top of each stop, rests as long as the stop says and then flies on. After the last stop it starts
 over. It keeps the chunks along its path loaded.
+
+**Routes across dimensions:** the stops may be in different dimensions – for example two in the Overworld and two in the
+Crystal Depths. When the next stop is in the other dimension, the phoenix climbs, vanishes in a **flame jump** and appears
+right above that stop, riders and cargo included. No portal is needed. The Flight Plan window shows the dimension under
+each stop's coordinates.
+
+In the caves of the Crystal Depths it flies below the ceiling. If it gets stuck on the way (a wall, a narrow passage), it
+jumps straight above the stop after a few seconds.
 
 ### Riding and cargo
 
